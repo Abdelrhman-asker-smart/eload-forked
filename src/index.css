@@ -5,13 +5,13 @@ body
   color: #000 !important;
   /* background-color: #131722; */
   /* background-color: #A10035; */
-  background-color: white;
+  background-color: #0B2339;
   font-family: 'Montserrat Alternates', sans-serif;
 }
 input
 {
   background-color: transparent !important;
-  color: white !important;
+  /* color: white !important; */
 }
 .spinner {
   display: flex;

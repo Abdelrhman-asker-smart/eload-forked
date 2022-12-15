@@ -3,6 +3,8 @@ import Joi from 'joi';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import "./Login.css"
+import Img from "./Eloadlogo.png";
 
 export default function Login({decodeData}) {
     let navigate = useNavigate();
@@ -90,8 +92,11 @@ export default function Login({decodeData}) {
         return '';
     }
 return <>
-    <div className="w-75 mx-auto mt-5 pt-5 h-100"> 
+    <div className="login w-50 mx-auto mt-5 h-100"> 
         <div className="content">
+            <div className='logo my-3 text-center'>
+                <img src={Img} alt=""/>
+            </div>
         <h2 className='fs-3'>Login Form</h2>
         <form onSubmit={ submitForm }>
             <label htmlFor="email"> Email: </label>
@@ -104,7 +109,7 @@ return <>
 
             
             
-            <button type='submit' className='my-2 btn btn-outline-info'> {loginFlag? <>
+            <button type='submit' className='btn-submit my-2 btn btn-outline-info'> {loginFlag? <>
                 <div className="spinner">
                     <div className="rect1"></div>
                     <div className="rect2"></div>

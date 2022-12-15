@@ -284,7 +284,7 @@ const Layout = ({ setLogin }) => {
             </ul>
           </div>
           {/* pages */}
-          <div className="w-100">
+          <div className="w-100 main-containt">
           <Navbar setLogin={setLogin} />
             <Routes>
               {/* <Route path="/login" element={<Login />} /> */}

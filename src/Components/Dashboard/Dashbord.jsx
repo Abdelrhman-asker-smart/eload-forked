@@ -38,7 +38,7 @@ const Dashbord = () => {
 
 
   return (
-    <div className='dashboard'>
+    <div className='dashboard py-5 px-5'>
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-md-6'>
