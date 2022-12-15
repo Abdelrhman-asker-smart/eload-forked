@@ -1,0 +1,207 @@
+p
+{
+    margin: 0rem;
+}
+.head-shipments
+{
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+.shipments-btns
+{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.btn
+{
+    background-color: #0B2339;
+    border: none;
+    margin-right: 3rem;
+    padding: .7rem 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+}
+.btn:hover,
+.btn:active,
+.btn:focus
+{
+    background-color: #091d30;
+    border: none;
+    margin-right: 3rem;
+    padding: .7rem 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+}
+
+.switch-btn
+{
+    display: flex;
+    align-items: center;
+}
+.form-switch .form-check-input{
+
+    background-color: #0B2339 !important;
+    color: #ccc !important;
+    border: #0B2339;
+}
+
+.switch-btn p
+{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #0B2339;
+}
+.steps-shipments
+{
+    width: 61% ;   
+}
+.steps-shipments .steps
+{
+    display: flex;
+    align-items: center;
+    padding-left: .3rem;
+}
+.steps-shipments .step
+{
+    margin-right: 4rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.steps-shipments .step.active::after
+{
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: .1rem;
+    background-color: #0B2339;
+    bottom: -17px;
+}
+.steps-shipments .step span
+{
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #0B2339;
+    margin-right: .5rem;
+}
+.steps-shipments .step.active span
+{
+    background-color: #0B2339;
+    color: #fff;
+}
+.input-shipper,
+.inputs
+{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.input-shipper p,
+.inputs label
+{
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #0B2339;
+    position: relative;
+    margin-bottom: .5rem;
+}
+.input-shipper p span,
+.inputs label span
+{
+    font-size: 1.4rem;
+    position: absolute;
+    color: red;
+    top: 0;
+}
+.box-inputs
+{
+    position: relative;
+}
+.box-inputs hr
+{
+    margin-bottom: 1rem;
+}
+.box-inputs-head
+{
+    font-size: 1.5rem;
+    color: #0B2339;
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+.inputs 
+{
+    display: flex;
+}
+.input
+{
+    margin-left: 1.2rem;
+    margin-bottom: 2rem;
+}
+.input-select
+{
+    margin-left: 0;
+    width: 50%;
+}
+select
+{
+    color: #fff;
+}
+.input
+{
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+}
+
+.input  input
+{
+    border: 1px solid #ccc;
+    color: #0B2339 !important;
+    padding-left: .2rem;
+    z-index: 999;
+    width: 100%;
+    /* height: 100%; */
+}
+.add-btn button
+{
+    background-color: #0B2339;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    margin-left: 1.1rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 15px;
+    position: absolute;
+    top: 51px;
+    right: -17px;
+}
+.control-btn
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.control-btn .left-btn
+{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+}
+.control-btn .left-btn
+{
+    margin-right: auto;
+}

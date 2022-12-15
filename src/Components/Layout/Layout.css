@@ -1,0 +1,43 @@
+:root{
+    --text-color:
+        color: #CBFF39;
+}
+
+.sidebar{
+    height: auto;
+    width: auto ;
+    background-color: #0B2339;
+    color: white;
+    padding-bottom: 20px;
+    border: none;
+    box-shadow: 4px 4px 17px -5px #000000FA;
+}
+.side-nav ul{
+
+    text-decoration: none;
+}
+.nav-item{
+    width: 274px;
+    height: 60px;
+
+}
+.nav-item span{
+    font-size: 20px;
+}
+.nav-item .svg-icon{
+    fill: #fff;
+}
+.nav-item:hover {
+    background-color: #244664;
+}
+.nav-item:hover span{
+    color: #CBFF39;
+ }
+.nav-item:hover .svg-icon{
+    fill: #CBFF39;
+}
+
+/* .activeStyle span{
+    color: red;
+} */
+

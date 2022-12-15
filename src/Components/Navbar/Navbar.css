@@ -1,0 +1,35 @@
+
+.header{
+    background-color: #0B2339;
+    color: white;
+    padding: 15px;
+    border: none;
+}
+.content{
+
+    /* padding-top: 8px; */
+}
+.path p{
+    color: #C9C9C9;
+    font-size: 20px;
+}
+.notification{
+    position: relative;
+}
+.notification span{
+    top: -5px;
+    left: 11px;
+}
+.notification i{
+    color: #CBFF39;
+}
+.user-icon{
+    border-radius: 50px;
+    width: 29px;
+    padding-top: 1px;
+    height: 30px;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid #fff;
+    cursor: pointer;
+}
