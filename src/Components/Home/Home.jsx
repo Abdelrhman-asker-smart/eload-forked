@@ -2,7 +2,7 @@ import React , {useEffect , useState} from 'react'
 import axios from 'axios'
 import './Home.css'
 import { Link } from 'react-router-dom';
-import Sidebar from '../Sidebar/Sidebar';
+// import Sidebar from '../Sidebar/Sidebar';
 
 
 

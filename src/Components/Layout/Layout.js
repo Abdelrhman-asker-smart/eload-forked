@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route, Router, NavLink } from "react-router-dom";
-import Home from "../Home/Home";
-import Login from "../Login/Login";
+// import Home from "../Home/Home";
+// import Login from "../Login/Login";
 import Navbar from "../Navbar/Navbar";
-import { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
+// import { useState, useEffect } from "react";
+// import { useCookies } from "react-cookie";
 import Dashbord from "../Dashboard/Dashbord";
 import User from "../User/User"
-import Sidebar from "../Sidebar/Sidebar";
+// import Sidebar from "../Sidebar/Sidebar";
 import Logo from './Eloadlogo.png'
 import Shipments from '../Shipments/Shipments.jsx'
 import Reports from '../Reports/Reports.jsx'
