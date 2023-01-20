@@ -1,32 +1,28 @@
 import "./App.css";
-// import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-// import Home from "./Components/Home/Home";
-// import Login from "./Components/Login/Login";
-// import Signup from "./Components/Signup/Signup";
-// import Navbar from "./Components/Navbar/Navbar";
-// import TvShow from "./Components/TvShow/TvShow";
-// import Movies from "./Components/Movies/Movies";
-// import MovieDetails from "./Components/MovieDetails/MovieDetails";
-// import axios from "axios";
-// import jwtDecode from "jwt-decode";
+
 import { useState, useEffect } from "react";
-// import SearchMovies from "./Components/SearchedMovies/SearchMovies";
-// import TVShowDetails from "./Components/TVShowDetails/TVShowDetails";
-// import Peaple from "./Components/Peaple/Peaple";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Layout from "./Components/Layout/Layout";
 import Login from "./Components/Login/Login";
-// import { useHistory } from "react-router-dom";
+import LoginRoute from "./Components/LoginRoute/LoginRoute";
+
 
 function App() {
   const [login, setLogin] = useState(false);
   const [cookie, setCookie, removeToken] = useCookies([""]);
+
+  let navigate = useNavigate();
+  
   // console.log(cookie);
   useEffect(() => {
     if (!cookie.eload_token) {
       setLogin(false);
+      navigate('/login');
+
     } else {
       setLogin(true);
+      // navigate('/dashboard');
     }
   }, []);
   // console.log(login, "login");
@@ -53,10 +49,17 @@ function App() {
   //     decodeData();
   //   }
   // }, []);
-
+  //   useEffect(() => {
+  //   if (localStorage.getItem("tkn") != null) {
+  //     decodeData();
+  //   }
+  // }, []);
+console.log(login,'login')
   return (
     <>
-      {login ? <Layout setLogin={setLogin} /> : <Login setLogin={setLogin} />}
+      {login ? <Layout setLogin={setLogin} /> : <Login setLogin={setLogin} /> }
+      {/* {login ? <Layout setLogin={setLogin} /> : <LoginRoute setLogin={setLogin} /> } */}
+      
       {/* <Navbar currentUser={currentUser} clrUserData={clrUserData} />
       <Routes>
         <Route

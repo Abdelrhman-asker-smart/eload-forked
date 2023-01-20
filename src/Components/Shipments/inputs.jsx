@@ -8,12 +8,12 @@ function Inputs()
         <div className='input col-2'>
           <label htmlFor="address">Truck Type<span>*</span></label>
           <select class="form-select" aria-label="Default select example">
-          <option selected>Container</option>
+          <option  selected>Container</option>
           <option value="1">One</option>
           <option value="2">Two</option>
           <option value="3">Three</option>
         </select>
-        </div>
+        </div>  
         <div className='input col-2'>
           <label htmlFor="address">Shipment type<span>*</span></label>
           <select class="form-select" aria-label="Default select example">
@@ -37,14 +37,14 @@ function Inputs()
         </div>
         <div className='input col-2'>
           <label htmlFor="address">Packing List Attachments<span>*</span></label>
-          <div className="input-group mb-3">
-            <input type="file" className="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
+          <div className="input-group ">
+            <input type="file" className="input-file form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
           </div>
         </div>
         <div className='input col-2'>
           <label htmlFor="address">Other Documentation<span>*</span></label>
-          <div className="input-group mb-3">
-            <input type="file" className="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
+          <div className="input-group ">
+            <input type="file" className="input-file form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
           </div>
         </div>
         <div className='input col-2'>

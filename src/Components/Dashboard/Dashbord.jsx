@@ -1,10 +1,20 @@
 import React from 'react'
 import CanvasJSReact from '../../assets/canvasjs.react';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 // import { CreateRoot , Doughnut } from 'react-chartjs-2';
 
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+
+var CanvasJS = CanvasJSReact.CanvasJS;
+
 const Dashbord = () => {
+	// chart-1
+	
+	
+
+	// chart-2
 
   const options = {
 		animationEnabled: true,
@@ -41,7 +51,37 @@ const Dashbord = () => {
     <div className='dashboard py-5 px-5'>
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-6'>
+			{/* chart-1 */}
+			{/* <div className='col-md-6'>
+            	<div className='card-chart'>
+					<LineChart
+						data={[]}
+						height={500}
+						width={700}
+						>
+						<XAxis
+							axisLine
+							dataKey="name"
+							tick
+							tickLine
+						/>
+						<YAxis
+							axisLine
+							tick
+							tickLine
+						/>
+						<Legend iconType="line" />
+						<Tooltip />
+						<Line
+							dataKey="height"
+							stroke="orange"
+							type="linear"
+						/>
+						</LineChart>
+            	</div>
+          	</div> */}
+			{/* chart2 */}
+          <div style={{overflow:"hidden"}} className='col-md-6'>
             <div className='card-chart'>
             <CanvasJSChart options = {options} />
             </div>

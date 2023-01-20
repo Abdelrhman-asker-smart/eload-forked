@@ -1,0 +1,40 @@
+.iteminfo h3{
+    color: #0E324A;
+    font-size: 24px;
+    font-weight: 700;
+}
+.iteminfo label{
+    color: #0E324A;
+    font-weight: 600;
+    font-size: 18px;
+}
+.iteminfo .input-box{
+    border: 1px solid #B2B2B2;
+    border-radius: 20px;
+    color: #000;
+    Width: 80%;
+    height: 48px;
+}
+.iteminfo .small-input{
+    Width: 80%;
+}
+.iteminfo .input-box::placeholder{
+    color: #B2B2B2;
+}
+.iteminfo input[type="file"]::-webkit-file-upload-button{
+    height: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 20px;
+}
+.iteminfo .btn-save{
+    background: #0E324A;
+    border-radius: 42px;
+    color: #fff;
+    font-weight: 700;
+    width: 10%;
+    border: 0;
+    padding: 10px 0;
+    margin-left: 40%;
+    font-size: 22px;
+}

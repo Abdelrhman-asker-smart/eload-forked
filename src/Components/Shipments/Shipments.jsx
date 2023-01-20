@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from "react-router-dom";
 import { useState } from 'react'
 import Inputs from './inputs'
 import "./Shipments.css"
@@ -8,10 +9,10 @@ const Shipments = () => {
     <div className='container-fluid px-5'>
       <div className='head-shipments'>
         <div className='shipments-btns'>
-          <button className='btn'><i class="fa-solid fa-plus me-3"></i> Add Shipments</button>
-          <button  className='btn switch-btn'>Track Shipments</button>
+          <button className='btn-shipment-up'><i class="fa-solid fa-plus me-3"></i> Add Shipments</button>
+          <button  className='btn-shipment-up switch-btn'>Track Shipments</button>
           <div className="form-check form-switch">
-          <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
           <label className="form-check-label" for="flexSwitchCheckDefault">Switch to planned shipments</label>
         </div>
         </div>
@@ -36,13 +37,13 @@ const Shipments = () => {
           </div>
         </div>
         <hr />
-        <div className='input-shipper'>
+        <div className='input-shipper '>
           <p>Shipper<span>*</span></p>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Select client</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <select class="form-select custom-select" aria-label="Default select example" >
+            <option selected >Select shipper</option>
+            <option value="1">Mahmoud Abu zeid</option>
+            <option value="2">Abdullah </option>
+            <option value="3">Loqman ELgrahy </option>
           </select>
         </div>
       </div>
@@ -52,7 +53,7 @@ const Shipments = () => {
           <div className='input input-select'>
             <label htmlFor="address">Pickup Address<span>*</span></label>
             <select class="form-select" aria-label="Default select example">
-            <option selected>Select client</option>
+            {/* <option selected>Select client</option> */}
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -60,7 +61,7 @@ const Shipments = () => {
           </div>
           <div className='input'>
             <label htmlFor="address">Pickup Date<span>*</span></label>
-            <input type="date"></input>
+            <input type="date"/>
           </div>
           <div className='input'>
             <label htmlFor="address">Pickup Time<span>*</span></label>
@@ -76,7 +77,7 @@ const Shipments = () => {
           <div className='input input-select'>
             <label htmlFor="address">Drop off Address<span>*</span></label>
             <select class="form-select" aria-label="Default select example">
-            <option selected>Select client</option>
+            {/* <option selected>Select shipper</option> */}
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -90,7 +91,7 @@ const Shipments = () => {
         </div>
         <hr />
       </div>
-      <div className='details box-inputs'>
+      <div className='details box-inputs mb-4'>
         <div className='box-inputs-head'>Details</div>
         <Inputs />
         {
@@ -98,7 +99,7 @@ const Shipments = () => {
             return (
             <>
             <Inputs />  
-            <button  className='btn' id='delete' onClick={(item) => {
+            <button  className='btn-delete' id='delete' onClick={(item) => {
               const newArr = input.filter((i, j) => {
                 return index !== j
               })
@@ -110,10 +111,15 @@ const Shipments = () => {
         <div className='control-btn'>
           <div className='left-btn'>
 
-            <button  className='btn' id='add'  onClick={() => setInputs([...input , ''])}><i class="fa-solid fa-plus me-3"></i> Add truck</button>
+            <button  className='btn-add ' id='add'  onClick={() => setInputs([...input , ''])}><i class="fa-solid fa-plus me-3"></i> Add truck</button>
           </div>
           <div className='right-btn'>
-            <button  className='btn'>Save</button>
+            
+            <NavLink
+                  to="/allshipments"
+                >
+                    <button  className='btn-save'>Save</button>
+                </NavLink>
           </div>
         </div>
       </div>

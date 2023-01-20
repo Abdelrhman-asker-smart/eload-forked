@@ -3,15 +3,7 @@
         color: #CBFF39;
 }
 
-.sidebar{
-    height: auto;
-    width: auto ;
-    background-color: #0B2339;
-    color: white;
-    padding-bottom: 20px;
-    border: none;
-    box-shadow: 4px 4px 17px -5px #000000FA;
-}
+
 .side-nav ul{
 
     text-decoration: none;
@@ -22,7 +14,7 @@
 
 }
 .nav-item span{
-    font-size: 20px;
+    font-size: 18px;
 }
 .nav-item .svg-icon{
     fill: #fff;
@@ -39,5 +31,54 @@
 
 .main-containt{
     background-color: #fff;
+    /* letter-spacing: 0.02em; */
 }
+/* dropdown-sidbar */
+/* .btn-sidbar-list:hover{
+    background-color: transparent;
+ 
+    font-weight: bold;
+    font-size: 18px;
+    border: 0;
+}
+.btn-sidebar{
+    background-color: transparent;
+    border: none;
+}
+.btn-sidebar:hover{
+    background-color: transparent;
+    border: none;
+}
+.btn-sidebar:active{
+    background-color: transparent;
+    border: none;
+}
+.btn-sidebar:not(.btn-check)+.btn:active{
+    background-color: transparent;
+    border: none;
+} 
+.btn-sidebar-inside{
+    background-color: transparent;
+    border: none;
 
+}
+.btn-sidebar-inside:hover{
+    background-color: transparent;
+    border: none;
+
+}
+.btn-sidebar-inside:active{
+    background-color: transparent;
+    border: none;
+} */
+
+/* new-update */
+.item{
+    color: #fff;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+}
+.svg-icon{
+    fill: #fff;
+}

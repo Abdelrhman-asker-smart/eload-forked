@@ -48,8 +48,8 @@ export default function Login({decodeData}) {
             setLoginFlag(true);
 
         let formdata = new FormData();
-        formdata.append("email", "freelancer@example.com");
-        formdata.append("password", "123456");
+        formdata.append("email", user.email);
+        formdata.append("password", user.password);
         formdata.append("fcm_token", "dummy-fcm-token");
         
 
@@ -66,7 +66,10 @@ export default function Login({decodeData}) {
             localStorage.setItem("email",data.data.user.email);
             localStorage.setItem("name",data.data.user.name);
             setCookie("eload_token", data.data.token.access);
-            navigate('/dashboard');
+            window.location.replace('/dashboard')
+            // navigate('/dashboard');
+            setLoginFlag(false);
+
             return data
             // return request
         }catch(err){
@@ -91,6 +94,7 @@ export default function Login({decodeData}) {
         }
         return '';
     }
+    console.log(user,'user')
 return <>
     <div className="login w-50 mx-auto mt-5 h-100"> 
         <div className="content">

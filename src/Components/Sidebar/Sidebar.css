@@ -1,41 +1,54 @@
-/* :root{
-    --text-color:
-        color: #CBFF39;
-}
-
 .sidebar{
-    height: auto;
-    width: 274px ;
+   height: 100vh;
+   width: 18% ;
+   background-color: #0B2339;
+   color: white;
+   padding-bottom: 20px;
+   border: none;
+   box-shadow: 4px 4px 17px -5px #000000FA;
+}
+ 
+ .sidebar span{
+    font-size: 18px;
+    font-weight: 600;
+ }
+
+ .acc-sidebar button{
+    width: 100%;
+    border: 0;
     background-color: #0B2339;
     color: white;
-    padding-bottom: 20px;
-}
-.side-nav ul{
+    text-align: left;
+    padding: 20px 10px;
 
-    text-decoration: none;
-}
-.nav-item{
-    width: 274px;
-    height: 60px;
-
-}
-.nav-item span{
-    font-size: 20px;
-}
-.nav-item .svg-icon{
-    fill: #fff;
-}
-.nav-item:hover {
+ }
+ .acc-sidebar button h3{
+    font-size: 18px ;
+    font-weight: 600 ;
+ }
+ .acc-sidebar button h4{
+    font-size: 16px ;
+    font-weight: 600 ;
+    padding: 0 10px;
+ }
+ .acc-sidebar .accordion-body{
+    padding-left: 14px;
+ }
+ .acc-sidebar .accordion-body p{
+    padding: 10px 40px;
+    font-weight: 600;
+    font-size: 16px;
+ }
+ .acc-sidebar .bg-inside{
     background-color: #244664;
-}
-.nav-item:hover span{
+ }
+ /* .activeStyle{
+    color: #CBFF39;
+    background-color: #244664;
+ } */
+ /* .acc-sidebar button:disabled {
     color: #CBFF39;
  }
-.nav-item:hover .svg-icon{
-    fill: #CBFF39;
-}
-
-.activeStyle span{
-    color: red;
-}
- */
+ .acc-sidebar button:focus:active:not(:focus-visible){
+    color: #CBFF39;
+ } */

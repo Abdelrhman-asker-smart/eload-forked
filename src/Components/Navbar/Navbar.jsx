@@ -3,19 +3,28 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import './NavbarRes.css';
 import Cookies from "js-cookie";
-
+import { useLocation } from "react-router-dom";
 
 export default function Navbar({setLogin , clrUserData , searchMovie}) {
+
+    const pathanme = useLocation()
+    console.log(pathanme)
     const [user, setUser] = useState({
         name: localStorage.getItem("name"),
         email: localStorage.getItem("email"),
-      });
+    });
 return <>
     <div className='header'>
     <div className='container-fluid'>
      <div className='content d-flex justify-content-between '>
         <div className='path'>
-            <p>Dashboard</p>
+            <p>
+                <Link to="/">
+                Dashboard {" "}
+                </Link>
+                {
+                    pathanme.pathname === '/' ? null
+                : "> " + pathanme.pathname.slice(1,pathanme.length) }</p>
         </div>
         <div className='user-side d-flex justify-content-between '>
             <div className='notification'>
@@ -25,10 +34,11 @@ return <>
             <div className='user-icon mx-3'
             onClick={() => {
                         
-            Cookies.remove("eload_token", { path: "/" });
-            localStorage.removeItem("email");
+            Cookies.remove("eload_token", { path: " /" });
+            localStorage.removeItem("email"); 
             localStorage.removeItem("name");
             setLogin(false);
+            window.location.replace('/login')
             }}
             >
             <i className="fa-solid fa-user"></i>

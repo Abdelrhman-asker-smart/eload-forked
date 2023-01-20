@@ -1,10 +1,18 @@
 .login{
-    /* background-color: black; */
+    
     color: #fff;
 }
-#password{
-    color: #fff;
-}
-.btn-submit{
+
+.login .btn-submit{
     background-color: #0e4579 !important;
+}
+.login .btn-submit:focus{
+    background-color: #0e4579 !important;
+    border-radius: 20px !important;
+    color: #fff !important;
+}
+.login .btn-outline-info{
+    color: #fff !important;
+    font-weight: 600;
+    width: 15%;
 }
