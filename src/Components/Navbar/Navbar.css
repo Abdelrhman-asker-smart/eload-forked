@@ -1,29 +1,27 @@
 
-.header{
+ .header{
     background-color: #0B2339;
     color: white;
-    padding: 15px;
+    padding: 9px;
     border: none;
 }
-.content{
 
-    /* padding-top: 8px; */
-}
-.path p{
+.section-nav .path p{
     color: #C9C9C9;
-    font-size: 20px;
+    font-size: 16px;
 }
-.notification{
+.section-nav .notification-bell{
     position: relative;
 }
-.notification span{
-    top: -5px;
+.section-nav  .notification span{
+    top: 2px;
     left: 11px;
+    font-weight: 500;
 }
-.notification i{
+.section-nav .notification i{
     color: #CBFF39;
 }
-.user-icon{
+.section-nav .user-icon{
     border-radius: 50px;
     width: 29px;
     padding-top: 1px;
@@ -33,3 +31,65 @@
     border: 1px solid #fff;
     cursor: pointer;
 }
+
+/* no */
+ .dropdown-toggle::after{
+    display: none;
+}
+.dropdown-divider {
+    margin: 0;
+}
+.section-nav .dropdown-menu{
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 270px;
+    /* border-radius: 25px; */
+}
+.section-nav .noti-dropdown .header-noti{
+    height: 40px;
+    background-color: rgba(14, 50, 74, 1);
+    color: #fff;
+
+}
+.section-nav .noti-dropdown .dropdown-item:focus, .dropdown-item{
+    padding-top: 10px;
+    padding-bottom: 0;
+    height: 60px;
+}
+.section-nav .noti-dropdown .not:focus, .not:hover{
+    padding-top: 10px;
+    padding-bottom: 0;
+    background-color: rgba(14, 50, 74, 1) !important;
+    color: #fff !important;
+}
+.section-nav .noti-dropdown .dropdown-item label{
+    color: #A9A9A9;
+    font-weight: 400;
+    font-size: 10px;
+}
+/* user-drop-down */
+.section-nav .user-dropdown .dropdown-item:focus, .dropdown-item:hover{
+    padding-top: 10px;
+    padding-bottom: 0;
+    background-color: transparent;
+    color: #0B2339;
+}
+/* btn-logout */
+.section-nav .user-dropdown .btn-profile ,
+.section-nav .user-dropdown .btn-logout{
+    border: 1px solid #D9D9D9;
+    border-radius: 25px;
+    padding: 8px 44px;
+    background-color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    color: #18AEC9;
+}
+.section-nav .user-dropdown .btn-profile:hover ,
+.section-nav .user-dropdown .btn-logout:hover{
+    background-color: rgba(14, 50, 74, 1);
+    color: #fff;
+}
+
+
+

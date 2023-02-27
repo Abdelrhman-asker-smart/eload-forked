@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 import "./Partners.css";
 
 const Partners = () => {
@@ -20,28 +21,20 @@ const Partners = () => {
                   </div>
           </div>
           <div className='box-right'>
-          <button className='btn-partner'><i class="fa-solid fa-plus me-3"></i> + ADDpartneR</button>
+            <NavLink to="/addpartners">
+            <button className='btn-partner'><i class="fa-solid fa-plus me-3"></i> + ADDPartner</button>
+            </NavLink>
+          
           </div>
         </div>
         </header>
         <div className="partner container-fluid px-5">
           <div className="head-input container-fluid">
               <div className="box-right">
-              <div className='print mx-3'>
-                  <div className='mx-3'>
-                  <div class="dropdown">
-                  <button class=" btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-print mx-2"></i>
-
-                      Print
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">Name</a></li>
-                      <li><a class="dropdown-item" href="#">Code</a></li>
-                      <li><a class="dropdown-item" href="#">id</a></li>
-                  </ul>
-                  </div>
-                  </div>
+              <div className='print'>
+                    <button className='print-btn'>
+                    <i class="fa-solid fa-print mx-2"></i>
+                      Print</button>
               </div>
               </div>
           </div>

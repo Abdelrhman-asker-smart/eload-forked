@@ -2,43 +2,55 @@ p
 {
     padding: 0;
 }
-.partner-head 
+.AllItems
 {
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
-.partner-head .container-fluid,
-.partner .container-fluid
+.AllItems .container-fluid,
+.Items .container-fluid
 {
     display: flex;
     align-items: center;
     flex-direction: row;
 }
-.btn-partner
+/* input */
+.AllItems input[type="file"]::-webkit-file-upload-button{
+    color: #000;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    font-size: 10px;
+    height: 50px;
+    width: 100px;
+    border-radius: 25px 0 0 25px;
+    padding: 11px 10px;
+}
+
+.AllItems .btn-Items
 {
     background-color: #0B2339;
     border: none;
-    margin-right: 3rem;
+    margin-left: 6rem;
     padding: .7rem 2rem;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #fff;
     margin-bottom: 1rem;
-    border-radius: 16px;
+    border-radius: 25px;
 }
 .box-left 
 {
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
 }
-.box-left .partner-card
+.box-left .Items-card
 {   
     padding: 1rem;
     background-color: #E0E0E0;
     margin-right: 2rem;
     border-radius: 16px;
 }
-.box-left .partner-card-blue
+.box-left .Items-card-blue
 {   
     padding: 1rem;
     background: #18AEC9;
@@ -46,11 +58,11 @@ p
     border-radius: 16px;
     color: #fff;
 }
-.box-left .partner-card-blue h4
+.box-left .Items-card-blue h4
 {   
     color: #fff !important;
 }
-.box-left .partner-card h4
+.box-left .Items-card h4
 {   
     color: #0E324A;
     font-weight: 600 !important;
@@ -59,11 +71,8 @@ p
 {
     margin-left: auto;
 }
-.partner
-{
-    margin-top: 3rem;
-}
-.partner .box-left
+
+.Items .box-left
 {
     display: flex;
     align-items: center;
@@ -84,14 +93,14 @@ p
     font-weight: 600;
     color: #A9A9A9;
 }
-.partner-head .input-head span
+.AllItems .input-head span
 {
     margin-bottom: .8rem;
     font-size: 14px;
     font-weight: 700;
     color: #0B2339
 }
-.partner-head .input-group span
+.AllItems .input-group span
 {
     background-color: transparent;
     border: none;
@@ -100,33 +109,38 @@ p
     margin-top: 7px;
     color: #A9A9A9 !important;
 }
-.partner-head .input-group input
+.AllItems .input-group input
 {
     border-radius: 20px !important;
-    padding-left:2rem !important;
-    /* width: 200px !important; */
     padding-right: 10rem !important;
     color: #A9A9A9 !important;
 }
-.print .btn-secondary.dropdown-toggle{
+.print-box , .excel-box{
     background-color: transparent !important;
     color: #A9A9A9;
+    cursor: pointer;
     border-radius: 20px;
+    padding: 6px 18px;
     border: 1px solid #A9A9A9;
     box-shadow: 0;
 }
 /* table */
-.partner-table th{
-    color: #A9A9A9 !important;
-    padding-left: 90px;
+.Items-table{
+    border-top: 1px solid #ccc;
 }
-.partner-table td
+.Items-table th{
+    color: #A9A9A9 !important;
+    padding-left: 4 0px;
+    font-size: 12px;
+    padding-top: 1rem;
+}
+.Items-table td
 {
     color: #0B2339 !important;
-    font-size: 16px !important;
-    text-align: center;
+    font-size: 12px !important;
+    /* text-align: center; */
 }
-.partner-table tbody tr
+.Items-table tbody tr
 {
     transition: .2s all ease-in-out;
 }
@@ -134,7 +148,7 @@ p
 {
     background: rgba(0, 96, 190, 0.1);
 }
-.partner-table .btn-table
+.Items-table .btn-table
 {
     text-align: center;
     padding: 8px 16px;
@@ -144,7 +158,7 @@ p
     color: #0B2339;
     background-color: transparent;
 }
-.partner-table .btn-table.active
+.Items-table .btn-table.active
 {
     color: #fff;
     background-color: #0B2339;

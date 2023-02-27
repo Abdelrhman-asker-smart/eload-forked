@@ -1,0 +1,62 @@
+.newgroup p
+{
+    padding: 0;
+    margin: 0;
+}
+.newgroup .header-newgroup
+{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    width: 100%;
+}
+.newgroup .header-newgroup h2
+{
+    font-weight: 700;
+    font-size: 24px;
+    color: #0E324A;
+}
+.newgroup .header-newgroup button
+{
+    margin-left: auto;
+    background-color: transparent;
+    border: none;
+}
+.newgroup .header-newgroup button a
+{
+    font-weight: 700;
+    font-size: 16px;
+    color: #18AEC9 !important;
+}
+.newgroup .content-newgroup
+{
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+.newgroup .content-newgroup p
+{
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0E324A;
+}
+.newgroup .content-newgroup input
+{
+    padding: .6rem;
+    padding-left: .7rem;
+    border: 1px solid #262626;
+    border-radius: 20px;
+    color: #262626;
+}
+.newgroup .footer-newgroup
+{
+    margin-top: 4rem;
+}
+.newgroup .footer-newgroup .btn-newgroup
+{
+    padding: .5rem 2.5rem;
+    background: #0E324A;
+    border-radius: 42px;
+    color: #fff;
+}

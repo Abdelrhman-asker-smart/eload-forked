@@ -22,7 +22,6 @@ body
   /* background-color: #A10035; */
   background-color: #0B2339;
   font-family: 'Inter', sans-serif;
-  letter-spacing: 0.1em;
 }
 input
 {
@@ -143,4 +142,9 @@ input
   -webkit-transform: scale3D(0, 0, 1);
   transform: scale3D(0, 0, 1);
   } 
+}
+/* data-table */
+.eYhjcF div:first-child {
+
+  overflow: inherit;
 }

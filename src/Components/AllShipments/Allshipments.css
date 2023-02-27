@@ -1,17 +1,17 @@
-.filter-side{
+.Allshipment .filter-side{
     background-color: #F5F5F5;
     color: #244664;
     width: fit-content;
 }
-.filter-side h5{
+.Allshipment .filter-side h5{
     font-weight: bolder;
 }
-.filter-side .accordion{
+.Allshipment .filter-side .accordion{
     --bs-accordion-border-color: none;
     --bs-accordion-border-width: 0;
     border-color: transparent !important;
 }
-.filter-side .accordion-button{
+.Allshipment .filter-side .accordion-button{
     background-color: #F5F5F5 !important;
     color: #244664;
     border: none !important;
@@ -19,33 +19,33 @@
     font-weight: bold;
     box-shadow: none !important;
 }
-.filter-side .accordion-button:not(.collapsed)::after{
+.Allshipment .filter-side .accordion-button:not(.collapsed)::after{
     background-image: none;
     transform: none;
 }
-.filter-side .accordion-button::after{
+.Allshipment .filter-side .accordion-button::after{
     background-image: none;
     content: "_";
     font-size: 20px;
     font-weight: 600;
 }
-.filter-side .accordion-body label{
+.Allshipment .filter-side .accordion-body label{
     font-size: 12px;
     font-weight: 600;
 }
-.filter-side .accordion-item{
+.Allshipment .filter-side .accordion-item{
     background-color: #F5F5F5 !important;
     color: #244664;
     border-bottom: 2px solid #244664;
 }
-.filter-side .date-input{
+.Allshipment .filter-side .date-input{
     border: none;
     color: #fff;
     background-color: #244664 !important;
     border-radius: 25px;
     width: 88%;
 }
-.filter-side .date-input::-webkit-calendar-picker-indicator {
+.Allshipment .filter-side .date-input::-webkit-calendar-picker-indicator {
     filter: invert(1);
     margin-right: 10px;
 }
@@ -134,20 +134,20 @@
 scroll-behavior: smooth;
 }
 
-div.mdb-datatable div.mdb-datatable-filter {
+.Allshipment div.mdb-datatable div.mdb-datatable-filter {
     text-align: right;
     width: 100%;
     display: flex;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
 }
-div.mdb-datatable div.mdb-datatable-filter input {
+.Allshipment div.mdb-datatable div.mdb-datatable-filter input {
     justify-content: start;
     min-width: 400px;
     border-radius: 25px;
     padding: 11px 25px;
 }
-.pagination .page-item .page-link {
+.Allshipment .pagination .page-item .page-link {
     font-size: .9rem;
     color: white;
     background-color: #244664;
@@ -155,24 +155,24 @@ div.mdb-datatable div.mdb-datatable-filter input {
     outline: 0;
     transition: all 0.3s linear;
 }
-.pagination .page-item .page-link:hover {
+.Allshipment .pagination .page-item .page-link:hover {
     background-color: #ccc;
     color: #244664;
     border-radius: .125rem;
     transition: all 0.3s linear;
 }
-div.mdb-datatable div.mdb-datatable-entries{
+.Allshipment div.mdb-datatable div.mdb-datatable-entries{
     display: none;
 }
-table.table th, table.table td {
+.Allshipment table.table th, table.table td {
     padding-top: 1.1rem;
     padding-bottom: 1rem;
     font-size: 10px;
     font-weight: 600;
 }
-tr > td:last-of-type {
+.Allshipment tr > td:last-of-type {
     color: #31A02F;
 }
-.table-hover>tbody>tr:hover td:last-of-type{
+.Allshipment .table-hover>tbody>tr:hover td:last-of-type{
     color: #31A02F;
 } 

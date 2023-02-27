@@ -1,0 +1,90 @@
+.rewards .add-btn{
+    background: #0E324A;
+    border-radius: 42px;
+    color: #fff;
+    padding: 5px 40px;
+}
+.rewards .input-side input{
+    border: 1px solid #ccc;
+    color: #0B2339 !important;
+    border-radius: 20px;
+    padding: 10px;
+    width: 90%;
+    margin-top: 10px;
+}
+.rewards .input-side label{
+    font-weight: 600;
+}
+.rewards .numbers-box label{
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+/* number-style */
+.rewards .numbers-box .qty .count {
+    color: #000;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 0 2px;
+    min-width: 50px;
+    text-align: center;
+}
+.rewards .numbers-box .qty .plus ,
+.rewards .numbers-box .qty .minus{
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: #000;
+    background-color: transparent;
+    width: 11%;
+    height: 35px;
+    border-radius: 10px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border: 1px solid #292D32;
+    }
+/* .rewards .numbers-box .qty .minus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: #000;
+    border-radius: 10px;
+    background-color: transparent;
+    width: 11%;
+    height: 35px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border: 1px solid #292D32;
+    background-clip: padding-box;
+} */
+/* div {
+    text-align: center;
+} */
+.rewards .numbers-box .minus:hover ,
+.rewards .numbers-box .plus:hover{
+    background: #0E324A;
+    color: #fff;
+    border: 0;
+}
+
+/*Prevent text selection*/
+.rewards .numbers-box span{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.rewards .numbers-box input{  
+    border: 0;
+    width: 2%;
+}
+.rewards .numbers-box nput::-webkit-outer-spin-button,
+.rewards .numbers-box input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.rewards .numbers-box input:disabled{
+    background-color:white;
+}
+         

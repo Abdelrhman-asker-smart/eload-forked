@@ -1,0 +1,46 @@
+.Shipmentlist .head-text h2 {
+  font-weight: 600;
+  font-size: 24px;
+  color: #0b2339;
+}
+.Shipmentlist .head-text p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #a9a9a9;
+}
+
+/* table */
+.Shipmentlist .Shipment-table th {
+  color: #a9a9a9 !important;
+  padding-left: 31px;
+}
+.Shipmentlist .Shipment-table td {
+  color: #0b2339 !important;
+  font-size: 12px;
+  padding-left: 3%;
+}
+.Shipmentlist .Shipment-table tbody tr {
+  transition: 0.2s all ease-in-out;
+}
+.Shipmentlist .Shipment-table tbody tr:hover {
+  background: rgba(0, 96, 190, 0.1);
+}
+.Shipmentlist .Shipment-table .btn-table {
+  text-align: center;
+  padding: 1% 3%;
+  border: 1px solid #0e324a;
+  border-radius: 20px;
+  margin-right: 4%;
+  color: #0b2339;
+  background-color: transparent;
+}
+.Shipmentlist .Shipment-table .btn-table.active {
+  color: #fff;
+  background-color: #0b2339;
+}
+.Shipmentlist .eYhjcF div:first-child {
+  overflow: inherit;
+}
+.Shipment-table {
+  width: 80% !important;
+}

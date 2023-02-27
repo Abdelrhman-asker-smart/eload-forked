@@ -718,15 +718,15 @@ const AllShipments = () => {
           },
         ],
       });
-    //   const [checkbox1, setCheckbox1] = React.useState('');
+      // const [checkbox1, setCheckbox1] = React.useState('');
 
-    //   const showLogs2 = (e) => {
-    //     setCheckbox1(e);
-    //   };
+      // const showLogs2 = (e) => {
+      //   setCheckbox1(e);
+      // };
 
     return (
         <div>
-            <div className='container-fluid'>
+            <div className='container-fluid Allshipment'>
                 <div className='row'>
                   {/* filter */}
                     <div className='col-md-3 filter-side py-5'>
@@ -956,13 +956,7 @@ const AllShipments = () => {
 
                     {/* table-data */}
                     <div className='col-md-9 p-3 position-relative'>
-                        {/* header */}
-                        {/* <div className='header-table d-flex justify-content-end align-items-center py-3'> */}
-                            {/* search */}
-                            {/* <div className='search-side mx-3'>
-                            <i class="search-icon fa-solid fa-magnifying-glass"></i>
-                            <input class="search-input form-control me-2" type="search" placeholder="Shipment Code" aria-label="Search"/>
-                            </div> */}
+
                             <div className='export-side position-absolute d-flex justify-content-center align-items-center'>
                                 {/* sort */}
                                  {/* <div className='sort mx-3'>
@@ -1014,10 +1008,8 @@ const AllShipments = () => {
                         // multipleCheckboxes
                         pagingTop
                         searchTop
-                        searchBottom={false}
-                       
+                        searchBottom={false}                      
                         />
-
                     </div>
                 </div>
             </div>

@@ -1,0 +1,50 @@
+
+.Trucklist .head-text h2
+{
+    font-weight: 600;
+    font-size: 24px;
+    color: #0B2339;
+}
+.Trucklist .head-text p
+{
+    font-size: 14px;
+    font-weight: 600;
+    color: #A9A9A9;
+}
+
+
+/* table */
+.Trucklist .Truck-table th{
+    color: #A9A9A9 !important;
+    padding-left: 31px;
+}
+.Trucklist .Truck-table td
+{
+    color: #0B2339 !important;
+    font-size: 12px ;
+    padding-left: 3%;
+
+}
+.Trucklist .Truck-table tbody tr
+{
+    transition: .2s all ease-in-out;
+}
+.Trucklist .Truck-table tbody tr:hover
+{
+    background: rgba(0, 96, 190, 0.1);
+}
+.Trucklist .Truck-table .btn-table
+{
+    text-align: center;
+    padding: 1% 3%;
+    border: 1px solid #0E324A;
+    border-radius: 20px;
+    margin-right: 4%;
+    color: #0B2339;
+    background-color: transparent;
+}
+.Trucklist .Truck-table .btn-table.active
+{
+    color: #fff;
+    background-color: #0B2339;
+}

@@ -57,7 +57,7 @@ p
   }
 
 .form-switch .form-check-label{
-    font-size: 24px;
+    font-size: 16px;
     color: #244664;
 }
 
@@ -175,7 +175,7 @@ option:hover {
 }
 .box-inputs-head
 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #0B2339;
     font-weight: 900;
     margin-bottom: 2rem;
@@ -184,11 +184,11 @@ option:hover {
 {
     display: flex;
 }
-.input
+/* .input
 {
     margin-left: 1.2rem;
     margin-bottom: 2rem;
-}
+} */
 .input-select
 {
     margin-left: 0;
@@ -199,14 +199,15 @@ select
 {
     color: #fff;
 }
-.input
+.shipments .input
 {
     flex-direction: column;
     display: flex;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
-.input  input
+.shipments .input  input
 {
     border: 1px solid #ccc;
     color: #0B2339 !important;
@@ -218,17 +219,17 @@ select
 .btn-delete{
     background-color: #0B2339;
     border: none;
-    padding: .6rem 4.5rem;
+    padding: 0.5rem 1.4rem;
     margin-top: 1.5rem;
     text-align: center;
-    border-radius: 7px;
+    border-radius: 13px;
     color: #fff;
 }
 .add-btn button{
     background-color: #0B2339;
     border: none;
     padding: 0.6rem 0.5rem;
-    margin-top: 3.5rem;
+    margin-top: 2.4rem;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
@@ -242,20 +243,20 @@ select
 {
     background-color: #0B2339;
     border: none;
-    padding: 0.6rem 2.7rem;
+    padding: 0.5rem 1.4rem;
     margin-top: 1.5rem;
     text-align: center;
     color: #fff;
-    border-radius: 6px;
+    border-radius: 13px;
 }
 .right-btn .btn-save{
     background-color: #0B2339;
     border: none;
-    padding: 0.6rem 2.7rem;
+    padding: 0.5rem 1.4rem;
     margin-top: 1.5rem;
     text-align: center;
     color: #fff;
-    border-radius: 6px;
+    border-radius: 13px;
 }
 .control-btn
 {
@@ -284,5 +285,19 @@ input[type="file"]::-webkit-file-upload-button{
     font-size: 10px;
     height: 50px;
     width: 70px;
-    /* padding: 11px 7px; */
+}
+.react-datepicker{
+    border-radius: 2.3rem !important;
+}
+.react-datepicker__header {
+    text-align: center;
+    background-color: #fff !important;
+    border-bottom: 1px solid #D9D9D9 !important;
+    border-top-left-radius: 2.3rem !important;
+    border-top-right-radius: 2.3rem !important;
+    padding: 10px 39px !important;
+    position: relative;
+}
+.react-datepicker__navigation{
+    top: 12px !important;
 }

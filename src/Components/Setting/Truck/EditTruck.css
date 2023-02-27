@@ -1,0 +1,45 @@
+.edittruck h2{
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(14, 50, 74, 1);
+}
+.edittruck .linkview{
+    color: rgba(24, 174, 201, 1);
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+.edittruck label{
+    font-weight: 600;
+    font-size: 18px;
+    color: rgba(14, 50, 74, 1);
+}
+.edittruck .input-section .nameinput{
+    width: 100%;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    padding: 9px 26px;
+}
+.edittruck .save-btn{
+    background-color: rgba(14, 50, 74, 1);
+    color: #fff;
+    border: 0;
+    border-radius: 25px;
+    padding: 6px 30px;
+}
+.edittruck .truckimg{
+    width: 100%;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    /* padding: 9px 26px; */
+}
+.edittruck input[type="file"]::-webkit-file-upload-button{
+    color: white;
+    background-color: #0B2339;
+    font-size: 10px;
+    height: 50px;
+    border: 0;
+    border-radius: 20px;
+    width: 100px;
+
+}

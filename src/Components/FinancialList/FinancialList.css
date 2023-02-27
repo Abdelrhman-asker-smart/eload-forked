@@ -1,0 +1,109 @@
+.financiallist .row
+{
+    width: 100%;
+}
+.financiallist .request-head
+{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+}
+.financiallist .request-head .text-head
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #0E324A;
+    margin-right: 1.5rem;
+}
+.financiallist .request-nav .text-head
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 39px;
+    color: #244664;    
+}
+.financiallist .request-head .date
+{
+    margin-left: auto;
+    border-radius: 25px;
+    background-color: #0E324A;
+    width: 20%;
+    padding: .5rem;
+}
+.financiallist .request-head input
+{
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+}
+.financiallist .text-input{
+    border-radius: 25px;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: .5rem;
+}
+.financiallist .request-head input:focus
+{
+    border: none;
+    outline: none;
+}
+.financiallist .request-nav 
+{
+    display: flex;
+    flex-direction: row;
+}
+.financiallist .request-nav .select-box
+{
+    width: 15%;
+}
+.financiallist .requestable .table thead tr th
+{
+    font-weight: 600;
+    font-size: 12px;
+    color: #A9A9A9;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+.financiallist .requestable .table tbody .text-orange
+{
+    color: orange;
+}
+.financiallist .requestable .table tbody .text-orange
+{
+    color: orange;
+}
+.financiallist .requestable .table tbody .table-btn-red
+{
+    padding: 0.4rem 1rem .6rem 1rem;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    width: 50%;
+}
+.financiallist .requestable .table tbody .table-btn-green
+{
+    padding: 0.4rem 1rem .6rem 1rem;
+    background-color: green;
+    color: #fff;
+    border: none;
+    width: 50%;
+    border-radius: 25px;
+}
+.financiallist .requestable .table tbody .table-btn-blue
+{
+    padding: 0.4rem 1rem .6rem 1rem;
+    background-color: #18AEC9;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    width: 50%;
+}

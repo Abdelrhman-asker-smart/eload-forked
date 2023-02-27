@@ -1,0 +1,39 @@
+/* personinfo */
+.addpartners h3{
+    color: #0E324A;
+    font-size: 18px;
+    font-weight: 700;
+}
+.addpartners label{
+    color: #0E324A;
+    font-weight: 600;
+    font-size: 18px;
+}
+.addpartners .input-box{
+    border: 1px solid #B2B2B2;
+    border-radius: 20px;
+    color: #000;
+    Width: 90%;
+    height: 48px;
+}
+.addpartners .input-box::placeholder{
+    color: #B2B2B2;
+}
+.addpartners input[type="file"]::-webkit-file-upload-button{
+    height: 100%;
+    width: 30%;
+    padding: 10px;
+    border: 0;
+    border-radius: 20px;
+}
+.addpartners .btn-save{
+    background: #0E324A;
+    border-radius: 42px;
+    color: #fff;
+    font-weight: 700;
+    width: 12%;
+    border: 0;
+    padding: 6px 0px;
+    margin-left: 40%;
+    font-size: 16px;
+}
