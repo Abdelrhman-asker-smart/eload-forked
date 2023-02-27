@@ -1,8 +1,40 @@
 import React from 'react'
 import {  NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "./AddMeasurements.css"
 
 const AddMeasurements = () => {
+    const [name, setName] = useState("");
+    console.log(name, "name");
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("name", name);
+  
+    const recordCategory = async () => {
+      console.log("save triggered");
+      try {
+        const reponse = await axios.post(
+          "https://dev.eload.smart.sa/api/v1/uom",
+          urlencoded,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        //   if(reponse.data.data.is_success){
+        //     setName("")
+        //     console.log('logged in')
+        //   }
+        setName("");
+        //   console.log(reponse);
+      } catch (e) {
+        console.log(e);
+      }
+    };
   return (
     <div className='addmeasurments container my-4'>
           <div className="head container-fluid mb-4 d-flex">
@@ -25,7 +57,12 @@ const AddMeasurements = () => {
             <div className='row'>
                 <div className='col-md-12'>
                     <label className='mx-3 my-3'>Name</label>
-                    <input type="text" placeholder='name'/>
+                    <input type="text" placeholder='name'
+                    value={name}
+                    onChange={(e) => {
+                    setName(e.target.value);
+                    }}
+                    />
                 </div>
             </div>
 
@@ -37,8 +74,13 @@ const AddMeasurements = () => {
                 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content" style={{borderRadius:"25px" , width:"80%"}}>
-                            <div class="modal-header border-0">  
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-header border-0 justify-content-end">
+                                <NavLink to="/measurements">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                 onClick={recordCategory}
+                                ></button>
+                                </NavLink>  
+
                             </div>
                             <div class="modal-body d-flex text-center my-3 " style={{marginLeft: "12%"}}>
                                 <h3 className='my-4 mx-4' style={{fontSize:"40px" , fontWeight: "500"}}>Save</h3>

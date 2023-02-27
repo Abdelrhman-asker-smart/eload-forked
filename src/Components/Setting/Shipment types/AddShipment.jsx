@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const AddShipment = () => {
-  // const [shipmentList, setShipmentList] = useState([]);
+ 
   const [name, setName] = useState("");
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
@@ -20,7 +20,7 @@ const AddShipment = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWY4YTc3NDNhNmY4MzAwMTA3YWE0NTVhZmZiYjkzM2QzMzM1YWNlZmJjNmQ0ZThlNjcwYTI4Mjg2ZjM4YjIxYjdlYzI0YjAzYmYwNWJjZTkiLCJpYXQiOjE2NzIyMjIxMTguMTE2MDc2OTQ2MjU4NTQ0OTIxODc1LCJuYmYiOjE2NzIyMjIxMTguMTE2MDgwMDQ1NzAwMDczMjQyMTg3NSwiZXhwIjoxNzAzNzU4MTE4LjExMjM1OTA0NjkzNjAzNTE1NjI1LCJzdWIiOiI2Iiwic2NvcGVzIjpbXX0.rnz0wHsys2ONo2zlyfQQ4ZopqVii0DcZ1U9wluIiKnGIBm-Ahc0YY9Aj28XXCIj3jOcC60nUChuQD7lH-4Vl96Ug-Y4zMjG5QWVGkUrfKobSEgrVwj-yMxEK0Hgwknf91pdWWIVSf0xethAqPjxwXTUGjRdjQ76p70Vs798iKwsn-rnuVjLx8SZhwWyFq-zSTFz_372k7aH9mlWdqcYCMjIv7V4HM41beMTSrbtM1_YhQetsBdMsRx4JilH--aIBkQOANhn-2dlQ_TD28JsOQjMgLbEq6EmUU6JomiO_AOIQRNi2jkoimcYlvKBh8ZSXsXju_6NbxxViwIIGYJQGmxtiNfXPx-ZVvPMuiiH7Dz3nRMBy8j_y62aTz1Vglq7mvTYBCp01_huqUb3guPHlNPaWvZJkvqktMcobrvQcSnbLx4d1ZTMrUK2OdXZHB0RoBhhawIdkeJLmu9OafMrFeQAhh0ukux041QEev_jFgrZz1-7qdjQ5W9QB8uMNUFbd_1C3zvnTRfFqjeLoYvU1aBhMZKNYiITIn7VB4oOKfJbsXUEPj83gOEr0hucnzH8AV7FhO3PuQExY4t1zxzdo5mj0DWlM1c30wyYF_2LrBCuv0F6rzaWfLMZMQBz_8havQwmerfTwLgnJJlUe7DoGQn_M_a9U6bQHuoSmOBDDVTI`,
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
             "api-key":
               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
           },
@@ -82,7 +82,7 @@ const AddShipment = () => {
 
         {/* modal */}
         <div
-          class="modal fade"
+          className="modal fade"
           id="exampleModalToggle"
           aria-hidden="true"
           aria-labelledby="exampleModalToggleLabel"
@@ -93,18 +93,18 @@ const AddShipment = () => {
               class="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div class="modal-header border-0">
+              <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/shipmentlist">
                   <button
                     type="button"
-                    class="btn-close"
+                    className="btn-close "
                     data-bs-dismiss="modal"
                     aria-label="Close"
                   ></button>
                 </NavLink>
               </div>
               <div
-                class="modal-body d-flex text-center my-3 "
+                class="modal-body d-flex text-center"
                 style={{ marginLeft: "12%" }}
               >
                 <h3 className="my-4 mx-4" style={{ fontSize: "40px" }}>

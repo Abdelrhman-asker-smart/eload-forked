@@ -51,6 +51,7 @@ import EditTruck from "../Setting/Truck/EditTruck";
 import EditMeasurements from "../Setting/Unit-Measurements/EditMeasurement";
 // import EditMeasurements from "../Setting/Unit-Measurements/EditMeasurement.jsx";
 import Editcommodities from "../Setting/Commodities/EditCommodities";
+import Editshipment from "../Setting/Shipment types/Editshipment";
 
 
 
@@ -137,6 +138,8 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
 
             <Route path="/shipmentlist" element={<ShipmentTypes/>} />
             <Route path="/addshipment" element={<AddShipment/>} />
+            <Route path="/editshipment" element={<Editshipment/>} />
+
             
             <Route path="/measurements" element={<Measurements/>} />
             <Route path="/addmeasurements" element={<AddMeasurements/>} />

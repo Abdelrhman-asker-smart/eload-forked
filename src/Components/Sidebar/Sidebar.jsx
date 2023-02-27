@@ -363,7 +363,7 @@ const Sidebar = () => {
               </AccordionBody>
             </AccordionItem>
             {/* Reports-item */}
-            <AccordionItem>
+            {/* <AccordionItem>
               <AccordionHeader className={isOpen.firstLevel6 ? "activeside d-flex bg-inside" : " d-flex"} onClick={openBtn6}>
                 
                 <svg className={isOpen.firstLevel6 ? "svgicon mx-2" : " mx-2"} width="22" height="22" viewBox="0 0 22 22" fill="#fff" xmlns="http://www.w3.org/2000/svg">
@@ -377,13 +377,6 @@ const Sidebar = () => {
 
               <AccordionBody className="bg-inside">
                 <div className="accordion-body">
-                    {/* <svg className="mx-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.58 11.9999C15.58 13.9799 13.98 15.5799 12 15.5799C10.02 15.5799 8.42001 13.9799 8.42001 11.9999C8.42001 10.0199 10.02 8.41992 12 8.41992C13.98 8.41992 15.58 10.0199 15.58 11.9999Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 20.27C15.53 20.27 18.82 18.19 21.11 14.59C22.01 13.18 22.01 10.81 21.11 9.39997C18.82 5.79997 15.53 3.71997 12 3.71997C8.47 3.71997 5.18 5.79997 2.89 9.39997C1.99 10.81 1.99 13.18 2.89 14.59C5.18 18.19 8.47 20.27 12 20.27Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-
-                      <h4 className={`accordion-title`}>Overview</h4> */}
-                  {/* sub-item1 */}
                   <AccordionItem >
                   <NavLink
                           className={({ isActive }) =>
@@ -411,7 +404,7 @@ const Sidebar = () => {
 
                     </AccordionBody>
                   </AccordionItem>
-                  {/* supitem-2 */}
+              
 
                   <AccordionItem>
                     <AccordionHeader className={isOpen.firstLevel7 ? "activeside d-flex bg-inside" : " d-flex bg-inside"}  onClick={openBtn7}>
@@ -465,7 +458,7 @@ const Sidebar = () => {
                   </AccordionItem>
                 </div>
               </AccordionBody>
-            </AccordionItem>
+            </AccordionItem> */}
           </Accordion>
         </div>
 

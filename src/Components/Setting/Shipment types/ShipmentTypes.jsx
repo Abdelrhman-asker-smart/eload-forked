@@ -104,7 +104,7 @@ const ShipmentTypes = () => {
 
 
   useEffect(() => {
-    const allCategory = async () => {
+    const allshipment = async () => {
       try {
         const response = await axios.get(
           // https://dev.eload.smart.sa/api/v1/categories
@@ -113,7 +113,7 @@ const ShipmentTypes = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOWY4YTc3NDNhNmY4MzAwMTA3YWE0NTVhZmZiYjkzM2QzMzM1YWNlZmJjNmQ0ZThlNjcwYTI4Mjg2ZjM4YjIxYjdlYzI0YjAzYmYwNWJjZTkiLCJpYXQiOjE2NzIyMjIxMTguMTE2MDc2OTQ2MjU4NTQ0OTIxODc1LCJuYmYiOjE2NzIyMjIxMTguMTE2MDgwMDQ1NzAwMDczMjQyMTg3NSwiZXhwIjoxNzAzNzU4MTE4LjExMjM1OTA0NjkzNjAzNTE1NjI1LCJzdWIiOiI2Iiwic2NvcGVzIjpbXX0.rnz0wHsys2ONo2zlyfQQ4ZopqVii0DcZ1U9wluIiKnGIBm-Ahc0YY9Aj28XXCIj3jOcC60nUChuQD7lH-4Vl96Ug-Y4zMjG5QWVGkUrfKobSEgrVwj-yMxEK0Hgwknf91pdWWIVSf0xethAqPjxwXTUGjRdjQ76p70Vs798iKwsn-rnuVjLx8SZhwWyFq-zSTFz_372k7aH9mlWdqcYCMjIv7V4HM41beMTSrbtM1_YhQetsBdMsRx4JilH--aIBkQOANhn-2dlQ_TD28JsOQjMgLbEq6EmUU6JomiO_AOIQRNi2jkoimcYlvKBh8ZSXsXju_6NbxxViwIIGYJQGmxtiNfXPx-ZVvPMuiiH7Dz3nRMBy8j_y62aTz1Vglq7mvTYBCp01_huqUb3guPHlNPaWvZJkvqktMcobrvQcSnbLx4d1ZTMrUK2OdXZHB0RoBhhawIdkeJLmu9OafMrFeQAhh0ukux041QEev_jFgrZz1-7qdjQ5W9QB8uMNUFbd_1C3zvnTRfFqjeLoYvU1aBhMZKNYiITIn7VB4oOKfJbsXUEPj83gOEr0hucnzH8AV7FhO3PuQExY4t1zxzdo5mj0DWlM1c30wyYF_2LrBCuv0F6rzaWfLMZMQBz_8havQwmerfTwLgnJJlUe7DoGQn_M_a9U6bQHuoSmOBDDVTI`,
+              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
               "api-key":
                 "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
             },
@@ -129,7 +129,7 @@ const ShipmentTypes = () => {
       }
     };
 
-    allCategory();
+    allshipment();
   }, []);
 
   const handleExportRows = (rows) => {
@@ -212,163 +212,6 @@ const ShipmentTypes = () => {
           )}
         />
 
-        {/* table-2 */}
-        {/* <DataTableExtensions {...tableData}>
-            <DataTable
-              columns={columns}
-              data={data}
-              noHeader
-              defaultSortField="id"
-              defaultSortAsc={false}
-              pagination
-              highlightOnHover
-            />
-          </DataTableExtensions> */}
-
-        {/* table-1 */}
-        {/* <CDBContainer>
-            <CDBCard>
-              <CDBCardBody>
-                <CDBDataTable
-                  striped
-                  bordered
-                  hover
-                  scrollX
-                  scrollY
-                  maxHeight="300xp"
-                  data={data()}
-                  materialSearch
-                  fullPagination
-                />
-              </CDBCardBody>
-            </CDBCard>
-          </CDBContainer> */}
-
-        {/* <table class="table">
-            <thead>
-              <tr className='head-tr'>
-              <th scope="col" className='taple-head'>#</th>
-                <th scope="col" className='taple-head'>Name</th>
-                <th scope="col" className='taple-head'></th>
-                <th scope="col" className='taple-head'></th>
-                <th scope="col" className='taple-head'>Edit / remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='body-tr'>
-                <td>1</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>2</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>3</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>4</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>5</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>6</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-              <tr className='body-tr'>
-              <td>7</td>
-                <td>Freelance Driver</td>
-                <td></td>
-                <td></td>
-                <td>
-                  <NavLink to="/addshipment">
-                  <button className='btn-table active'>
-                    <EditIcon className='mx-1'/>
-                    EDIT</button>
-                    </NavLink>
-                  <button className='btn-table'>
-                  <DeleteIcon className='mx-1' />
-                    REMOVE</button>
-                </td>
-              </tr>
-            </tbody>
-          </table> */}
       </div>
     </div>
   );
