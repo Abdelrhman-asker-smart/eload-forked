@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Layout from "./Components/Layout/Layout";
 import Login from "./Components/Login/Login";
-import LoginRoute from "./Components/LoginRoute/LoginRoute";
+// import LoginRoute from "./Components/LoginRoute/LoginRoute";
 
 
 function App() {
   const [login, setLogin] = useState(false);
-  const [cookie, setCookie, removeToken] = useCookies([""]);
+  const [cookie] = useCookies([""]);
 
   let navigate = useNavigate();
   

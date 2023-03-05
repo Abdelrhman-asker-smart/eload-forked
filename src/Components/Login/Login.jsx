@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Joi from "joi";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Login.css";
 import Img from "./Eloadlogo.png";
 
 export default function Login({ decodeData }) {
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
   //Data
   const [user, setUser] = useState({
     email: "",

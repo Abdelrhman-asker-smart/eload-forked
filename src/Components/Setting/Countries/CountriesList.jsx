@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useCookies } from "react-cookie";
 
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
@@ -44,6 +44,7 @@ const csvExporter = new ExportToCsv(csvOptions);
 const CountriesList = () => {
 
   const [countryList, setcountryList] = useState([]);
+  const [cookie] = useCookies(["eload_token"]);
   const data = countryList.map((item, index) => {
     return {
       id: item.id,
@@ -62,7 +63,7 @@ const CountriesList = () => {
           {
             headers: {
               Accept: "application/json",
-              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
+              Authorization: `Bearer ${cookie.eload_token}`,
               "api-key":
                 "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
             },

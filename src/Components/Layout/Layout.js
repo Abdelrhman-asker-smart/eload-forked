@@ -28,9 +28,9 @@ import AllShipments from "../AllShipments/AllShipments";
 import Partners from "../Partners/Partners";
 import Allorders from "../Allorders/Allorders";
 import Allitems from "../Allitems/Allitems";
-import OverallReport from "../OverallReport/OverallReport.jsx"
-import Financialrequests from '../FinancialList/FinancialList.jsx';
-import Rewards from '../Rewards/Rewards.jsx';
+// import OverallReport from "../OverallReport/OverallReport.jsx"
+// import Financialrequests from '../FinancialList/FinancialList.jsx';
+// import Rewards from '../Rewards/Rewards.jsx';
 import ViewDriver from "../ViewDriver/ViewDriver";
 import CategoryList from "../Setting/Category list/Category-List";
 import CategortAdd from "../Setting/Category list/Categort-Add";
@@ -49,7 +49,6 @@ import Addpartners from "../Addpartners/Addpartners";
 import EditCategory from "../Setting/Category list/EditCategory";
 import EditTruck from "../Setting/Truck/EditTruck";
 import EditMeasurements from "../Setting/Unit-Measurements/EditMeasurement";
-// import EditMeasurements from "../Setting/Unit-Measurements/EditMeasurement.jsx";
 import Editcommodities from "../Setting/Commodities/EditCommodities";
 import Editshipment from "../Setting/Shipment types/Editshipment";
 
@@ -123,9 +122,9 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             <Route path="/allitems" element={<Allitems />} />
             
             {/* OverallReport */}
-            <Route path="/overallreport" element={<OverallReport />} />
+            {/* <Route path="/overallreport" element={<OverallReport />} />
             <Route path="/financialrequests" element={<Financialrequests />} />
-            <Route path="/rewards" element={<Rewards />} />
+            <Route path="/rewards" element={<Rewards />} /> */}
 
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />

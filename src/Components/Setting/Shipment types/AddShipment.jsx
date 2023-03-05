@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./AddShipment.css";
+import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const AddShipment = () => {
- 
   const [name, setName] = useState("");
+  const [cookie] = useCookies(["eload_token"]);
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
@@ -20,7 +21,7 @@ const AddShipment = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
+            Authorization: `Bearer ${cookie.eload_token}`,
             "api-key":
               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
           },
@@ -86,11 +87,11 @@ const AddShipment = () => {
           id="exampleModalToggle"
           aria-hidden="true"
           aria-labelledby="exampleModalToggleLabel"
-          tabindex="-1"
+          tabIndex="-1"
         >
-          <div class="modal-dialog modal-dialog-centered">
+          <div className="modal-dialog modal-dialog-centered">
             <div
-              class="modal-content"
+              className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
               <div className="modal-header border-0 justify-content-end">
@@ -104,7 +105,7 @@ const AddShipment = () => {
                 </NavLink>
               </div>
               <div
-                class="modal-body d-flex text-center"
+                className="modal-body d-flex text-center"
                 style={{ marginLeft: "12%" }}
               >
                 <h3 className="my-4 mx-4" style={{ fontSize: "40px" }}>

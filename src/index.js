@@ -8,7 +8,7 @@ import './index.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'mdbreact/dist/css/mdb.css';
-import { CDBDataTable } from 'cdbreact';
+// import { CDBDataTable } from 'cdbreact';
 
 
 import App from './App';
