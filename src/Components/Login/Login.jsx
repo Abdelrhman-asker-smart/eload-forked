@@ -87,7 +87,7 @@ export default function Login({ decodeData }) {
     }
     return "";
   }
-  console.log(user, "user");
+  // console.log(user, "user");
   return (
     <>
       <div className="login w-50 mx-auto mt-5 h-100">

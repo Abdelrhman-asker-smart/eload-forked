@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 export default function Navbar({ setLogin, clrUserData, searchMovie }) {
   const pathanme = useLocation();
-  console.log(pathanme);
+  // console.log(pathanme);
   const [user, setUser] = useState({
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),

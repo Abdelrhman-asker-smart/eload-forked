@@ -6,23 +6,23 @@ import axios from "axios";
 import "./AddTruck.css";
 
 const AddTruck = () => {
-
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
 
   const [cookie] = useCookies(["eload_token"]);
-  console.log(name, "name");
-  const urlencoded = new URLSearchParams();
-  urlencoded.append("name", name);
-  // urlencoded.append("image", image.files[0]);
-
+  // console.log(name, "name");
+  // console.log(image, "image");
 
   const recordCategory = async () => {
-    console.log("save triggered");
+    const formdata = new FormData();
+    formdata.append("name", name);
+    formdata.append("image", image);
+    // console.log("save triggered");
+
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/truck_types",
-        urlencoded,
+        formdata,
         {
           headers: {
             Accept: "application/json",
@@ -34,13 +34,11 @@ const AddTruck = () => {
       );
 
       setName("");
-      //   console.log(reponse);
+      // console.log(reponse);
     } catch (e) {
       console.log(e);
     }
   };
-
-
 
   return (
     <div className="addtruck container my-4">
@@ -83,11 +81,10 @@ const AddTruck = () => {
               type="file"
               id="truckimg"
               name="truckimg"
-              accept="image/png, image/jpeg"
-              onChange={(e)=> { 
-               setImage(e.target.value)   
-                }}
-
+              accept="image/*"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
             />
           </div>
         </div>
@@ -97,6 +94,7 @@ const AddTruck = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
+            onClick={recordCategory}
           >
             Save
           </button>
@@ -115,14 +113,16 @@ const AddTruck = () => {
               className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div className="modal-header border-0">
+              <div className="modal-header border-0 justify-content-end">
+              <NavLink to="/trucklist">
                 <button
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={recordCategory}
+                  
                 ></button>
+                </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "

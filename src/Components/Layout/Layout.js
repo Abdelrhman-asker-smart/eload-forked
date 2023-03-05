@@ -30,7 +30,7 @@ import Allorders from "../Allorders/Allorders";
 import Allitems from "../Allitems/Allitems";
 // import OverallReport from "../OverallReport/OverallReport.jsx"
 // import Financialrequests from '../FinancialList/FinancialList.jsx';
-// import Rewards from '../Rewards/Rewards.jsx';
+import Rewards from '../Rewards/Rewards.jsx';
 import ViewDriver from "../ViewDriver/ViewDriver";
 import CategoryList from "../Setting/Category list/Category-List";
 import CategortAdd from "../Setting/Category list/Categort-Add";
@@ -123,8 +123,8 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             
             {/* OverallReport */}
             {/* <Route path="/overallreport" element={<OverallReport />} />
-            <Route path="/financialrequests" element={<Financialrequests />} />
-            <Route path="/rewards" element={<Rewards />} /> */}
+            <Route path="/financialrequests" element={<Financialrequests />} /> */}
+            <Route path="/rewards" element={<Rewards />} />
 
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />
