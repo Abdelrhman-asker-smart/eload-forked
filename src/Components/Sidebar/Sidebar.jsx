@@ -125,7 +125,7 @@ const Sidebar = () => {
       {/* all-list */}
       <ul className="navbar-nav ">
         {/* dashboard */}
-        <li className="nav-item mt-4">
+        <li className="nav-item mt-4 px-3">
           <NavLink
             className={({ isActive }) =>
               isActive
@@ -139,7 +139,7 @@ const Sidebar = () => {
             <span className="mx-2">Dashboard</span>
           </NavLink>
         </li>
-        <hr style={{ width:" 80%", marginLeft: "5%"}}/>
+        <hr style={{ width:" 85%", marginLeft: "5%"}}/>
 
 
         <div className="acc-sidebar">
@@ -168,6 +168,7 @@ const Sidebar = () => {
                   >
 
                     <svg
+                    className="mx-2"
                       width="27"
                       height="22"
                       viewBox="0 0 27 22"
@@ -201,7 +202,7 @@ const Sidebar = () => {
                     }
                     to="/allshipments"
                   >
-                    <AllShippments />
+                    <AllShippments className="mx-2"/>
                     <p>All Shipments</p>
                   </NavLink>
                 </div>
@@ -318,9 +319,10 @@ const Sidebar = () => {
                         ? "activeside d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
-                    to="/Shipments"
+                    to="/allshippers"
                   >
                     <svg
+                    className="mx-2"
                       width="37"
                       height="26"
                       viewBox="0 0 37 26"
@@ -353,9 +355,9 @@ const Sidebar = () => {
                         ? "activeside d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
-                    to="/allshipments"
+                    to="/addshippers"
                   >
-                    <Addshipper />
+                    <Addshipper className="mx-2"/>
 
                     <p>Add Shippers</p>
                   </NavLink>
@@ -470,12 +472,12 @@ const Sidebar = () => {
                 ? "activeside d-flex justify-content-start align-items-center"
                 : "d-flex justify-content-start align-items-center"
             }
-            style={{padding: "20px 0"}}
+            style={{padding: "20px 22px"}}
             to="/rewards"
           >
-            <Rewards className="mx-2"/>
+            <Rewards className="mx-1"/>
 
-            <span className="mx-2">Rewards</span>
+            <span className="mx-1">Rewards</span>
             <Arrow className={isOpen.firstLevel9 ? "downarrow position-absolute" : "rightarrow position-absolute"} />
           </NavLink>
         </li>

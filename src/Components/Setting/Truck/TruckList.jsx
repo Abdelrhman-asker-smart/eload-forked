@@ -189,7 +189,7 @@ const Truck = () => {
         );
 
         const data = response.data.data;
-        console.log(data);
+        // console.log(data);
         setTruckList(data);
         return data;
       } catch (e) {

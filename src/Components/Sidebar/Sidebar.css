@@ -11,7 +11,7 @@
 }
  
  .sidebar span{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
  }
 
@@ -22,11 +22,11 @@
     background-color: #0B2339;
     color: white;
     text-align: left;
-    padding: 20px 0;
+    padding: 20px 22px;
 
  }
  .acc-sidebar button h3{
-    font-size: 14px ;
+    font-size: 12px ;
     font-weight: 600 ;
  }
  .acc-sidebar button h4{
@@ -35,7 +35,7 @@
     padding: 0 10px;
  }
  .acc-sidebar .accordion-body{
-    padding-left: 25px;
+    padding-left: 22px;
  }
  .acc-sidebar .accordion-body p{
     padding: 10px 10px;

@@ -1,8 +1,36 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import "./EditCategory.css";
 
 const EditCategory = () => {
+  console.log("here");
+  const [name, setName] = useState("");
+  const [cookie] = useCookies(["eload_token"]);
+
+  const EditCategory = async (id) => {
+    console.log("save triggered");
+    try {
+      const reponse = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/categories/${id}`,
+        // urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      //   console.log(reponse);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="editcatagory container my-4">
       <div className="head container-fluid mb-4 d-flex">
@@ -23,7 +51,11 @@ const EditCategory = () => {
         <div className="row">
           <div className="col-md-12">
             <label className="mx-3 my-3">Name</label>
-            <input type="text" placeholder="name" />
+            <input type="text" placeholder="name" 
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
           </div>
         </div>
 
@@ -32,6 +64,7 @@ const EditCategory = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
+            onClick={EditCategory}
           >
             Save
           </button>
@@ -50,13 +83,16 @@ const EditCategory = () => {
               className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div className="modal-header border-0">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+              <div className="modal-header border-0 justify-content-end">
+                <NavLink to="/categorylist">
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                   
+                  ></button>
+                </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "

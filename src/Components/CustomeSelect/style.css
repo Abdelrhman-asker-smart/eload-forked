@@ -6,10 +6,10 @@ position: relative;
     background-color: transparent;
     padding: 11px 17px;
     height: 48px;
-    width: 90%;
+    width: 100%;
     color: #000;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 20px;
 
 }
@@ -21,7 +21,7 @@ position: relative;
     width: 100%;
     z-index: 10;
     cursor: pointer;
-    width: 295.8px;
+    /* width: 295.8px; */
     height: 205px;
     overflow-y: scroll;
     /* overflow-x: clip; */
@@ -45,7 +45,7 @@ position: relative;
 }
 .option-arrow{
     position: absolute;
-    right: 50px;
+    right: 19px;
     top: 15px;
 }
 .options::-webkit-scrollbar {

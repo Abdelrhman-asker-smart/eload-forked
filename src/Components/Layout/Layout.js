@@ -51,6 +51,8 @@ import EditTruck from "../Setting/Truck/EditTruck";
 import EditMeasurements from "../Setting/Unit-Measurements/EditMeasurement";
 import Editcommodities from "../Setting/Commodities/EditCommodities";
 import Editshipment from "../Setting/Shipment types/Editshipment";
+import AddShippers from "../AddShippers/AddShippers";
+import AllShippers from "../AllShippers/AllShippers";
 
 
 
@@ -105,6 +107,11 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             <Route path="/Shipments/addnewgroup" element={<AddNewGroup />} />
              {/* Abd------------------------- */}
 
+             {/* shippers */}
+            <Route path="/allshippers" element={<AllShippers />} />
+            <Route path="/addshippers" element={<AddShippers />} />
+
+
 
             <Route path="/user" element={<User />} />
             <Route path="/reports" element={<Reports />} />
@@ -129,7 +136,7 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />
             <Route path="/catogry-add" element={<CategortAdd />} />
-            <Route path="/catogry-edit" element={<EditCategory />} />
+            <Route path="/catogry-edit/:id" element={<EditCategory />} />
 
             <Route path="/trucklist" element={<TruckList />} />
             <Route path="/addtruck" element={<AddTruck/>} />

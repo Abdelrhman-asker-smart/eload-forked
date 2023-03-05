@@ -1,24 +1,21 @@
 import React from 'react'
-import './Addpartners.css';
+import './AddShippers.css';
 import { NavLink } from 'react-router-dom';
 
-
-const Addpartners = () => {
-
-
+const AddShippers = () => {
   return (
-    <div className='container-fluid addpartners p-5'>
+    <div className='container-fluid addshipper p-5'>
     <h3>PARTNER INFORMATION</h3>
     <form>
     {/* name+email */}
     <div className='row my-4'>
       <div className='col-md-6'>
         <label className='my-2 d-block'>Name</label>
-        <input className='input-box px-3' name='namepartner' type="text" placeholder="Name" />
+        <input className='input-box px-3' name='nameshipper' type="text" placeholder="Name" />
       </div>
       <div className='col-md-6 text-center'>
         <label className='my-2 d-block text-start mx-5'>E-mail</label>
-        <input className='input-box px-3' name='emailpartner' type="text" placeholder="E-mail" />
+        <input className='input-box px-3' name='emailshipper' type="text" placeholder="E-mail" />
       </div>
     </div>
     {/* brows+password */}
@@ -29,11 +26,11 @@ const Addpartners = () => {
       </div>
       <div className='col-md-4'>
         <label className='my-2 d-block'>Password</label>
-        <input className='input-box px-3' type="password" name='passpartner' placeholder="Password" />
+        <input className='input-box px-3' type="password" name='passshipper' placeholder="Password" />
       </div>
       <div className='col-md-4'>
         <label className='my-2 d-block'>Confirm password</label>
-        <input className='input-box px-3' type="password" name='passpartner' placeholder="Confirm password" />
+        <input className='input-box px-3' type="password" name='passshipper' placeholder="Confirm password" />
       </div>
     </div>
     {/* line-1 */}
@@ -43,7 +40,7 @@ const Addpartners = () => {
     {/* name+PHONE+id */}
     <div className='row my-4'>
       <div className='col-md-4'>
-        <label className='my-2 d-block'>Owner name</label>
+        <label className='my-2 d-block'> name</label>
         <input className='input-box px-3' name='nameowner' type="text" placeholder="Owner name" />
       </div>
       <div className='col-md-4'>
@@ -55,8 +52,42 @@ const Addpartners = () => {
         <input className='input-box px-3' name='idowner' type="tele" placeholder="Owner National ID" />
       </div>
     </div>
+    {/* follow */}
+    <div className='row my-4'>
+      <div className='col-md-4'>
+        <label className='my-2 d-block'>Follow up name</label>
+        <input className='input-box px-3' name='nameowner' type="text"  />
+      </div>
+      <div className='col-md-4'>
+        <label className='my-2 d-block'>Follow up Phone </label>
+        <input className='input-box px-3' name='phoneowner' type="tele"  />
+      </div>
+      <div className='col-md-4'>
+        <label className='my-2 d-block'>Contacted ?</label>
+        <div className='d-flex'>
+        <label>
+            <input 
+            className='mx-1'
+              type="radio" 
+              name="isPublished" 
+              value="true" />
+            Yes
+          </label>
+          <label className='mx-4'>
+            <input 
+            className='mx-1'
+              type="radio" 
+              name="isPublished" 
+              value="false" />
+            No
+          </label>
+
+        </div>
+
+      </div>
+    </div>
     {/* line-2 */}
-    <NavLink to="/Serviceproviders/Partners">
+    <NavLink to="/allshippers">
     <button type='submit' className='btn-save my-3'>SAVE</button>
     </NavLink>
 
@@ -65,4 +96,4 @@ const Addpartners = () => {
   )
 }
 
-export default Addpartners
+export default AddShippers

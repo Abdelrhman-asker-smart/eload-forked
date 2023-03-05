@@ -5,16 +5,19 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as EditIcon } from "../../../icons/editicon.svg";
 import { ReactComponent as DeleteIcon } from "../../../icons/deleteicon.svg";
-
+// import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom'
 
 import "./Category-List.css";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
+ 
   return (
     <div
       className="modal fade"
@@ -78,11 +81,12 @@ const RemoveModal = ({ handelItemRemove, id }) => {
     </div>
   );
 };
-
+// let navigate = useNavigate();
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
+  // const { id } = useParams();
   <div className="w-100">
-    <NavLink to="/catogry-edit">
+    <NavLink to={`/catogry-edit/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -94,6 +98,9 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
           color: "#fff",
           backgroundColor: "#0b2339",
         }}
+        // onClick={(id) => {
+        //   navigate(`/catogry-edit/${id}`);
+        // }}
       >
         <EditIcon className="mx-1" />
         EDIT
@@ -153,6 +160,8 @@ const csvOptions = {
 const csvExporter = new ExportToCsv(csvOptions);
 
 const CategoryList = () => {
+  // const pathanme = useLocation();
+  
   const [categoryList, setCategoryList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -164,6 +173,7 @@ const CategoryList = () => {
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
+  // console.log(pathanme);
   // console.log(cookie.eload_token , "test");
   // console.log(removeableId);
   // console.log(process.env.REACT_BASE_URL);
@@ -236,6 +246,10 @@ const CategoryList = () => {
       console.log(e);
     }
   };
+  
+  // const handelEditItem = (id) => {
+  //    navigate(`/catogry-edit/${id}`);
+  // };
 
   return (
     <div className="categorylist">

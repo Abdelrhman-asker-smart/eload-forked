@@ -71,6 +71,7 @@ const CategortAdd = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
+            onClick={recordCategory}
           >
             Save
           </button>
@@ -83,7 +84,7 @@ const CategortAdd = () => {
           aria-hidden="true"
           aria-labelledby="exampleModalToggleLabel"
           tabIndex="-1"
-        >
+          >
           <div className="modal-dialog modal-dialog-centered">
             <div
               className="modal-content"
@@ -96,7 +97,7 @@ const CategortAdd = () => {
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    onClick={recordCategory}
+                   
                   ></button>
                 </NavLink>
               </div>
