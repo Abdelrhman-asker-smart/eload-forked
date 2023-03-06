@@ -3,58 +3,191 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
-
+import  $  from 'jquery';
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
-
+import Select from 'react-select';
 import "./Shipments.css";
 
-// const Btnadd =() =>{
+
+// const stepsShipments=()=>{
 //   return(
-//     <button className='btn-danger'>Add shippments</button>
+//     <>
+//       <div className="row">
+//         <hr className="position-relative"/>
+//         <div className="col-md-4">
+//           <div className="step1 d-block position-absolute">
+//               <label>1</label>
+//           </div>
+//           <p>shipment 1</p>
+//         </div>
+//         <div className="col-md-4">
+//           <div className="step1 d-block position-absolute">
+//               <label>2</label>
+//           </div>
+//           <p>shipment 2</p>
+//         </div>
+//         <div className="col-md-4">
+//           <div className="step1 d-block position-absolute">
+//               <label>3</label>
+//           </div>
+//           <p>shipment 3</p>
+//         </div>
+//       </div>
+//     </>
 //   )
 // }
 
+const Btnadd =() =>{
+  return(
+    <NavLink to="/Shipments/addAddress">
+    <button className='p-2' style={{border:"0",borderRadius:"20px", backgroundColor:"#0B2339", color:"#fff", marginLeft:"35%"}}>Add shippments</button>
+    </NavLink>
+  )
+}
+
 const Shipments = () => {
+
+  const [isACtive, setIsActive] = useState({ pickup: false, dropoff: false, details: false });
+
+  const tabPickup = () => {
+    setIsActive({ pickup: true, dropoff: false, details: false })
+  }
+  const tabdropoff = () => {
+    setIsActive({ pickup: false, dropoff: true, details: false })
+  }
+  const tabdetails = () => {
+    setIsActive({ pickup: false, dropoff: false, details: true })
+  } 
+
+
+
   const [input, setInputs] = useState([]);
   const date = new Date();
   const [startDate, setStartDate] = useState(date);
 
+  // checked-btn-steps
+  const [ischeck , setIsChecked] = useState(false);
+  console.log(ischeck);
+
+  // select-options
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
+
+  {/* shipper-select */}
+   const shipperOptions= [
+    { value: 'Reham', label: 'Reham' },
+    { value: 'Eman', label: 'Eman' },
+    { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+    { value: 'Abdullah ', label: 'Abdullah ' },
+    { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+    { value: 'btnadd', label: <Btnadd/> },
+  ];
+    {/* pickup-select */}
+    const pickupOptions= [
+      { value: 'Riyadh Whse', label: 'Riyadh Whse' },
+      { value: 'My Main Whse', label: 'My Main Whse' },
+      { value: 'MJeddah', label: 'Jeddah' },
+      { value: 'Abdullah ', label: 'Abdullah ' },
+    ];
+        {/* drop-select */}
+        const dropOptions= [
+          { value: 'My Warehouses', label: 'My Warehouses', isDisabled: true  },
+          { value: 'Riyadh Whse', label: 'Riyadh Whse' },
+          { value: 'My Main Whse', label: 'My Main Whse' },
+          { value: 'Abuzaid ', label: 'Abuzaid ' },
+          { value: 'Othaim', label: 'Othaim', isDisabled: true  },
+          { value: 'Noon', label: 'Noon', isDisabled: true  },
+        ];
+
   return (
     <div className="container-fluid px-5 shipments">
       <div className="head-shipments">
-        <div className="shipments-btns">
-          {/* <button className='btn-shipment-up'><i className="fa-solid fa-plus me-3"></i> Add Shipments</button>
-          <button  className='btn-shipment-up switch-btn'>Track Shipments</button> */}
-          <div className="form-check form-switch">
+        <div className="shipments-btns d-block">
+          <div className="form-check form-switch d-flex justify-content-center my-4">
             <input
               className="form-check-input"
               type="checkbox"
+              value={ischeck}
               id="flexSwitchCheckDefault"
+              onChange={()=>setIsChecked( !ischeck)}
             />
-            <label className="form-check-label" for="flexSwitchCheckDefault">
-              Switch to planned shipments
+            <label className="form-check-label my-1" htmlFor="flexSwitchCheckDefault" style={{fontWeight:"500"}}>
+              Switch to planned shipments <span style={{color:"red" , fontWeight:"500"}}>?</span>
             </label>
           </div>
+                {ischeck &&
+                    <div className="steps">
+                    {/* <stepsShipments/> */}
+                    <div className="row">
+                      <hr className="position-relative" style={{width: "60%",marginLeft: "18%", backgroundColor:"#0B2339",border:"none",opacity:"1", height:"4px"}}/>
+                      <div className="col-md-4">
+                            <div className="line-active position-absolute" style={{width: "196px",
+                            top: "145.1px",
+                            right: "45rem",
+                            height: "6px",
+                            backgroundColor: "#CBFF39",}}></div>
+                            <div className="step1 d-block position-absolute  step-active" style={{ top:"130px",
+                                right: "50rem",
+                              }}>
+                                <label >1</label>
+                            </div>
+                     
+        
+                        <p className="my-2" style={{marginLeft: "14.5rem",fontWeight: "400"}}>shipment 1</p>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="step1 d-block position-absolute shipmentnormal" style={{ top:"130px",
+                            right: "37rem",
+                            color: "#fff",
+                            background: "#0B2339",
+                            fontWeight: "500",
+                            padding: "5px 13px",
+                            borderRadius: "50px",
+                          }}>
+                            <label >2</label>
+                        </div>
+                        <p className="my-2" style={{marginLeft: "5.5rem",fontWeight: "400"}}>shipment 2</p>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="step1 d-block position-absolute shipmentnormal" style={{ top:"130px",
+                            right: "22rem",
+                            color: "#fff",
+                            background: "#0B2339",
+                            fontWeight: "500",
+                            padding: "5px 13px",
+                            borderRadius: "50px",
+                          }}>
+                            <label>3</label>
+                        </div>
+                        <p className="my-2" style={{marginLeft: "-1.5rem",fontWeight: "400"}}>shipment 3</p>
+                      </div>
+                    </div>
+                  </div> 
+                }
+
         </div>
       </div>
       <div className="steps-shipments">
         <div className="steps">
-          <div className="step active">
+          <div className={isACtive.pickup ? "step pickup active" : "step pickup"} >
             <span>1</span>
-            <p>Pick up</p>
+            <p style={{fontWeight:"400"}}>Pick up</p>
           </div>
-          <div className="step">
+          <div  className={isACtive.dropoff ? "step dropoff active" : "step dropoff"}>
             <span>2</span>
-            <p>Drop off</p>
+            <p style={{fontWeight:"400"}}>Drop off</p>
           </div>
-          <div className="step">
+          <div className={isACtive.details ? "step details active" : "step details"}>
             <span>3</span>
-            <p>Details</p>
+            <p style={{fontWeight:"400"}}>Details</p>
           </div>
-          <div className="step">
+          <div className="step notes ">
             <span>4</span>
-            <p>Notes</p>
+            <p style={{fontWeight:"400"}}>Notes</p>
           </div>
         </div>
         <hr />
@@ -62,40 +195,42 @@ const Shipments = () => {
           <p>
             Shipper<span>*</span>
           </p>
-          <select
-            className="form-select custom-select"
-            aria-label="Default select example"
-          >
-            <option selected>Select shipper</option>
-            <option value="1">Mahmoud Abu zeid</option>
-            <option value="2">Abdullah </option>
-            <option value="3">Abdullah </option>
-            <option value="4">Abdullah </option>
-            <option value="5">Abdullah </option>
-            <option value="3" className="text-center py-3">
-              <div
-                className="text-center py-3"
-                style={{ color: "red", background: "black" }}
-              >
-                Add
-              </div>
-            </option>
-          </select>
+          {/* shipper-select */}
+          <Select
+          classNamePrefix="select"
+          className="basic-multi-select"
+          // isMulti
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          isClearable={isClearable}
+          isRtl={isRtl}
+          isSearchable={isSearchable}
+          name="color"
+          options={shipperOptions}
+        />
+
         </div>
       </div>
-      <div className="pick-up box-inputs">
+      <div className="pick-up box-inputs" onClick={tabPickup}>
         <div className="box-inputs-head">Pick up</div>
         <div className="inputs row">
           <div className="input input-select col-md-6">
             <label htmlFor="address">
               Pickup Address<span>*</span>
             </label>
-            <select className="form-select" aria-label="Default select example">
-              {/* <option selected>Select client</option> */}
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">three</option>
-            </select>
+            {/* pickup-Address */}
+            <Select
+            classNamePrefix="select"
+            className="basic-multi-select"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={pickupOptions}
+          />
           </div>
           <div className="input col-md-4">
             <label htmlFor="address">
@@ -122,7 +257,7 @@ const Shipments = () => {
           </div>
           {/* time-to */}
           <div className="input col-md-3 mt-4">
-            <input type="time" value="17:00:00" />
+            <input type="time"  />
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -134,25 +269,32 @@ const Shipments = () => {
         </div>
         <hr />
       </div>
-      <div className="drop-off box-inputs">
+      <div className="drop-off box-inputs" onClick={tabdropoff}>
         <div className="box-inputs-head">Drop off</div>
         <div className="inputs">
           <div className="input input-select">
             <label htmlFor="address">
               Drop off Address<span>*</span>
             </label>
-            <select className="form-select" aria-label="Default select example">
-              {/* <option selected>Select shipper</option> */}
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+            {/* dropoff-select */}
+            <Select
+            classNamePrefix="select"
+            className="basic-multi-select"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={dropOptions}
+          />
           </div>
           <div className="input mx-3">
             <label htmlFor="address">
               Drop off Time<span>*</span>
             </label>
-            <input type="time" value="17:00:00"></input>
+            <input type="time"></input>
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -164,7 +306,7 @@ const Shipments = () => {
         </div>
         <hr />
       </div>
-      <div className="details box-inputs mb-4">
+      <div className="details box-inputs mb-4" onClick={tabdetails}>
         <div className="box-inputs-head">Details</div>
         <Inputs />
         {input.map((item, index) => {

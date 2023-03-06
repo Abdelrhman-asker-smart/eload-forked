@@ -160,33 +160,6 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             <Route path="/citieslist" element={<CitiesList/>} />
 
 
-
-
-
-
-
-
-
-
-
-
-
-         
-          {/* {
-            routes.map((item,index)=>{
-              <Route path={`${item.name}`} element={item.component} />
-            })
-          } */}
-
-            {/* <Route
-              path="*"
-              {/* <Route
-              element={
-                <div className="d-flex justify-content-center py-5 ">
-                  <p className="fs-1 fw-bold"> 404 </p>
-                </div>
-              }
-            /> */}
           </Routes>
         </div>
         {/* </Router> */}

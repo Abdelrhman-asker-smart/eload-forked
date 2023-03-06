@@ -1,7 +1,95 @@
 import React from "react";
-import "../Drivers/Drivers.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+// import { ReactComponent as EditIcon } from "../../../icons/editicon.svg";
+// import { ReactComponent as DeleteIcon } from "../../../icons/deleteicon.svg";
+// import { useLocation } from "react-router-dom";
+import MaterialReactTable from "material-react-table";
+import { Box, Button } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+import "../Drivers/Drivers.css";
 
+// btns-action
+// const ButtonEdit = () => (
+//   // const { id } = useParams();
+//   <div className="w-100">
+//     <NavLink to="/catogry-edit">
+//       <button
+//         className="btn-table active"
+//         style={{
+//           textAlign: "center",
+//           padding: "1% 3%",
+//           border: "1px solid #0e324a",
+//           borderRadius: "20px",
+//           marginRight: "4%",
+//           color: "#fff",
+//           backgroundColor: "#0b2339",
+//         }}
+//       >
+//         <EditIcon className="mx-1" />
+//         EDIT
+//       </button>
+//     </NavLink>
+
+//     <button
+//       className="btn-table"
+//       data-bs-toggle="modal"
+//       href="#exampleModalToggle"
+//       style={{
+//         textAlign: "center",
+//         padding: "1% 3%",
+//         border: "1px solid #0e324a",
+//         borderRadius: "20px",
+//         marginRight: "4%",
+//         color: "#0b2339",
+//         backgroundColor: "transparent",
+//       }}
+     
+//     >
+//       <DeleteIcon className="mx-1" />
+//       REMOVE
+//     </button>
+//   </div>
+// );
+
+// const columns = [
+//   {
+//     accessorKey: "name",
+//     header: "Name",
+//     size: 80,
+//   },
+//   {
+//     accessorKey: "email",
+//     header: "Email",
+//     size: 150,
+//   },
+//   {
+//     accessorKey: "phone",
+//     header: "Phone Number",
+//     size: 100,
+//   },
+
+//   {
+//     accessorKey: "btns",
+//     header: "Edit / Remove",
+//     size: 220,
+//   },
+// ];
+
+// const csvOptions = {
+//   fieldSeparator: ",",
+//   quoteStrings: '"',
+//   decimalSeparator: ".",
+//   showLabels: true,
+//   useBom: true,
+//   useKeysAsHeaders: false,
+//   headers: columns.map((c) => c.header),
+// };
+
+// const csvExporter = new ExportToCsv(csvOptions);
 const Drivers = () => {
   return (
     <div>
@@ -49,14 +137,14 @@ const Drivers = () => {
               </div>
             </div>
           </div>
-          <div className="box-right">
+          {/* <div className="box-right">
             <div className="print">
               <button className="print-btn">
                 <i className="fa-solid fa-print mx-2"></i>
                 Print
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
         <hr />
         <div className="driver-table">

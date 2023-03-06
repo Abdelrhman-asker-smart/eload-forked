@@ -9,8 +9,8 @@ function Inputs() {
           <label htmlFor="address">
             Truck Type<span>*</span>
           </label>
-          <select className="form-select" aria-label="Default select example">
-            <option selected>Container</option>
+          <select className="form-select" aria-label="Default select example" defaultValue={'Select'}>
+          <option value="Select"  disabled >Select...</option>
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>

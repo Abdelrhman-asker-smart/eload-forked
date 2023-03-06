@@ -145,6 +145,15 @@ input
 }
 /* data-table */
 .eYhjcF div:first-child {
-
   overflow: inherit;
+}
+/* select-dropdown */
+.css-13cymwt-control ,
+.css-t3ipsp-control{
+  border-radius: 20px !important;
+}
+.css-1nmdiq5-menu{
+  z-index: 999 !important;
+  border-radius: 20px !important;
+  padding: 10px 0 !important;
 }

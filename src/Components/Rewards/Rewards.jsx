@@ -21,30 +21,16 @@ const Rewards = () => {
       console.log("Selected option:", selectedOption);
     };
 
-  // $(document).ready(function () {
-  //   $('.count').prop('disabled', true);
-  //   $(document).on('click', '.plus', function () {
-  //     $('.count').val(parseInt($('.count').val()) + 1);
-  //   });
-  //   $(document).on('click', '.minus', function () {
-  //     $('.count').val(parseInt($('.count').val()) - 1);
-  //     if ($('.count').val() === 0) {
-  //       $('.count').val(1);
-  //     }
-  //   });
-  // });
-  console.log(count3, "count");
 
-  // const increaseCount =(index)=>{
-  // setCount({...count,})
-  // }
+  // console.log(count3, "count");
+
 
   return (
     <div className="container rewards px-4">
       {/* header */}
       <div className="row p-4">
         <div className="col-md-4">
-          <h5>Rewards</h5>
+          <h2>Rewards</h2>
         </div>
         <div className="col-md-8">
           <button className="btn add-btn">Add new reward</button>
@@ -82,11 +68,7 @@ const Rewards = () => {
           </div>
           <div className="col-md-4 justfy-content-end pt-3 ">
           <CustomSelect options={optionsRewards} onSelect={handleSelect}  />
-            {/* <select className="form-select" aria-label="Default select example">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">three</option>
-            </select> */}
+
           </div>
         </div>
         {/* secound-row */}
