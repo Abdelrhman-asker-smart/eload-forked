@@ -1,814 +1,1018 @@
 import React from "react";
+import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Select from 'react-select';
+// import { DateRangePicker } from 'rsuite';
+import MaterialReactTable from "material-react-table";
+import { Box, Button } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import "./Allshipments.css";
-import { MDBDataTableV5 } from "mdbreact";
+// import { MDBDataTableV5 } from "mdbreact";
 
-const RowButton = ({ status }) => {
-  return (
-    <div>
-      {status == "NEW" ? (
-        <button
-          style={{
-            fontSize: "12px",
-            color: "white",
-            backgroundColor: "#0085FF",
-            border: "none",
-            outline: "none",
-            borderRadius: "30px",
-            marginTop: "-5px",
-            width: "100%",
-            height: "30px",
-          }}
-        >
-          {status}
-        </button>
-      ) : (
-        ""
-      )}
-      {status == "Assigned" ? (
-        <button
-          style={{
-            fontSize: "12px",
-            color: "white",
-            backgroundColor: "red",
-            border: "none",
-            outline: "none",
-            borderRadius: "30px",
-            marginTop: "-5px",
-            width: "100%",
-            height: "30px",
-          }}
-        >
-          {status}
-        </button>
-      ) : (
-        ""
-      )}
-      {status == "On the Way " ? (
-        <button
-          style={{
-            fontSize: "12px",
-            color: "white",
-            backgroundColor: "#18AEC9",
-            border: "none",
-            outline: "none",
-            borderRadius: "30px",
-            marginTop: "-5px",
-            width: "100%",
-            height: "30px",
-          }}
-        >
-          {status}
-        </button>
-      ) : (
-        ""
-      )}
-      {status == "DISPATCH" ? (
-        <button
-          style={{
-            fontSize: "12px",
-            color: "white",
-            backgroundColor: "#FF8A00",
-            border: "none",
-            outline: "none",
-            borderRadius: "30px",
-            marginTop: "-5px",
-            width: "100%",
-            height: "30px",
-          }}
-        >
-          {status}
-        </button>
-      ) : (
-        ""
-      )}
-      {status == "Delivered" ? (
-        <button
-          style={{
-            fontSize: "12px",
-            color: "white",
-            backgroundColor: "#31A02F",
-            border: "none",
-            outline: "none",
-            borderRadius: "30px",
-            marginTop: "-5px",
-            width: "100%",
-            height: "30px",
-          }}
-        >
-          {status}
-        </button>
-      ) : (
-        ""
-      )}
-      {/* <button style={{fontSize:"16px",color:"white",backgroundColor:"#0085FF",border:"none",outline:"none",borderRadius:"30px",padding:"5px 30px"}}>{status}</button> */}
-    </div>
-  );
+const columns = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    size: 30,
+  },
+  {
+    accessorKey: "code",
+    header: "Code",
+    size: 30,
+  },
+  {
+    accessorKey: "picup",
+    header: "Pick Up",
+    size: 30,
+  },
+  {
+    accessorKey: "dropoff",
+    header: "Drop Off",
+    size: 30,
+  },
+  {
+    accessorKey: "shipmenttype",
+    header: "Shipment Type",
+    size: 30,
+  },
+  {
+    accessorKey: "trucktype",
+    header: "Truck Type",
+    size: 30,
+  },
+  {
+    accessorKey: "shippingcost",
+    header: "Shipping Cost",
+    size: 30,
+  },
+  {
+    accessorKey: "pickupdate",
+    header: "Pickup Date",
+    size: 30,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    size: 30,
+  },
+
+];
+
+
+
+const csvOptions = {
+  fieldSeparator: ",",
+  quoteStrings: '"',
+  decimalSeparator: ".",
+  showLabels: true,
+  useBom: true,
+  useKeysAsHeaders: false,
+  headers: columns.map((c) => c.header),
 };
 
-const AllShipments = () => {
-  const [datatable, setDatatable] = React.useState({
-    columns: [
-      {
-        label: "#",
-        field: "id",
-        width: 100,
-      },
-      {
-        label: "CODE",
-        field: "code",
-        width: 100,
-        attributes: {
-          "aria-controls": "DataTable",
-          "aria-label": "Name",
-        },
-      },
-      {
-        label: "Pick Up",
-        field: "pickup",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "Drop off",
-        field: "dropoff",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "Shipment TYPE",
-        field: "shipmenttype",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "Truck TYPE",
-        field: "trucktype",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "Shipping cost",
-        field: "shippingcost",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "Pick up Date",
-        field: "pickupDate",
-        sort: "disabled",
-        width: 100,
-      },
-      {
-        label: "STATUS",
-        field: "statu",
-        sort: "disabled",
-        width: 100,
-      },
-    ],
-    rows: [
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="NEW" />,
-      },
-      {
-        id: "2",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="NEW" />,
-      },
-      {
-        id: "4",
-        code: "ELD00028",
-        pickup: "Jeddah",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Assigned" />,
-      },
-      {
-        id: "5",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Assigned" />,
-      },
-      {
-        id: "6",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="On the Way " />,
-      },
-      {
-        id: "7",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="On the Way " />,
-      },
-      {
-        id: "8",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="NEW" />,
-      },
-      {
-        id: "9",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="DISPATCH" />,
-      },
-      {
-        id: "10",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "11",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "12",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="NEW" />,
-      },
-      {
-        id: "13",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="NEW" />,
-      },
-      {
-        id: "14",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "15",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "16",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "17",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "18",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "19",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "20",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "21",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "22",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "23",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "24",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "25",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "26",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "27",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "28",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "29",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "30",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "31",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "32",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "33",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "34",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "35",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "36",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "37",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-      {
-        id: "1",
-        code: "ELD00028",
-        pickup: "Jeddah ",
-        dropoff: "Mecca",
-        shipmenttype: "Dry 40 high cube",
-        trucktype: "Flatbed",
-        shippingcost: "SAR17,756.000",
-        pickupDate: "2022-09-14",
-        statu: <RowButton status="Delivered" />,
-      },
-    ],
-  });
-  // const [checkbox1, setCheckbox1] = React.useState('');
+const csvExporter = new ExportToCsv(csvOptions);
 
-  // const showLogs2 = (e) => {
-  //   setCheckbox1(e);
-  // };
+// const RowButton = ({ status }) => {
+//   return (
+//     <div>
+//       {status == "NEW" ? (
+//         <button
+//           style={{
+//             fontSize: "12px",
+//             color: "white",
+//             backgroundColor: "#0085FF",
+//             border: "none",
+//             outline: "none",
+//             borderRadius: "30px",
+//             marginTop: "-5px",
+//             width: "100%",
+//             height: "30px",
+//           }}
+//         >
+//           {status}
+//         </button>
+//       ) : (
+//         ""
+//       )}
+//       {status == "Assigned" ? (
+//         <button
+//           style={{
+//             fontSize: "12px",
+//             color: "white",
+//             backgroundColor: "red",
+//             border: "none",
+//             outline: "none",
+//             borderRadius: "30px",
+//             marginTop: "-5px",
+//             width: "100%",
+//             height: "30px",
+//           }}
+//         >
+//           {status}
+//         </button>
+//       ) : (
+//         ""
+//       )}
+//       {status == "On the Way " ? (
+//         <button
+//           style={{
+//             fontSize: "12px",
+//             color: "white",
+//             backgroundColor: "#18AEC9",
+//             border: "none",
+//             outline: "none",
+//             borderRadius: "30px",
+//             marginTop: "-5px",
+//             width: "100%",
+//             height: "30px",
+//           }}
+//         >
+//           {status}
+//         </button>
+//       ) : (
+//         ""
+//       )}
+//       {status == "DISPATCH" ? (
+//         <button
+//           style={{
+//             fontSize: "12px",
+//             color: "white",
+//             backgroundColor: "#FF8A00",
+//             border: "none",
+//             outline: "none",
+//             borderRadius: "30px",
+//             marginTop: "-5px",
+//             width: "100%",
+//             height: "30px",
+//           }}
+//         >
+//           {status}
+//         </button>
+//       ) : (
+//         ""
+//       )}
+//       {status == "Delivered" ? (
+//         <button
+//           style={{
+//             fontSize: "12px",
+//             color: "white",
+//             backgroundColor: "#31A02F",
+//             border: "none",
+//             outline: "none",
+//             borderRadius: "30px",
+//             marginTop: "-5px",
+//             width: "100%",
+//             height: "30px",
+//           }}
+//         >
+//           {status}
+//         </button>
+//       ) : (
+//         ""
+//       )}
+//       {/* <button style={{fontSize:"16px",color:"white",backgroundColor:"#0085FF",border:"none",outline:"none",borderRadius:"30px",padding:"5px 30px"}}>{status}</button> */}
+//     </div>
+//   );
+// };
+
+const AllShipments = () => {
+  const [shipmentList, setshipmentList] = useState([]);
+  // const [removeableId, setRemoveableId] = useState(null);
+  // const [reload, setReload] = useState(false);
+  const [cookie] = useCookies(["eload_token"]);
+  const data = shipmentList.map((item, index) => {
+    return {
+      id: item.id,
+      code: item.id,
+      picup: item.from_city.name,
+      dropoff: item.to_city.name,
+      shipmenttype: item.shipment_type.name,
+      trucktype : item.truck_type.name,
+      shippingcost: item.cost,
+      pickupdate :item.order.pickup_date,
+      status: item.status,
+    };
+  });
+
+
+  useEffect(() => {
+    const allShipment = async () => {
+      try {
+        const response = await axios.get(
+          "https://dev.eload.smart.sa/api/v1/shipments",
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+        console.log(response);
+        setshipmentList(data);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    allShipment();
+  }, []);
+
+      // select-options
+      const [isClearable, setIsClearable] = useState(true);
+      const [isSearchable, setIsSearchable] = useState(true);
+      const [isDisabled, setIsDisabled] = useState(false);
+      const [isLoading, setIsLoading] = useState(false);
+      const [isRtl, setIsRtl] = useState(false);
+    
+      {/* shipment-select */}
+       const shipmentOptions= [
+        { value: 'Reham', label: 'Reham' },
+        { value: 'Eman', label: 'Eman' },
+        { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+        { value: 'Abdullah ', label: 'Abdullah ' },
+        { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+        { value: 'btnadd', label: "ffsf" },
+      ];
+    // const [datatable, setDatatable] = React.useState({
+    //   columns: [
+    //     {
+    //       label: "#",
+    //       field: "id",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "CODE",
+    //       field: "code",
+    //       width: 100,
+    //       attributes: {
+    //         "aria-controls": "DataTable",
+    //         "aria-label": "Name",
+    //       },
+    //     },
+    //     {
+    //       label: "Pick Up",
+    //       field: "pickup",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "Drop off",
+    //       field: "dropoff",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "Shipment TYPE",
+    //       field: "shipmenttype",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "Truck TYPE",
+    //       field: "trucktype",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "Shipping cost",
+    //       field: "shippingcost",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "Pick up Date",
+    //       field: "pickupDate",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //     {
+    //       label: "STATUS",
+    //       field: "statu",
+    //       sort: "disabled",
+    //       width: 100,
+    //     },
+    //   ],
+    //   rows: [
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="NEW" />,
+    //     },
+    //     {
+    //       id: "2",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="NEW" />,
+    //     },
+    //     {
+    //       id: "4",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Assigned" />,
+    //     },
+    //     {
+    //       id: "5",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Assigned" />,
+    //     },
+    //     {
+    //       id: "6",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="On the Way " />,
+    //     },
+    //     {
+    //       id: "7",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="On the Way " />,
+    //     },
+    //     {
+    //       id: "8",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="NEW" />,
+    //     },
+    //     {
+    //       id: "9",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="DISPATCH" />,
+    //     },
+    //     {
+    //       id: "10",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "11",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "12",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="NEW" />,
+    //     },
+    //     {
+    //       id: "13",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="NEW" />,
+    //     },
+    //     {
+    //       id: "14",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "15",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "16",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "17",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "18",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "19",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "20",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "21",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "22",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "23",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "24",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "25",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "26",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "27",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "28",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "29",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "30",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "31",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "32",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "33",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "34",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "35",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "36",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "37",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //     {
+    //       id: "1",
+    //       code: "ELD00028",
+    //       pickup: "Jeddah ",
+    //       dropoff: "Mecca",
+    //       shipmenttype: "Dry 40 high cube",
+    //       trucktype: "Flatbed",
+    //       shippingcost: "SAR17,756.000",
+    //       pickupDate: "2022-09-14",
+    //       statu: <RowButton status="Delivered" />,
+    //     },
+    //   ],
+    // });
+    // const [checkbox1, setCheckbox1] = React.useState('');
+  
+    // const showLogs2 = (e) => {
+    //   setCheckbox1(e);
+    // };
+  
+    // const [shipmentList, setshipmentList] = useState([]);
+    // const [cookie] = useCookies(["eload_token"]);
+    // const data = shipmentList.map((item, index) => {
+    //   return {
+    //     id: item.id,
+    //     code: item.order,
+    //     picup: item.pickup,
+    //     dropoff: item.dropoff,
+    //     shipmenttype: item.shipmenttype,
+    //     trucktype: item.trucktype,
+    //     shippingcost: item.shippingcost,
+    //     pickupdate: item.picku_pdate,
+    //     status: item.status,
+    //   };
+    // });
+    // const data = [
+    //   {
+    //     id: 1,
+    //     code: 'Elenora',
+    //     picup: 'Wilkinson',
+    //     dropoff: 'Feest - Reilly',
+    //     shipmenttype: 'Hertaland',
+    //     trucktype :"container",
+    //     shippingcost: 'Qatar',
+    //     pickupdate: "2/345",
+    //     status:"ready"
+    //   },
+    //   {
+    //     id: 1,
+    //     code: 'Elenora',
+    //     picup: 'Wilkinson',
+    //     dropoff: 'Feest - Reilly',
+    //     shipmenttype: 'Hertaland',
+    //     trucktype :"container",
+    //     shippingcost: 'Qatar',
+    //     pickupdate: "2/345",
+    //     status:"ready"
+    //   },
+    //   {
+    //     id: 1,
+    //     code: 'Elenora',
+    //     picup: 'Wilkinson',
+    //     dropoff: 'Feest - Reilly',
+    //     shipmenttype: 'Hertaland',
+    //     trucktype :"container",
+    //     shippingcost: 'Qatar',
+    //     pickupdate: "2/345",
+    //     status:"ready"
+    //   },
+    //   {
+    //     id: 1,
+    //     code: 'Elenora',
+    //     picup: 'Wilkinson',
+    //     dropoff: 'Feest - Reilly',
+    //     shipmenttype: 'Hertaland',
+    //     trucktype :"container",
+    //     shippingcost: 'Qatar',
+    //     pickupdate: "2/345",
+    //     status:"ready"
+    //   },
+    // ]
+  
+  const handleExportRows = (rows) => {
+    csvExporter.generateCsv(rows.map((row) => row.original));
+  };
+
+  const handleExportData = () => {
+    csvExporter.generateCsv(data);
+  };
 
   return (
     <div>
-      <div className="container-fluid Allshipment">
-        <div className="row">
+      <div className="container-fluid Allshipment d-flex p-0">
+        {/* <div className="row"> */}
           {/* filter */}
-          <div className="col-md-3 filter-side py-5">
+          {/* <div className=" filter-side py-5">
             <div className="accordion" id="accordionPanelsStayOpenExample">
-              {/* date-pick */}
+              
               <div className="accordion-item">
                 <h2 className="accordion-header" id="panelsStayOpen-headingOne">
                   <button
@@ -827,12 +1031,12 @@ const AllShipments = () => {
                   className="accordion-collapse collapse show"
                   aria-labelledby="panelsStayOpen-headingOne"
                 >
-                  <div className="accordion-body">
-                    <input type="date" className="date-input py-2 px-2" />
+                  <div className="accordion-body px-3">
+
                   </div>
                 </div>
               </div>
-              {/* city-location */}
+              
               <div className="accordion-item">
                 <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
                   <button
@@ -851,43 +1055,38 @@ const AllShipments = () => {
                   className="accordion-collapse collapse"
                   aria-labelledby="panelsStayOpen-headingTwo"
                 >
-                  <div className="accordion-body">
+                  <div className="accordion-body px-3">
                     <label className="my-3">Pick Up City</label>
-                    <select
-                      className="form-select select-city"
-                      aria-label="Default select example"
-                    >
-                      {/* <option className='w-25' selected>Select City</option> */}
-                      <option className="w-25" value="1">
-                        Jeddah
-                      </option>
-                      <option className="w-25" value="2">
-                        Mecca
-                      </option>
-                      <option className="w-25" value="3">
-                        Mecca
-                      </option>
-                    </select>
+                             
+                      <Select
+                      classNamePrefix="select"
+                      className="basic-multi-select"
+                     
+                      isDisabled={isDisabled}
+                      isLoading={isLoading}
+                      isClearable={isClearable}
+                      isRtl={isRtl}
+                      isSearchable={isSearchable}
+                      name="color"
+                      options={shipmentOptions}
+                    />
                     <label className="my-3">Drop off City</label>
-                    <select
-                      className="form-select select-city"
-                      aria-label="Default select example"
-                    >
-                      {/* <option className='w-25' selected>Select City</option> */}
-                      <option className="w-25" value="1">
-                        Jeddah
-                      </option>
-                      <option className="w-25" value="2">
-                        Mecca
-                      </option>
-                      <option className="w-25" value="3">
-                        Mecca
-                      </option>
-                    </select>
+                    <Select
+                      classNamePrefix="select"
+                      className="basic-multi-select pb-2"
+                      
+                      isDisabled={isDisabled}
+                      isLoading={isLoading}
+                      isClearable={isClearable}
+                      isRtl={isRtl}
+                      isSearchable={isSearchable}
+                      name="color"
+                      options={shipmentOptions}
+                    />
                   </div>
                 </div>
               </div>
-              {/*Truck Type  */}
+              
               <div className="accordion-item">
                 <h2
                   className="accordion-header"
@@ -906,11 +1105,11 @@ const AllShipments = () => {
                 </h2>
                 <div
                   id="panelsStayOpen-collapseThree"
-                  className="accordion-collapse collapse"
+                  className="accordion-collapse collapse "
                   aria-labelledby="panelsStayOpen-headingThree"
                 >
-                  <div className="accordion-body">
-                    {/* 1 */}
+                  <div className="accordion-body px-3">
+                  
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -920,12 +1119,12 @@ const AllShipments = () => {
                       />
                       <label
                         className="form-check-label"
-                        for="flexCheckDefault"
+                        htmlFor="flexCheckDefault"
                       >
                         Container
                       </label>
                     </div>
-                    {/* 2 */}
+                    
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -935,12 +1134,12 @@ const AllShipments = () => {
                       />
                       <label
                         className="form-check-label"
-                        for="flexCheckChecked"
+                        htmlFor="flexCheckChecked"
                       >
                         Dry Van / Enclosed Trailer
                       </label>
                     </div>
-                    {/* 3 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -955,7 +1154,7 @@ const AllShipments = () => {
                         Flatbed
                       </label>
                     </div>
-                    {/* 4 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -970,7 +1169,7 @@ const AllShipments = () => {
                         Lowboy Trailer
                       </label>
                     </div>
-                    {/* 5 */}
+                    
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -985,7 +1184,7 @@ const AllShipments = () => {
                         Oil Tanker
                       </label>
                     </div>
-                    {/* 6 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1003,7 +1202,7 @@ const AllShipments = () => {
                   </div>
                 </div>
               </div>
-              {/*Commodity  */}
+             
               <div className="accordion-item">
                 <h2
                   className="accordion-header"
@@ -1025,8 +1224,8 @@ const AllShipments = () => {
                   className="accordion-collapse collapse"
                   aria-labelledby="panelsStayOpen-headingFour"
                 >
-                  <div className="accordion-body">
-                    {/* 1 */}
+                  <div className="accordion-body px-3">
+                
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1041,7 +1240,7 @@ const AllShipments = () => {
                         Beverages
                       </label>
                     </div>
-                    {/* 2 */}
+              
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1056,7 +1255,7 @@ const AllShipments = () => {
                         Cement
                       </label>
                     </div>
-                    {/* 3 */}
+                 
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1071,7 +1270,7 @@ const AllShipments = () => {
                         Chemical
                       </label>
                     </div>
-                    {/* 4 */}
+              
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1086,7 +1285,7 @@ const AllShipments = () => {
                         FMCG
                       </label>
                     </div>
-                    {/* 5 */}
+                  
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1101,7 +1300,7 @@ const AllShipments = () => {
                         General Goods
                       </label>
                     </div>
-                    {/* 6 */}
+                  
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1116,7 +1315,7 @@ const AllShipments = () => {
                         Oil & Gas
                       </label>
                     </div>
-                    {/* 7 */}
+                    
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1131,7 +1330,7 @@ const AllShipments = () => {
                         Pharmaceutical
                       </label>
                     </div>
-                    {/* 8 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1149,7 +1348,7 @@ const AllShipments = () => {
                   </div>
                 </div>
               </div>
-              {/*Shipment Type  */}
+             
               <div className="accordion-item">
                 <h2
                   className="accordion-header"
@@ -1171,8 +1370,8 @@ const AllShipments = () => {
                   className="accordion-collapse collapse"
                   aria-labelledby="panelsStayOpen-headingFive"
                 >
-                  <div className="accordion-body">
-                    {/* 1 */}
+                  <div className="accordion-body px-3">
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1187,7 +1386,7 @@ const AllShipments = () => {
                         Frozen 1
                       </label>
                     </div>
-                    {/* 2 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1205,7 +1404,7 @@ const AllShipments = () => {
                   </div>
                 </div>
               </div>
-              {/*Unit of measurment  */}
+           
               <div className="accordion-item">
                 <h2 className="accordion-header" id="panelsStayOpen-headingSix">
                   <button
@@ -1224,8 +1423,8 @@ const AllShipments = () => {
                   className="accordion-collapse collapse"
                   aria-labelledby="panelsStayOpen-headingSix"
                 >
-                  <div className="accordion-body">
-                    {/* 1 */}
+                  <div className="accordion-body px-3">
+                  
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1240,7 +1439,7 @@ const AllShipments = () => {
                         Pallets
                       </label>
                     </div>
-                    {/* 2 */}
+                   
                     <div className="form-check">
                       <input
                         className="check-filter form-check-input"
@@ -1258,8 +1457,8 @@ const AllShipments = () => {
                   </div>
                 </div>
               </div>
-              {/* btns */}
-              <button type="button" className="btn-search btn btn-primary">
+             
+              <button type="button" className="btn-search btn btn-primary my-4">
                 Search
               </button>
               <br />
@@ -1267,64 +1466,76 @@ const AllShipments = () => {
                 Rest
               </button>
             </div>
-          </div>
+          </div> */}
+
 
           {/* table-data */}
-          <div className="col-md-9 p-3 position-relative">
-            <div className="export-side position-absolute d-flex justify-content-center align-items-center">
-              {/* sort */}
-              {/* <div className='sort mx-3'>
-                                <div className="Sort-list dropdown">
-                                <button className="Sort-list-btn btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg width="31" height="30" viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M26.75 9.6875H4.25C3.7375 9.6875 3.3125 9.2625 3.3125 8.75C3.3125 8.2375 3.7375 7.8125 4.25 7.8125H26.75C27.2625 7.8125 27.6875 8.2375 27.6875 8.75C27.6875 9.2625 27.2625 9.6875 26.75 9.6875Z" fill="#292D32"/>
-                                <path d="M23 15.9375H8C7.4875 15.9375 7.0625 15.5125 7.0625 15C7.0625 14.4875 7.4875 14.0625 8 14.0625H23C23.5125 14.0625 23.9375 14.4875 23.9375 15C23.9375 15.5125 23.5125 15.9375 23 15.9375Z" fill="#292D32"/>
-                                <path d="M18 22.1875H13C12.4875 22.1875 12.0625 21.7625 12.0625 21.25C12.0625 20.7375 12.4875 20.3125 13 20.3125H18C18.5125 20.3125 18.9375 20.7375 18.9375 21.25C18.9375 21.7625 18.5125 22.1875 18 22.1875Z" fill="#292D32"/>
-                                </svg>
-
-                                        Sort by
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a className="dropdown-item" href="#">Name</a></li>
-                                    <li><a className="dropdown-item" href="#">Code</a></li>
-                                    <li><a className="dropdown-item" href="#">id</a></li>
-                                </ul>
-                                </div>
-                                </div>  */}
-              {/* print */}
-              {/* <div className='print mx-3'>
-                                <div className='sort mx-3'>
-                                <div className="Sort-list dropdown">
-                                <button className="Sort-list-btn btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i className="fa-solid fa-print mx-2"></i>
-                                        Print
-                                </button>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a className="dropdown-item" href="#">Name</a></li>
-                                    <li><a className="dropdown-item" href="#">Code</a></li>
-                                    <li><a className="dropdown-item" href="#">id</a></li>
-                                </ul>
-                                </div>
-                                </div>
-                                </div>  */}
-            </div>
-            {/* </div> */}
+          <div className=" p-3 tableshipment" style={{maxWidth: "70rem"}} >
+            {/* <div className="w-75"> */}
             {/* table */}
-
-            <MDBDataTableV5
-              hover
-              entriesOptions={[5, 20, 25]}
-              entries={10}
-              pagesAmount={4}
-              data={datatable}
-              checkbox
-              // multipleCheckboxes
-              pagingTop
-              searchTop
-              searchBottom={false}
+            <MaterialReactTable
+              columns={columns}
+              data={data}
+              enableRowSelection
+              positionToolbarAlertBanner="bottom"
+              renderTopToolbarCustomActions={({ table }) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "1rem",
+                    p: "0.5rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <Button
+                    color="primary"
+                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                    onClick={handleExportData}
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export All Data
+                  </Button>
+                  <Button
+                    disabled={table.getPrePaginationRowModel().rows.length === 0}
+                    //export all rows, including from the next page, (still respects filtering and sorting)
+                    onClick={() =>
+                      handleExportRows(table.getPrePaginationRowModel().rows)
+                    }
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export All Rows
+                  </Button>
+                  <Button
+                    disabled={table.getRowModel().rows.length === 0}
+                    //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                    onClick={() => handleExportRows(table.getRowModel().rows)}
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export Page Rows
+                  </Button>
+                  <Button
+                    disabled={
+                      !table.getIsSomeRowsSelected() &&
+                      !table.getIsAllRowsSelected()
+                    }
+                    //only export selected rows
+                    onClick={() =>
+                      handleExportRows(table.getSelectedRowModel().rows)
+                    }
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export Selected Rows
+                  </Button>
+                </Box>
+              )}
             />
+            {/* </div> */}
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

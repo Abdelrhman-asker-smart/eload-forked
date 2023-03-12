@@ -11,13 +11,14 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom'
+
+import { useDispatch, useSelector } from "react-redux";
 
 import "./Category-List.css";
+import { fetchCategoryList } from "../../../redux/categoryListSlice";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
- 
   return (
     <div
       className="modal fade"
@@ -81,7 +82,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
     </div>
   );
 };
-// let navigate = useNavigate();
+
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   // const { id } = useParams();
@@ -161,7 +162,9 @@ const csvExporter = new ExportToCsv(csvOptions);
 
 const CategoryList = () => {
   // const pathanme = useLocation();
-  
+  const dispatch = useDispatch();
+
+  // console.log(categories);
   const [categoryList, setCategoryList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -173,41 +176,59 @@ const CategoryList = () => {
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
-  // console.log(pathanme);
-  // console.log(cookie.eload_token , "test");
-  // console.log(removeableId);
   // console.log(process.env.REACT_BASE_URL);
   useEffect(() => {
-    const allCategory = async () => {
-      // setCookie("eload_token", data.data.token.access);
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-
-          "https://dev.eload.smart.sa/api/v1/categories",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        const data = response.data.data;
-        // console.log(data);
+    // const response = async () => {
+    // const response = dispatch(fetchCategoryList({ token: cookie.eload_token }));
+    // const token = cookie.eload_token;
+    // const response22 = async () => {
+    dispatch(fetchCategoryList({ token: cookie.eload_token }))
+      .then((res) => {
+        console.log(res, "response from api");
+        const data = res.payload.data;
         setCategoryList(data);
-        return data;
-      } catch (e) {
+      })
+      .catch((e) => {
         console.log(e);
-      }
-    };
+      });
 
-    allCategory();
+    // console.log(response333.data, "response333");
+    // };
+    // response22();
+    // const allCategory = async () => {
+    //   // setCookie("eload_token", data.data.token.access);
+    //   try {
+    //     const response = await axios.get(
+    //       // https://dev.eload.smart.sa/api/v1/categories
+    //       // `${process.env.REACT_BASE_URL}/categories`,
+
+    //       "https://dev.eload.smart.sa/api/v1/categories",
+    //       {
+    //         headers: {
+    //           Accept: "application/json",
+    //           Authorization: `Bearer ${cookie.eload_token}`,
+
+    //           "api-key":
+    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //         },
+    //       }
+    //     );
+
+    //     const data = response.data.data;
+    //     // console.log(data);
+    //     setCategoryList(data);
+    //     return data;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
+
+    // allCategory();
   }, [reload]);
+  //
+
+  const { list, status } = useSelector((state) => state.categoryList);
+  // console.log(list, "state from reducer with useSelector");
 
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
@@ -246,7 +267,7 @@ const CategoryList = () => {
       console.log(e);
     }
   };
-  
+
   // const handelEditItem = (id) => {
   //    navigate(`/catogry-edit/${id}`);
   // };

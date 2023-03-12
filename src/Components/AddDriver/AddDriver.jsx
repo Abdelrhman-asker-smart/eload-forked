@@ -2,40 +2,40 @@ import React from 'react'
 import './AddDriver.css';
 import { useState } from 'react'
 import DatePicker from "react-datepicker";
-
+import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
 import  {ReactComponent as Dateicon} from '../../icons/date-icon.svg';
 import  {ReactComponent as Vector} from '../../icons/Vector.svg';
 
-import CustomSelect from '../CustomeSelect/CustomeSelect';
 
 const AddDriver = () => {
   const [input, setInputs] = useState([])
   const date  = new Date()
   const [startDate, setStartDate] = useState(date);
 
-  /// dropdown
-  const options = [
-    { value: "Egypt", label: "Egypt" },
-    { value: "Jordan", label: "Jordan" },
-    { value: "Syria", label: "Syria" },
-    { value: "Egypt", label: "Egypt" },
-    { value: "Syria", label: "Syria" },
-    { value: "Jordan", label: "Jordan" },
-    { value: "Jordan", label: "Jordan" },
-  ];
-
-  const optionsTrucks = [
-    { value: "truck1", label:  <><Vector className='mx-2'/> Container</>  },
-    { value: "truck2", label: <><Vector className='mx-2'/> Flatbed</>  },
-    { value: "truck3", label: <><Vector className='mx-2'/> Dry Van</>  },
-    { value: "truck4", label: <><Vector className='mx-2'/> Lowboy trailer</>  },
-  ];
-
+    // select-options
+    const [isClearable, setIsClearable] = useState(true);
+    const [isSearchable, setIsSearchable] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRtl, setIsRtl] = useState(false);
   
-    const handleSelect = (selectedOption) => {
-      console.log("Selected option:", selectedOption);
-    };
+    {/* country-select */}
+     const CountrySelect= [
+      { value: 'Reham', label: 'Reham' },
+      { value: 'Eman', label: 'Eman' },
+      { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+      { value: 'Abdullah ', label: 'Abdullah ' },
+      { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+    ];
+        {/* truck-select */}
+        const TruckSelect= [
+          { value: 'Reham', label: 'Reham' },
+          { value: 'Eman', label: 'Eman' },
+          { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+          { value: 'Abdullah ', label: 'Abdullah ' },
+          { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+        ];
 
   return (
     <div className='container-fluid adddriver p-5'>
@@ -123,8 +123,19 @@ const AddDriver = () => {
         </div>
         <div className='col-md-4'>
           <label className='my-2 d-block'>Nationality</label>
-
-          <CustomSelect options={options} onSelect={handleSelect} />
+                      {/* Country-select */}
+          <Select
+          classNamePrefix="select"
+          className="basic-multi-select"
+          // isMulti
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          isClearable={isClearable}
+          isRtl={isRtl}
+          isSearchable={isSearchable}
+          name="color"
+          options={CountrySelect}
+        />
           
         </div>
       </div>
@@ -173,7 +184,18 @@ const AddDriver = () => {
         </div>
         <div className='col-md-4'>
           <label className='my-2 d-block'>Truck Type</label>
-          <CustomSelect options={optionsTrucks} onSelect={handleSelect} />
+          <Select
+          classNamePrefix="select"
+          className="basic-multi-select"
+          // isMulti
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          isClearable={isClearable}
+          isRtl={isRtl}
+          isSearchable={isSearchable}
+          name="color"
+          options={TruckSelect}
+        />
         </div>
       </div>
 

@@ -4,14 +4,86 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import "./EditCategory.css";
+import { useParams } from "react-router-dom";
+// import { Provider, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  categoryEditReducer,
+  editCategory,
+} from "../../../redux/editCategorySlice";
 
 const EditCategory = () => {
-  console.log("here");
+  const { list, status } = useSelector((state) => state.categoryList);
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
+  // console.log(id, "id");
 
-  const EditCategory = async (id) => {
-    console.log("save triggered");
+  useEffect(() => {
+    const findName = () => {
+      let item = list.find((item, _) => item.id == id);
+      // console.log(item);
+      setName(item.name);
+    };
+    findName();
+  }, []);
+
+  const edit = async () => {
+    console.log(name, "name");
+    // console.log(cookie.eload_token, "token");
+    // console.log(id, "id");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("name", name);
+
+    console.log(urlencoded, "urlencoded from reducer");
+    // try {
+    //   const response = await axios.put(
+    //     `https://dev.eload.smart.sa/api/v1/categories/${id}`,
+    //     urlencoded,
+    //     {
+    //       headers: {
+    //         Accept: "application/json",
+    //         Authorization: `Bearer ${cookie.eload_token}`,
+    //         "api-key":
+    //           "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //       },
+    //     }
+    //   );
+    //   const data = await response.data;
+    //   // if(data.is_success === true){
+    //   //   setName()
+    //   // }
+    //   console.log(data, "data");
+    //   return data;
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    // console.log(id, "id");
+
+    dispatch(
+      editCategory({
+        token: cookie.eload_token,
+        id,
+        urlencoded,
+      })
+    )
+      .then((res) => {
+        console.log(res, "response from api");
+        // const data = res.payload.data;
+        // setName(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    // console.log(name);
+  };
+
+  const EditCategoryUpdate = async (id) => {
+    console.log(id, "save triggered");
+
     try {
       const reponse = await axios.put(
         `https://dev.eload.smart.sa/api/v1/categories/${id}`,
@@ -26,7 +98,7 @@ const EditCategory = () => {
         }
       );
 
-      //   console.log(reponse);
+      console.log(reponse);
     } catch (e) {
       console.log(e);
     }
@@ -51,7 +123,10 @@ const EditCategory = () => {
         <div className="row">
           <div className="col-md-12">
             <label className="mx-3 my-3">Name</label>
-            <input type="text" placeholder="name" 
+            <input
+              type="text"
+              placeholder="name"
+              value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -64,7 +139,7 @@ const EditCategory = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
-            onClick={EditCategory}
+            onClick={() => edit()}
           >
             Save
           </button>
@@ -84,15 +159,14 @@ const EditCategory = () => {
               style={{ borderRadius: "25px", width: "80%" }}
             >
               <div className="modal-header border-0 justify-content-end">
-                <NavLink to="/categorylist">
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                   
-                  ></button>
-                </NavLink>
+                {/* <NavLink to="/categorylist"> */}
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+                {/* </NavLink> */}
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "

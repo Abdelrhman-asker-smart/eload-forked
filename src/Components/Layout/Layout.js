@@ -53,6 +53,7 @@ import Editcommodities from "../Setting/Commodities/EditCommodities";
 import Editshipment from "../Setting/Shipment types/Editshipment";
 import AddShippers from "../AddShippers/AddShippers";
 import AllShippers from "../AllShippers/AllShippers";
+import ShipmentOrder from "../ShipmentOrder/ShipmentOrder";
 
 
 
@@ -105,6 +106,8 @@ const [cookie, setCookie, removeToken] = useCookies([""]);
             <Route path="/Shipments/addAddress" element={<AddAddress />} />
             <Route path="/Shipments/grouplist" element={<GroupList />} />
             <Route path="/Shipments/addnewgroup" element={<AddNewGroup />} />
+            <Route path="/shipmentorder" element={<ShipmentOrder />} />
+
              {/* Abd------------------------- */}
 
              {/* shippers */}

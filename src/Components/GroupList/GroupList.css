@@ -7,6 +7,10 @@
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
+.group-list .partner-head h3{
+    font-size: 24px;
+    font-weight: 500;
+}
 .group-list .partner-head .container-fluid,
 .group-list .partner .container-fluid
 {
@@ -18,10 +22,9 @@
 {
     background-color: #0B2339;
     border: none;
-    margin-right: 3rem;
-    padding: .7rem 2rem;
+    padding: .5rem 1rem;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #fff;
     margin-bottom: 1rem;
     border-radius: 16px;

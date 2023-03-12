@@ -3,45 +3,20 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
-import  $  from 'jquery';
+// import  $  from 'jquery';
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from 'react-select';
 import "./Shipments.css";
+// trucks
+import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
 
 
-// const stepsShipments=()=>{
-//   return(
-//     <>
-//       <div className="row">
-//         <hr className="position-relative"/>
-//         <div className="col-md-4">
-//           <div className="step1 d-block position-absolute">
-//               <label>1</label>
-//           </div>
-//           <p>shipment 1</p>
-//         </div>
-//         <div className="col-md-4">
-//           <div className="step1 d-block position-absolute">
-//               <label>2</label>
-//           </div>
-//           <p>shipment 2</p>
-//         </div>
-//         <div className="col-md-4">
-//           <div className="step1 d-block position-absolute">
-//               <label>3</label>
-//           </div>
-//           <p>shipment 3</p>
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
 
 const Btnadd =() =>{
   return(
-    <NavLink to="/Shipments/addAddress">
-    <button className='p-2' style={{border:"0",borderRadius:"20px", backgroundColor:"#0B2339", color:"#fff", marginLeft:"35%"}}>Add shippments</button>
+    <NavLink to="/addshippers">
+    <button className='p-2' style={{border:"0",borderRadius:"20px", backgroundColor:"#0B2339", color:"#fff", marginLeft:"35%"}}>Add New Shipper</button>
     </NavLink>
   )
 }
@@ -93,15 +68,22 @@ const Shipments = () => {
       { value: 'MJeddah', label: 'Jeddah' },
       { value: 'Abdullah ', label: 'Abdullah ' },
     ];
-        {/* drop-select */}
-        const dropOptions= [
-          { value: 'My Warehouses', label: 'My Warehouses', isDisabled: true  },
-          { value: 'Riyadh Whse', label: 'Riyadh Whse' },
-          { value: 'My Main Whse', label: 'My Main Whse' },
-          { value: 'Abuzaid ', label: 'Abuzaid ' },
-          { value: 'Othaim', label: 'Othaim', isDisabled: true  },
-          { value: 'Noon', label: 'Noon', isDisabled: true  },
-        ];
+    {/* drop-select */}
+    const dropOptions= [
+        { value: 'My Warehouses', label: 'My Warehouses', isDisabled: true  },
+        { value: 'Riyadh Whse', label: 'Riyadh Whse' },
+        { value: 'My Main Whse', label: 'My Main Whse' },
+        { value: 'Abuzaid ', label: 'Abuzaid ' },
+        { value: 'Othaim', label: 'Othaim', isDisabled: true  },
+        { value: 'Noon', label: 'Noon', isDisabled: true  },
+    ];
+    {/* truck-select */}
+    const truckOptions= [
+      { value: 'Container', label: "<Truck1/>Container" },
+      { value: 'Flatbed', label: 'Riyadh Whse' },
+      { value: 'Dry Van', label: 'My Main Whse' },
+      { value: 'Lowboy trailer', label: 'Abuzaid ' },
+    ];    
 
   return (
     <div className="container-fluid px-5 shipments">

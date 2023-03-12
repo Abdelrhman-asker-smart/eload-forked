@@ -1,0 +1,209 @@
+.orderhead .text-head
+{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 32px;
+    color: #244664;
+}
+.orderhead
+{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.orderhead
+{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.orderhead .img-head
+{
+    margin-left: auto;
+}
+.orderhead .backhuling
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 35rem;
+}
+.orderhead .backhuling .orange
+{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: orange;
+}
+.order-info
+{
+    padding-left: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.order-info .info-box
+{
+    display: flex;
+    flex-direction: column;
+}
+.order-info .info-box span
+{
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #A9A9A9;
+    margin-bottom: 1rem;
+}
+.order-info .info-box h4
+{
+    font-size: 20px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    color: #0E324A;    
+}
+.order-info .info-box .btn-info
+{
+    background: #18AEC9;
+    border-radius: 23px;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    padding: .6rem 2rem .6rem 2rem;
+}
+.element-order
+{
+    padding-left: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.element-order .element-box
+{
+    margin-right: 1rem;
+    margin-bottom: 3rem;
+}
+.element-order .head-element
+{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: .6rem;
+}
+.element-order .head-element svg
+{
+    margin-right: .5rem;
+}
+.element-order .head-element .element-info
+{
+    font-weight: 600;
+    font-size: 14px;
+    color: #A9A9A9;
+}
+.element-order .text-element h4
+{
+    font-weight: 400;
+    font-size: 16px;
+    padding: 0 20px;
+    /* letter-spacing: 0.02em; */
+    color: #0E324A;
+}
+.br-element
+{
+    border-right: 2px solid #D9D9D9;
+}
+.packing-list
+{
+    padding-left: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.packing-list .head
+{
+    font-weight: 600;
+    font-size: 18px;
+    color: #A9A9A9;
+    margin-bottom: 1.5rem;
+}
+.packing-list .card-order
+{
+    border-radius: 15px;
+    border: 1px solid #A9A9A9;
+    padding: 2rem;
+    margin-right: 1.5rem;
+}
+.packing-list .img-box
+{
+    width: 100%;
+    height: 167px;
+    background-color: #A9A9A9;
+    margin-bottom: 1rem;
+}
+.ordertable .table thead tr th
+{
+    font-weight: 600;
+    font-size: 15px;
+    color: #A9A9A9;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+.ordertable .table tbody .text-orange
+{
+    color: orange;
+}
+.ordertable .table tbody .text-orange
+{
+    color: orange;
+}
+.ordertable .table tbody .icon-table-blue
+{
+    
+    display: inline-block;
+    text-align: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #18AEC9;
+    color: #fff;
+    border-radius: 50%;
+}
+.ordertable .table tbody .icon-table-red
+{
+    
+    display: inline-block;
+    text-align: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+}
+.ordertable .table tbody .table-btn
+{
+    padding: .6rem 2rem .6rem 2rem;
+    background-color: #0E324A;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+}
+.ordertable .table tbody .table-btn-red
+{
+    padding: .6rem 2rem .6rem 2rem;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+}
+
+.ordertable .table tbody .table-btn-green
+{
+    padding: .6rem 2rem .6rem 2rem;
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+}
+.ordertable .table tbody .text-blue
+{
+    color: #18AEC9;
+}
+

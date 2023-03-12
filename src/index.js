@@ -1,31 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import './index.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./index.css";
 
-import 'jquery/dist/jquery.min.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'mdbreact/dist/css/mdb.css';
+import "jquery/dist/jquery.min.js";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "mdbreact/dist/css/mdb.css";
 // import { CDBDataTable } from 'cdbreact';
-
-
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {  HashRouter ,BrowserRouter} from 'react-router-dom';
+import { persistStore } from "redux-persist";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { HashRouter, BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+let persistor = persistStore(store);
 root.render(
   <CookiesProvider>
-  <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </BrowserRouter>
+    <BrowserRouter>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </PersistGate>
+      </Provider>
+    </BrowserRouter>
   </CookiesProvider>
 );
 

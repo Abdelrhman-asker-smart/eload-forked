@@ -1,14 +1,40 @@
 import React from "react";
-import "../AddAddress/addAddress.css";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import Select from 'react-select';
+import "../AddAddress/addAddress.css";
 
 const AddAddress = () => {
+    // select-options
+    const [isClearable, setIsClearable] = useState(true);
+    const [isSearchable, setIsSearchable] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRtl, setIsRtl] = useState(false);
+
+      {/* group-select */}
+      const groupOptions= [
+        { value: 'My warehouses', label: 'My warehouses' },
+        { value: 'Othaim', label: 'Othaim' },
+        { value: 'Noon', label: 'Noon' },
+        { value: 'Shogair', label: 'Shogair' },
+      ];
+            {/* type-select */}
+            const typeOptions= [
+              { value: 'My warehouses', label: 'My warehouses' },
+              { value: 'Othaim', label: 'Othaim' },
+              { value: 'Noon', label: 'Noon' },
+              { value: 'Shogair', label: 'Shogair' },
+            ];
+           {/* city-select */}
+           const cityOptions= [
+            { value: 'Jeddah ', label: 'Jeddah ' },
+            { value: 'Mecca ', label: 'Mecca ' },
+            { value: 'Jeddah', label: 'Jeddah' },
+            { value: 'Mecca ', label: 'Mecca ' },
+          ];       
   return (
     <div>
-      {/*         //  <NavLink
-
-to="/financialrequests"
-> */}
       <div className="container-fluid p-5 addaddressstyel">
         <div className="head-address">
           <h2 className="text-head">Add new Address</h2>
@@ -20,19 +46,23 @@ to="/financialrequests"
                     <p className="head-text">Choose Group</p>
                     <NavLink to="/Shipments/grouplist">
                       <button>
-                        <a href="#">View All</a>
+                        <a href="/#">View All</a>
                       </button>
                     </NavLink>
                   </div>
-                  <select
-                    className="form-select input"
-                    aria-label="Default select example"
-                    placeholder="Select a group"
-                  >
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  {/* choose-group */}
+                  <Select
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  // isMulti
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  isClearable={isClearable}
+                  isRtl={isRtl}
+                  isSearchable={isSearchable}
+                  name="color"
+                  options={groupOptions}
+                />
                 </div>
                 <div className="col-6  mt-auto  mb-auto text-center btn-side">
                   <NavLink to="/Shipments/addnewgroup">
@@ -52,20 +82,41 @@ to="/financialrequests"
           </div>
           <div className="address-input w-100 mb-5">
             <p className="head-text mb-2">Type</p>
-            <input type="text" className="input" placeholder="Type" />{" "}
-            {/* select */}
+                  <Select
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  // isMulti
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  isClearable={isClearable}
+                  isRtl={isRtl}
+                  isSearchable={isSearchable}
+                  name="color"
+                  options={typeOptions}
+                />
+          
           </div>
           <div className="address-input w-100 mb-5">
             <p className="head-text mb-2">City</p>
-            <input type="text" className="input" placeholder="City" />{" "}
-            {/* select */}
+            <Select
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  // isMulti
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  isClearable={isClearable}
+                  isRtl={isRtl}
+                  isSearchable={isSearchable}
+                  name="color"
+                  options={cityOptions}
+                />
           </div>
           <div className="address-input w-100 mb-5">
             <div className="row">
               <div className="input-1 col-4 me-5">
                 <p className="head-text mb-2">Phone number</p>
                 <input
-                  type="text"
+                  type="tel"
                   className="input"
                   placeholder="Phone number"
                 />

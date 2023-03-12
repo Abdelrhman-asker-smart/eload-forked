@@ -1,17 +1,17 @@
-.filter-side{
+.order .filter-side{
     background-color: #F5F5F5;
     color: #244664;
     width: 20%;
 }
-.filter-side h5{
+.order .filter-side h5{
     font-weight: bolder;
 }
-.filter-side .accordion{
+.order .filter-side .accordion{
     --bs-accordion-border-color: none;
     --bs-accordion-border-width: 0;
     border-color: transparent !important;
 }
-.filter-side .accordion-button{
+.order .filter-side .accordion-button{
     background-color: #F5F5F5 !important;
     color: #244664;
     border: none !important;
@@ -19,38 +19,38 @@
     font-weight: bold;
     box-shadow: none !important;
 }
-.filter-side .accordion-button:not(.collapsed)::after{
+.order .filter-side .accordion-button:not(.collapsed)::after{
     background-image: none;
     transform: none;
 }
-.filter-side .accordion-button::after{
+.order .filter-side .accordion-button::after{
     background-image: none;
     content: "_";
     font-size: 20px;
     font-weight: 600;
 }
-.filter-side .accordion-body label{
+.order .filter-side .accordion-body label{
     font-size: 12px;
     font-weight: 600;
 }
-.filter-side .accordion-item{
+.order .filter-side .accordion-item{
     background-color: #F5F5F5 !important;
     color: #244664;
     border-bottom: 2px solid #244664;
 }
-.filter-side .date-input{
+.order .filter-side .date-input{
     border: none;
     color: #fff;
     background-color: #244664 !important;
     border-radius: 25px;
     width: 100%;
 }
-.filter-side .date-input::-webkit-calendar-picker-indicator {
+.order .filter-side .date-input::-webkit-calendar-picker-indicator {
     filter: invert(1);
     margin-right: 10px;
 }
 /* city-input */
-.filter-side .select-city{
+.order .filter-side .select-city{
     border-radius: 25px;
     background-color: #244664;
     width: 100%;
@@ -59,19 +59,19 @@
 }
 
 /* checkbox */
-.filter-side .check-filter[type=checkbox]{
+.order .filter-side .check-filter[type=checkbox]{
     border-radius: 0 !important;
     border: none !important;
     background-color: #244664 !important;
 }
-.filter-side .form-check-label{
+.order .filter-side .form-check-label{
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 0.02em;
 }
 /* btns */
-.filter-side .btn-search
-,.filter-side .btn-rest{
+.order .filter-side .btn-search
+,.order .filter-side .btn-rest{
     color: #fff !important;
     margin: 5% 18%;
     background-color: #244664 !important;

@@ -1,0 +1,15 @@
+.shippers h3{
+    font-size: 28px;
+    font-weight: 500;
+    color: #0E324A;
+}
+.shippers .btn-add{
+    background-color: #0B2339;
+    border: none;
+    padding: 0.2rem 13px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 16px;
+}

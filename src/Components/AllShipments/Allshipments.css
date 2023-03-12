@@ -1,7 +1,7 @@
 .Allshipment .filter-side{
-    background-color: #F5F5F5;
+    background-color: #F5F5F5 !important;
     color: #244664;
-    width: fit-content;
+    width: 180px;
 }
 .Allshipment .filter-side h5{
     font-weight: bolder;
@@ -15,7 +15,7 @@
     background-color: #F5F5F5 !important;
     color: #244664;
     border: none !important;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     box-shadow: none !important;
 }
@@ -37,6 +37,7 @@
     background-color: #F5F5F5 !important;
     color: #244664;
     border-bottom: 2px solid #244664;
+    /* padding-left: 30px; */
 }
 .Allshipment .filter-side .date-input{
     border: none;
@@ -50,65 +51,53 @@
     margin-right: 10px;
 }
 /* city-input */
-.filter-side .select-city{
+.Allshipment .filter-side .select-city{
     border-radius: 25px;
     background-color: #244664;
     width: 80%;
     color: #fff !important;
 }
 
+
 /* checkbox */
-.filter-side .check-filter[type=checkbox]{
+.Allshipment .filter-side .check-filter[type=checkbox]{
     border-radius: 0 !important;
     border: none !important;
     background-color: #244664 !important;
 }
-.filter-side .form-check-label{
+.Allshipment .filter-side .form-check-label{
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 0.02em;
 }
+/* .Allshipment .filter-side .css-13cymwt-control {
+    background-color: #244664;
+} */
+/* .Allshipment .filter-side .css-1dimb5e-singleValue{
+    color: #fff ;
+} */
+/* .Allshipment .filter-side .select__control--is-focused{
+    color: #244664 !important;
+} */
 /* btns */
 .filter-side .btn-search
 ,.filter-side .btn-rest{
     color: #fff !important;
-    margin: 5% 18%;
+    margin: 5% 12%;
     background-color: #244664 !important;
     font-size: 14px;
-    font-weight: 600;
-    width: 60%;
-    padding-top: 10px;
-    height: 40px;
+    font-weight: 400;
+    width: 76%;
+    padding-top: 5px;
+    height: 37px;
     border-radius: 15px;
-    font-family: 'Lato', sans-serif !important;
+    /* font-family: 'Lato', sans-serif !important; */
 }
 /* header-style */
 .export-side{
     left: 65%;
 }
-/* .header-table{
-    border-bottom: 2px solid #244664;
-} */
 
-/* search */
-/* .search-input{
-    border-radius: 25px;
-    width: 435px;
-    height: 48px;
-    padding-left: 50px;
-    position: relative;
-}
-.search-input::placeholder{
-    color: #A9A9A9;
-}
-.search-icon{
-    position: absolute;
-    z-index: 99;
-    top: 109px;
-    right: 73rem;
-    color: #A9A9A9;
-} */
-/* sort */
 .export-side .Sort-list-btn{
     background-color: transparent !important;
     border: 1px solid #ccc;
@@ -176,3 +165,6 @@ scroll-behavior: smooth;
 .Allshipment .table-hover>tbody>tr:hover td:last-of-type{
     color: #31A02F;
 } 
+.accordion-body{
+    padding: 0;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import "./Category-Add.css";
@@ -97,7 +97,6 @@ const CategortAdd = () => {
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                   
                   ></button>
                 </NavLink>
               </div>

@@ -4,7 +4,7 @@ import "./Allorders.css";
 const Allorders = () => {
   return (
     <div>
-      <div className="container-fluid">
+      <div className="order container-fluid">
         <div className="row">
           {/* filter */}
           <div className="col-md-3 filter-side py-5">
