@@ -110,6 +110,7 @@ const EditTruck = () => {
         </div>
 
         <div className="btn-side text-center my-5">
+
           <button
             className="btn save-btn"
             data-bs-toggle="modal"
@@ -134,12 +135,14 @@ const EditTruck = () => {
               style={{ borderRadius: "25px", width: "80%" }}
             >
               <div className="modal-header border-0">
+                <NavLink to="/trucklist">
                 <button
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
+                </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "
