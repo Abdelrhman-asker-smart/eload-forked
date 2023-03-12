@@ -1,8 +1,54 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  categoryEditReducer,
+  editcommodities,
+} from "../../../redux/commoditiesEdit";
 import "./EditCommodities.css";
 
 const Editcommodities = () => {
+  const { id } = useParams();
+  const { list, status } = useSelector((state) => state.commoditiesList);
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [cookie] = useCookies(["eload_token"]);
+  // console.log(id, "id");
+
+  useEffect(() => {
+    const findName = () => {
+      let item = list.find((item, _) => item.id == id);
+      // console.log(item);
+      setName(item.name);
+    };
+    findName();
+  }, []);
+  const edit = () => {
+    // console.log(name, "name");
+    // console.log(cookie.eload_token, "token");
+    // console.log(id, "id");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("name", name);
+
+    dispatch(
+      editcommodities({
+        token: cookie.eload_token,
+        id,
+        urlencoded,
+      })
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <div className="editcommodities container my-4">
       <div className="head container-fluid mb-4 d-flex">
@@ -23,7 +69,12 @@ const Editcommodities = () => {
         <div className="row">
           <div className="col-md-12">
             <label className="mx-3 my-3">Name</label>
-            <input type="text" placeholder="name" />
+            <input type="text" placeholder="name"
+              value={name}
+              onChange={(e) => {
+              setName(e.target.value);
+              }}
+            />
           </div>
         </div>
 
@@ -32,6 +83,7 @@ const Editcommodities = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
+            onClick={() => edit()}
           >
             Save
           </button>
@@ -50,13 +102,15 @@ const Editcommodities = () => {
               className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div className="modal-header border-0">
+              <div className="modal-header border-0 justify-content-end">
+                <NavLink to="/commodities">
                 <button
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
                 ></button>
+                </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "

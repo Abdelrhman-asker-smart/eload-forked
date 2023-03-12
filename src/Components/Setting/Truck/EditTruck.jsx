@@ -1,8 +1,59 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  categoryEditReducer,
+  EditTruckFunction,
+} from "../../../redux/EditTruckslice";
+
 import "./EditTruck.css";
 
 const EditTruck = () => {
+  const { list, status } = useSelector((state) => state.TruckList);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [cookie] = useCookies(["eload_token"]);
+  console.log(image, "image");
+
+  useEffect(() => {
+    const findName = () => {
+      let item = list.find((item, _) => item.id == id);
+      // console.log(item);
+      setImage(item.image);
+      setName(item.name);
+    };
+    findName();
+  }, []);
+  const edit = () => {
+    // console.log(name, "name");
+    // console.log(cookie.eload_token, "token");
+    // console.log(id, "id");
+
+    var formdata = new FormData();
+    formdata.append("_method", "put");
+    formdata.append("name", name);
+    formdata.append("image", image);
+
+    dispatch(
+      EditTruckFunction({
+        token: cookie.eload_token,
+        id,
+        formdata,
+      })
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <div className="edittruck container my-4">
       <div className="head container-fluid mb-4 d-flex">
@@ -20,9 +71,9 @@ const EditTruck = () => {
         </div>
       </div>
       <div className="container-fluid input-section">
-        <div className="row">
+        <div className="row ">
           <div className="col-md-12">
-            <label className="mx-3 my-3" for="truckname">
+            <label className="mx-3 my-3" htmlFor="truckname">
               Name
             </label>
             <input
@@ -30,10 +81,14 @@ const EditTruck = () => {
               type="text"
               placeholder="name"
               name="truckname"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </div>
-          <div className="col-md-4 my-4">
-            <label for="truckimg" className="mx-3 my-3">
+          <div className="edit_fields col-md-4 my-4">
+            <label htmlFor="truckimg" className="mx-3 my-3">
               Add photo
             </label>
             <input
@@ -42,7 +97,15 @@ const EditTruck = () => {
               id="truckimg"
               name="truckimg"
               accept="image/png, image/jpeg"
+              placeholder={image}
+              // value={image}
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
             />
+            <div className="edit_truck_img">
+              <img src={image} alt="" />
+            </div>
           </div>
         </div>
 
@@ -51,6 +114,7 @@ const EditTruck = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
+            onClick={() => edit()}
           >
             Save
           </button>

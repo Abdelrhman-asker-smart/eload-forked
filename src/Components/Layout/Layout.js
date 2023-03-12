@@ -143,7 +143,7 @@ const Layout = ({ setLogin }) => {
 
             <Route path="/trucklist" element={<TruckList />} />
             <Route path="/addtruck" element={<AddTruck/>} />
-            <Route path="/edittruck" element={<EditTruck/>} />
+            <Route path="/edittruck/:id" element={<EditTruck/>} />
 
             <Route path="/shipmentlist" element={<ShipmentTypes/>} />
             <Route path="/addshipment" element={<AddShipment/>} />
@@ -156,7 +156,7 @@ const Layout = ({ setLogin }) => {
 
             <Route path="/commodities" element={<Commodities/>} />
             <Route path="/addcommodities" element={<Addcommodities/>} />
-            <Route path="/editcommodities" element={<Editcommodities/>} />
+            <Route path="/editcommodities/:id" element={<Editcommodities/>} />
 
             <Route path="/countrieslist" element={<CountriesList/>} />
             <Route path="/stateslist" element={<StatesList/>} />

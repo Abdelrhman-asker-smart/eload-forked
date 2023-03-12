@@ -16,7 +16,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     <>
       <div className="header">
         <div className="container-fluid section-nav">
-          <div className="content d-flex justify-content-between ">
+          <div className="content d-flex justify-content-between align-items-center">
             <div className="path">
               <p>
                 <Link to="/">Dashboard </Link>

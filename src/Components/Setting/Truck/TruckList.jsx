@@ -11,6 +11,9 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTruckList } from "../../../redux/listTruck";
+
 import "./TruckList.css";
 
 // model
@@ -84,7 +87,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-    <NavLink to="/edittruck">
+    <NavLink to={`/edittruck/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -163,8 +166,10 @@ const Truck = () => {
   const [cookie] = useCookies(["eload_token"]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
+  const dispatch = useDispatch();
  
   const data = TruckList.map((item, index) => {
+    // console.log(item,"kareem")
     return {
       id: item.id,
       name: item.name,
@@ -173,31 +178,40 @@ const Truck = () => {
     };
   });
   useEffect(() => {
-    const allCity = async () => {
-      try {
-        const response = await axios.get(
+    dispatch(fetchTruckList({ token: cookie.eload_token }))
+    .then((res) => {
+      console.log(res, "response from api");
+      const data = res.payload.data;
+      setTruckList(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    // const allCity = async () => {
+    //   try {
+    //     const response = await axios.get(
 
-          "https://dev.eload.smart.sa/api/v1/truck_types",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
+    //       "https://dev.eload.smart.sa/api/v1/truck_types",
+    //       {
+    //         headers: {
+    //           Accept: "application/json",
+    //           Authorization: `Bearer ${cookie.eload_token}`,
+    //           "api-key":
+    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //         },
+    //       }
+    //     );
 
-        const data = response.data.data;
-        // console.log(data);
-        setTruckList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    //     const data = response.data.data;
+    //     // console.log(data);
+    //     setTruckList(data);
+    //     return data;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
 
-    allCity();
+    // allCity();
   }, [reload]);
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));

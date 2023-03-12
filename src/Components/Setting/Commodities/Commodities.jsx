@@ -11,6 +11,9 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCommoditList } from "../../../redux/listCommodities";
+
 import "./Commodities.css"
 
 // model
@@ -82,7 +85,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btn
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-    <NavLink to="/editcommodities">
+    <NavLink to={`/editcommodities/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -165,34 +168,46 @@ const Commodities = () => {
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const allCommodities = async () => {
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          "https://dev.eload.smart.sa/api/v1/commodities",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
 
-        const data = response.data.data;
-        // console.log(data);
-        setCommoditiesList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    dispatch(fetchCommoditList({ token: cookie.eload_token }))
+    .then((res) => {
+      console.log(res, "response from api");
+      const data = res.payload.data;
+      setCommoditiesList(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
-    allCommodities();
+
+    // const allCommodities = async () => {
+    //   try {
+    //     const response = await axios.get(
+
+    //       "https://dev.eload.smart.sa/api/v1/commodities",
+    //       {
+    //         headers: {
+    //           Accept: "application/json",
+    //           Authorization: `Bearer ${cookie.eload_token}`,
+    //           "api-key":
+    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //         },
+    //       }
+    //     );
+
+    //     const data = response.data.data;
+       
+    //     setCommoditiesList(data);
+    //     return data;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
+
+    // allCommodities();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 

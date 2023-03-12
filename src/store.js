@@ -1,4 +1,7 @@
 import categoryGetReducer from "./redux/categoryListSlice";
+import commoditGetReducer from "./redux/listCommodities";
+import TruckGetReducer from './redux/listTruck';
+
 
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -18,6 +21,10 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   categoryList: categoryGetReducer,
+  commoditiesList: commoditGetReducer,
+  TruckList: TruckGetReducer,
+
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
