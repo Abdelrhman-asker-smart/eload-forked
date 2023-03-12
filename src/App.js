@@ -25,7 +25,7 @@ function App() {
       setLogin(true);
       // navigate('/dashboard');
     }
-  });
+  },[]);
 
 console.log(login,'login')
   return (
