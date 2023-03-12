@@ -8,9 +8,9 @@ import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
 import { ReactComponent as View } from "../../icons/eye.svg";
 
 // import { useLocation } from "react-router-dom";
-import MaterialReactTable from "material-react-table";
-import { Box, Button } from "@mui/material";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
+// import MaterialReactTable from "material-react-table";
+// import { Box, Button } from "@mui/material";
+// import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import "./Partners.css";
 // btns-action

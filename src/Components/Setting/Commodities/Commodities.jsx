@@ -193,6 +193,7 @@ const Commodities = () => {
     };
 
     allCommodities();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
   const handleExportRows = (rows) => {

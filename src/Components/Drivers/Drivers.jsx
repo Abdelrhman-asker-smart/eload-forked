@@ -35,7 +35,6 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       <View className="mx-1" />
       View
     </button>
-    <img src="imagename.png" alt="img"/>
     </NavLink>
       <button
         className="btn-table active"

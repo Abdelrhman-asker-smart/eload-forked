@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import axios from "axios";
 import "./Addcommodities.css";
 
@@ -30,7 +30,7 @@ const Addcommodities = () => {
       //     console.log('logged in')
       //   }
       setName("");
-      //   console.log(reponse);
+        console.log(reponse);
     } catch (e) {
       console.log(e);
     }

@@ -15,6 +15,7 @@ function App() {
   let navigate = useNavigate();
   
   // console.log(cookie);
+
   useEffect(() => {
     if (!cookie.eload_token) {
       setLogin(false);
@@ -24,7 +25,7 @@ function App() {
       setLogin(true);
       // navigate('/dashboard');
     }
-  }, []);
+  });
 
 console.log(login,'login')
   return (

@@ -22,7 +22,7 @@ import { ReactComponent as Allpartners } from '../../icons/allpartners.svg';
 import { ReactComponent as Addpartners } from '../../icons/addpartners.svg';
 import { ReactComponent as Shippers } from '../../icons/shippers.svg';
 import { ReactComponent as Addshipper } from '../../icons/addshipper.svg';
-import { ReactComponent as Financial } from '../../icons/financial-icon.svg';
+// import { ReactComponent as Financial } from '../../icons/financial-icon.svg';
 import { ReactComponent as Rewards } from '../../icons/rewards.svg';
 import { ReactComponent as Catigorybox } from '../../icons/catigory-box.svg';
 import { ReactComponent as ListIcon } from '../../icons/List-icon.svg';
@@ -65,17 +65,17 @@ const Sidebar = () => {
     setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: !isOpen.firstLevel5 , firstLevel6: false , firstLevel7: false,firstLevel8 : false, firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
   }
   // re
-  const openBtn6 = () => {
-    setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: !isOpen.firstLevel6 , firstLevel7: false , firstLevel8 : false, firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
-  }
+  // const openBtn6 = () => {
+  //   setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: !isOpen.firstLevel6 , firstLevel7: false , firstLevel8 : false, firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
+  // }
   // fina
-  const openBtn7 = () => {
-    setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: true , firstLevel7: !isOpen.firstLevel7 , firstLevel8 : false, firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
-  }
+  // const openBtn7 = () => {
+  //   setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: true , firstLevel7: !isOpen.firstLevel7 , firstLevel8 : false, firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
+  // }
   // over
-  const openBtn8 = () => {
-    setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: true , firstLevel7: true , firstLevel8 : !isOpen.firstLevel8 , firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
-  }
+  // const openBtn8 = () => {
+  //   setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: true , firstLevel7: true , firstLevel8 : !isOpen.firstLevel8 , firstLevel9 : false ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
+  // }
   // re
   const openBtn9 = () => {
     setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: false , firstLevel7: false , firstLevel8 : false, firstLevel9 : true ,firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false})
@@ -125,7 +125,7 @@ const Sidebar = () => {
       {/* all-list */}
       <ul className="navbar-nav ">
         {/* dashboard */}
-        <li className="nav-item mt-4 px-3">
+        <li className="nav-item mt-4 ">
           <NavLink
             className={({ isActive }) =>
               isActive
@@ -134,7 +134,7 @@ const Sidebar = () => {
             }
             to="/dashboard"
           >
-            <Dashboardicon />
+            <Dashboardicon  style={{marginLeft: "25px"}}/>
 
             <span className="mx-2">Dashboard</span>
           </NavLink>

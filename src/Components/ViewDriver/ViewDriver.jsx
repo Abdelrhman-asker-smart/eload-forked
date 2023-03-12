@@ -1,5 +1,5 @@
 import React from "react";
-import Drivericon from "../../icons/Driver-icon.svg";
+// import Drivericon from "../../icons/Driver-icon.svg";
 // import Dr2 from '../../icons/download 1.svg'
 import { ReactComponent as Dr2 } from "../../icons/download 1.svg";
 // import { ReactComponent as User } from '../../icons/user-icon.png';
@@ -52,7 +52,7 @@ const ViewDriver = () => {
                   <span>7 Shipments</span>
                 </div>
                 <div className="data-card">
-                  <a href="#" className="btn-data-card">
+                  <a href="/#"  className="btn-data-card">
                     View All
                   </a>
                 </div>

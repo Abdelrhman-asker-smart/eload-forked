@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "./AddMeasurements.css";
 

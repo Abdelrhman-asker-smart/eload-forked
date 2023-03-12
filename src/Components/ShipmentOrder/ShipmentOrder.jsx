@@ -1,6 +1,6 @@
 import React from 'react'
 import './ShipmentOrder.css';
-import Code from '../../icons/code.png';
+// import Code from '../../icons/code.png';
 
 const ShipmentOrder = () => {
   return (

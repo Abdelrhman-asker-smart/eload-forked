@@ -1,15 +1,15 @@
 import React from "react";
-import { Routes, Route, Router, NavLink } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 // import Home from "../Home/Home";
-import Login from "../Login/Login";
-import { useCookies } from "react-cookie";
+// import Login from "../Login/Login";
+// import { useCookies } from "react-cookie";
 import Navbar from "../Navbar/Navbar";
 // import { useState, useEffect } from "react";
 // import { useCookies } from "react-cookie";
 import Dashbord from "../Dashboard/Dashbord";
 import User from "../User/User"
 import Sidebar from "../Sidebar/Sidebar";
-import Logo from './Eloadlogo.png'
+// import Logo from './Eloadlogo.png'
 import Shipments from '../Shipments/Shipments.jsx'
 import AddAddress from '../AddAddress/AddAddress.jsx';
 import GroupList from '../GroupList/GroupList.jsx';
@@ -61,7 +61,7 @@ import ShipmentOrder from "../ShipmentOrder/ShipmentOrder";
 
 
 const Layout = ({ setLogin }) => {
-const [cookie, setCookie, removeToken] = useCookies([""]);
+// const [cookie, setCookie, removeToken] = useCookies([""]);
 // const routes =[{
 //   name:'/dashboard',component:<Dashbord />,
 //   name:'/Shipments',component:<Shipments />,

@@ -77,7 +77,7 @@ const CitiesList = () => {
     };
 
     allCity();
-  }, []);
+  });
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
   };

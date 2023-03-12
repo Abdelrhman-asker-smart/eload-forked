@@ -9,7 +9,7 @@ import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from 'react-select';
 import "./Shipments.css";
 // trucks
-import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
+// import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
 
 
 

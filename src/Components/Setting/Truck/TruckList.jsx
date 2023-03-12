@@ -168,7 +168,7 @@ const Truck = () => {
     return {
       id: item.id,
       name: item.name,
-      image: <img src={item.image}/>,
+      image: <img src={item.image} alt="truck"/>,
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });

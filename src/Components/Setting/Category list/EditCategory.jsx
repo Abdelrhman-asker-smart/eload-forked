@@ -29,38 +29,13 @@ const EditCategory = () => {
     findName();
   }, []);
 
-  const edit = async () => {
-    console.log(name, "name");
+  const edit = () => {
+    // console.log(name, "name");
     // console.log(cookie.eload_token, "token");
     // console.log(id, "id");
 
     var urlencoded = new URLSearchParams();
     urlencoded.append("name", name);
-
-    console.log(urlencoded, "urlencoded from reducer");
-    // try {
-    //   const response = await axios.put(
-    //     `https://dev.eload.smart.sa/api/v1/categories/${id}`,
-    //     urlencoded,
-    //     {
-    //       headers: {
-    //         Accept: "application/json",
-    //         Authorization: `Bearer ${cookie.eload_token}`,
-    //         "api-key":
-    //           "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-    //       },
-    //     }
-    //   );
-    //   const data = await response.data;
-    //   // if(data.is_success === true){
-    //   //   setName()
-    //   // }
-    //   console.log(data, "data");
-    //   return data;
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // console.log(id, "id");
 
     dispatch(
       editCategory({
@@ -70,15 +45,11 @@ const EditCategory = () => {
       })
     )
       .then((res) => {
-        console.log(res, "response from api");
-        // const data = res.payload.data;
-        // setName(data);
+        console.log(res);
       })
       .catch((e) => {
         console.log(e);
       });
-
-    // console.log(name);
   };
 
   const EditCategoryUpdate = async (id) => {
@@ -159,14 +130,14 @@ const EditCategory = () => {
               style={{ borderRadius: "25px", width: "80%" }}
             >
               <div className="modal-header border-0 justify-content-end">
-                {/* <NavLink to="/categorylist"> */}
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-                {/* </NavLink> */}
+                <NavLink to="/categorylist">
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center my-3 "

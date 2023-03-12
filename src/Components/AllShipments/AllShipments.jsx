@@ -2,7 +2,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Select from 'react-select';
+// import Select from 'react-select';
 // import { DateRangePicker } from 'rsuite';
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
@@ -225,21 +225,21 @@ const AllShipments = () => {
   }, []);
 
       // select-options
-      const [isClearable, setIsClearable] = useState(true);
-      const [isSearchable, setIsSearchable] = useState(true);
-      const [isDisabled, setIsDisabled] = useState(false);
-      const [isLoading, setIsLoading] = useState(false);
-      const [isRtl, setIsRtl] = useState(false);
+      // const [isClearable, setIsClearable] = useState(true);
+      // const [isSearchable, setIsSearchable] = useState(true);
+      // const [isDisabled, setIsDisabled] = useState(false);
+      // const [isLoading, setIsLoading] = useState(false);
+      // const [isRtl, setIsRtl] = useState(false);
     
-      {/* shipment-select */}
-       const shipmentOptions= [
-        { value: 'Reham', label: 'Reham' },
-        { value: 'Eman', label: 'Eman' },
-        { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
-        { value: 'Abdullah ', label: 'Abdullah ' },
-        { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
-        { value: 'btnadd', label: "ffsf" },
-      ];
+      /* shipment-select */
+      //  const shipmentOptions= [
+      //   { value: 'Reham', label: 'Reham' },
+      //   { value: 'Eman', label: 'Eman' },
+      //   { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+      //   { value: 'Abdullah ', label: 'Abdullah ' },
+      //   { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+      //   { value: 'btnadd', label: "ffsf" },
+      // ];
     // const [datatable, setDatatable] = React.useState({
     //   columns: [
     //     {

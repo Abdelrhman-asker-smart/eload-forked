@@ -1,5 +1,4 @@
 import React from "react";
-import $ from "jquery";
 import "./rewards.css";
 import { useState } from "react";
 import CustomSelect from '../CustomeSelect/CustomeSelect';

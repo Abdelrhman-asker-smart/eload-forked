@@ -4,8 +4,8 @@ import axios from "axios";
 // api().fetchTeamData
 export const editCategory = createAsyncThunk(
   "category/editCategory",
-  async (token, id, urlencoded) => {
-    // console.log(token.token, "from reducer");
+  async ({ token, id, urlencoded }) => {
+    console.log(token, "from reducer");
     console.log(id, "id from reducer");
     console.log(urlencoded, "urlencoded from reducer");
     try {
@@ -15,7 +15,7 @@ export const editCategory = createAsyncThunk(
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${token.token}`,
+            Authorization: `Bearer ${token}`,
             "api-key":
               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
           },

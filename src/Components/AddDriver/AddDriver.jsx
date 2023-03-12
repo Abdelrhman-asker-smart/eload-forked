@@ -20,15 +20,14 @@ const AddDriver = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRtl, setIsRtl] = useState(false);
   
-    {/* country-select */}
+   
      const CountrySelect= [
       { value: 'Reham', label: 'Reham' },
       { value: 'Eman', label: 'Eman' },
-      { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
       { value: 'Abdullah ', label: 'Abdullah ' },
       { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
     ];
-        {/* truck-select */}
+      
         const TruckSelect= [
           { value: 'Reham', label: 'Reham' },
           { value: 'Eman', label: 'Eman' },

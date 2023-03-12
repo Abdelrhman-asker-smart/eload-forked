@@ -21,10 +21,8 @@ const AddAddress = () => {
       ];
             {/* type-select */}
             const typeOptions= [
-              { value: 'My warehouses', label: 'My warehouses' },
-              { value: 'Othaim', label: 'Othaim' },
-              { value: 'Noon', label: 'Noon' },
-              { value: 'Shogair', label: 'Shogair' },
+              { value: 'Pick up', label: 'Pick up' },
+              { value: 'Drop off', label: 'Drop off' },
             ];
            {/* city-select */}
            const cityOptions= [
@@ -85,7 +83,7 @@ const AddAddress = () => {
                   <Select
                   classNamePrefix="select"
                   className="basic-multi-select"
-                  // isMulti
+                  isMulti
                   isDisabled={isDisabled}
                   isLoading={isLoading}
                   isClearable={isClearable}

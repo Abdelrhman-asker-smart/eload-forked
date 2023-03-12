@@ -30,7 +30,7 @@ const AddnewGroup = () => {
       );
 
       setName("");
-      //   console.log(reponse);
+        console.log(reponse);
     } catch (e) {
       console.log(e);
     }

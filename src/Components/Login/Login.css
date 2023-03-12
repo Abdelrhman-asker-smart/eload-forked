@@ -14,5 +14,7 @@
 .login .btn-outline-info{
     color: #fff !important;
     font-weight: 600;
+    border: 0 !important;
+    border-radius: 20px !important;
     width: 15%;
 }

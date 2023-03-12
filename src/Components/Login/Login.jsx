@@ -125,7 +125,7 @@ export default function Login({ decodeData }) {
               {" "}
               {loginFlag ? (
                 <>
-                  <div className="spinner">
+                  <div className="spinner text-center">
                     <div className="rect1"></div>
                     <div className="rect2"></div>
                     <div className="rect3"></div>
