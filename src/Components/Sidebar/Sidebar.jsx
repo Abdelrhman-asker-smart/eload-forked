@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import {NavLink } from "react-router-dom";
-import Logo from "./logo-eload.svg";
+import Logo from "./Eloadlogo.png";
 import {
   Accordion,
   AccordionBody,
