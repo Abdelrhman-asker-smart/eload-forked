@@ -13,9 +13,10 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 
 
 import { useDispatch, useSelector } from "react-redux";
+import { fetchCategoryList } from "../../../redux/categoryListSlice";
 
 import "./Category-List.css";
-import { fetchCategoryList } from "../../../redux/categoryListSlice";
+
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {

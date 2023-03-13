@@ -164,6 +164,7 @@ const Sidebar = () => {
                         ? "activeside d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
+                    style={{marginLeft: "20px"}}
                     to="/Shipments"
                   >
 
@@ -200,6 +201,7 @@ const Sidebar = () => {
                         ? "activeside  d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
+                    style={{marginLeft: "20px"}}
                     to="/allshipments"
                   >
                     <AllShippments className="mx-2"/>
@@ -240,6 +242,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/Serviceproviders/driver"
                         >
                           <Alldrivers />
@@ -251,6 +254,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/Serviceproviders/adddriver"
                         >
                           <Adddrivers />
@@ -277,6 +281,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/Serviceproviders/partners"
                         >
                           <Allpartners />
@@ -289,6 +294,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="addpartners"
                         >
                           <Addpartners />
@@ -319,6 +325,7 @@ const Sidebar = () => {
                         ? "activeside d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
+                    style={{marginLeft: "20px"}}
                     to="/allshippers"
                   >
                     <svg
@@ -355,6 +362,7 @@ const Sidebar = () => {
                         ? "activeside d-flex justify-content-start align-items-center"
                         : "d-flex justify-content-start align-items-center"
                     }
+                    style={{marginLeft: "20px"}}
                     to="/addshippers"
                   >
                     <Addshipper className="mx-2"/>
@@ -517,6 +525,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/categorylist"
                         >
                           <ListIcon />
@@ -529,6 +538,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/catogry-add"
                         >
                           <AddIcon/>
@@ -556,6 +566,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/trucklist"
                         >
                           <ListIcon />
@@ -568,6 +579,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="addtruck"
                         >
                           <AddIcon/>
@@ -596,6 +608,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="shipmentlist"
                         >
                           <ListIcon />
@@ -608,6 +621,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="addshipment"
                         >
                           <AddIcon/>
@@ -635,6 +649,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/measurements"
                         >
                           <ListIcon />
@@ -646,6 +661,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="addmeasurements"
                         >
                           <AddIcon/>
@@ -674,6 +690,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/commodities"
                         >
                           <ListIcon />
@@ -686,6 +703,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/addcommodities"
                         >
                           <AddIcon/>
@@ -713,6 +731,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/countrieslist"
                         >
                           <ListIcon />
@@ -752,6 +771,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/stateslist"
                         >
                           <ListIcon />
@@ -791,6 +811,7 @@ const Sidebar = () => {
                               ? "activeside d-flex justify-content-start align-items-center"
                               : "d-flex justify-content-start align-items-center"
                           }
+                          style={{marginLeft: "20px"}}
                           to="/citieslist"
                         >
                           <ListIcon />

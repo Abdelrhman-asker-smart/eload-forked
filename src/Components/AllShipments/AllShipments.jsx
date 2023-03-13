@@ -2,8 +2,10 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 // import Select from 'react-select';
 // import { DateRangePicker } from 'rsuite';
+import { NavLink } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -185,7 +187,7 @@ const AllShipments = () => {
   const data = shipmentList.map((item, index) => {
     return {
       id: item.id,
-      code: item.id,
+      code:<NavLink to="/allorders"> {item.id }</NavLink> ,
       picup: item.from_city.name,
       dropoff: item.to_city.name,
       shipmenttype: item.shipment_type.name,

@@ -134,7 +134,7 @@ const EditTruck = () => {
               className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div className="modal-header border-0">
+              <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/trucklist">
                 <button
                   type="button"

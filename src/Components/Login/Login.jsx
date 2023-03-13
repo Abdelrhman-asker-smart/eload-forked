@@ -119,7 +119,7 @@ export default function Login({ decodeData }) {
 
             <button
               type="submit"
-              style={{ padding: "10px 0" }}
+              style={{ padding: "10px 20px" }}
               className="btn-submit my-2 btn btn-outline-info"
             >
               {" "}

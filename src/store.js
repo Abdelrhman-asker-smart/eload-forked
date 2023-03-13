@@ -1,6 +1,12 @@
 import categoryGetReducer from "./redux/categoryListSlice";
 import commoditGetReducer from "./redux/listCommodities";
 import TruckGetReducer from './redux/listTruck';
+import ShipmentGetReducer from './redux/listShipments';
+import UOMGetReducer from './redux/UOMlist';
+import countryGetReducer from './redux/CountryList';
+import cityGetReducer from './redux/CityListSlice';
+import stateGetReducer from './redux/StateListSlice';
+
 
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -23,6 +29,15 @@ const rootReducer = combineReducers({
   categoryList: categoryGetReducer,
   commoditiesList: commoditGetReducer,
   TruckList: TruckGetReducer,
+  ShipmentList: ShipmentGetReducer,
+  UOMList: UOMGetReducer,
+  countryList: countryGetReducer,
+  cityList: cityGetReducer,
+  stateList: stateGetReducer,
+
+
+
+
 
 
 });

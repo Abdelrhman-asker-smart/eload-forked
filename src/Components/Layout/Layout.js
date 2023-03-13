@@ -147,12 +147,12 @@ const Layout = ({ setLogin }) => {
 
             <Route path="/shipmentlist" element={<ShipmentTypes/>} />
             <Route path="/addshipment" element={<AddShipment/>} />
-            <Route path="/editshipment" element={<Editshipment/>} />
+            <Route path="/editshipment/:id" element={<Editshipment/>} />
 
             
             <Route path="/measurements" element={<Measurements/>} />
             <Route path="/addmeasurements" element={<AddMeasurements/>} />
-            <Route path="/editmeasurements" element={<EditMeasurements/>} />
+            <Route path="/editmeasurements/:id" element={<EditMeasurements/>} />
 
             <Route path="/commodities" element={<Commodities/>} />
             <Route path="/addcommodities" element={<Addcommodities/>} />

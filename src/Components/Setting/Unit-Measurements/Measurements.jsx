@@ -10,6 +10,9 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUOMList } from "../../../redux/UOMlist";
+
 import "./Measurements.css"
 
 // model
@@ -82,7 +85,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btn
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-    <NavLink to="/editmeasurements">
+    <NavLink to={`/editmeasurements/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -158,6 +161,7 @@ const Measurements = () => {
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
+  const dispatch = useDispatch();
 
   const data = measurmentList.map((item, index) => {
     return {
@@ -168,32 +172,42 @@ const Measurements = () => {
   });
 
   useEffect(() => {
-    const allMeasurment = async () => {
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          "https://dev.eload.smart.sa/api/v1/uom",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
 
-        const data = response.data.data;
-        // console.log(data);
-        setMeasurmentList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    dispatch(fetchUOMList({ token: cookie.eload_token }))
+    .then((res) => {
+      console.log(res, "response from api");
+      const data = res.payload.data;
+      setMeasurmentList(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
-    allMeasurment();
+
+    // const allMeasurment = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       "https://dev.eload.smart.sa/api/v1/uom",
+    //       {
+    //         headers: {
+    //           Accept: "application/json",
+    //           Authorization: `Bearer ${cookie.eload_token}`,
+    //           "api-key":
+    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //         },
+    //       }
+    //     );
+
+    //     const data = response.data.data;
+    //     // console.log(data);
+    //     setMeasurmentList(data);
+    //     return data;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
+
+    // allMeasurment();
   }, [reload]);
 
   const handleExportRows = (rows) => {

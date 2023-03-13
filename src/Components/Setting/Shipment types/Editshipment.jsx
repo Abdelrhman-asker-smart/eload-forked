@@ -1,8 +1,55 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+
+import { useParams } from "react-router-dom";
 import "./Editshipment.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  categoryEditReducer,
+  editShipment,
+} from "../../../redux/editShipment";
 
 const Editshipment = () => {
+  const { list, status } = useSelector((state) => state.ShipmentList);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [name, setName] = useState("");
+  const [cookie] = useCookies(["eload_token"]);
+  // console.log(id, "id");
+
+  useEffect(() => {
+    const findName = () => {
+      let item = list.find((item, _) => item.id == id);
+      // console.log(item);
+      setName(item.name);
+    };
+    findName();
+  }, []);
+  const edit = () => {
+    // console.log(name, "name");
+    // console.log(cookie.eload_token, "token");
+    // console.log(id, "id");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("name", name);
+
+    dispatch(
+      editShipment({
+        token: cookie.eload_token,
+        id,
+        urlencoded,
+      })
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <div className="editshipment container my-4">
       <div className="head container-fluid mb-4 d-flex">
@@ -27,10 +74,10 @@ const Editshipment = () => {
               type="text"
               placeholder="name"
               name="name"
-              // value={name}
-              // onChange={(e) => {
-              //   setName(e.target.value);
-              // }}
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -40,7 +87,7 @@ const Editshipment = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
-            //   onClick={recordShippment}
+            onClick={() => edit()}
           >
             Save
           </button>
@@ -59,7 +106,7 @@ const Editshipment = () => {
               className="modal-content"
               style={{ borderRadius: "25px", width: "80%" }}
             >
-              <div className="modal-header border-0">
+              <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/shipmentlist">
                   <button
                     type="button"

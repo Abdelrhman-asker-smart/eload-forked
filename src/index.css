@@ -40,6 +40,8 @@ input
 
 .spinner > div {
   background-color: #fff;
+  /* margin-left: 10px;
+  padding-right: 10px; */
   height: 50%;
   width: 6px;
   display: inline-block;
@@ -149,10 +151,13 @@ input
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root{
   background-color: #0B2339 !important;
+
   border-radius: 20px !important;
+
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover{
   background-color: #0B2339 !important;
+  
   border-radius: 20px !important;
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root.Mui-disabled{

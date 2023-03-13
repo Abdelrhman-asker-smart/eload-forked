@@ -7,6 +7,9 @@ import "./ShipmentTypes.css";
 
 import "react-data-table-component-extensions/dist/index.css";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchShipmentList } from "../../../redux/listShipments";
+
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -86,7 +89,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-    <NavLink to="/addshipment">
+    <NavLink to={`/editshipment/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -162,6 +165,7 @@ const ShipmentTypes = () => {
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
+  const dispatch = useDispatch();
   const data = shipmentList.map((item, index) => {
     return {
       id: item.id,
@@ -172,32 +176,40 @@ const ShipmentTypes = () => {
 
 
   useEffect(() => {
-    const allshipment = async () => {
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          "https://dev.eload.smart.sa/api/v1/shipment_types",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
+    dispatch(fetchShipmentList({ token: cookie.eload_token }))
+    .then((res) => {
+      console.log(res, "response from api");
+      const data = res.payload.data;
+      setShipmentList(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
-        const data = response.data.data;
-        console.log(data);
-        setShipmentList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    // const allshipment = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       "https://dev.eload.smart.sa/api/v1/shipment_types",
+    //       {
+    //         headers: {
+    //           Accept: "application/json",
+    //           Authorization: `Bearer ${cookie.eload_token}`,
+    //           "api-key":
+    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+    //         },
+    //       }
+    //     );
 
-    allshipment();
+    //     const data = response.data.data;
+    //     console.log(data);
+    //     setShipmentList(data);
+    //     return data;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
+
+    // allshipment();
   }, [reload]);
 
   const handleExportRows = (rows) => {

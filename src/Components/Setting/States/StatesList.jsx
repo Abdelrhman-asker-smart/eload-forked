@@ -2,12 +2,18 @@ import React from 'react'
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { useCookies } from "react-cookie";
+
+
+// import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStateList } from "../../../redux/StateListSlice";
 
 import "./StatesList.css"
 
@@ -16,12 +22,12 @@ const columns = [
   {
     accessorKey: "id",
     header: "ID",
-    size: 40,
+    size: 100,
   },
   {
     accessorKey: "name",
     header: "Name",
-    size: 400,
+    size: 100,
   },
 
 ];
@@ -40,6 +46,7 @@ const csvOptions = {
 const csvExporter = new ExportToCsv(csvOptions);
 
 const StatesList = () => {
+  const dispatch = useDispatch();
   const [stateList, setstateList] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
   const data = stateList.map((item, index) => {
@@ -50,33 +57,17 @@ const StatesList = () => {
   });
 
   useEffect(() => {
-    const allState = async () => {
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          "https://dev.eload.smart.sa/api/v1/states",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        const data = response.data.data;
-        // console.log(data);
-        setstateList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    allState();
-  }, []);
+    dispatch(fetchStateList({ token: cookie.eload_token }))
+    .then((res) => {
+      console.log(res, "response from api");
+      const data = res.payload.data;
+      setstateList(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  });
+  
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
   };
