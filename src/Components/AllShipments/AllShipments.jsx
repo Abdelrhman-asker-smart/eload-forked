@@ -187,7 +187,7 @@ const AllShipments = () => {
   const data = shipmentList.map((item, index) => {
     return {
       id: item.id,
-      code:<NavLink to="/allorders"> {item.id }</NavLink> ,
+      code: item.id ,
       picup: item.from_city.name,
       dropoff: item.to_city.name,
       shipmenttype: item.shipment_type.name,
