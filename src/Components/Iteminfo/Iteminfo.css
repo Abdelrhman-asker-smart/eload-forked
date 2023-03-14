@@ -1,3 +1,6 @@
+.iteminfo .row{
+    justify-content: space-between;
+}
 .iteminfo h3{
     color: #0E324A;
     font-size: 18px;
@@ -12,12 +15,12 @@
     border: 1px solid #B2B2B2;
     border-radius: 20px;
     color: #000;
-    Width: 75%;
+    Width: 98%;
     height: 40px;
 }
-.iteminfo .small-input{
+/* .iteminfo .small-input{
     Width: 80%;
-}
+} */
 .iteminfo .input-box::placeholder{
     color: #B2B2B2;
 }

@@ -105,15 +105,18 @@ const AddShipment = () => {
                 </NavLink>
               </div>
               <div
-                className="modal-body d-flex text-center"
-                style={{ marginLeft: "12%" }}
+                className="modal-body d-flex text-center "
+                style={{ marginLeft: "15%" , marginTop: "-25px"}}
               >
-                <h3 className="my-4 mx-4" style={{ fontSize: "40px" }}>
+                <h3
+                  className="my-4 mx-4"
+                  style={{ fontSize: "50px", fontWeight: "500" }}
+                >
                   Save
                 </h3>
                 <svg
-                  width="105"
-                  height="105"
+                  width="80"
+                  height="80"
                   viewBox="0 0 105 105"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"

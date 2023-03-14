@@ -59,14 +59,14 @@ const StatesList = () => {
   useEffect(() => {
     dispatch(fetchStateList({ token: cookie.eload_token }))
     .then((res) => {
-      console.log(res, "response from api");
+      // console.log(res, "response from api");
       const data = res.payload.data;
       setstateList(data);
     })
     .catch((e) => {
       console.log(e);
     });
-  });
+  },[]);
   
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));

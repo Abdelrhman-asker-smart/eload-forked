@@ -29,11 +29,9 @@ const AddDriver = () => {
     ];
       
         const TruckSelect= [
-          { value: 'Reham', label: 'Reham' },
-          { value: 'Eman', label: 'Eman' },
-          { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
-          { value: 'Abdullah ', label: 'Abdullah ' },
-          { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+          { value: 'Truck1', label:<div><Vector className='mx-3'/> Truck1</div> },
+          { value: 'Truck2', label:<div><Vector className='mx-3'/> Truck2</div> },
+          { value: 'Truck3', label:<div><Vector className='mx-3'/> Truck3</div> },
         ];
 
   return (

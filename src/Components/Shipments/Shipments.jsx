@@ -1,6 +1,8 @@
 import React from "react";
+import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
 // import  $  from 'jquery';
@@ -9,7 +11,7 @@ import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from 'react-select';
 import "./Shipments.css";
 // trucks
-// import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
+
 
 
 
@@ -22,6 +24,38 @@ const Btnadd =() =>{
 }
 
 const Shipments = () => {
+  // const [shipperList, setShipperList] = useState([]);
+  // const [cookie] = useCookies(["eload_token"]);
+  // useEffect(() => {
+  //   const allshipper = async () => {
+
+  //     try {
+  //       const response = await axios.get(
+
+
+  //         "https://dev.eload.smart.sa/api/v1/groups",
+  //         {
+  //           headers: {
+  //             Accept: "application/json",
+  //             Authorization: `Bearer ${cookie.eload_token}`,
+
+  //             "api-key":
+  //               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+  //           },
+  //         }
+  //       );
+
+  //       const data = response.data.data;
+  //       console.log(data);
+  //       setShipperList(data);
+  //       return data;
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+
+  //   allshipper();
+  // }, []);
 
   const [isACtive, setIsActive] = useState({ pickup: false, dropoff: false, details: false });
 
@@ -77,13 +111,7 @@ const Shipments = () => {
         { value: 'Othaim', label: 'Othaim', isDisabled: true  },
         { value: 'Noon', label: 'Noon', isDisabled: true  },
     ];
-    {/* truck-select */}
-    const truckOptions= [
-      { value: 'Container', label: "<Truck1/>Container" },
-      { value: 'Flatbed', label: 'Riyadh Whse' },
-      { value: 'Dry Van', label: 'My Main Whse' },
-      { value: 'Lowboy trailer', label: 'Abuzaid ' },
-    ];    
+   
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -97,9 +125,10 @@ const Shipments = () => {
               id="flexSwitchCheckDefault"
               onChange={()=>setIsChecked( !ischeck)}
             />
-            <label className="form-check-label my-1" htmlFor="flexSwitchCheckDefault" style={{fontWeight:"500"}}>
+            <label className="form-check-label my-1 position-relative" htmlFor="flexSwitchCheckDefault" style={{fontWeight:"500"}}>
               Switch to planned shipments <span style={{color:"red" , fontWeight:"500"}}>?</span>
             </label>
+            <p className="position-absolute notegray">* you can choose many shipments </p>
           </div>
                 {ischeck &&
                     <div className="steps">
@@ -244,7 +273,7 @@ const Shipments = () => {
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
               <button>
-                <i className="fa-solid fa-plus me-3"></i> Add New Address
+                <i className="fa-solid fa-plus"></i> Add New Address
               </button>
             </NavLink>
           </div>
@@ -278,10 +307,13 @@ const Shipments = () => {
             </label>
             <input type="time"></input>
           </div>
+          <div className="input mx-3 mt-4">
+            <input type="time"></input>
+          </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
               <button>
-                <i className="fa-solid fa-plus me-3"></i> Add New Address
+                <i className="fa-solid fa-plus"></i> Add New Address
               </button>
             </NavLink>
           </div>
@@ -317,7 +349,7 @@ const Shipments = () => {
               id="add"
               onClick={() => setInputs([...input, ""])}
             >
-              <i className="fa-solid fa-plus me-3"></i> Add truck
+              <i className="fa-solid fa-plus"></i> Add truck
             </button>
           </div>
           <div className="right-btn">

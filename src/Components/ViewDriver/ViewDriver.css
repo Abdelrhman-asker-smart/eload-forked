@@ -20,6 +20,11 @@
     font-weight: 600;
     color: #244664;
 }
+.header-card .head-card-text{
+    font-weight: 500;
+    font-size: 28px;
+    color: #244664;
+}
 
 .header-card .data-card 
 {

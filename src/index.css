@@ -151,7 +151,7 @@ input
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root{
   background-color: #0B2339 !important;
-
+  font-size: 0.7rem !important;
   border-radius: 20px !important;
 
 }
@@ -165,6 +165,7 @@ input
   
   border-radius: 20px !important;
 }
+
 .css-1hw9j7s.Mui-disabled {
   color: #fff !important;
 }
@@ -172,6 +173,7 @@ input
 .css-sghohy-MuiButtonBase-root-MuiButton-root.Mui-disabled{
   color: #fff !important;
 }
+
 /* select-dropdown */
 .css-13cymwt-control ,
 .css-t3ipsp-control{
@@ -181,4 +183,12 @@ input
   z-index: 999 !important;
   border-radius: 20px !important;
   padding: 10px 0 !important;
+}
+
+/* model */
+.modal{
+  margin-left: 10rem;
+}
+.modal svg{
+  margin-top: 15px;
 }

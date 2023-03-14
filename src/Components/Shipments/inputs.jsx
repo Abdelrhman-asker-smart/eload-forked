@@ -29,10 +29,10 @@ function Inputs() {
 
       {/* truck-select */}
       const truckOptions= [
-        { value: 'Container', label: <Truck1/> },
-        { value: 'Flatbed', label: 'Riyadh Whse' },
-        { value: 'Dry Van', label: 'My Main Whse' },
-        { value: 'Lowboy trailer', label: 'Abuzaid ' },
+        { value: 'Container', label:  <div><Truck1 className="mx-1"/>Container</div> },
+        { value: 'Flatbed', label: <div><Truck1 className="mx-1"/>Flatbed</div>  },
+        { value: 'Dry Van', label: <div><Truck1 className="mx-1"/>Dry Van</div>  },
+        { value: 'Lowboy trailer', label: <div><Truck1 className="mx-1"/>Lowboy</div>  },
       ]; 
       {/* shipmentType-select */}
       const shipmentOptions= [
@@ -106,6 +106,12 @@ function Inputs() {
           </label>
           <input type="text" placeholder="i,e,2000" />
         </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Description
+          </label>
+          <input type="text" placeholder="text here" />
+        </div>
       </div>
 
       <div className="inputs row">
@@ -125,7 +131,7 @@ function Inputs() {
         </div>
         <div className="input col-3">
           <label htmlFor="address">
-            Other Documentation<span>*</span>
+            Other Documentation
           </label>
           <div className="input-group ">
             <input

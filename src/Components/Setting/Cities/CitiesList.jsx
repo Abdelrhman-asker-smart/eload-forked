@@ -58,14 +58,14 @@ const CitiesList = () => {
   useEffect(() => {
     dispatch(fetchCityList({ token: cookie.eload_token }))
     .then((res) => {
-      console.log(res, "response from api");
+      // console.log(res, "response from api");
       const data = res.payload.data;
       setcityList(data);
     })
     .catch((e) => {
       console.log(e);
     });
-  });
+  },[]);
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
   };

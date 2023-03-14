@@ -1,6 +1,6 @@
 import React from 'react'
 import './ShipmentOrder.css';
-// import Code from '../../icons/code.png';
+import code from '../../icons/code.png';
 
 const ShipmentOrder = () => {
   return (
@@ -8,8 +8,8 @@ const ShipmentOrder = () => {
             <div className="orderhead">
                     <div className="text-head">Shipment: ELD00027</div>
                     <div className="img-head">
-                        {/* <Code/> */}
-                        img
+                        <img src={code} alt=""/>
+                        {/* img */}
                     </div>
             </div>
             <hr/>

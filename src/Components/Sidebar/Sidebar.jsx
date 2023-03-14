@@ -152,7 +152,7 @@ const Sidebar = () => {
                 <Shippments className={isOpen.firstLevel1 ? "svgicon mx-2" : " mx-2"} />
 
 
-                <h3 className={`accordion-title`}>Shipments</h3>
+                <h3 className={`accordion-title mt-1`}>Shipments</h3>
                 <Arrow className={isOpen.firstLevel1 ? "downarrow" : " rightarrow"} />
               </AccordionHeader>
 
@@ -218,7 +218,7 @@ const Sidebar = () => {
                 
                 <Serviceprovediers className={isOpen.firstLevel2 ? "svgicon mx-2" : " mx-2"} />
 
-                <h3 className={`accordion-title`}>Service providers</h3>
+                <h3 className={`accordion-title mt-1`}>Service providers</h3>
                 <Arrow className={isOpen.firstLevel2 ? "downarrow" : "rightarrow"} />
               </AccordionHeader>
 
@@ -230,7 +230,7 @@ const Sidebar = () => {
                       
                       <Freelancer className={isOpen.firstLevel3 ? "svgicon" : ""} />
 
-                      <h4 className={`accordion-title`}>Freelance drivers</h4>
+                      <h4 className={`accordion-title mt-1`}>Freelance drivers</h4>
                       <Arrow className={isOpen.firstLevel3 ? "downarrow" : "rightarrow"} />
                     </AccordionHeader>
 
@@ -269,7 +269,7 @@ const Sidebar = () => {
                      
                       <Partners className={isOpen.firstLevel4 ? "svgicon" : ""}/>
 
-                      <h4 className={`accordion-title`}> partners</h4>
+                      <h4 className={`accordion-title mt-1`}> partners</h4>
                       <Arrow className={isOpen.firstLevel4 ? "downarrow" : "rightarrow"} />
                     </AccordionHeader>
 
@@ -313,7 +313,7 @@ const Sidebar = () => {
                
                 <Shippers className={isOpen.firstLevel5 ? "svgicon mx-2" : " mx-2"}  />
 
-                <h3 className={`accordion-title`}>Shippers</h3>
+                <h3 className={`accordion-title mt-1`}>Shippers</h3>
                 <Arrow className={isOpen.firstLevel5 ? "downarrow" : "rightarrow"} />
               </AccordionHeader>
 
@@ -372,103 +372,7 @@ const Sidebar = () => {
                 </div>
               </AccordionBody>
             </AccordionItem>
-            {/* Reports-item */}
-            {/* <AccordionItem>
-              <AccordionHeader className={isOpen.firstLevel6 ? "activeside d-flex bg-inside" : " d-flex"} onClick={openBtn6}>
-                
-                <svg className={isOpen.firstLevel6 ? "svgicon mx-2" : " mx-2"} width="22" height="22" viewBox="0 0 22 22" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.4881 14.0394V16.233C18.4881 17.9265 17.1105 19.3041 15.417 19.3041H6.6424C4.9489 19.3041 3.57129 17.9265 3.57129 16.233V15.6627C3.57129 14.2851 4.69444 13.1619 6.07205 13.1619H17.6107C18.0933 13.1619 18.4881 13.5568 18.4881 14.0394Z" fill="currentColor"/>
-                <path d="M14.1008 1.75493H7.9586C4.44875 1.75493 3.57129 2.63239 3.57129 6.14224V12.7934C4.23816 12.2055 5.11562 11.8457 6.07205 11.8457H17.6107C18.0933 11.8457 18.4881 11.4509 18.4881 10.9683V6.14224C18.4881 2.63239 17.6107 1.75493 14.1008 1.75493ZM11.9072 9.43271H7.51987C7.16011 9.43271 6.86177 9.13438 6.86177 8.77462C6.86177 8.41486 7.16011 8.11652 7.51987 8.11652H11.9072C12.2669 8.11652 12.5653 8.41486 12.5653 8.77462C12.5653 9.13438 12.2669 9.43271 11.9072 9.43271ZM14.5396 6.3616H7.51987C7.16011 6.3616 6.86177 6.06326 6.86177 5.7035C6.86177 5.34375 7.16011 5.04541 7.51987 5.04541H14.5396C14.8993 5.04541 15.1977 5.34375 15.1977 5.7035C15.1977 6.06326 14.8993 6.3616 14.5396 6.3616Z" fill="currentColor"/>
-                </svg>
 
-                <h3 className={`accordion-title`}>Reports</h3>
-                <Arrow className={isOpen.firstLevel6 ? "downarrow" : "rightarrow"} />
-              </AccordionHeader>
-
-              <AccordionBody className="bg-inside">
-                <div className="accordion-body">
-                  <AccordionItem >
-                  <NavLink
-                          className={({ isActive }) =>
-                            isActive
-                              ? "activeside d-flex justify-content-start align-items-center"
-                              : "d-flex justify-content-start align-items-center"
-                          }
-                          to="/overallreport"
-                        > 
-                              <AccordionHeader className={isOpen.firstLevel8 ? "activeside d-flex bg-inside" : " d-flex bg-inside"} onClick={openBtn8}>
-                            
-                            <svg className="mx-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.58 11.9999C15.58 13.9799 13.98 15.5799 12 15.5799C10.02 15.5799 8.42001 13.9799 8.42001 11.9999C8.42001 10.0199 10.02 8.41992 12 8.41992C13.98 8.41992 15.58 10.0199 15.58 11.9999Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 20.27C15.53 20.27 18.82 18.19 21.11 14.59C22.01 13.18 22.01 10.81 21.11 9.39997C18.82 5.79997 15.53 3.71997 12 3.71997C8.47 3.71997 5.18 5.79997 2.89 9.39997C1.99 10.81 1.99 13.18 2.89 14.59C5.18 18.19 8.47 20.27 12 20.27Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-
-                              <h4 className={`accordion-title`}>Overview</h4>
-                      
-                    </AccordionHeader>
-                        
-                          </NavLink>
-
-
-                    <AccordionBody>
-
-                    </AccordionBody>
-                  </AccordionItem>
-              
-
-                  <AccordionItem>
-                    <AccordionHeader className={isOpen.firstLevel7 ? "activeside d-flex bg-inside" : " d-flex bg-inside"}  onClick={openBtn7}>
-                   
-                      <svg
-                        width="26"
-                        height="19"
-                        viewBox="0 0 26 19"
-                        fill="#fff"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M16.5 9.50004C18.6861 9.50004 20.4584 7.72783 20.4584 5.54171C20.4584 3.35558 18.6861 1.58337 16.5 1.58337C14.3139 1.58337 12.5417 3.35558 12.5417 5.54171C12.5417 7.72783 14.3139 9.50004 16.5 9.50004Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M16.5 11.4791C12.5338 11.4791 9.30377 14.1391 9.30377 17.4166C9.30377 17.6383 9.47794 17.8125 9.69961 17.8125H23.3004C23.5221 17.8125 23.6963 17.6383 23.6963 17.4166C23.6963 14.1391 20.4663 11.4791 16.5 11.4791Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M6.99998 8.99996C8.61081 8.99996 9.91665 7.69412 9.91665 6.08329C9.91665 4.47246 8.61081 3.16663 6.99998 3.16663C5.38915 3.16663 4.08331 4.47246 4.08331 6.08329C4.08331 7.69412 5.38915 8.99996 6.99998 8.99996Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M7.00001 10.4584C4.07751 10.4584 1.69751 12.4184 1.69751 14.8334C1.69751 14.9967 1.82584 15.125 1.98918 15.125H12.0108C12.1742 15.125 12.3025 14.9967 12.3025 14.8334C12.3025 12.4184 9.92251 10.4584 7.00001 10.4584Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-
-                      <h4 className={`accordion-title`}> Financial requests</h4>
-                      <Arrow className={isOpen.firstLevel7 ? "downarrow" : "rightarrow"} />
-                    </AccordionHeader>
-
-                    <AccordionBody>
-                        <div className="accordion-body d-flex py-3">
-                        <svg className="mx-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM13.33 17H10.66C10.25 17 9.91 16.66 9.91 16.25C9.91 15.84 10.25 15.5 10.66 15.5H13.33C13.74 15.5 14.08 15.84 14.08 16.25C14.08 16.66 13.75 17 13.33 17ZM16 12.75H8C7.59 12.75 7.25 12.41 7.25 12C7.25 11.59 7.59 11.25 8 11.25H16C16.41 11.25 16.75 11.59 16.75 12C16.75 12.41 16.41 12.75 16 12.75ZM18 8.5H6C5.59 8.5 5.25 8.16 5.25 7.75C5.25 7.34 5.59 7 6 7H18C18.41 7 18.75 7.34 18.75 7.75C18.75 8.16 18.41 8.5 18 8.5Z" fill="currentColor"/>
-                        </svg>
-                        <NavLink
-                          className={({ isActive }) =>
-                            isActive
-                              ? "activeside d-flex justify-content-start align-items-center"
-                              : "d-flex justify-content-start align-items-center"
-                          }
-                          to="/financialrequests"
-                        > 
-                          List
-                          </NavLink>
-                        </div>
-                    </AccordionBody>
-                  </AccordionItem>
-                </div>
-              </AccordionBody>
-            </AccordionItem> */}
           </Accordion>
         </div>
 
@@ -486,7 +390,7 @@ const Sidebar = () => {
             <Rewards className="mx-1"/>
 
             <span className="mx-1">Rewards</span>
-            <Arrow className={isOpen.firstLevel9 ? "downarrow position-absolute" : "rightarrow position-absolute"} />
+            {/* <Arrow className={isOpen.firstLevel9 ? "downarrow position-absolute" : "rightarrow position-absolute"} /> */}
           </NavLink>
         </li>
 
@@ -500,7 +404,7 @@ const Sidebar = () => {
 
               <Settings className={isOpen.firstLevel10 ? "svgicon mx-2" : " mx-2"} />
 
-                <h3 className={`accordion-title`}>Settings</h3>
+                <h3 className={`accordion-title mt-1`}>Settings</h3>
                 <Arrow className={isOpen.firstLevel10 ? "downarrow" : "rightarrow"} />
               </AccordionHeader>
 

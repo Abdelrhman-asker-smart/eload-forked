@@ -161,10 +161,17 @@ scroll-behavior: smooth;
 }
 .Allshipment tr > td:last-of-type {
     color: #31A02F;
+    font-weight: 500;
 }
 .Allshipment .table-hover>tbody>tr:hover td:last-of-type{
     color: #31A02F;
 } 
 .accordion-body{
     padding: 0;
+}
+.Allshipment .tableready .css-8uhtka {
+    color: #31A02F !important;
+}
+.Allshipment .tableready .css-sghohy-MuiButtonBase-root-MuiButton-root {
+background-color:  #31A02F !important;
 }

@@ -1,5 +1,5 @@
 .sidebar{
-   height: 200vh;
+   height: auto;
    /* width: 900px !important ; */
    z-index: 1;
    min-width: 216px;

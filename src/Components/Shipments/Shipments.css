@@ -60,7 +60,13 @@ p
     font-size: 16px;
     color: #244664;
 }
-
+.form-switch .notegray{
+    top: 20px;
+    right: 1rem;
+    color: #B2B2B2;
+    font-weight: 400;
+    font-size: 12px;
+}
 .shipments-btns .shipmentnormal{
     color: #fff;
     background: #0B2339;
@@ -210,13 +216,13 @@ select
     color: #0B2339 !important;
     z-index: 1;
     border-radius: 20px;
-    padding: 10px;
+    padding: 8px;
     width: 100%;
 }
 .btn-delete{
     background-color: #0B2339;
     border: none;
-    padding: 0.5rem 1.4rem;
+    padding: 0.3rem 2rem;
     margin-top: 1.5rem;
     text-align: center;
     border-radius: 13px;
@@ -225,7 +231,7 @@ select
 .add-btn button{
     background-color: #0B2339;
     border: none;
-    padding: 0.6rem 0.5rem;
+    padding: 0.8rem 1rem;
     margin-top: 2.4rem;
     font-size: 14px;
     font-weight: 600;
@@ -280,8 +286,9 @@ input[type="file"]::-webkit-file-upload-button{
     color: white;
     background-color: #0B2339;
     font-size: 10px;
+    padding: 0 20px;
     height: 50px;
-    width: 70px;
+    width: 80px;
 }
 .react-datepicker{
     border-radius: 2.3rem !important;

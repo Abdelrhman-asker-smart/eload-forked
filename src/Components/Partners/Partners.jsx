@@ -191,7 +191,7 @@ const Partners = () => {
           <div className="box-right">
             <NavLink to="/addpartners">
               <button className="btn-partner">
-                <i className="fa-solid fa-plus me-3"></i> + ADDPartner
+                <i className="fa-solid fa-plus me-2"></i>Add Partner
               </button>
             </NavLink>
           </div>

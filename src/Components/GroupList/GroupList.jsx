@@ -235,7 +235,7 @@ const GroupList = () => {
     };  
   return (
     <div className="group-list">
-      <header className="partner-head px-5">
+      <header className="partner-head px-3">
         <div className="container-fluid">
           <div className="box-left">
             <div className="head-text">
@@ -251,8 +251,10 @@ const GroupList = () => {
           </div>
         </div>
       </header>
+      <div  className="px-3">
               {/* table */}
               <MaterialReactTable
+             
           columns={columns}
           data={data}
           enableRowSelection
@@ -312,6 +314,7 @@ const GroupList = () => {
             </Box>
           )}
         />
+        </div>
         {/* modal */}
         <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
 
