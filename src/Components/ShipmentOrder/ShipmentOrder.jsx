@@ -339,8 +339,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td className='text-orange'>Driver-name</td>
                             <td>1500 <span className='ms-4'><i class="fa-solid fa-pen"></i></span></td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>480</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>100</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up" style={{marginTop: "7px"}}></i></span>480</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>100</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -349,8 +349,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td className='text-orange'>Driver-name</td>
                             <td>1500</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>480</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>100</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>480</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>100</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -359,8 +359,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td>Freelancer Driver name</td>
                             <td>1500  <span className='ms-4'><i class="fa-solid fa-pen"></i></span></td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>-740</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>160</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>-740</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>160</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -369,8 +369,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td>Driver name</td>
                             <td>1500</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>-740</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>160</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>-740</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>160</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -404,8 +404,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td className='text-orange'>Driver-name</td>
                             <td>1500 <span className='ms-4'><i class="fa-solid fa-pen"></i></span></td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>480</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>100</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>480</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>100</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -414,8 +414,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td className='text-orange'>Driver-name</td>
                             <td>1500</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>480</td>
-                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"></i></span>100</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>480</td>
+                            <td><span className='icon-table-blue me-3'><i class="fa-solid fa-arrow-up"style={{marginTop: "7px"}}></i></span>100</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -424,8 +424,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td>Freelancer Driver name</td>
                             <td>1500  <span className='ms-4'><i class="fa-solid fa-pen"></i></span></td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>-740</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>160</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>-740</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>160</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
@@ -434,8 +434,8 @@ const ShipmentOrder = () => {
                         <tr>
                             <td>Driver name</td>
                             <td>1500</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>-740</td>
-                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"></i></span>160</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>-740</td>
+                            <td><span className='icon-table-red me-3'><i class="fa-solid fa-arrow-down"style={{marginTop: "7px"}}></i></span>160</td>
                             <td>+92 435 13 345 23</td>
                             <td>terst-freelancer-driver@example.net</td>
                             <td>freelancer</td>
