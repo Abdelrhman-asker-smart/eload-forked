@@ -173,10 +173,10 @@ scroll-behavior: smooth;
 .Allshipment .tableready .css-8uhtka {
     color: #31A02F !important;
 }
-.Allshipment .tableready .css-sghohy-MuiButtonBase-root-MuiButton-root {
+/* .Allshipment .tableready .css-sghohy-MuiButtonBase-root-MuiButton-root {
 background-color:  #31A02F !important;
-}
-.Allshipment .css-1hw9j7s{
+} */
+.Allshipment .tableready .css-1hw9j7s{
     background-color:  #31A02F !important;
 }
 /* .Allshipment .css-10q8335-MuiTableCell-root{ */
