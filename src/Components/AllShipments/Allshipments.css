@@ -161,6 +161,7 @@ scroll-behavior: smooth;
 }
 .Allshipment tr > td:last-of-type {
     color: #31A02F;
+    font-size: 12px;
     font-weight: 500;
 }
 .Allshipment .table-hover>tbody>tr:hover td:last-of-type{
@@ -174,4 +175,26 @@ scroll-behavior: smooth;
 }
 .Allshipment .tableready .css-sghohy-MuiButtonBase-root-MuiButton-root {
 background-color:  #31A02F !important;
+}
+.Allshipment .css-1hw9j7s{
+    background-color:  #31A02F !important;
+}
+/* .Allshipment .css-10q8335-MuiTableCell-root{ */
+.Allshipment .MuiTableCell-body{
+
+    /* MuiTableCell-body */
+    color: #0E324A !important;
+    font-weight: 500 !important;
+}
+.table-resbon{
+    min-width:50rem ;
+    max-width: 80rem;
+
+}
+
+@media screen and (max-width : 1440px) {
+    .table-resbon{
+        min-width:40rem ;
+        max-width: 70rem;
+    }
 }

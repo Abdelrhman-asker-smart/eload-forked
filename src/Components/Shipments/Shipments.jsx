@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useCookies } from "react-cookie";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
@@ -24,38 +24,38 @@ const Btnadd =() =>{
 }
 
 const Shipments = () => {
-  // const [shipperList, setShipperList] = useState([]);
-  // const [cookie] = useCookies(["eload_token"]);
-  // useEffect(() => {
-  //   const allshipper = async () => {
+  const [shipperList, setShipperList] = useState([]);
+  const [cookie] = useCookies(["eload_token"]);
+  useEffect(() => {
+    const allshipper = async () => {
 
-  //     try {
-  //       const response = await axios.get(
+      try {
+        const response = await axios.get(
 
 
-  //         "https://dev.eload.smart.sa/api/v1/groups",
-  //         {
-  //           headers: {
-  //             Accept: "application/json",
-  //             Authorization: `Bearer ${cookie.eload_token}`,
+          "https://dev.eload.smart.sa/api/v1/shippers",
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
 
-  //             "api-key":
-  //               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-  //           },
-  //         }
-  //       );
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
 
-  //       const data = response.data.data;
-  //       console.log(data);
-  //       setShipperList(data);
-  //       return data;
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
+        const data = response.data.data;
+        console.log(data);
+        setShipperList(data);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-  //   allshipper();
-  // }, []);
+    allshipper();
+  }, []);
 
   const [isACtive, setIsActive] = useState({ pickup: false, dropoff: false, details: false });
 
@@ -87,14 +87,20 @@ const Shipments = () => {
   const [isRtl, setIsRtl] = useState(false);
 
   {/* shipper-select */}
-   const shipperOptions= [
-    { value: 'Reham', label: 'Reham' },
-    { value: 'Eman', label: 'Eman' },
-    { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
-    { value: 'Abdullah ', label: 'Abdullah ' },
-    { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
-    { value: 'btnadd', label: <Btnadd/> },
-  ];
+   const shipperOptions= 
+    shipperList.map((item ,index)=>{
+      return{
+        value: item.name , label: item.name 
+      }
+    });
+    // { value: 'Reham', label: 'Reham' },
+    // { value: 'Eman', label: 'Eman' },
+    // { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
+    // { value: 'Abdullah ', label: 'Abdullah ' },
+    // { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
+    // { value: 'btnadd', label: <Btnadd/> },
+  
+  console.log(shipperOptions , "shipper");
     {/* pickup-select */}
     const pickupOptions= [
       { value: 'Riyadh Whse', label: 'Riyadh Whse' },

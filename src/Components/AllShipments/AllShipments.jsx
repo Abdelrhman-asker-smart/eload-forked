@@ -136,6 +136,15 @@ const csvOptionsready = {
 
 const csvExporter = new ExportToCsv(csvOptions);
 
+// const flagDatered = ()=>{
+// return (
+//   <>
+//     <div className="position-relative" style={{color:"#E80102"}}><div className="red-circle position-absolute" style={{width:"10px" , height:"10px", borderRadius:"25px", top:"4px", left:"-11px", backgroundColor:"#E80102"}}></div>{item.order.pickup_date}<span className="position-absolute" style={{color:"#E80102" , fontWeight:"500" , top:"-11px", fontSize:"18px"}}>!</span></div>
+//   </>
+// )
+
+// }
+
 // const RowButton = ({ status }) => {
 //   return (
 //     <div>
@@ -249,28 +258,30 @@ const AllShipments = () => {
   const data = shipmentList.map((item, index) => {
     return {
       id: item.id,
-      code:<NavLink to="/shipmentorder" style={{color:"#000"}}>{item.id}</NavLink>  ,
+      code:<NavLink to="/shipmentorder" style={{color:"#0085FF"}}>{item.code}</NavLink>  ,
       picup: item.from_city.name,
       dropoff: item.to_city.name,
       shipmenttype: item.shipment_type.name,
       trucktype : item.truck_type.name,
       shippingcost: item.cost,
-      pickupdate :item.order.pickup_date,
-      status:  item.status ,
+      // pickupdate :item.order.pickup_date,
+      pickupdate : item.urgent_action_needed == false ?<div className="position-relative" style={{color:"#E80102"}}><div className="red-circle position-absolute" style={{width:"10px" , height:"10px", borderRadius:"25px", top:"4px", left:"-11px", backgroundColor:"#E80102"}}></div>{item.order.pickup_date}<span className="position-absolute" style={{color:"#E80102" , fontWeight:"500" , top:"-11px", fontSize:"18px"}}>!</span></div>  : <div className="position-relative"><div className="red-circle position-absolute" style={{width:"10px" , height:"10px", borderRadius:"25px", top:"4px", left:"-11px", backgroundColor:"#CBFF39"}}></div>{item.order.pickup_date}</div>  ,
+
+      status:<span style={{color:"#31A02F"}}>{item.status_i18n}</span> ,
     };
   });
 
   const dataReady = shipmentListready.map((item, index) => {
     return {
       id: item.id,
-      code:<NavLink to="/shipmentorder" style={{color:"#000"}}>{item.id}</NavLink>  ,
+      code:<NavLink to="/shipmentorder" style={{color:"#0085FF"}}>{item.code}</NavLink>  ,
       picup: item.from_city.name,
       dropoff: item.to_city.name,
       shipmenttype: item.shipment_type.name,
       trucktype : item.truck_type.name,
       shippingcost: item.cost,
-      pickupdate :item.order.pickup_date,
-      status: item.status,
+      pickupdate : item.urgent_action_needed == false ?<div className="position-relative" style={{color:"#E80102"}}><div className="red-circle position-absolute" style={{width:"10px" , height:"10px", borderRadius:"25px", top:"4px", left:"-11px", backgroundColor:"#E80102"}}></div>{item.order.pickup_date}<span className="position-absolute" style={{color:"#E80102" , fontWeight:"500" , top:"-11px", fontSize:"18px"}}>!</span></div>  : <div className="position-relative"><div className="red-circle position-absolute" style={{width:"10px" , height:"10px", borderRadius:"25px", top:"4px", left:"-11px", backgroundColor:"#CBFF39"}}></div>{item.order.pickup_date}</div>,
+      status:<span style={{color:"#31A02F"}}>{item.status_i18n}</span> ,
     };
   });
 
@@ -313,7 +324,7 @@ const AllShipments = () => {
         );
 
         const dataReady = response.data.data;
-        console.log(response);
+        // console.log(response);
         setshipmentListready(dataReady);
         return dataReady;
       } catch (e) {
@@ -1571,7 +1582,7 @@ const AllShipments = () => {
             </div>
           </div> */}
       {/* ready-shipment */}
-<div className=" p-3 tableshipment tableready" style={{maxWidth: "70rem"}} >
+<div className=" p-3 tableshipment tableready table-resbon" >
             {/* <div className="w-75"> */}
             {/* table */}
             <h3 style={{fontWeight: "500" ,fontSize:"26px", color:"#244664"}} className="my-3 mx-3">Shipments:<span style={{color:"#31A02F"} } className="mx-2">Ready</span></h3>
@@ -1640,7 +1651,7 @@ const AllShipments = () => {
 
 
           {/* table-data */}
-          <div className=" p-3 tableshipment" style={{maxWidth: "70rem"}} >
+          <div className=" p-3 tableshipment table-resbon"  >
             {/* <div className="w-75"> */}
             {/* table */}
             <h3 style={{fontWeight: "500" ,fontSize:"26px", color:"#244664"}} className="my-3 mx-3">All Shipments</h3>
