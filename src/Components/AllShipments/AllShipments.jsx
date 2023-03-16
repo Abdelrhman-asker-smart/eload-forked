@@ -102,6 +102,11 @@ const AllShipments = () => {
         ),
       },
       {
+          accessorKey: "picup",
+          header: "Pick Up",
+          size: 30,
+        },
+      {
         accessorKey: "dropoff",
         header: "Drop Off",
         size: 30,
@@ -227,6 +232,11 @@ const AllShipments = () => {
             </NavLink>
           </Box>
         ),
+      },
+      {
+        accessorKey: "picup",
+        header: "Pick Up",
+        size: 30,
       },
       {
         accessorKey: "dropoff",
