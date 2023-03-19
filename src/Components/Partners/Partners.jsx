@@ -237,10 +237,10 @@ const Partners = () => {
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -249,14 +249,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -265,14 +265,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -281,14 +281,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -297,14 +297,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -313,14 +313,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>
@@ -329,14 +329,14 @@ const Partners = () => {
                 <td>test_freelance_driver@example.com</td>
                 <td>+92 335 252 2522</td>
                 <td>
-                  <button className="btn-table">
+                <button className="btn-table">
                     <i className="fa-solid fa-eye me-3"></i>View
                   </button>
                   <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>View
+                    <i className="fa-solid fa-pen me-3"></i>Edit
                   </button>
                   <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>View
+                    <i className="fa-solid fa-user me-3"></i>Remove
                   </button>
                 </td>
               </tr>

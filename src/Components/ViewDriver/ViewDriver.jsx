@@ -56,7 +56,7 @@ const ViewDriver = () => {
                 <path d="M21.5186 11.2677V14.1977C21.5186 11.9977 20.0586 10.1277 18.0586 9.52766C18.5786 8.22766 18.7286 7.20766 18.4786 6.35766C18.4586 6.26766 18.4286 6.17766 18.3886 6.09766C20.2486 7.05766 21.5186 9.02766 21.5186 11.2677Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
 
-                  <span>Transactions</span>
+                  <span>Wallet amount</span>
                 </div>
                 <div className="data-card">
                   <h5 className="head-card-text mx-3 my-2">SAR 6,000</h5>
