@@ -2,6 +2,18 @@
     /* background-color: #0e4579 !important; */
     color: #fff;
 }
+.login h2{
+    font-weight: 500;
+}
+.login label{
+    font-weight: 400;
+    margin: 0 15px;
+}
+.login input{
+    border-radius: 20px;
+    border: 0;
+    padding: 10px 15px;
+}
 
 .login .btn-submit{
     background-color: #0e4579 !important;

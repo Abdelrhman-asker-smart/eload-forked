@@ -1,0 +1,22 @@
+.addemployees h3{
+    font-size: 22px;
+   
+    font-weight: 700;
+}
+.addemployees .input-box{
+    border: 1px solid #ccc;
+    width: 80%;
+    border-radius: 25px;
+}
+.addemployees label{
+    font-weight: 500;
+    color:#0E324A;
+    font-size: 16px;
+}
+.addemployees .btn-save{
+    background-color: #0E324A;
+    color: #fff;
+    border: 0;
+    padding: 8px 40px;
+    border-radius: 25px;
+}

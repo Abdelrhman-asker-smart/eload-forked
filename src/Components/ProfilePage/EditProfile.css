@@ -1,0 +1,43 @@
+.edit-profile .btn-profile{
+    background-color: #0E324A;
+    color: #fff;
+    padding: 8px 40px;
+    border-radius: 25px;
+}
+.edit-profile .name-box h3{
+    font-weight: 500;
+    font-size: 28px;
+}
+.edit-profile .name-box p{
+    color: #888585;
+}
+.edit-profile .info h5{
+    font-weight: 500;
+    font-size: 16px;   
+}
+.edit-profile .info p{
+    color: #244664;
+    font-size: 16px;
+    font-weight: 500;
+}
+.edit-profile .info label{
+    font-size: 14px;
+    font-weight: 500;
+}
+.edit-profile .password-side h5{
+    color: #18AEC9;
+    font-size: 16px;
+    font-weight: 500;
+
+}
+.edit-profile .password-side label{
+    color:#0E324A;
+    font-size: 14px;
+    font-weight: 500;
+}
+.edit-profile  .text-input{
+    border-radius: 20px;
+    color: #000;
+    width: 60%;
+    border: 1px solid #888585;
+}

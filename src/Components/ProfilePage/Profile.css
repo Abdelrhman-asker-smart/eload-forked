@@ -1,0 +1,43 @@
+.profile .btn-profile{
+    background-color: #0E324A;
+    color: #fff;
+    padding: 8px 40px;
+    border-radius: 25px;
+    border: 0;
+}
+.profile .name-box h3{
+    font-weight: 500;
+    font-size: 28px;
+}
+.profile .name-box p{
+    color: #888585;
+}
+.profile .info h5{
+    font-weight: 500;
+    font-size: 16px;   
+}
+.profile .info p{
+    color: #244664;
+    font-size: 16px;
+    font-weight: 500;
+}
+.profile .info label{
+    font-size: 14px;
+    font-weight: 500;
+}
+.profile .password-side h5{
+    color: #18AEC9;
+    font-size: 16px;
+    font-weight: 500;
+
+}
+.profile .password-side label{
+    color:#0E324A;
+    font-size: 14px;
+    font-weight: 500;
+}
+.profile .password-side .pass-input{
+    border-radius: 20px;
+    color: #000;
+    border: 1px solid #888585;
+}

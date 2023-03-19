@@ -54,6 +54,11 @@ import Editshipment from "../Setting/Shipment types/Editshipment";
 import AddShippers from "../AddShippers/AddShippers";
 import AllShippers from "../AllShippers/AllShippers";
 import ShipmentOrder from "../ShipmentOrder/ShipmentOrder";
+import Profile from "../ProfilePage/Profile";
+import EditProfile from "../ProfilePage/EditProfile";
+import ViewShipper from "../ViewShipper/ViewShipper";
+import Employes from "../Employees/Employees";
+import AddEmployees from "../Employees/AddEmployees";
 
 
 
@@ -94,6 +99,13 @@ const Layout = ({ setLogin }) => {
             
             <Route path="/login" element={<Login />} />
             } */}
+            {/* profile-route */}
+            <Route path="/profilepage" element={<Profile />} />
+            <Route path="/editprofile" element={<EditProfile />} />
+            
+
+
+            {/* dashboard */}
             <Route path="/" element={<Dashbord />} />
             <Route path="/dashboard" element={<Dashbord />} />
             <Route path="/Shipments" element={<Shipments />} />
@@ -113,6 +125,11 @@ const Layout = ({ setLogin }) => {
              {/* shippers */}
             <Route path="/allshippers" element={<AllShippers />} />
             <Route path="/addshippers" element={<AddShippers />} />
+            <Route path="/allshippers/viewshipper" element={<ViewShipper />} />
+            <Route path="/allshippers/employes" element={<Employes />} />
+            <Route path="/allshippers/addemployes" element={<AddEmployees />} />
+
+
 
 
 

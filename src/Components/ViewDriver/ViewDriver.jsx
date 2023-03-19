@@ -9,9 +9,8 @@ import "./ViewDriver.css";
 import { NavLink } from "react-router-dom";
 
 const ViewDriver = () => {
-  console.log(Dr2);
   return (
-    <>
+    <div className="viewdriver">
       <div className="header-card">
         <div className="container-fluid">
           <div className="row">
@@ -313,7 +312,7 @@ const ViewDriver = () => {
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default ViewDriver;

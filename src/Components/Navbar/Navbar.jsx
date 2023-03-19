@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 import "./NavbarRes.css";
 import Cookies from "js-cookie";
@@ -154,9 +154,11 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                         href="/#"
                         className="dropdown-item d-block text-center "
                       >
+                        <NavLink to="profilepage">
                         <button className="mx-3 btn-profile">
                           View Profile
                         </button>
+                        </NavLink>
                       </a>
                       {/* <div className="dropdown-divider"></div> */}
                       <a

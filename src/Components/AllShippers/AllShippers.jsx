@@ -18,7 +18,7 @@ import './AllShippers.css';
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-
+      <NavLink to="/allshippers/viewshipper">
       <button
       className="btn-table"
       data-bs-toggle="modal"
@@ -37,6 +37,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       <View className="mx-1" />
       View
     </button>
+    </NavLink>
     
       <button
         className="btn-table active"
