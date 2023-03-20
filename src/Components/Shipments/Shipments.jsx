@@ -1,4 +1,4 @@
-import React from "react";
+import React , { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -9,10 +9,21 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from 'react-select';
+import moment from 'moment';
 import "./Shipments.css";
+// import { data } from "jquery";
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 // trucks
 
 
+// state = {
+//   selectedOption: null
+// };
+// handleChange = (selectedOption) => {
+//   this.setState({ selectedOption }, () =>
+//     console.log(`Option selected:`, this.state.selectedOption)
+//   );
+// };
 
 
 const Btnadd =() =>{
@@ -23,12 +34,27 @@ const Btnadd =() =>{
   )
 }
 
-const Shipments = () => {
-  const [shipperList, setShipperList] = useState([]);
-  const [cookie] = useCookies(["eload_token"]);
-  useEffect(() => {
-    const allshipper = async () => {
 
+
+const Shipments = () => {
+
+
+  const [shipperList, setShipperList] = useState([]);
+  const [pickupList , setPickupList] = useState([]);
+  const [dropofList , setDropofList] = useState([]);
+
+  const [cookie] = useCookies(["eload_token"]);
+
+  // dates
+  
+// disable past dates
+// const yesterday = moment().subtract(1, 'day');
+// const disablePastDt = current => {
+//   return current.isAfter(yesterday);
+// };
+  useEffect(() => {
+    // all-shipper
+    const allshipper = async () => {
       try {
         const response = await axios.get(
 
@@ -53,8 +79,63 @@ const Shipments = () => {
         console.log(e);
       }
     };
+    // pickup
+
+    const pickuplist = async () => {
+      try {
+        const response = await axios.get(
+
+          "https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=1",
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+        console.log(data, "pickup");
+        setPickupList(data);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    
+    // drop-off
+
+    const droppofflist = async ({shipper_id} ,{id_pickup}) => {
+      try {
+        const response = await axios.get(
+
+          `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+        console.log(data, "drop-off");
+        setDropofList(data);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
     allshipper();
+    pickuplist();
+    droppofflist();
   }, []);
 
   const [isACtive, setIsActive] = useState({ pickup: false, dropoff: false, details: false });
@@ -77,7 +158,7 @@ const Shipments = () => {
 
   // checked-btn-steps
   const [ischeck , setIsChecked] = useState(false);
-  console.log(ischeck);
+  // console.log(ischeck);
 
   // select-options
   const [isClearable, setIsClearable] = useState(true);
@@ -88,36 +169,60 @@ const Shipments = () => {
 
   {/* shipper-select */}
    const shipperOptions= 
-    shipperList.map((item ,index)=>{
+      shipperList.map((item ,index)=>{
+        return{
+          value: item.id , label: item.name ,
+        }
+      });
+
+  // pickupList
+    {/* pickup-select */}
+
+    const pickupOptions= 
+    pickupList.map((item ,index)=>{
       return{
-        value: item.name , label: item.name 
+        value: item.name , label: item.name ,
       }
     });
-    // { value: 'Reham', label: 'Reham' },
-    // { value: 'Eman', label: 'Eman' },
-    // { value: 'Mahmoud Abu zeid', label: 'Mahmoud Abu zeid' },
-    // { value: 'Abdullah ', label: 'Abdullah ' },
-    // { value: 'Loqman ELgrahy ', label: 'Loqman ELgrahy ' },
-    // { value: 'btnadd', label: <Btnadd/> },
-  
-  console.log(shipperOptions , "shipper");
-    {/* pickup-select */}
-    const pickupOptions= [
-      { value: 'Riyadh Whse', label: 'Riyadh Whse' },
-      { value: 'My Main Whse', label: 'My Main Whse' },
-      { value: 'MJeddah', label: 'Jeddah' },
-      { value: 'Abdullah ', label: 'Abdullah ' },
-    ];
     {/* drop-select */}
-    const dropOptions= [
-        { value: 'My Warehouses', label: 'My Warehouses', isDisabled: true  },
-        { value: 'Riyadh Whse', label: 'Riyadh Whse' },
-        { value: 'My Main Whse', label: 'My Main Whse' },
-        { value: 'Abuzaid ', label: 'Abuzaid ' },
-        { value: 'Othaim', label: 'Othaim', isDisabled: true  },
-        { value: 'Noon', label: 'Noon', isDisabled: true  },
+    const dropOptions= 
+    dropofList.map((item ,index)=>{
+      return{
+        value: item.name , label: item.name ,
+      }
+    });
+
+    // group
+    const colourOptions = [
+      { value: "ocean", label: "Ocean"},
+      { value: "blue", label: "Blue" },
+      { value: "purple", label: "Purple" },
+      { value: "red", label: "Red" },
+      { value: "orange", label: "Orange" },
+      { value: "yellow", label: "Yellow" },
+      { value: "green", label: "Green" },
+      { value: "forest", label: "Forest"},
+      { value: "slate", label: "Slate"},
+      { value: "silver", label: "Silver" }
     ];
-   
+
+    const flavourOptions = [
+      { value: "vanilla", label: "Vanilla", rating: "safe" },
+      { value: "chocolate", label: "Chocolate", rating: "good" },
+      { value: "strawberry", label: "Strawberry", rating: "wild" }
+    ];
+    const groupedOptions = [
+      {
+        label: "Colours",
+        options: colourOptions
+      },
+      {
+        label: "Flavours",
+        options: flavourOptions
+      }
+    ];
+    // const { selectedOption } = this.state;
+    
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -224,6 +329,7 @@ const Shipments = () => {
           isSearchable={isSearchable}
           name="color"
           options={shipperOptions}
+          // onChange={pickuplist(shipper_id=shipperOptions.value)}
         />
 
         </div>
@@ -235,7 +341,8 @@ const Shipments = () => {
             <label htmlFor="address">
               Pickup Address<span>*</span>
             </label>
-            {/* pickup-Address */}
+
+
             <Select
             classNamePrefix="select"
             className="basic-multi-select"
@@ -246,7 +353,9 @@ const Shipments = () => {
             isRtl={isRtl}
             isSearchable={isSearchable}
             name="color"
-            options={pickupOptions}
+            // value={selectedOption}
+            // onChange={this.handleChange}
+            options={groupedOptions}
           />
           </div>
           <div className="input col-md-4">
@@ -258,6 +367,9 @@ const Shipments = () => {
               className="date-input position-relative px-5"
               selected={startDate}
               onChange={(date) => setStartDate(date)}
+              minDate={moment().toDate()}
+              // isValidDate={disablePastDt}
+              placeholderText="Select a day"
               dateFormat="MMMM d, yyyy"
             />
             <Dateicon
