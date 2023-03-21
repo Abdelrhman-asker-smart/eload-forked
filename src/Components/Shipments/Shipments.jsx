@@ -48,12 +48,21 @@ const Shipments = () => {
   const [shipperList, setShipperList] = useState([]);
   const [pickupList, setPickupList] = useState([]);
   const [dropofList, setDropofList] = useState([]);
-  const [userChoice, setUserChoice] = useState({});
-  const [GroupspickupOptions, setGroupspickupOptions] = useState([]);
-  const [addressList, setAddressList] = useState([]);
+  const [detailsList, setDetailsList] = useState([]);
 
-  // let GroupspickupOptions;
-  console.log(pickupList);
+  const [shipperuserChoice, setShipperUserChoice] = useState();
+  const [pickupuserChoice, setpickupUserChoice] = useState();
+  const [dropoffserChoice, setdropoffUserChoice] = useState();
+
+
+
+  const [input, setInputs] = useState([]);
+  const date = new Date();
+  const [startDate, setStartDate] = useState(date);
+
+  // checked-btn-steps
+  const [ischeck, setIsChecked] = useState(false);
+
   const [cookie] = useCookies(["eload_token"]);
 
   // console.log(userChoice);
@@ -73,12 +82,6 @@ const Shipments = () => {
     setIsActive({ pickup: false, dropoff: false, details: true });
   };
 
-  const [input, setInputs] = useState([]);
-  const date = new Date();
-  const [startDate, setStartDate] = useState(date);
-
-  // checked-btn-steps
-  const [ischeck, setIsChecked] = useState(false);
   // select-drop
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
@@ -86,7 +89,8 @@ const Shipments = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
 
-  // pickup
+
+  // pickup-Api
   const pickupListApi = async (shipper_id) => {
     console.log(shipper_id, "triggered");
     try {
@@ -110,13 +114,15 @@ const Shipments = () => {
       console.log(e);
     }
   };
+  //dropoff_Api
+  const droppofflist = async ( shipper_id, id_pickup ) => {
+    console.log(shipper_id ,"shiperiddddddddddddddddddd");
+    console.log(id_pickup ,"pickupiddddddddddddddddddd");
 
-  // dropoff
-
-  const droppofflist = async ({ shipper_id }, { id_pickup }) => {
     try {
       const response = await axios.get(
         `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}`,
+
         {
           headers: {
             Accept: "application/json",
@@ -129,7 +135,9 @@ const Shipments = () => {
       );
 
       const data = response.data.data;
-      console.log(data, "drop-off");
+      console.log(data, "drop-off done");
+      // console.log(data[0].id, "drop-off-id");
+
       setDropofList(data);
       return data;
     } catch (e) {
@@ -137,51 +145,107 @@ const Shipments = () => {
     }
   };
 
+  // details
+    const detailsApi = async ( shipper_id, id_pickup , id_dropoff ) => {
+      console.log(shipper_id ,"shiperiddddddddddddddddddd");
+      console.log(id_pickup ,"pickupiddddddddddddddddddd");
+      console.log(id_dropoff ,"dropoffiddddddddddddddddddd");
+    
+    
+      try {
+        const response = await axios.get(
+          `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}&to_address_id=${id_dropoff}`,
+    
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+    
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+    
+        const data = response.data.data;
+        console.log(data, "details doneeeeeeeeeeeeeeee");
+    
+        setDetailsList(data);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+
+
+  
+
+
+
+  // pickup-group
+  const GroupspickupOptions = pickupList.map((item, index) => ({
+      label: item.name,
+      options: item.addresses.map((sub_item, index) => ({
+              value: sub_item.id,
+              label:sub_item.name,
+        })),
+  }));
+  // dropoff-group
+  const GroupsdropoffOptions = dropofList.map((item, index) => ({
+    label: item.name,
+    options: item.addresses.map((sub_item, index) => ({
+            value: sub_item.id,
+            label:sub_item.name,
+      })),
+}));
+
+  // select-pickup
   useEffect(() => {
     if (pickupList.length > 0) {
-      // const pickupOptions =  pickupList.map((item, index) => {
-      //   console.log(item , "item");
-      //   const x=item.addresses.map((ad_item,index)=>{
-      //   return{
-      //     value:ad_item.id,
-      //     lable: ad_item.name,
-      //   }
 
-      //   })
-      //   setAddressList([...addressList,...x]);
-      // });
-      // const pickupOptions =  pickupList.map((item, index) => {
-      //   console.log(item , "item");
-      //   return {
-      //    value:item.id,
-      //    lable: item.name,
-      //   };
-      // });
+      
+      // const optionsPickup = [
+      //   pickupList.map((item, index) => {
+      //     item.addresses.map((item_ad, index) => {
+      //       console.log(item_ad, "items");
+      //         return {
+      //           value: item_ad.id,
+      //           label: item_ad.name,
+      //         };
 
-      // const pick
-
-      const address = [];
-
-      pickupList.map((item , index) => {
-        item.addresses.map((sub_item , index) => {
-          address.push({
-            value: sub_item.id,
-            label: sub_item.name,
-          });
-        });
-      });
-
-      const GroupspickupOptions = pickupList.map((item, index) => {
-        return {
+      //     });
+      //   }),
+      // ];
+      // const newArray = [];
+      // const optionsPickup = [
+      //   pickupList.map((item, index) => {
+      //     item.addresses.map((item_ad, i) => {
+      //       console.log(item_ad, "items");
+      //       // const smallItem = {
+      //       //   value: item_ad.id,
+      //       //   label: item_ad.name,
+      //       // };
+      //       newArray.push(item_ad);
+      //       // return {
+      //       //   value: item_ad.id,
+      //       //   label: item_ad.name,
+      //       // };
+      //       return newArray;
+      //     });
+      //   }),
+      // ];
+      // console.log(newArray, "newArray");
+      // let address = [];
+      const GroupspickupOptions2 = pickupList.map((item, index) => ({
           label: item.name,
+          options: item.addresses.map((sub_item, index) => ({
+                  value: sub_item.id,
+                  label:sub_item.name,
+            })),
+      }));
 
-          options: address,
-          // options: pickupOptions,
-        };
-      });
-      setGroupspickupOptions(GroupspickupOptions);
     }
-
 
     // } else {
     //   return {
@@ -190,36 +254,8 @@ const Shipments = () => {
     //   };
     // }
   }, [pickupList]);
-  // console.log(userChoice, "triggered");
 
-  // useEffect(() => {
-  //   // console.log("works");
-  //   const pickuplist = async ({ userChoice, cookie }) => {
-  //     console.log(cookie);
-  //     try {
-  //       const response = await axios.get(
-  //         `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${userChoice}`,
-  //         {
-  //           headers: {
-  //             Accept: "application/json",
-  //             Authorization: `Bearer ${cookie.eload_token}`,
-  //             "api-key":
-  //               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-  //           },
-  //         }
-  //       );
-  //       const data = response.data.data;
-  //       // console.log(data, "pickup from inside useEffect");
-  //       setPickupList(data);
-  //       return data;
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   // return pickuplist();
-  // }, [userChoice]);
-
-  // all-shipper
+  // Shipper-Api
   useEffect(() => {
     // all-shipper
     const allshipper = async () => {
@@ -269,71 +305,7 @@ const Shipments = () => {
     };
   });
 
-  // pickupList
-
-  // const GroupspickupOptions = () => {
-  //   pickupList.map((item, index) => {
-  //     return {
-  //       lable: item.name,
-  //       options: pickupOptions,
-  //     };
-  //   });
-  // };
-
-  // const GroupspickupOptions = () => {
-  //   if (pickupList.length !== 0) {
-  //     pickupList.map((item, index) => {
-  //       return {
-  //         lable: item.name,
-  //         options: pickupOptions,
-  //       };
-  //     });
-  //   } else {
-  //     return {
-  //       label: "",
-  //       options: [],
-  //     };
-  //   }
-  // };
-
-  // console.log(pickupList, "pickupList");
-  // console.log(GroupspickupOptions, "GroupspickupOptions");
-  // const GroupspickupOptions=
-  // dropofList.map((item ,index)=>{
-  //   return{
-  //     value: item.name , label: item.name ,
-  //   }
-  // });
-
-  const dropOptions = dropofList.map((item, index) => {
-    return {
-      value: item.name,
-      label: item.name,
-    };
-  });
-
-  // group
-  // const pickupOptions = [
-  //   { value: "vanilla", label: "Vanilla", rating: "safe" },
-  //   { value: "chocolate", label: "Chocolate", rating: "good" },
-  //   { value: "strawberry", label: "Strawberry", rating: "wild" }
-  // ];
-
-  // const flavourOptions = [
-  //   { value: "vanilla", label: "Vanilla", rating: "safe" },
-  //   { value: "chocolate", label: "Chocolate", rating: "good" },
-  //   { value: "strawberry", label: "Strawberry", rating: "wild" }
-  // ];
-  // const groupedOptions = [
-  //   {
-  //     label: "Colours",
-  //     options: pickupOptions
-  //   },
-  //   {
-  //     label: "Flavours",
-  //     options: flavourOptions
-  //   }
-  // ];
+ 
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -494,10 +466,9 @@ const Shipments = () => {
             isSearchable={isSearchable}
             name="color"
             options={shipperOptions}
-            // onChange={() => {
-            // console.log(shipperOptions);
             onChange={(choice) => {
               pickupListApi(choice.value);
+              setShipperUserChoice(choice.value);
             }}
             // onChange={(choice) => setUserChoice(choice.value)}
             // pickuplist(shipperOptions.value);
@@ -525,6 +496,13 @@ const Shipments = () => {
               // value={selectedOption}
               // onChange={this.handleChange}
               options={GroupspickupOptions}
+              onChange={(choice) => {
+                console.log(shipperuserChoice, "shipper id here");
+                console.log(choice.value, "pickup id here");
+                setpickupUserChoice(choice.value);
+                droppofflist(shipperuserChoice, choice.value);
+              }}
+              // userChoice
             />
           </div>
           <div className="input col-md-4">
@@ -585,7 +563,12 @@ const Shipments = () => {
               isRtl={isRtl}
               isSearchable={isSearchable}
               name="color"
-              options={dropOptions}
+              options={GroupsdropoffOptions}
+              onChange={(choice) => {
+                setdropoffUserChoice(choice.value);
+                detailsApi(shipperuserChoice ,pickupuserChoice,choice.value);
+
+              }}
             />
           </div>
           <div className="input mx-3">
@@ -609,11 +592,11 @@ const Shipments = () => {
       </div>
       <div className="details box-inputs mb-4" onClick={tabdetails}>
         <div className="box-inputs-head">Details</div>
-        <Inputs />
+        <Inputs shipperuserChoice={shipperuserChoice}  pickupuserChoice={pickupuserChoice} detailsApi={detailsApi} detailsList={detailsList} />
         {input.map((item, index) => {
           return (
             <>
-              <Inputs />
+              <Inputs shipperuserChoice={shipperuserChoice}  pickupuserChoice={pickupuserChoice} detailsApi={detailsApi} detailsList={detailsList} />
               <button
                 className="btn-delete"
                 id="delete"

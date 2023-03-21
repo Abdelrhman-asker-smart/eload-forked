@@ -1,10 +1,16 @@
 import React from "react";
 import Select from 'react-select';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import { NavLink } from "react-router-dom";
 import "./Shipments.css";
 
 // trucks
 import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
+
+
+
 
 
 // const truckChoose=() =>{
@@ -16,8 +22,55 @@ import  {ReactComponent as Truck1} from '../../icons/Vector.svg';
 //   )
 // }
 
+// details-Api
 
-function Inputs() {
+const Inputs = (shipperuserChoice ,pickupuserChoice ,detailsApi , detailsList)=> {
+// function Inputs(shipperuserChoice ,pickupuserChoice ,detailsApi , detailsList) {
+
+console.log(shipperuserChoice ,"shiperinputssssssssssssss");
+console.log(pickupuserChoice ,"pickupinputssssssssssssss");
+console.log(detailsList ,"detailsLiiiiiiiiiiiiiiiiiist");
+
+
+
+// const GroupspickupOptions = pickupList.map((item, index) => ({
+//   label: item.name,
+//   options: item.addresses.map((sub_item, index) => ({
+//           value: sub_item.id,
+//           label:sub_item.name,
+//     })),
+// }));
+// const commidsOptions = ()=>{
+//   if(detailsList.length > 0){
+    // const commidtiesOptions = detailsList.map((item, index) => {
+    //   item.commodities.map((sub_item , index) => ({
+    //     value:sub_item.id,
+    //     label:sub_item.name,
+    //   }));
+    // });
+//   }else{
+//     console.log("contain");
+//   }
+// }
+
+
+
+
+// const commidtiesOptions = shipperuserChoice.detailsList.map((item, index) => {
+//      item.commodities.map((sub_item, index) => {
+//       return{
+//         value: sub_item.id,
+//         label:sub_item.name,
+//       }
+//     });
+// });
+// const shipperOptions = shipperList.map((item, index) => {
+//   return {
+//     value: item.id,
+//     label: item.name,
+//   };
+// });
+
 
 
   // select-options
@@ -40,10 +93,10 @@ function Inputs() {
         { value: 'Normal', label: 'Normal' },
       ]; 
       // commidity-type
-      const commidityOptions= [
-        { value: 'Load type 1 ', label: "Load type 1 " },
-        { value: 'Load type 2', label: 'Load type 2' },
-      ]; 
+      // const commidityOptions= [
+      //   { value: 'Load type 1 ', label: "Load type 1 " },
+      //   { value: 'Load type 2', label: 'Load type 2' },
+      // ]; 
       // UOF-M
       const UnitmeasureOptions= [
         { value: 'Pallets', label: "Pallets" },
@@ -122,6 +175,7 @@ function Inputs() {
           <div className="input-group ">
             <input
               type="file"
+              multiple="multiple"
               className="input-file form-control"
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
@@ -136,6 +190,7 @@ function Inputs() {
           <div className="input-group ">
             <input
               type="file"
+              multiple="multiple"
               className="input-file form-control"
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
@@ -157,7 +212,7 @@ function Inputs() {
             isRtl={isRtl}
             isSearchable={isSearchable}
             name="color"
-            options={commidityOptions}
+            // options={commidtiesOptions}
         />
         </div>
         <div className="input col-2">
