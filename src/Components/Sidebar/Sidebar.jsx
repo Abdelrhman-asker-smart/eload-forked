@@ -116,7 +116,7 @@ const Sidebar = () => {
     const openBtn18 = () => {
       setIsOpen({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false , firstLevel6: false , firstLevel7: false , firstLevel8 : false, firstLevel9 : false ,firstLevel10 : true , firstLevel11 : false  , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false  , firstLevel16 : false  , firstLevel17 : false, firstLevel18 : !isOpen.firstLevel18})
     }
-  // console.log(isOpen, "kareem")
+
   return (
     <div className="sidebar">
       <div className="img-logo mx-4 my-4">

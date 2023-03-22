@@ -45,15 +45,6 @@ const Btnadd = () => {
 };
 
 const Shipments = () => {
-  const [shipperList, setShipperList] = useState([]);
-  const [pickupList, setPickupList] = useState([]);
-  const [dropofList, setDropofList] = useState([]);
-  const [detailsList, setDetailsList] = useState([]);
-
-  const [shipperuserChoice, setShipperUserChoice] = useState();
-  const [pickupuserChoice, setpickupUserChoice] = useState();
-  const [dropoffserChoice, setdropoffUserChoice] = useState();
-
 
 
   const [input, setInputs] = useState([]);
@@ -82,12 +73,53 @@ const Shipments = () => {
     setIsActive({ pickup: false, dropoff: false, details: true });
   };
 
-  // select-drop
+// select
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
+
+
+  // ====================================shipments-states============================================
+
+  const [shipperList, setShipperList] = useState([]);
+  const [pickupList, setPickupList] = useState([]);
+  const [dropofList, setDropofList] = useState([]);
+  const [detailsList, setDetailsList] = useState([]);
+
+  const [shipperuserChoice, setShipperUserChoice] = useState();
+  const [pickupuserChoice, setpickupUserChoice] = useState();
+  const [dropoffserChoice, setdropoffUserChoice] = useState();
+
+
+
+  // state-add
+  const [shipperValue, setShipperValue] = useState("");
+  // pickup-chooses
+  const [pickupValue, setPickupValue] = useState("");
+  const [pickup_DateValue, setPickup_DateValue] = useState("");
+  const [pickup_TimeFromValue, setPickup_TimeFromValue] = useState("");
+  const [pickup_TimeToValue, setPickup_TimeToValue] = useState("");
+  // dropoff-chooses
+  const [dropoffValue, setDropoffValue] = useState("");
+
+  const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
+  const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
+
+      // details
+      const [truckTypeValue, setTruckTypeValue] = useState("");
+      const [shipmentTypeValue, setshipmentTypeValue] = useState("");
+      const [weightValue, setWeightValue] = useState("");
+      const [number_TrucksValue, setNumber_TrucksValue] = useState("");
+      const [picking_ListValue, setPicking_ListValue] = useState("");
+      const [Documents_ListValue, setDocments_ListValue] = useState("");
+      const [commodityTypeValue, setCommodityTypeValue] = useState("");
+      const [uomValue, setUomValue] = useState("");
+      const [quantityValue, setQuantityValue] = useState("");
+
+
+
 
 
   // pickup-Api
@@ -177,12 +209,6 @@ const Shipments = () => {
       }
     };
 
-
-
-  
-
-
-
   // pickup-group
   const GroupspickupOptions = pickupList.map((item, index) => ({
       label: item.name,
@@ -247,12 +273,7 @@ const Shipments = () => {
 
     }
 
-    // } else {
-    //   return {
-    //     label: "",
-    //     options: [],
-    //   };
-    // }
+
   }, [pickupList]);
 
   // Shipper-Api
@@ -290,13 +311,57 @@ const Shipments = () => {
   // new Array(5).fill(1).map((item , index)=>{
   //   console.log(index, "index");
   // })
-  // useEffect(()=>{
-  //   // console.log(pickupList ,"hereeeeee");
-  // },[pickupList]);
 
-  // console.log(ischeck);
 
-  // select-options
+
+// Add-all-shipments
+
+const formdata  = new FormData();
+  
+  formdata.append("shipper_id", shipperuserChoice);
+  formdata.append("from_address_id", pickupuserChoice);
+  formdata.append("to_address_id", dropoffserChoice);
+  formdata.append("pickup_date", pickup_DateValue);
+  formdata.append("pickup_from_time", pickup_TimeFromValue);
+  formdata.append("pickup_to_time", pickup_TimeToValue);
+  formdata.append("dropoff_from_time", dropoff_TimeFromValue);
+  formdata.append("dropoff_to_time", dropoff_TimeToValue);
+  // details
+  formdata.append("shipments[0][truck_type_id]", truckTypeValue);
+
+  // truckTypeValue
+
+
+
+  // pickup_TimeToValue
+
+
+
+
+
+  const AddShipments_Api = async () => {
+    console.log("Add----------Done");
+    try {
+      const reponse = await axios.post(
+        "https://dev.eload.smart.sa/api/v1/orders",
+        formdata,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      // setName("");
+      //   console.log(reponse);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   const shipperOptions = shipperList.map((item, index) => {
     return {
@@ -470,9 +535,7 @@ const Shipments = () => {
               pickupListApi(choice.value);
               setShipperUserChoice(choice.value);
             }}
-            // onChange={(choice) => setUserChoice(choice.value)}
-            // pickuplist(shipperOptions.value);
-            // }}
+
           />
         </div>
       </div>
@@ -493,8 +556,6 @@ const Shipments = () => {
               isRtl={isRtl}
               isSearchable={isSearchable}
               name="color"
-              // value={selectedOption}
-              // onChange={this.handleChange}
               options={GroupspickupOptions}
               onChange={(choice) => {
                 console.log(shipperuserChoice, "shipper id here");
@@ -517,7 +578,9 @@ const Shipments = () => {
               minDate={moment().toDate()}
               // isValidDate={disablePastDt}
               placeholderText="Select a day"
-              dateFormat="MMMM d, yyyy"
+              format='yyyy-MM-dd'
+              value={setPickup_DateValue}             
+               // dateFormat="MMMM d, yyyy"
             />
             <Dateicon
               className="position-absolute top-2 left-2"
@@ -529,11 +592,11 @@ const Shipments = () => {
             <label htmlFor="address">
               Pickup Time<span>*</span>
             </label>
-            <input type="time" />
+            <input type="time"  value={setPickup_TimeFromValue}/>
           </div>
           {/* time-to */}
           <div className="input col-md-3 mt-4">
-            <input type="time" />
+            <input type="time" value={setPickup_TimeToValue}/>
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -575,10 +638,10 @@ const Shipments = () => {
             <label htmlFor="address">
               Drop off Time<span>*</span>
             </label>
-            <input type="time"></input>
+            <input type="time" value={setDrop_TimeFromValue}/>
           </div>
           <div className="input mx-3 mt-4">
-            <input type="time"></input>
+            <input type="time" value={setDrop_TimeToValue}/>
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">

@@ -32,6 +32,7 @@
 .main-containt{
     background-color: #fff;
     min-height: 100vh;
+    overflow: auto;
     /* letter-spacing: 0.02em; */
 }
 /* dropdown-sidbar */
