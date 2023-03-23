@@ -6,6 +6,7 @@ import UOMGetReducer from './redux/UOMlist';
 import countryGetReducer from './redux/CountryList';
 import cityGetReducer from './redux/CityListSlice';
 import stateGetReducer from './redux/StateListSlice';
+import PromotionGetReducer from './redux/listPromotion';
 
 
 
@@ -34,12 +35,7 @@ const rootReducer = combineReducers({
   countryList: countryGetReducer,
   cityList: cityGetReducer,
   stateList: stateGetReducer,
-
-
-
-
-
-
+  PromotionList: PromotionGetReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
