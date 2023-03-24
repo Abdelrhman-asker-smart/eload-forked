@@ -11,19 +11,9 @@ import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from "react-select";
 import moment from "moment";
 import "./Shipments.css";
-import { array } from "joi";
-// import { data } from "jquery";
-// import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-// trucks
-
-// state = {
-//   selectedOption: null
-// };
-// handleChange = (selectedOption) => {
-//   this.setState({ selectedOption }, () =>
-//     console.log(`Option selected:`, this.state.selectedOption)
-//   );
-// };
+import { useContext } from "react";
+import { ContextStore } from "../contaxt";
+// import { array } from "joi";
 
 const Btnadd = () => {
   return (
@@ -45,12 +35,7 @@ const Btnadd = () => {
 };
 
 const Shipments = () => {
-
-
-  const [input, setInputs] = useState([]);
-  const date = new Date();
-  const [startDate, setStartDate] = useState(date);
-
+  const { setList } = useContext(ContextStore);
   // checked-btn-steps
   const [ischeck, setIsChecked] = useState(false);
 
@@ -73,13 +58,16 @@ const Shipments = () => {
     setIsActive({ pickup: false, dropoff: false, details: true });
   };
 
-// select
+  // select
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
 
+  const [input, setInputs] = useState([]);
+  // const date = new Date();
+  const [startDate, setStartDate] = useState(null);
 
   // ====================================shipments-states============================================
 
@@ -91,8 +79,6 @@ const Shipments = () => {
   const [shipperuserChoice, setShipperUserChoice] = useState();
   const [pickupuserChoice, setpickupUserChoice] = useState();
   const [dropoffserChoice, setdropoffUserChoice] = useState();
-
-
 
   // state-add
   const [shipperValue, setShipperValue] = useState("");
@@ -107,20 +93,16 @@ const Shipments = () => {
   const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
-      // details
-      const [truckTypeValue, setTruckTypeValue] = useState("");
-      const [shipmentTypeValue, setshipmentTypeValue] = useState("");
-      const [weightValue, setWeightValue] = useState("");
-      const [number_TrucksValue, setNumber_TrucksValue] = useState("");
-      const [picking_ListValue, setPicking_ListValue] = useState("");
-      const [Documents_ListValue, setDocments_ListValue] = useState("");
-      const [commodityTypeValue, setCommodityTypeValue] = useState("");
-      const [uomValue, setUomValue] = useState("");
-      const [quantityValue, setQuantityValue] = useState("");
-
-
-
-
+  // details
+  // const [truckTypeValue, setTruckTypeValue] = useState("");
+  // const [shipmentTypeValue, setshipmentTypeValue] = useState("");
+  // const [weightValue, setWeightValue] = useState("");
+  // const [number_TrucksValue, setNumber_TrucksValue] = useState("");
+  // const [picking_ListValue, setPicking_ListValue] = useState("");
+  // const [Documents_ListValue, setDocments_ListValue] = useState("");
+  // const [commodityTypeValue, setCommodityTypeValue] = useState("");
+  // const [uomValue, setUomValue] = useState("");
+  // const [quantityValue, setQuantityValue] = useState("");
 
   // pickup-Api
   const pickupListApi = async (shipper_id) => {
@@ -147,9 +129,9 @@ const Shipments = () => {
     }
   };
   //dropoff_Api
-  const droppofflist = async ( shipper_id, id_pickup ) => {
-    console.log(shipper_id ,"shiperiddddddddddddddddddd");
-    console.log(id_pickup ,"pickupiddddddddddddddddddd");
+  const droppofflist = async (shipper_id, id_pickup) => {
+    console.log(shipper_id, "shiperiddddddddddddddddddd");
+    console.log(id_pickup, "pickupiddddddddddddddddddd");
 
     try {
       const response = await axios.get(
@@ -178,59 +160,56 @@ const Shipments = () => {
   };
 
   // details
-    const detailsApi = async ( shipper_id, id_pickup , id_dropoff ) => {
-      console.log(shipper_id ,"shiperiddddddddddddddddddd");
-      console.log(id_pickup ,"pickupiddddddddddddddddddd");
-      console.log(id_dropoff ,"dropoffiddddddddddddddddddd");
-    
-    
-      try {
-        const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}&to_address_id=${id_dropoff}`,
-    
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-    
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-    
-        const data = response.data.data;
-        console.log(data, "details doneeeeeeeeeeeeeeee");
-    
-        setDetailsList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  const detailsApi = async (shipper_id, id_pickup, id_dropoff) => {
+    console.log(shipper_id, "shiperiddddddddddddddddddd");
+    console.log(id_pickup, "pickupiddddddddddddddddddd");
+    console.log(id_dropoff, "dropoffiddddddddddddddddddd");
+
+    try {
+      const response = await axios.get(
+        `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}&to_address_id=${id_dropoff}`,
+
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data.data;
+      console.log(data, "details doneeeeeeeeeeeeeeee");
+
+      setDetailsList(data);
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // pickup-group
   const GroupspickupOptions = pickupList.map((item, index) => ({
-      label: item.name,
-      options: item.addresses.map((sub_item, index) => ({
-              value: sub_item.id,
-              label:sub_item.name,
-        })),
+    label: item.name,
+    options: item.addresses.map((sub_item, index) => ({
+      value: sub_item.id,
+      label: sub_item.name,
+    })),
   }));
   // dropoff-group
   const GroupsdropoffOptions = dropofList.map((item, index) => ({
     label: item.name,
     options: item.addresses.map((sub_item, index) => ({
-            value: sub_item.id,
-            label:sub_item.name,
-      })),
-}));
+      value: sub_item.id,
+      label: sub_item.name,
+    })),
+  }));
 
   // select-pickup
   useEffect(() => {
     if (pickupList.length > 0) {
-
-      
       // const optionsPickup = [
       //   pickupList.map((item, index) => {
       //     item.addresses.map((item_ad, index) => {
@@ -264,16 +243,13 @@ const Shipments = () => {
       // console.log(newArray, "newArray");
       // let address = [];
       const GroupspickupOptions2 = pickupList.map((item, index) => ({
-          label: item.name,
-          options: item.addresses.map((sub_item, index) => ({
-                  value: sub_item.id,
-                  label:sub_item.name,
-            })),
+        label: item.name,
+        options: item.addresses.map((sub_item, index) => ({
+          value: sub_item.id,
+          label: sub_item.name,
+        })),
       }));
-
     }
-
-
   }, [pickupList]);
 
   // Shipper-Api
@@ -308,60 +284,7 @@ const Shipments = () => {
     // droppofflist();
   }, []);
 
-  // new Array(5).fill(1).map((item , index)=>{
-  //   console.log(index, "index");
-  // })
-
-
-
-// Add-all-shipments
-
-const formdata  = new FormData();
-  
-  formdata.append("shipper_id", shipperuserChoice);
-  formdata.append("from_address_id", pickupuserChoice);
-  formdata.append("to_address_id", dropoffserChoice);
-  formdata.append("pickup_date", pickup_DateValue);
-  formdata.append("pickup_from_time", pickup_TimeFromValue);
-  formdata.append("pickup_to_time", pickup_TimeToValue);
-  formdata.append("dropoff_from_time", dropoff_TimeFromValue);
-  formdata.append("dropoff_to_time", dropoff_TimeToValue);
-  // details
-  formdata.append("shipments[0][truck_type_id]", truckTypeValue);
-
-  // truckTypeValue
-
-
-
-  // pickup_TimeToValue
-
-
-
-
-
-  const AddShipments_Api = async () => {
-    console.log("Add----------Done");
-    try {
-      const reponse = await axios.post(
-        "https://dev.eload.smart.sa/api/v1/orders",
-        formdata,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${cookie.eload_token}`,
-            "api-key":
-              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-          },
-        }
-      );
-
-      // setName("");
-      //   console.log(reponse);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+  // shipperoptions
 
   const shipperOptions = shipperList.map((item, index) => {
     return {
@@ -370,7 +293,12 @@ const formdata  = new FormData();
     };
   });
 
- 
+  // new Array(5).fill(1).map((item , index)=>{
+  //   console.log(index, "index");
+  // })
+
+
+
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -534,8 +462,8 @@ const formdata  = new FormData();
             onChange={(choice) => {
               pickupListApi(choice.value);
               setShipperUserChoice(choice.value);
+              setShipperValue(choice.value);
             }}
-
           />
         </div>
       </div>
@@ -558,10 +486,11 @@ const formdata  = new FormData();
               name="color"
               options={GroupspickupOptions}
               onChange={(choice) => {
-                console.log(shipperuserChoice, "shipper id here");
-                console.log(choice.value, "pickup id here");
+                // console.log(shipperuserChoice, "shipper id here");
+                // console.log(choice.value, "pickup id here");
                 setpickupUserChoice(choice.value);
                 droppofflist(shipperuserChoice, choice.value);
+                setPickupValue(choice.value);
               }}
               // userChoice
             />
@@ -574,13 +503,15 @@ const formdata  = new FormData();
             <DatePicker
               className="date-input position-relative px-5"
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date);
+                setPickup_DateValue(date);
+              }}
+              placeholderText={"dd/mm/yyyy"}
+              // filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
               minDate={moment().toDate()}
-              // isValidDate={disablePastDt}
-              placeholderText="Select a day"
-              format='yyyy-MM-dd'
-              value={setPickup_DateValue}             
-               // dateFormat="MMMM d, yyyy"
+              showYearDropdown // year show and scrolldown alos
+              scrollableYearDropdown
             />
             <Dateicon
               className="position-absolute top-2 left-2"
@@ -592,11 +523,19 @@ const formdata  = new FormData();
             <label htmlFor="address">
               Pickup Time<span>*</span>
             </label>
-            <input type="time"  value={setPickup_TimeFromValue}/>
+            <input
+              type="time"
+              onChange={(v) => setPickup_TimeFromValue(v.target.value)}
+            />
+           
           </div>
           {/* time-to */}
           <div className="input col-md-3 mt-4">
-            <input type="time" value={setPickup_TimeToValue}/>
+            <input
+              type="time"
+              onChange={(v) => setPickup_TimeToValue(v.target.value)}
+            />
+           
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -629,8 +568,8 @@ const formdata  = new FormData();
               options={GroupsdropoffOptions}
               onChange={(choice) => {
                 setdropoffUserChoice(choice.value);
-                detailsApi(shipperuserChoice ,pickupuserChoice,choice.value);
-
+                detailsApi(shipperuserChoice, pickupuserChoice, choice.value);
+                setDropoffValue(choice.value);
               }}
             />
           </div>
@@ -638,10 +577,18 @@ const formdata  = new FormData();
             <label htmlFor="address">
               Drop off Time<span>*</span>
             </label>
-            <input type="time" value={setDrop_TimeFromValue}/>
+            <input
+              type="time"
+              onChange={(v) => setDrop_TimeFromValue(v.target.value)}
+            />
+            {/* onChange={()=>setDrop_TimeFromValue()} */}
           </div>
           <div className="input mx-3 mt-4">
-            <input type="time" value={setDrop_TimeToValue}/>
+            <input
+              type="time"
+              onChange={(v) => setDrop_TimeToValue(v.target.value)}
+            />
+            {/* onChange={()=>setDrop_TimeToValue()} */}
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -655,11 +602,36 @@ const formdata  = new FormData();
       </div>
       <div className="details box-inputs mb-4" onClick={tabdetails}>
         <div className="box-inputs-head">Details</div>
-        <Inputs shipperuserChoice={shipperuserChoice}  pickupuserChoice={pickupuserChoice} detailsApi={detailsApi} detailsList={detailsList} />
+
+        <Inputs
+          shipperuserChoice={shipperuserChoice}
+          pickupuserChoice={pickupuserChoice}
+          detailsApi={detailsApi}
+          detailsList={detailsList}
+          dropoffserChoice={dropoffserChoice}
+          pickup_DateValue={pickup_DateValue}
+          pickup_TimeFromValue={pickup_TimeFromValue}
+          pickup_TimeToValue={pickup_TimeToValue}
+          dropoff_TimeFromValue={dropoff_TimeFromValue}
+          dropoff_TimeToValue={dropoff_TimeToValue}
+          input={input}
+        />
         {input.map((item, index) => {
           return (
             <>
-              <Inputs shipperuserChoice={shipperuserChoice}  pickupuserChoice={pickupuserChoice} detailsApi={detailsApi} detailsList={detailsList} />
+              <Inputs
+                shipperuserChoice={shipperuserChoice}
+                pickupuserChoice={pickupuserChoice}
+                detailsApi={detailsApi}
+                detailsList={detailsList}
+                dropoffserChoice={dropoffserChoice}
+                pickup_DateValue={pickup_DateValue}
+                pickup_TimeFromValue={pickup_TimeFromValue}
+                pickup_TimeToValue={pickup_TimeToValue}
+                dropoff_TimeFromValue={dropoff_TimeFromValue}
+                dropoff_TimeToValue={dropoff_TimeToValue}
+                input={input}
+              />
               <button
                 className="btn-delete"
                 id="delete"
@@ -686,9 +658,14 @@ const formdata  = new FormData();
             </button>
           </div>
           <div className="right-btn">
-            <NavLink to="/allshipments">
-              <button className="btn-save">Save</button>
-            </NavLink>
+            <button
+              className="btn-save"
+              onClick={() => {
+                setList(Math.random()*234567);
+              }}
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>

@@ -1,23 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
-import "jquery/dist/jquery.min.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "jquery/dist/jquery.min.js";
 import "mdbreact/dist/css/mdb.css";
 // import { CDBDataTable } from 'cdbreact';
+import { CookiesProvider } from "react-cookie";
+import { BrowserRouter } from "react-router-dom";
 import { persistStore } from "redux-persist";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { HashRouter, BrowserRouter } from "react-router-dom";
-import { CookiesProvider } from "react-cookie";
+
 
 import { Provider } from "react-redux";
-import { store } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
+import { store } from "./store";
+import ContextStoreProvider from "./Components/contaxt";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store);
 root.render(
@@ -26,7 +28,11 @@ root.render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <React.StrictMode>
-            <App />
+            
+          <ContextStoreProvider>
+            <App/>
+          </ContextStoreProvider>
+          
           </React.StrictMode>
         </PersistGate>
       </Provider>

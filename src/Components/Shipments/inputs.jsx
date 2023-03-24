@@ -8,6 +8,9 @@ import "./Shipments.css";
 
 // trucks
 import { ReactComponent as Truck1 } from "../../icons/Vector.svg";
+import { ContextStore } from "../contaxt";
+import { useContext } from "react";
+import moment from "moment";
 
 // const truckChoose=() =>{
 //   return(
@@ -23,9 +26,28 @@ const Inputs = ({
   pickupuserChoice,
   detailsApi,
   detailsList,
+  dropoffserChoice,
+  pickup_DateValue,
+  pickup_TimeFromValue,
+  pickup_TimeToValue,
+  dropoff_TimeFromValue,
+  dropoff_TimeToValue,
+  input
+
 }) => {
 
 
+  const {list,setList} = useContext(ContextStore)
+
+
+  useEffect(() => {
+    if(list) {
+      AddShipments_Api()
+    }
+  }, [list])
+
+
+  const [cookie] = useCookies(["eload_token"]);
   // console.log(shipperuserChoice, "shiperinputssssssssssssss");
   // console.log(pickupuserChoice, "pickupinputssssssssssssss");
   // console.log(detailsList, "detailsLiiiiiiiiiiiiiiiiiist");
@@ -41,10 +63,96 @@ const Inputs = ({
   const [truckuserChoice, setTruckuserChoice] = useState();
 
 
+        // details
+
+        const [truckTypeValue, setTruckTypeValue] = useState("");
+        const [shipmentType, setShipmentType] = useState("");
+        const [shipmentTypeValue, setshipmentTypeValue] = useState("");
+        const [weightValue, setWeightValue] = useState("");
+        const [number_TrucksValue, setNumber_TrucksValue] = useState("");
+        const [picking_ListValue, setPicking_ListValue] = useState("");
+        const [Documents_ListValue, setDocments_ListValue] = useState("");
+        const [commodityTypeValue, setCommodityTypeValue] = useState("");
+        const [uomValue, setUomValue] = useState("");
+        const [quantityValue, setQuantityValue] = useState("");
+
+        // input.map((item, index) => {
+        //   const [truckTypeValue+index+1, setTruckTypeValue+index+1] = useState("");
+        //   const [shipmentType, setShipmentType] = useState("");
+        //   const [shipmentTypeValue, setshipmentTypeValue] = useState("");
+        //   const [weightValue, setWeightValue] = useState("");
+        //   const [number_TrucksValue, setNumber_TrucksValue] = useState("");
+        //   const [picking_ListValue, setPicking_ListValue] = useState("");
+        //   const [Documents_ListValue, setDocments_ListValue] = useState("");
+        //   const [commodityTypeValue, setCommodityTypeValue] = useState("");
+        //   const [uomValue, setUomValue] = useState("");
+        //   const [quantityValue, setQuantityValue] = useState("");
+        // });
 
 
- 
- 
+
+
+
+
+        const AddShipments_Api = async () => {
+          const formdata  = new FormData();
+          formdata.append("shipper_id", shipperuserChoice);
+          formdata.append("from_address_id", pickupuserChoice);
+          formdata.append("to_address_id", dropoffserChoice);
+          formdata.append("pickup_date", moment(pickup_DateValue).format("YYYY-MM-DD") );
+          // pickup_DateValue
+          formdata.append("pickup_from_time", pickup_TimeFromValue);
+          formdata.append("pickup_to_time", pickup_TimeToValue);
+          formdata.append("dropoff_from_time", dropoff_TimeFromValue);
+          formdata.append("dropoff_to_time", dropoff_TimeToValue);
+          // details
+          formdata.append(`shipments[0][truck_type_id]`, truckTypeValue);
+          formdata.append(`shipments[0][shipment_type_id]`, shipmentType);
+          formdata.append(`shipments[0][value]`, shipmentTypeValue);
+          formdata.append(`shipments[0][weight]`, weightValue);
+          formdata.append(`shipments[0][commodity_id]`, commodityTypeValue);
+          formdata.append(`shipments[0][uom_id]`, uomValue);
+          formdata.append(`shipments[0][truck_type_qty]`, number_TrucksValue);
+          formdata.append(`shipments[0][attachments][packing_list][0]`, picking_ListValue);
+          formdata.append(`shipments[0][attachments][other_documentations][0]`, Documents_ListValue);
+          formdata.append(`shipments[0][quantity]`, quantityValue);
+          
+              input.map((item, index) => {
+                  formdata.append(`shipments[${index+1}][truck_type_id]`, truckTypeValue);
+                  formdata.append(`shipments[${index+1}][shipment_type_id]`, shipmentType);
+                  formdata.append(`shipments[${index+1}][value]`, shipmentTypeValue);
+                  formdata.append(`shipments[${index+1}][weight]`, weightValue);
+                  formdata.append(`shipments[${index+1}][commodity_id]`, commodityTypeValue);
+                  formdata.append(`shipments[${index+1}][uom_id]`, uomValue);
+                  formdata.append(`shipments[${index+1}][truck_type_qty]`, number_TrucksValue);
+                  formdata.append(`shipments[${index+1}][attachments][packing_list][0]`, picking_ListValue);
+                  formdata.append(`shipments[${index+1}][attachments][other_documentations][0]`, Documents_ListValue);
+                  formdata.append(`shipments[${index+1}][quantity]`, quantityValue);
+                });
+          
+          console.log("Add----------Done");
+
+          try {
+            const reponse = await axios.post(
+              "https://dev.eload.smart.sa/api/v1/orders",
+              formdata,
+              {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${cookie.eload_token}`,
+                  "api-key":
+                    "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+                },
+              }
+            );
+      
+            // setName("");
+            //   console.log(reponse);
+          } catch (e) {
+            console.log(e);
+          }
+        };
+
 
   const shipmentOptionList = (truckuserChoice) => {
     // console.log(truckuserChoice, "testttttttttttttttt");
@@ -96,7 +204,11 @@ const Inputs = ({
 
 
   return (
+
     <>
+        {/* {
+          callApi(AddShipments_Api)
+        } */}
       <div className="inputs row">
         <div className="input col-2">
           <label htmlFor="address">
@@ -118,6 +230,7 @@ const Inputs = ({
             onChange={(choice) => {
               setTruckuserChoice(choice.value);
               shipmentOptionList(choice.value);
+              setTruckTypeValue(choice.value)
             }}
           />
         </div>
@@ -137,25 +250,29 @@ const Inputs = ({
             isSearchable={isSearchable}
             name="color"
             options={shipmentOptionListList}
+            onChange={(choice)=>{
+              setShipmentType(choice.value);
+            }}
           />
         </div>
         <div className="input col-2">
           <label htmlFor="address">
             Shipment value<span>*</span>
           </label>
-          <input type="text" placeholder="i,e, 10" />
+          <input type="number" placeholder="i,e, 10" onChange={(e) => { setshipmentTypeValue(e.target.value)}} />
         </div>
         <div className="input col-2">
           <label htmlFor="address">
             Weight<span>*</span>
           </label>
-          <input type="text" placeholder="i,e,2000" />
+          <input type="number" placeholder="i,e,2000  Kgs"  onChange={(e) => { setWeightValue(e.target.value)}} />
+          {/* setWeightValue */}
         </div>
         <div className="input col-2">
           <label htmlFor="address">
             Number of trucks<span>*</span>
           </label>
-          <input type="text" placeholder="i,e,2000" />
+          <input type="number" placeholder="i,e,2000" onChange={(e) => { setNumber_TrucksValue(e.target.value)}}/>
         </div>
         <div className="input col-2">
           <label htmlFor="address">Description</label>
@@ -176,6 +293,9 @@ const Inputs = ({
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
+              onChange={(e) => {
+                setPicking_ListValue(e.target.files[0]);
+              }}
             />
           </div>
         </div>
@@ -189,6 +309,10 @@ const Inputs = ({
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
+              onChange={(e) => {
+                setDocments_ListValue(e.target.files[0]);
+              }}
+              // setDocments_ListValue
             />
           </div>
         </div>
@@ -207,6 +331,10 @@ const Inputs = ({
             isSearchable={isSearchable}
             name="color"
             options={commidtiesOptions}
+            // setCommodityTypeValue
+            onChange={(choice) => {
+              setCommodityTypeValue(choice.value);
+            }}
           />
         </div>
         <div className="input col-2">
@@ -224,13 +352,17 @@ const Inputs = ({
             isSearchable={isSearchable}
             name="color"
             options={UOMsOptions}
+            onChange={(choice) => {
+              setUomValue(choice.value);
+            }}
           />
         </div>
         <div className="input col-2">
           <label htmlFor="address">
             Quantity<span>*</span>
           </label>
-          <input type="text" placeholder="i,e,02" />
+          <input type="number" placeholder="i,e,02" onChange={(e) => { setQuantityValue(e.target.value)}} />
+
         </div>
       </div>
     </>
