@@ -94,15 +94,36 @@ const Shipments = () => {
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
   // details
-  // const [truckTypeValue, setTruckTypeValue] = useState("");
-  // const [shipmentTypeValue, setshipmentTypeValue] = useState("");
-  // const [weightValue, setWeightValue] = useState("");
-  // const [number_TrucksValue, setNumber_TrucksValue] = useState("");
-  // const [picking_ListValue, setPicking_ListValue] = useState("");
-  // const [Documents_ListValue, setDocments_ListValue] = useState("");
-  // const [commodityTypeValue, setCommodityTypeValue] = useState("");
-  // const [uomValue, setUomValue] = useState("");
-  // const [quantityValue, setQuantityValue] = useState("");
+  const intialState = {
+    truckTypeValue: "",
+    shipmentType: "",
+    shipmentTypeValue: "",
+    weightValue: "",
+    number_TrucksValue: "",
+    picking_ListValue: [],
+    Documents_ListValue: "",
+    commodityTypeValue: "",
+    uomValue: "",
+    quantityValue: "",
+  };
+  const [totaldetails, setTotalDetails] = useState([intialState]);
+  const [indexOfTotalDetails, setIndexOfTotalDetails] = useState(0);
+
+  const addNewTotalDetails = () => {
+    setTotalDetails([...totaldetails, intialState]);
+  };
+  const handleIncreaseIndex = () => {
+    setIndexOfTotalDetails((prev) => prev + 1);
+  };
+  const handleDecreaseIndex = () => {
+    if (indexOfTotalDetails === 0) {
+      return;
+    } else {
+      setIndexOfTotalDetails((prev) => prev - 1);
+    }
+  };
+  console.log(totaldetails, "total");
+  console.log(indexOfTotalDetails, "indexOfTotalDetails");
 
   // pickup-Api
   const pickupListApi = async (shipper_id) => {
@@ -296,9 +317,6 @@ const Shipments = () => {
   // new Array(5).fill(1).map((item , index)=>{
   //   console.log(index, "index");
   // })
-
-
-
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -527,7 +545,6 @@ const Shipments = () => {
               type="time"
               onChange={(v) => setPickup_TimeFromValue(v.target.value)}
             />
-           
           </div>
           {/* time-to */}
           <div className="input col-md-3 mt-4">
@@ -535,7 +552,6 @@ const Shipments = () => {
               type="time"
               onChange={(v) => setPickup_TimeToValue(v.target.value)}
             />
-           
           </div>
           <div className="add-btn">
             <NavLink to="/Shipments/addAddress">
@@ -603,7 +619,7 @@ const Shipments = () => {
       <div className="details box-inputs mb-4" onClick={tabdetails}>
         <div className="box-inputs-head">Details</div>
 
-        <Inputs
+        {/* <Inputs
           shipperuserChoice={shipperuserChoice}
           pickupuserChoice={pickupuserChoice}
           detailsApi={detailsApi}
@@ -615,11 +631,15 @@ const Shipments = () => {
           dropoff_TimeFromValue={dropoff_TimeFromValue}
           dropoff_TimeToValue={dropoff_TimeToValue}
           input={input}
-        />
-        {input.map((item, index) => {
+          setTotalDetails={setTotalDetails}
+          totaldetails={totaldetails}
+          indexOfTotalDetails={indexOfTotalDetails}
+        /> */}
+        {totaldetails.map((item, index) => {
           return (
             <>
               <Inputs
+                indexOfItem={index}
                 shipperuserChoice={shipperuserChoice}
                 pickupuserChoice={pickupuserChoice}
                 detailsApi={detailsApi}
@@ -631,19 +651,25 @@ const Shipments = () => {
                 dropoff_TimeFromValue={dropoff_TimeFromValue}
                 dropoff_TimeToValue={dropoff_TimeToValue}
                 input={input}
+                setTotalDetails={setTotalDetails}
+                totaldetails={totaldetails}
+                indexOfTotalDetails={indexOfTotalDetails}
               />
-              <button
-                className="btn-delete"
-                id="delete"
-                onClick={(item) => {
-                  const newArr = input.filter((i, j) => {
-                    return index !== j;
-                  });
-                  setInputs(newArr);
-                }}
-              >
-                Delete
-              </button>
+              {index > 0 && (
+                <button
+                  className="btn-delete"
+                  id="delete"
+                  onClick={(ele) => {
+                    const newArr = totaldetails.filter((i, j) => {
+                      return index !== j;
+                    });
+                    setTotalDetails(newArr);
+                    handleDecreaseIndex();
+                  }}
+                >
+                  Delete
+                </button>
+              )}
             </>
           );
         })}
@@ -652,7 +678,12 @@ const Shipments = () => {
             <button
               className="btn-add "
               id="add"
-              onClick={() => setInputs([...input, ""])}
+              onClick={() => {
+                setInputs([...input, ""]);
+                addNewTotalDetails();
+                // setIndexOfTotalDetails(indexOfTotalDetails + 1);
+                handleIncreaseIndex();
+              }}
             >
               <i className="fa-solid fa-plus"></i> Add truck
             </button>
@@ -661,7 +692,7 @@ const Shipments = () => {
             <button
               className="btn-save"
               onClick={() => {
-                setList(Math.random()*234567);
+                setList(Math.random() * 234567);
               }}
             >
               Save
