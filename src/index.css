@@ -192,3 +192,8 @@ input
 .modal svg{
   margin-top: 15px;
 }
+
+.err_message{
+  color: red;
+  font-weight: 400;
+}

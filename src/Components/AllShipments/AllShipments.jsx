@@ -94,7 +94,7 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to="/shipmentorder">
+            <NavLink style={{ color: "#0085FF" }} to="/allshipments/shipmentorder">
               <span>{renderedCellValue}</span>
             </NavLink>
             {/* <span>{console.log(row.original)}</span> */}
@@ -227,7 +227,7 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to="/shipmentorder">
+            <NavLink style={{ color: "#0085FF" }} to="/allshipments/shipmentorder">
               <span>{renderedCellValue}</span>
             </NavLink>
           </Box>
