@@ -12,6 +12,11 @@ import { ReactComponent as Truck1 } from "../../icons/Vector.svg";
 import { ContextStore } from "../contaxt";
 import { useContext } from "react";
 import moment from "moment";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MuiAlert from "@mui/material/Alert";
 // import * as yup from "yup";
 
 // const truckChoose=() =>{
@@ -22,6 +27,8 @@ import moment from "moment";
 //     </div>
 //   )
 // }
+
+
 
 const Inputs = ({
   shipperuserChoice,
@@ -34,15 +41,16 @@ const Inputs = ({
   pickup_TimeToValue,
   dropoff_TimeFromValue,
   dropoff_TimeToValue,
-  input,
+  // input,
   setTotalDetails,
   totaldetails,
   indexOfTotalDetails,
   indexOfItem,
   validation,
   getError,
-  errList
+  errList,
 }) => {
+
   const { list, setList } = useContext(ContextStore);
   // const {errorlist , setErrorList}= useContext(ContextStore)
 
@@ -162,129 +170,111 @@ const Inputs = ({
     setTotalDetails(newInputs);
   };
 
+  const [openerror, setOpenerror] = React.useState(false);
+  const handleClickerror = () => {
+    setOpenerror(true);
+  };
+
+  const handleCloseerror = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenerror(false);
+  };
+
   // Api-s
   const AddShipments_Api = async () => {
     // e.preventDefault();
 
-    // let schema = Joi.object(
-    //   {
-    //     truckTypeValue: Joi.string(),
-    //     shipmentType: Joi.string(),
-    //   }
-
-      // shipperuserChoice,
-      // pickupuserChoice,
-      // dropoffserChoice,
-      // pickup_DateValue,
-      // pickup_TimeFromValue,
-      // pickup_TimeToValue,
-      // dropoff_TimeFromValue,
-      // dropoff_TimeToValue,
-      // totaldetails,
-    // );
-    // let joiResponse = schema.validate(totaldetails, { abortEarly: false });
-    // if (joiResponse.error) {
-    //   setErrList(schema.error.details);
-    // } else {
-    //   setErrList([]);
-    //   setsendFlag(true);
-      const formdata = new FormData();
-      formdata.append("shipper_id", shipperuserChoice);
-      formdata.append("from_address_id", pickupuserChoice);
-      formdata.append("to_address_id", dropoffserChoice);
+    const formdata = new FormData();
+    formdata.append("shipper_id", shipperuserChoice);
+    formdata.append("from_address_id", pickupuserChoice);
+    formdata.append("to_address_id", dropoffserChoice);
+    formdata.append(
+      "pickup_date",
+      moment(pickup_DateValue).format("YYYY-MM-DD")
+    );
+    // pickup_DateValue
+    formdata.append("pickup_from_time", pickup_TimeFromValue);
+    formdata.append("pickup_to_time", pickup_TimeToValue);
+    formdata.append("dropoff_from_time", dropoff_TimeFromValue);
+    formdata.append("dropoff_to_time", dropoff_TimeToValue);
+    // details
+    totaldetails.map((item, index) => {
       formdata.append(
-        "pickup_date",
-        moment(pickup_DateValue).format("YYYY-MM-DD")
+        `shipments[${index}][truck_type_id]`,
+        totaldetails[index].truckTypeValue
       );
-      // pickup_DateValue
-      formdata.append("pickup_from_time", pickup_TimeFromValue);
-      formdata.append("pickup_to_time", pickup_TimeToValue);
-      formdata.append("dropoff_from_time", dropoff_TimeFromValue);
-      formdata.append("dropoff_to_time", dropoff_TimeToValue);
-      // details
-      totaldetails.map((item, index) => {
+      formdata.append(
+        `shipments[${index}][shipment_type_id]`,
+        totaldetails[index].shipmentType
+      );
+      formdata.append(
+        `shipments[${index}][value]`,
+        totaldetails[index].shipmentTypeValue
+      );
+      formdata.append(
+        `shipments[${index}][weight]`,
+        totaldetails[index].weightValue
+      );
+      formdata.append(
+        `shipments[${index}][truck_type_qty]`,
+        totaldetails[index].number_TrucksValue
+      );
+      // pick
+      totaldetails[index].picking_ListValue.map((fileitem, fileindexpick) => {
         formdata.append(
-          `shipments[${index}][truck_type_id]`,
-          totaldetails[index].truckTypeValue
+          `shipments[${index}][attachments][packing_list][${fileindexpick}]`,
+          totaldetails[index].picking_ListValue
         );
+      });
+      // doc
+      totaldetails[index].Documents_ListValue.map((fileitem, fileindexdoc) => {
         formdata.append(
-          `shipments[${index}][shipment_type_id]`,
-          totaldetails[index].shipmentType
-        );
-        formdata.append(
-          `shipments[${index}][value]`,
-          totaldetails[index].shipmentTypeValue
-        );
-        formdata.append(
-          `shipments[${index}][weight]`,
-          totaldetails[index].weightValue
-        );
-        formdata.append(
-          `shipments[${index}][truck_type_qty]`,
-          totaldetails[index].number_TrucksValue
-        );
-        // pick
-        totaldetails[index].picking_ListValue.map((fileitem, fileindexpick) => {
-          formdata.append(
-            `shipments[${index}][attachments][packing_list][${fileindexpick}]`,
-            totaldetails[index].picking_ListValue
-          );
-        });
-        // doc
-        totaldetails[index].Documents_ListValue.map(
-          (fileitem, fileindexdoc) => {
-            formdata.append(
-              `shipments[${index}][attachments][other_documentations][${fileindexdoc}]`,
-              totaldetails[index].Documents_ListValue
-            );
-          }
-        );
-
-        formdata.append(
-          `shipments[${index}][commodity_id]`,
-          totaldetails[index].commodityTypeValue
-        );
-        formdata.append(
-          `shipments[${index}][uom_id]`,
-          totaldetails[index].uomValue
-        );
-        formdata.append(
-          `shipments[${index}][quantity]`,
-          totaldetails[index].quantityValue
+          `shipments[${index}][attachments][other_documentations][${fileindexdoc}]`,
+          totaldetails[index].Documents_ListValue
         );
       });
 
-      console.log("Add----------Done");
+      formdata.append(
+        `shipments[${index}][commodity_id]`,
+        totaldetails[index].commodityTypeValue
+      );
+      formdata.append(
+        `shipments[${index}][uom_id]`,
+        totaldetails[index].uomValue
+      );
+      formdata.append(
+        `shipments[${index}][quantity]`,
+        totaldetails[index].quantityValue
+      );
+    });
 
-      try {
-        const reponse = await axios.post(
-          "https://dev.eload.smart.sa/api/v1/orders",
-          formdata,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
+    console.log("Add----------Done");
 
-        // setName("");
-        //   console.log(reponse);
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      const reponse = await axios.post(
+        "https://dev.eload.smart.sa/api/v1/orders",
+        formdata,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      // setName("");
+      //   console.log(reponse);
+    } catch (e) {
+      // handleClick2();
+      console.log(e);
+    }
     // }
   };
-  function getError(key) {
-    for (const error of errList) {
-      if (error.context.key === key) {
-        return error.message;
-      }
-    }
-    return "";
-  }
 
   const shipmentOptionList = (truckuserChoice) => {
     // console.log(truckuserChoice, "testttttttttttttttt");
@@ -329,8 +319,31 @@ const Inputs = ({
     };
   });
 
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleCloseerror}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseerror}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <>
+      <Snackbar
+        open={openerror}
+        autoHideDuration={6000}
+        onClose={handleCloseerror}
+        message="Note archived"
+        action={action}
+      />
       <div className="inputs row">
         <div className="input col-2">
           <label htmlFor="address">
@@ -359,12 +372,7 @@ const Inputs = ({
             }}
             // value={totaldetails[indexOfTotalDetails].truckTypeValue}
           />
-          {errList ? (
-            <span className="err_message mx-3">truck is required</span>
-          ) : (
-            ""
-          )}
-          {/* <p className="fs-6 text-danger mb-3">{getError("truckTypeValue")}</p> */}
+
         </div>
         <div className="input col-2">
           <label htmlFor="address">
@@ -439,7 +447,7 @@ const Inputs = ({
         </div>
         <div className="input col-2">
           <label htmlFor="address">Description</label>
-          <input type="text" placeholder="text here"min="1" />
+          <input type="text" placeholder="text here" min="1" />
         </div>
       </div>
 
