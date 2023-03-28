@@ -11,10 +11,12 @@ const Rewards = () => {
   const dispatch = useDispatch();
   const [promotionList, setpromotionList] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
-  const data = promotionList.map((item, index) => {
+
+  const data = promotionList.map((item) => {
     return {
       id: item.id,
       name: item.name,
+      details: item.details
     };
   });
 
@@ -69,7 +71,10 @@ const Rewards = () => {
       </div>
       <hr />
       {/* section-1 */}
-      <div className="row px-4 py-2">
+      {data.map(({id, name, details}) => {
+      return (
+      <>
+      <div className="row px-4 py-2" key={id}>
         {/* first-row */}
         <div className="row justify-content-between">
           <div className="col-md-6 align-items-center">
@@ -94,7 +99,7 @@ const Rewards = () => {
                   fill="#FDC500"
                 />
               </svg>
-              <h4>First Reward</h4>
+              <h4>{name}</h4>
             </div>
           </div>
           <div className="col-md-4 justfy-content-end pt-3 ">
@@ -130,13 +135,14 @@ const Rewards = () => {
               isSearchable={true}
               name="rewards_options"
               options={typesOptions}
+              defaultValue={typesOptions.find(({ value }) => value === details.actions.total.type)}
             />
           </div>
           <div className="col-md-4 input-side">
             <label htmlFor="address">
               Reward Amount<span>*</span>
             </label>
-            <input type="text" placeholder="ie. 500 SAR" />
+            <input type="text" placeholder="ie. 500 SAR" value={details.actions.total.value} />
           </div>
           <div className="col-md-4 numbers-box text-center">
             <label htmlFor="address">
@@ -159,7 +165,7 @@ const Rewards = () => {
                 type="number"
                 className="count"
                 name="qty"
-                value={count1}
+                value={details.conditions.delivered_shipments.value}
               />
               <span
                 onClick={() => {
@@ -186,7 +192,9 @@ const Rewards = () => {
         </div>
       </div>
       <hr />
-
+      </>
+      );
+    })}
               {/* modal */}
               <div
           className="modal fade"
