@@ -99,6 +99,11 @@ const Shipments = () => {
   // const date = new Date();
   const [startDate, setStartDate] = useState(null);
 
+    // datepacker_from tomorrow
+    const today=new Date();
+    let tomorrow = new Date();
+    tomorrow.setDate(today.getDate()+1);
+
   // ====================================shipments-states============================================
 
   const [shipperList, setShipperList] = useState([]);
@@ -130,6 +135,7 @@ const Shipments = () => {
     shipmentTypeValue: "",
     weightValue: "",
     number_TrucksValue: "",
+    description: "",
     picking_ListValue: [],
     Documents_ListValue: [],
     commodityTypeValue: "",
@@ -350,7 +356,7 @@ const Shipments = () => {
   const handelSubmit = (e) => {
     e.preventDefault();
 
-    setList(Math.random() * 234567);
+    setList(true);
     handleClick({
       vertical: "bottom",
       horizontal: "center",
@@ -404,6 +410,9 @@ const Shipments = () => {
   // console.log(arrList,"arrrrrrrrrrrrrrrrr");
   console.log(numShipment, "numstepppppppppp");
   console.log(plannedList, "infoarrrrrrrrrrrrrr");
+
+
+
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -638,6 +647,7 @@ const Shipments = () => {
           {/* ----------------------formInfo----------- */}
 
           {plannedList.length === numShipment && (
+           
             <form onSubmit={handelSubmit}>
               <div className="input-shipper " style={{ width: "49%" }}>
                 <p>
@@ -1193,6 +1203,8 @@ const Shipments = () => {
             <hr />
           </div>
           <form onSubmit={handelSubmit}>
+          {/* <form > */}
+
             <div className="input-shipper " style={{ width: "49%" }}>
               <p>
                 Shipper<span>*</span>
@@ -1258,7 +1270,9 @@ const Shipments = () => {
                     }}
                     placeholderText={"dd/mm/yyyy"}
                     // filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
-                    minDate={moment().toDate()}
+                    // minDate={moment().toDate()}
+                    minDate={tomorrow}
+
                     showYearDropdown // year show and scrolldown alos
                     scrollableYearDropdown
                   />
@@ -1402,7 +1416,7 @@ const Shipments = () => {
                   <button
                     className="btn-add "
                     id="add"
-                    type="btn"
+                    type="button"
                     onClick={() => {
                       // setInputs([...input, ""]);
                       addNewTotalDetails();
@@ -1420,7 +1434,8 @@ const Shipments = () => {
                     className="btn-save"
                     type="submit"
                     // onClick={handleClick}
-                    // onClick={() => {
+                    // onClick={(e) => {
+                    //   e.preventDefault();
                     //   setList(Math.random() * 234567);
                     // }}
                   >
@@ -1429,7 +1444,7 @@ const Shipments = () => {
 
                   <Snackbar
                     open={open}
-                    autoHideDuration={5000}
+                    autoHideDuration={3000}
                     onClose={handleClose}
                     anchorOrigin={{ vertical, horizontal }}
                   >

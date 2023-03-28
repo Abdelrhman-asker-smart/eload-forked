@@ -125,6 +125,12 @@ const Inputs = ({
     newInputs[index].number_TrucksValue = event.target.value;
     setTotalDetails(newInputs);
   };
+  // description
+  const descriptionhahndleInputChange = (index, event) => {
+    const newInputs = [...totaldetails];
+    newInputs[index].description = event.target.value;
+    setTotalDetails(newInputs);
+  };
   // pack-files
   const pickinghandleInputChange = (index, event) => {
     const newInputs = [...totaldetails];
@@ -183,7 +189,7 @@ const Inputs = ({
     setOpenerror(false);
   };
 
-  // Api-s
+  // Api-shipment
   const AddShipments_Api = async () => {
     // e.preventDefault();
 
@@ -222,18 +228,22 @@ const Inputs = ({
         `shipments[${index}][truck_type_qty]`,
         totaldetails[index].number_TrucksValue
       );
+      formdata.append(
+        `shipments[${index}][description]`,
+        totaldetails[index].description || ""
+      );
       // pick
       totaldetails[index].picking_ListValue.map((fileitem, fileindexpick) => {
         formdata.append(
           `shipments[${index}][attachments][packing_list][${fileindexpick}]`,
-          totaldetails[index].picking_ListValue
+          fileitem
         );
       });
       // doc
-      totaldetails[index].Documents_ListValue.map((fileitem, fileindexdoc) => {
+      totaldetails[index].Documents_ListValue.map((fileitem2, fileindexdoc) => {
         formdata.append(
           `shipments[${index}][attachments][other_documentations][${fileindexdoc}]`,
-          totaldetails[index].Documents_ListValue
+          fileitem2 || []
         );
       });
 
@@ -276,6 +286,8 @@ const Inputs = ({
     // }
   };
 
+
+  // shipment_type
   const shipmentOptionList = (truckuserChoice) => {
     // console.log(truckuserChoice, "testttttttttttttttt");
 
@@ -296,7 +308,6 @@ const Inputs = ({
       }
     });
   };
-
   // commidities_options
   const commidtiesOptions = detailsList.commodities?.map((item, index) => {
     return {
@@ -447,7 +458,11 @@ const Inputs = ({
         </div>
         <div className="input col-2">
           <label htmlFor="address">Description</label>
-          <input type="text" placeholder="text here" min="1" />
+          <input type="text" placeholder="text here" min="1"
+          onChange={(e)=>{
+            descriptionhahndleInputChange(indexOfItem,e);
+          }}
+          />
         </div>
       </div>
 
@@ -460,6 +475,7 @@ const Inputs = ({
             <input
               type="file"
               multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-file form-control"
               required
               id="inputGroupFile03"
@@ -479,7 +495,8 @@ const Inputs = ({
             <input
               type="file"
               multiple="multiple"
-              required
+              accept="audio/*,video/*,image/*,.pdf,.doc"
+              // required
               className="input-file form-control"
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
