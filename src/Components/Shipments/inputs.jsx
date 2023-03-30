@@ -29,6 +29,7 @@ import MuiAlert from "@mui/material/Alert";
 // }
 
 const Inputs = ({
+  handleOrder,
   shipperuserChoice,
   pickupuserChoice,
   detailsApi,
@@ -281,26 +282,31 @@ const Inputs = ({
         });
       });
       console.log("Addone----------Done");
-      try {
-        const reponse = await axios.post(
-          "https://dev.eload.smart.sa/api/v1/orders",
+      
+      // below is a temp fix to be able to send the order request only once
+      handleOrder(formdata);
 
-          formdata,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-        // setName("");
-        //   console.log(reponse);
-      } catch (e) {
-        // handleClick2();
-        console.log(e);
-      }
+      // try {
+      //   const reponse = await axios.post(
+      //     "https://dev.eload.smart.sa/api/v1/orders",
+
+      //     formdata,
+      //     {
+      //       headers: {
+      //         Accept: "application/json",
+      //         Authorization: `Bearer ${cookie.eload_token}`,
+      //         "api-key":
+      //           "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+      //       },
+      //     }
+      //   );
+      //   // setName("");
+      //   //   console.log(reponse);
+      // } catch (e) {
+      //   // handleClick2();
+      //   console.log(e);
+      // }
+
       // Planned=============================
     } else {
       plannedList.map((item, index) => {
@@ -422,6 +428,8 @@ const Inputs = ({
         console.log(e);
       }
     }
+
+    setList(false); // to allow sending the request again when clicking on the send btn
   };
 
   // commidities_options
