@@ -28,8 +28,6 @@ import MuiAlert from "@mui/material/Alert";
 //   )
 // }
 
-
-
 const Inputs = ({
   shipperuserChoice,
   pickupuserChoice,
@@ -52,19 +50,15 @@ const Inputs = ({
   arrListnumShipment,
   indexshipment,
   indexdetails,
-
-
 }) => {
-
   const { list, setList } = useContext(ContextStore);
   // const {errorlist , setErrorList}= useContext(ContextStore)
-
+  // console.log(plannedList.length, "plannedList");
   useEffect(() => {
     if (list) {
-      AddShipments_Api();
+      AddShipments_Api(plannedList);
     }
   }, [list]);
-
 
   const [cookie] = useCookies(["eload_token"]);
   // const [errList, setErrList] = useState([]);
@@ -80,7 +74,6 @@ const Inputs = ({
   // shipmentOptionList
   const [shipmentOptionListList, setShipmentOptionListList] = useState();
   const [truckuserChoice, setTruckuserChoice] = useState();
-
 
   // truck-type
   const truckTypehandleInputChange = (index, event) => {
@@ -123,7 +116,7 @@ const Inputs = ({
   // pack-files
   const pickinghandleInputChange = (index, event) => {
     const newInputs = [...totaldetails];
-    console.log(event, "events");
+    // console.log(event, "events");
     // totaldetails.picking_ListValue==event;
     // for(let i=0;i<)
     for (let k in event) {
@@ -165,7 +158,6 @@ const Inputs = ({
     setTotalDetails(newInputs);
   };
 
-
   // shipment_type
   const shipmentOptionList = (truckuserChoice) => {
     // console.log(truckuserChoice, "testttttttttttttttt");
@@ -188,8 +180,6 @@ const Inputs = ({
     });
   };
 
-
-
   // errors
   const [openerror, setOpenerror] = React.useState(false);
   const handleClickerror = () => {
@@ -203,113 +193,235 @@ const Inputs = ({
     setOpenerror(false);
   };
 
-
-
   // Api-shipment
-  const AddShipments_Api = async () => {
+  const AddShipments_Api = async (plannedList) => {
+    console.log(plannedList, "plannedList--------");
     // e.preventDefault();
 
     const formdata = new FormData();
-    plannedList.map((item,index)=>{
-      formdata.append("shipper_id",item.shipperPlanned);
-      formdata.append("from_address_id", item.pickupAddressPlanned);
-      formdata.append("to_address_id", item.dropOffPlanned);
-      formdata.append("pickup_date",
-        moment(item.pickupDatePlanned).format("YYYY-MM-DD")
-      );
-      // pickup_DateValue
-      formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
-      formdata.append("pickup_to_time",item.pickupTimeToPlanned);
-      formdata.append("dropoff_from_time",item.dropTimeFromPlanned);
-      formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+    // Without-Planned=============================
+    if (plannedList.length === 1) {
+      plannedList.map((item, index) => {
+        // formdata.append(`orders[${index}][shipper_id]`,item.shipperPlanned);
+        formdata.append(`shipper_id`, item.shipperPlanned);
 
-      item.detailsTruck.map((itemdetails,indexdetails)=>{
-        // truck
+        formdata.append("from_address_id", item.pickupAddressPlanned);
+        formdata.append("to_address_id", item.dropOffPlanned);
         formdata.append(
-          `shipments[${index}][truck_type_id]`,
-          itemdetails.truckTypePlanned
+          "pickup_date",
+          moment(item.pickupDatePlanned).format("YYYY-MM-DD")
         );
-        // shipment
-        formdata.append(
-          `shipments[${index}][shipment_type_id]`,
-          itemdetails.shipmentTypePlanned
-        );
-        // shipment_value
-        formdata.append(
-          `shipments[${index}][value]`,
-          itemdetails.shipmentvaluePlanned
-        );
-        // weightPlanned
-        formdata.append(
-          `shipments[${index}][weight]`,
-          itemdetails.weightPlanned
-        );
-        // numTrucksPlanned
-        formdata.append(
-          `shipments[${index}][truck_type_qty]`,
-          itemdetails.numTrucksPlanned
-        );
-        // descriptionPlanned
-        formdata.append(
-          `shipments[${index}][description]`,
-          itemdetails.descriptionPlanned
-        );
-        // PickingListPlanned
-        itemdetails.PickingListPlanned.map((fileitem,fileindexpick)=>{
-            formdata.append(
-            `shipments[${index}][attachments][packing_list][${fileindexpick}]`,
-            fileitem
-          );
-        })
-        // documListPlanned
-        itemdetails.documListPlanned.map((fileitemdoc,fileindexdoc)=>{
+        // pickup_DateValue
+        formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
+        formdata.append("pickup_to_time", item.pickupTimeToPlanned);
+        formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
+        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+
+        item.detailsTruck.map((itemdetails, indexdetails) => {
+          // truck
           formdata.append(
-          `shipments[${index}][attachments][other_documentations][${fileindexdoc}]`,
-          fileitemdoc
+            // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
+            `shipments[${index}][truck_type_id]`,
+            itemdetails.truckTypePlanned
+          );
+          // shipment
+          formdata.append(
+            `shipments[${index}][shipment_type_id]`,
+            itemdetails.shipmentTypePlanned
+          );
+          // shipment_value
+          formdata.append(
+            `shipments[${index}][value]`,
+            itemdetails.shipmentvaluePlanned
+          );
+          // weightPlanned
+          formdata.append(
+            `shipments[${index}][weight]`,
+            itemdetails.weightPlanned
+          );
+          // numTrucksPlanned
+          formdata.append(
+            `shipments[${index}][truck_type_qty]`,
+            itemdetails.numTrucksPlanned
+          );
+          // descriptionPlanned
+          formdata.append(
+            `shipments[${index}][description]`,
+            itemdetails.descriptionPlanned
+          );
+          // PickingListPlanned
+          itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
+            formdata.append(
+              `shipments[${index}][attachments][packing_list][${fileindexpick}]`,
+              fileitem
+            );
+          });
+          // documListPlanned
+          itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
+            formdata.append(
+              `shipments[${index}][attachments][other_documentations][${fileindexdoc}]`,
+              fileitemdoc
+            );
+          });
+          // commidityPlanned
+          formdata.append(
+            `shipments[${index}][commodity_id]`,
+            itemdetails.commidityPlanned
+          );
+          // uomPlanned
+          formdata.append(
+            `shipments[${index}][uom_id]`,
+            itemdetails.uomPlanned
+          );
+          // quantityPlanned
+          formdata.append(
+            `shipments[${index}][quantity]`,
+            itemdetails.quantityPlanned
+          );
+        });
+      });
+      console.log("Addone----------Done");
+      try {
+        const reponse = await axios.post(
+          "https://dev.eload.smart.sa/api/v1/orders",
+
+          formdata,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
         );
-      })
-      // commidityPlanned
-      formdata.append(
-        `shipments[${index}][commodity_id]`,
-        itemdetails.commidityPlanned
-      );
-      // uomPlanned
-      formdata.append(
-        `shipments[${index}][uom_id]`,
-        itemdetails.uomPlanned
-      );
-      // quantityPlanned
-      formdata.append(
-        `shipments[${index}][quantity]`,
-        itemdetails.quantityPlanned
-      );
+        // setName("");
+        //   console.log(reponse);
+      } catch (e) {
+        // handleClick2();
+        console.log(e);
+      }
+      // Planned=============================
+    } else {
+      plannedList.map((item, index) => {
+        formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
+        // formdata.append(`shipper_id`,item.shipperPlanned);
 
-      })
-    })
+        formdata.append(
+          `orders[${index}][from_address_id]`,
+          item.pickupAddressPlanned
+        );
+        formdata.append(`orders[${index}][to_address_id]`, item.dropOffPlanned);
 
-    console.log("Add----------Done");
+        formdata.append(
+          `orders[${index}][pickup_date]`,
+          moment(item.pickupDatePlanned).format("YYYY-MM-DD")
+        );
+        // pickup_DateValue
+        formdata.append(
+          `orders[${index}][pickup_from_time]`,
+          item.pickupTimeFromPlanned
+        );
+        formdata.append(
+          `orders[${index}][pickup_to_time]`,
+          item.pickupTimeToPlanned
+        );
+        formdata.append(
+          `orders[${index}][dropoff_from_time]`,
+          item.dropTimeFromPlanned
+        );
+        formdata.append(
+          `orders[${index}][dropoff_to_time]`,
+          item.dropTimeToPlanned
+        );
 
-    try {
-      const reponse = await axios.post(
-        "https://dev.eload.smart.sa/api/v1/orders",
-        formdata,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${cookie.eload_token}`,
-            "api-key":
-              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-          },
-        }
-      );
+        item.detailsTruck.map((itemdetails, indexdetails) => {
+          // truck
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][truck_type_id]`,
+            // `shipments[${index}][truck_type_id]`,
+            itemdetails.truckTypePlanned
+          );
+          // shipment
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][shipment_type_id]`,
+            itemdetails.shipmentTypePlanned
+          );
+          // shipment_value
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][value]`,
+            itemdetails.shipmentvaluePlanned
+          );
+          // weightPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][weight]`,
+            itemdetails.weightPlanned
+          );
+          // numTrucksPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][truck_type_qty]`,
+            itemdetails.numTrucksPlanned
+          );
+          // descriptionPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][description]`,
+            itemdetails.descriptionPlanned
+          );
+          // PickingListPlanned
+          itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][attachments][packing_list][${fileindexpick}]`,
+              fileitem
+            );
+          });
+          // documListPlanned
+          itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
+              fileitemdoc
+            );
+          });
+          // commidityPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][commodity_id]`,
+            itemdetails.commidityPlanned
+          );
+          // uomPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][uom_id]`,
+            itemdetails.uomPlanned
+          );
+          // quantityPlanned
+          formdata.append(
+            `orders[${index}][shipments][${indexdetails}][quantity]`,
+            itemdetails.quantityPlanned
+          );
+        });
+      });
+      console.log("Addplanned----------Done");
+      try {
+        const reponse = await axios.post(
+          "https://dev.eload.smart.sa/api/v1/scheduled_orders",
+          // }
 
-      // setName("");
-      //   console.log(reponse);
-    } catch (e) {
-      // handleClick2();
-      console.log(e);
+          formdata,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        // setName("");
+        //   console.log(reponse);
+      } catch (e) {
+        // handleClick2();
+        console.log(e);
+      }
     }
-    // }
   };
 
   // commidities_options
@@ -351,76 +463,88 @@ const Inputs = ({
   );
   // =================================planned-shipment
 
-    // Planned-shipment
-    // truck
-    const TruckPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].truckTypePlanned=event; 
-    }
-    
-    // shipmentType
-    const shipmenttypePlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].shipmentTypePlanned=event; 
-    }
-    // shipmentValue
-    const shipmentValuePlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].shipmentvaluePlanned=event.target.value; 
-    }
-    // weight
-    const shipmentwieghtPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].weightPlanned=event.target.value; 
-    }
-    // numtruck
-    const numTruckPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].numTrucksPlanned=event.target.value; 
-    }
-    // description
-    const descriptionPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].descriptionPlanned=event.target.value; 
-    }
-    // pickinglist PickingListPlanned
-    const pickingListPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      console.log(indexshipment,"indexshipment");
-      console.log(indexdetails,"indexdetails");
-      const newInputs = [...plannedList];
-      for (let k in event) {
-        if (event.hasOwnProperty(k)) {
-          // totaldetails.picking_ListValue[k] = event[k];
-          newInputs[indexshipment].detailsTruck[indexdetails].PickingListPlanned.push(event[k]);
-        }
+  // Planned-shipment
+  // truck
+  const TruckPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].truckTypePlanned =
+      event;
+  };
+
+  // shipmentType
+  const shipmenttypePlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].shipmentTypePlanned =
+      event;
+  };
+  // shipmentValue
+  const shipmentValuePlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].shipmentvaluePlanned =
+      event.target.value;
+  };
+  // weight
+  const shipmentwieghtPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].weightPlanned =
+      event.target.value;
+  };
+  // numtruck
+  const numTruckPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].numTrucksPlanned =
+      event.target.value;
+  };
+  // description
+  const descriptionPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].descriptionPlanned =
+      event.target.value;
+  };
+  // pickinglist PickingListPlanned
+  const pickingListPlannedChange = (indexshipment, indexdetails, event) => {
+    console.log(indexshipment, "indexshipment");
+    console.log(indexdetails, "indexdetails");
+    const newInputs = [...plannedList];
+    for (let k in event) {
+      if (event.hasOwnProperty(k)) {
+        // totaldetails.picking_ListValue[k] = event[k];
+        newInputs[indexshipment].detailsTruck[
+          indexdetails
+        ].PickingListPlanned.push(event[k]);
       }
     }
-    // docOther
-    const docListPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
+  };
+  // docOther
+  const docListPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
 
-      for (let ke in event) {
-        if (event.hasOwnProperty(ke)) {
-          // totaldetails.picking_ListValue[ke] = event[ke];
-          newInputs[indexshipment].detailsTruck[indexdetails].documListPlanned.push(event[ke]);
-        }
+    for (let ke in event) {
+      if (event.hasOwnProperty(ke)) {
+        // totaldetails.picking_ListValue[ke] = event[ke];
+        newInputs[indexshipment].detailsTruck[
+          indexdetails
+        ].documListPlanned.push(event[ke]);
+      }
     }
-    }
-    // commidityPlanned
-    const commidityPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].commidityPlanned=event; 
-    }
-    // uomPlanned
-    const uomPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].uomPlanned=event; 
-    }
-    // quantityPlanned
-    const quantityPlannedChange = (indexshipment ,indexdetails ,event) =>{
-      const newInputs = [...plannedList];
-      newInputs[indexshipment].detailsTruck[indexdetails].quantityPlanned=event.target.value; 
-    }
+  };
+  // commidityPlanned
+  const commidityPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].commidityPlanned =
+      event;
+  };
+  // uomPlanned
+  const uomPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].uomPlanned = event;
+  };
+  // quantityPlanned
+  const quantityPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].quantityPlanned =
+      event.target.value;
+  };
   return (
     <>
       <Snackbar
@@ -453,11 +577,9 @@ const Inputs = ({
               setTruckuserChoice(choice.value);
               shipmentOptionList(choice.value);
               // truckTypehandleInputChange(indexOfItem, choice.value);
-              TruckPlannedChange(indexshipment , indexdetails , choice.value)
+              TruckPlannedChange(indexshipment, indexdetails, choice.value);
             }}
-       
           />
-
         </div>
         <div className="input col-2">
           <label htmlFor="address">
@@ -477,9 +599,17 @@ const Inputs = ({
             name="color"
             options={shipmentOptionListList}
             onChange={(choice) => {
-              shipmenttypePlannedChange(indexshipment , indexdetails , choice.value);
+              shipmenttypePlannedChange(
+                indexshipment,
+                indexdetails,
+                choice.value
+              );
               // shipmentTypehandleInputChange(indexOfItem, choice.value);
-              shipmenttypePlannedChange(indexshipment , indexdetails , choice.value);
+              shipmenttypePlannedChange(
+                indexshipment,
+                indexdetails,
+                choice.value
+              );
             }}
           />
 
@@ -495,9 +625,9 @@ const Inputs = ({
             placeholder="i,e, 10"
             // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
             // totaldetails
-            onChange={(e) =>{ 
+            onChange={(e) => {
               // valueOfhandleInputChange(indexOfItem, e)
-              shipmentValuePlannedChange(indexshipment , indexdetails , e)
+              shipmentValuePlannedChange(indexshipment, indexdetails, e);
             }}
           />
           {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
@@ -514,7 +644,7 @@ const Inputs = ({
             onChange={(e) => {
               // setWeightValue(e.target.value);
               // weighthandleInputChange(indexOfItem, e);
-              shipmentwieghtPlannedChange(indexshipment , indexdetails , e);
+              shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
             }}
           />
           {errList ? <span className="err_message mx-3"> required</span> : ""}
@@ -532,17 +662,20 @@ const Inputs = ({
             onChange={(e) => {
               // setNumber_TrucksValue(e.target.value);
               // numberOfTruckshahndleInputChange(indexOfItem, e);
-              numTruckPlannedChange(indexshipment , indexdetails , e);
+              numTruckPlannedChange(indexshipment, indexdetails, e);
             }}
           />
         </div>
         <div className="input col-2">
           <label htmlFor="address">Description</label>
-          <input type="text" placeholder="text here" min="1"
-          onChange={(e)=>{
-            // descriptionhahndleInputChange(indexOfItem,e);
-            descriptionPlannedChange(indexshipment , indexdetails , e);
-          }}
+          <input
+            type="text"
+            placeholder="text here"
+            min="1"
+            onChange={(e) => {
+              // descriptionhahndleInputChange(indexOfItem,e);
+              descriptionPlannedChange(indexshipment, indexdetails, e);
+            }}
           />
         </div>
       </div>
@@ -564,7 +697,11 @@ const Inputs = ({
               aria-label="Upload"
               onChange={(e) => {
                 // pickinghandleInputChange(indexOfItem, e.target.files);
-                pickingListPlannedChange(indexshipment , indexdetails , e.target.files);
+                pickingListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
                 // console.log(picking_ListValue, "files");
                 // setPicking_ListValue(e.target.files[0]);
               }}
@@ -585,10 +722,13 @@ const Inputs = ({
               aria-label="Upload"
               onChange={(e) => {
                 // docListhahndleInputChange(indexOfItem, e.target.files);
-                docListPlannedChange(indexshipment , indexdetails , e.target.files);
+                docListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
               }}
             />
-  
           </div>
         </div>
         <div className="input col-2">
@@ -611,7 +751,7 @@ const Inputs = ({
             onChange={(choice) => {
               // setCommodityTypeValue(choice.value);
               // commiditieshandleInputChange(indexOfItem, choice.value);
-              commidityPlannedChange(indexshipment , indexdetails , choice.value);
+              commidityPlannedChange(indexshipment, indexdetails, choice.value);
             }}
           />
         </div>
@@ -634,7 +774,7 @@ const Inputs = ({
             onChange={(choice) => {
               // setUomValue(choice.value);
               // uom_handleInputChange(indexOfItem, choice.value);
-              uomPlannedChange(indexshipment , indexdetails , choice.value);
+              uomPlannedChange(indexshipment, indexdetails, choice.value);
             }}
           />
         </div>
@@ -650,7 +790,7 @@ const Inputs = ({
             onChange={(e) => {
               // setQuantityValue(e.target.value);
               // quantityValue_handleInputChange(indexOfItem, e);
-              quantityPlannedChange(indexshipment , indexdetails , e);
+              quantityPlannedChange(indexshipment, indexdetails, e);
             }}
           />
         </div>

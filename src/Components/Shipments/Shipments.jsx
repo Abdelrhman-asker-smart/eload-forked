@@ -111,7 +111,7 @@ const Shipments = () => {
   const [dropofList, setDropofList] = useState([]);
   const [detailsList, setDetailsList] = useState([]);
 
-  const [shipperuserChoice, setShipperUserChoice] = useState();
+  const [shipperuserChoice, setShipperUserChoice] = useState("");
   const [pickupuserChoice, setpickupUserChoice] = useState();
   const [dropoffserChoice, setdropoffUserChoice] = useState();
 
@@ -316,6 +316,7 @@ const Shipments = () => {
       label: item.name,
     };
   });
+  
 
   const handelSubmit = (e) => {
     e.preventDefault();
@@ -382,26 +383,52 @@ const Shipments = () => {
       },
     ],
   };
+  const plannedAllShipmentswithshipper = {
+    shipperPlanned: shipperuserChoice,
+    pickupAddressPlanned: "",
+    pickupDatePlanned: "",
+    pickupTimeFromPlanned: "",
+    pickupTimeToPlanned: "",
+    dropOffPlanned: "",
+    dropTimeFromPlanned: "",
+    dropTimeToPlanned: "",
+    detailsTruck: [
+      {
+        truckTypePlanned: "",
+        shipmentTypePlanned: "",
+        shipmentvaluePlanned: "",
+        weightPlanned: "",
+        numTrucksPlanned: "",
+        descriptionPlanned: "",
+        PickingListPlanned: [],
+        documListPlanned: [],
+        commidityPlanned: "",
+        uomPlanned: "",
+        quantityPlanned: "",
+      },
+    ],
+  };
   // array_of_planned_details
   const [plannedList, setPlannedList] = useState([plannedAllShipments]);
+  // const [plannedListwithshipper, setPlannedListwithshipper] = useState([plannedAllShipmentswithshipper]);
 
 
   console.log(plannedList, "plannedList");
   // addnew_listof_object
   const addNewListOfShipment = () => {
-    setPlannedList([...plannedList, plannedAllShipments]);
+    // setPlannedList([...plannedList, plannedAllShipments]);
+
+    setPlannedList([...plannedList, plannedAllShipmentswithshipper]);
   };
   // array_ofinnerDetails
-  const [PlannedInnerDetails, setPlannedInerDetails] = useState([plannedAllShipments.detailsTruck]);
-
+  const [PlannedInnerDetails, setPlannedInerDetails] = useState([
+    plannedAllShipments.detailsTruck,
+  ]);
 
   // addinnerDetails
   const addPlannedinerDetails = (indexOfCurrentShipment) => {
-
     plannedList[indexOfCurrentShipment].detailsTruck.push(intialStateplanned);
-// =============================================????????????????????????????????
-   
-
+    // =============================================????????????????????????????????
   };
 
   // deleteDetails
@@ -473,8 +500,8 @@ const Shipments = () => {
   };
 
   // console.log(arrList,"arrrrrrrrrrrrrrrrr");
-  console.log(numShipment, "numstepppppppppp");
-  console.log(plannedList, "infoarrrrrrrrrrrrrr");
+  // console.log(numShipment, "numstepppppppppp");
+  // console.log(plannedList, "infoarrrrrrrrrrrrrr");
   const [counter, setCounter] = useState(0);
   const counterchange = (index) => {
     if (index < numShipment) {
@@ -731,362 +758,803 @@ const Shipments = () => {
         return (
           <>
             {indexshipment === counter && (
-              <form onSubmit={handelSubmit}>
-                <div className="input-shipper " style={{ width: "49%" }}>
-                  <p>
-                    Shipper<span>*</span>
-                  </p>
-                  {/* shipper-select */}
-                  <Select
-                    classNamePrefix="select"
-                    className="basic-multi-select"
-                    // isMulti
-                    isDisabled={isDisabled}
-                    required={required}
-                    isLoading={isLoading}
-                    isClearable={isClearable}
-                    isRtl={isRtl}
-                    isSearchable={isSearchable}
-                    name="shipper"
-                    options={shipperOptions}
-                    onChange={(choice) => {
-                      pickupListApi(choice.value);
-                      setShipperUserChoice(choice.value);
-                      // setShipperValue(choice.value);
-                      shipperPlanned_handleInputChange(
-                        indexshipment,
-                        choice.value
-                      );
-                    }}
-                  />
-                </div>
-                <div className="pick-up box-inputs" onClick={tabPickup}>
-                  <div className="box-inputs-head">Pick up</div>
-                  <div className="inputs row">
-                    <div className="input input-select col-md-6">
-                      <label htmlFor="address">
-                        Pickup Address<span>*</span>
-                      </label>
+              <>
+                {indexshipment > 0 ? (
+                  <form onSubmit={handelSubmit}>
+                    <div className="input-shipper " style={{ width: "49%" }}>
+                      <p>
+                        Shipper<span>*</span>
+                      </p>
+                      {/* shipper-select */}
                       <Select
                         classNamePrefix="select"
                         className="basic-multi-select"
                         // isMulti
-                        isDisabled={isDisabled}
-                        isLoading={isLoading}
-                        isClearable={isClearable}
+                        isDisabled={!isDisabled}
                         required={required}
+                        isLoading={isLoading}
+                        isClearable={isClearable}
                         isRtl={isRtl}
                         isSearchable={isSearchable}
-                        name="color"
-                        options={GroupspickupOptions}
+                        name="shipper"
+                        options={shipperOptions}
                         onChange={(choice) => {
-                          setpickupUserChoice(choice.value);
-                          droppofflist(shipperuserChoice, choice.value);
-                          setPickupValue(choice.value);
-                          pickupPlanned_handleInputChange(
+                          pickupListApi(choice.value);
+                          setShipperUserChoice(choice.value);
+                          setShipperValue(choice.label);
+                          shipperPlanned_handleInputChange(
                             indexshipment,
                             choice.value
                           );
                         }}
                       />
+                      <span>{shipperValue}</span>
                     </div>
-                    <div className="input col-md-4">
-                      <label htmlFor="address">
-                        Pickup Date<span>*</span>
-                      </label>
+                    <div className="pick-up box-inputs" onClick={tabPickup}>
+                      <div className="box-inputs-head">Pick up</div>
+                      <div className="inputs row">
+                        <div className="input input-select col-md-6">
+                          <label htmlFor="address">
+                            Pickup Address<span>*</span>
+                          </label>
+                          <Select
+                            classNamePrefix="select"
+                            className="basic-multi-select"
+                            // isMulti
+                            isDisabled={isDisabled}
+                            isLoading={isLoading}
+                            isClearable={isClearable}
+                            required={required}
+                            isRtl={isRtl}
+                            isSearchable={isSearchable}
+                            name="color"
+                            options={GroupspickupOptions}
+                            onChange={(choice) => {
+                              setpickupUserChoice(choice.value);
+                              droppofflist(shipperuserChoice, choice.value);
+                              setPickupValue(choice.value);
+                              pickupPlanned_handleInputChange(
+                                indexshipment,
+                                choice.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="input col-md-4">
+                          <label htmlFor="address">
+                            Pickup Date<span>*</span>
+                          </label>
 
-                      <DatePicker
-                        className="date-input position-relative px-5"
-                        selected={startDate}
-                        required={true}
-                        onChange={(date) => {
-                          setStartDate(date);
-                          // setPickup_DateValue(date);
-                          pickupDatePlanned_handleInputChange( indexshipment , date);
-                        }}
-                        placeholderText={"dd/mm/yyyy"}
-                        // filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
-                        // minDate={moment().toDate()}
-                        minDate={tomorrow}
-                        showYearDropdown // year show and scrolldown alos
-                        scrollableYearDropdown
-                      />
+                          <DatePicker
+                            className="date-input position-relative px-5"
+                            selected={startDate}
+                            required={true}
+                            onChange={(date) => {
+                              setStartDate(date);
+                              // setPickup_DateValue(date);
+                              pickupDatePlanned_handleInputChange(
+                                indexshipment,
+                                date
+                              );
+                            }}
+                            placeholderText={"dd/mm/yyyy"}
+                            // filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
+                            // minDate={moment().toDate()}
+                            minDate={tomorrow}
+                            showYearDropdown // year show and scrolldown alos
+                            scrollableYearDropdown
+                          />
 
-                      <Dateicon
-                        className="position-absolute"
-                        style={{ top: "36%", left: "53%" }}
-                      />
+                          <Dateicon
+                            className="position-absolute"
+                            style={{ top: "36%", left: "53%" }}
+                          />
+                        </div>
+                        {/* time-from */}
+                        <div className="input col-md-3">
+                          <label htmlFor="address">
+                            Pickup Time<span>*</span>
+                          </label>
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setPickup_TimeFromValue(v.target.value);
+                              pickupTimeFromPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        {/* time-to */}
+                        <div className="input col-md-3 mt-4">
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setPickup_TimeToValue(v.target.value);
+                              pickupTimeToPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="add-btn">
+                          <NavLink to="/Shipments/addAddress">
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+                        </div>
+                      </div>
+                      <hr />
                     </div>
-                    {/* time-from */}
-                    <div className="input col-md-3">
-                      <label htmlFor="address">
-                        Pickup Time<span>*</span>
-                      </label>
-                      <input
-                        type="time"
-                        required
-                        onChange={(v) => {
-                          setPickup_TimeFromValue(v.target.value);
-                          pickupTimeFromPlanned_handleInputChange(
-                            indexshipment,
-                            v.target.value
+                    <div className="drop-off box-inputs" onClick={tabdropoff}>
+                      <div className="box-inputs-head">Drop off</div>
+                      <div className="inputs">
+                        <div className="input input-select">
+                          <label htmlFor="address">
+                            Drop off Address<span>*</span>
+                          </label>
+                          {/* dropoff-select */}
+                          <Select
+                            classNamePrefix="select"
+                            className="basic-multi-select"
+                            // isMulti
+                            isDisabled={isDisabled}
+                            isLoading={isLoading}
+                            required
+                            isClearable={isClearable}
+                            isRtl={isRtl}
+                            isSearchable={isSearchable}
+                            name="color"
+                            options={GroupsdropoffOptions}
+                            onChange={(choice) => {
+                              setdropoffUserChoice(choice.value);
+                              detailsApi(
+                                shipperuserChoice,
+                                pickupuserChoice,
+                                choice.value
+                              );
+                              setDropoffValue(choice.value);
+                              dropoffPlanned_handleInputChange(
+                                indexshipment,
+                                choice.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="input mx-3">
+                          <label htmlFor="address">
+                            Drop off Time<span>*</span>
+                          </label>
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setDrop_TimeFromValue(v.target.value);
+                              dropTimeFromPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="input mx-3 mt-4">
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setDrop_TimeToValue(v.target.value);
+                              dropTimeToPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="add-btn">
+                          <NavLink to="/Shipments/addAddress">
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+                        </div>
+                      </div>
+                      <hr />
+                    </div>
+                    <div
+                      className="details box-inputs mb-4"
+                      onClick={tabdetails}
+                    >
+                      <div className="box-inputs-head">Details</div>
+
+                      {plannedList[indexshipment].detailsTruck.map(
+                        (item, indexdetails) => {
+                          return (
+                            <>
+                              <Inputs
+                                indexOfItem={indexdetails}
+                                shipperuserChoice={shipperuserChoice}
+                                pickupuserChoice={pickupuserChoice}
+                                detailsApi={detailsApi}
+                                detailsList={detailsList}
+                                dropoffserChoice={dropoffserChoice}
+                                pickup_DateValue={pickup_DateValue}
+                                pickup_TimeFromValue={pickup_TimeFromValue}
+                                pickup_TimeToValue={pickup_TimeToValue}
+                                dropoff_TimeFromValue={dropoff_TimeFromValue}
+                                dropoff_TimeToValue={dropoff_TimeToValue}
+                                // input={input}
+                                setTotalDetails={setTotalDetails}
+                                totaldetails={totaldetails}
+                                indexOfTotalDetails={indexOfTotalDetails}
+                                plannedList={plannedList}
+                                setPlannedList={setPlannedList}
+                                PlannedInnerDetails={PlannedInnerDetails}
+                                arrListnumShipment={arrListnumShipment}
+                                // countIndexShipmentplann={countindexshipmentplann}
+                                // countIndexdetailsplann={countindexdetailstplann}
+                                indexshipment={indexshipment}
+                                indexdetails={indexdetails}
+                              />
+                              {indexdetails > 0 && (
+                                <button
+                                  className="btn-delete"
+                                  id="delete"
+                                  onClick={(ele) => {
+                                    const newArr = totaldetails.filter(
+                                      (i, j) => {
+                                        return indexdetails !== j;
+                                      }
+                                    );
+                                    setPlannedInerDetails(newArr);
+                                    deletePlannedinerDetails(indexshipment);
+                                    handleDecreaseIndexPlanned();
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              )}
+                            </>
                           );
-                        }}
-                      />
+                        }
+                      )}
+                      <div className="control-btn">
+                        <div className="left-btn">
+                          <button
+                            className="btn-add "
+                            id="add"
+                            type="btn"
+                            onClick={() => {
+                              // setInputs([...input, ""]);
+                              addPlannedinerDetails(indexshipment);
+                              // setIndexOfTotalDetails(indexOfTotalDetails + 1);
+                              handleIncreaseIndexPlanned();
+                            }}
+                          >
+                            <i className="fa-solid fa-plus"></i> Add truck
+                          </button>
+                        </div>
+                        {ischeck ? (
+                          <div className="right-btn">
+                            {/* <NavLink to="/allshipments"> */}
+                            {console.log(counter, "counter inside JSX")}
+                            {counter === numShipment - 1 ? (
+                              <button className="btn-save" type="submit">
+                                Save
+                              </button>
+                            ) : (
+                              <>
+                                {plannedList[counter].shipperPlanned === "" ||
+                                plannedList[counter].pickupAddressPlanned ===
+                                  "" ||
+                                plannedList[counter].pickupDatePlanned === "" ||
+                                plannedList[counter].pickupTimeFromPlanned ===
+                                  "" ||
+                                plannedList[counter].pickupTimeToPlanned ===
+                                  "" ||
+                                plannedList[counter].dropOffPlanned === "" ||
+                                plannedList[counter].dropTimeFromPlanned ===
+                                  "" ||
+                                plannedList[counter].dropTimeToPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .shipmentTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .shipmentvaluePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .weightPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .numTrucksPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .PickingListPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .commidityPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .uomPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .quantityPlanned === "" ? (
+                                  <>
+                                    <span
+                                      className="mx-2"
+                                      style={{ color: "red" }}
+                                    >
+                                      please enter the requre data
+                                    </span>
+
+                                    <button
+                                      className="btn-save"
+                                      // type="submit"
+                                      // onClick={() => {
+                                      //     addNewListOfShipment();
+                                      //     counterchange(indexshipment);
+                                      // }}
+                                    >
+                                      Next Shipment
+                                    </button>
+                                  </>
+                                ) : (
+                                  <button
+                                    className="btn-save"
+                                    type="submit"
+                                    onClick={() => {
+                                      addNewListOfShipment();
+                                      setStartDate(null);
+                                      counterchange(indexshipment);
+                                    }}
+                                  >
+                                    Next Shipment
+                                  </button>
+                                )}
+
+                                {/* <button
+                                  className="btn-save"
+                                  type="submit"
+                                  onClick={() => {
+                                  addNewListOfShipment();
+                                  setStartDate(null);
+                                  counterchange(indexshipment);
+                                  }}
+                                  >
+                                  Next Shipment
+                                  </button> */}
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="right-btn">
+                            <button className="btn-save" type="submit">
+                              Save
+                            </button>
+                          </div>
+                        )}
+                        <Snackbar
+                          open={open}
+                          autoHideDuration={5000}
+                          onClose={handleClose}
+                          anchorOrigin={{ vertical, horizontal }}
+                        >
+                          <Alert
+                            onClose={handleClose}
+                            severity="success"
+                            sx={{ width: "100%" }}
+                          >
+                            This is a success Add Shipment!
+                          </Alert>
+                        </Snackbar>
+                      </div>
                     </div>
-                    {/* time-to */}
-                    <div className="input col-md-3 mt-4">
-                      <input
-                        type="time"
-                        required
-                        onChange={(v) => {
-                          setPickup_TimeToValue(v.target.value);
-                          pickupTimeToPlanned_handleInputChange(
-                            indexshipment,
-                            v.target.value
-                          );
-                        }}
-                      />
-                    </div>
-                    <div className="add-btn">
-                      <NavLink to="/Shipments/addAddress">
-                        <button>
-                          <i className="fa-solid fa-plus"></i> Add New Address
-                        </button>
-                      </NavLink>
-                    </div>
-                  </div>
-                  <hr />
-                </div>
-                <div className="drop-off box-inputs" onClick={tabdropoff}>
-                  <div className="box-inputs-head">Drop off</div>
-                  <div className="inputs">
-                    <div className="input input-select">
-                      <label htmlFor="address">
-                        Drop off Address<span>*</span>
-                      </label>
-                      {/* dropoff-select */}
+                  </form>
+                ) : (
+                  <form onSubmit={handelSubmit}>
+                    <div className="input-shipper " style={{ width: "49%" }}>
+                      <p>
+                        Shipper<span>*</span>
+                      </p>
+                      {/* shipper-select */}
                       <Select
                         classNamePrefix="select"
                         className="basic-multi-select"
                         // isMulti
                         isDisabled={isDisabled}
+                        required={required}
                         isLoading={isLoading}
-                        required
                         isClearable={isClearable}
                         isRtl={isRtl}
                         isSearchable={isSearchable}
-                        name="color"
-                        options={GroupsdropoffOptions}
+                        name="shipper"
+                        options={shipperOptions}
                         onChange={(choice) => {
-                          setdropoffUserChoice(choice.value);
-                          detailsApi(
-                            shipperuserChoice,
-                            pickupuserChoice,
-                            choice.value
-                          );
-                          setDropoffValue(choice.value);
-                          dropoffPlanned_handleInputChange(
+                          pickupListApi(choice.value);
+                          setShipperUserChoice(choice.value);
+                          setShipperValue(choice.value);
+                          shipperPlanned_handleInputChange(
                             indexshipment,
                             choice.value
                           );
                         }}
                       />
                     </div>
-                    <div className="input mx-3">
-                      <label htmlFor="address">
-                        Drop off Time<span>*</span>
-                      </label>
-                      <input
-                        type="time"
-                        required
-                        onChange={(v) => {
-                          setDrop_TimeFromValue(v.target.value);
-                          dropTimeFromPlanned_handleInputChange(
-                            indexshipment,
-                            v.target.value
-                          );
-                        }}
-                      />
-                    </div>
-                    <div className="input mx-3 mt-4">
-                      <input
-                        type="time"
-                        required
-                        onChange={(v) => {
-                          setDrop_TimeToValue(v.target.value);
-                          dropTimeToPlanned_handleInputChange(
-                            indexshipment,
-                            v.target.value
-                          );
-                        }}
-                      />
-                    </div>
-                    <div className="add-btn">
-                      <NavLink to="/Shipments/addAddress">
-                        <button>
-                          <i className="fa-solid fa-plus"></i> Add New Address
-                        </button>
-                      </NavLink>
-                    </div>
-                  </div>
-                  <hr />
-                </div>
-                <div className="details box-inputs mb-4" onClick={tabdetails}>
-                  <div className="box-inputs-head">Details</div>
-
-                  {plannedList[indexshipment].detailsTruck.map(
-                    (item, indexdetails) => {
-                      return (
-                        <>
-                          <Inputs
-                            indexOfItem={indexdetails}
-                            shipperuserChoice={shipperuserChoice}
-                            pickupuserChoice={pickupuserChoice}
-                            detailsApi={detailsApi}
-                            detailsList={detailsList}
-                            dropoffserChoice={dropoffserChoice}
-                            pickup_DateValue={pickup_DateValue}
-                            pickup_TimeFromValue={pickup_TimeFromValue}
-                            pickup_TimeToValue={pickup_TimeToValue}
-                            dropoff_TimeFromValue={dropoff_TimeFromValue}
-                            dropoff_TimeToValue={dropoff_TimeToValue}
-                            // input={input}
-                            setTotalDetails={setTotalDetails}
-                            totaldetails={totaldetails}
-                            indexOfTotalDetails={indexOfTotalDetails}
-                            plannedList={plannedList}
-                            setPlannedList={setPlannedList}
-                            PlannedInnerDetails={PlannedInnerDetails}
-                            arrListnumShipment={arrListnumShipment}
-                            // countIndexShipmentplann={countindexshipmentplann}
-                            // countIndexdetailsplann={countindexdetailstplann}
-                            indexshipment={indexshipment}
-                            indexdetails={indexdetails}
+                    <div className="pick-up box-inputs" onClick={tabPickup}>
+                      <div className="box-inputs-head">Pick up</div>
+                      <div className="inputs row">
+                        <div className="input input-select col-md-6">
+                          <label htmlFor="address">
+                            Pickup Address<span>*</span>
+                          </label>
+                          <Select
+                            classNamePrefix="select"
+                            className="basic-multi-select"
+                            // isMulti
+                            isDisabled={isDisabled}
+                            isLoading={isLoading}
+                            isClearable={isClearable}
+                            required={required}
+                            isRtl={isRtl}
+                            isSearchable={isSearchable}
+                            name="color"
+                            options={GroupspickupOptions}
+                            onChange={(choice) => {
+                              setpickupUserChoice(choice.value);
+                              droppofflist(shipperuserChoice, choice.value);
+                              setPickupValue(choice.value);
+                              pickupPlanned_handleInputChange(
+                                indexshipment,
+                                choice.value
+                              );
+                            }}
                           />
-                          {indexdetails > 0 && (
-                            <button
-                              className="btn-delete"
-                              id="delete"
-                              onClick={(ele) => {
-                                const newArr = totaldetails.filter((i, j) => {
-                                  return indexdetails !== j;
-                                });
-                                setPlannedInerDetails(newArr);
-                                deletePlannedinerDetails(indexshipment);
-                                handleDecreaseIndexPlanned();
-                              }}
-                            >
-                              Delete
+                        </div>
+                        <div className="input col-md-4">
+                          <label htmlFor="address">
+                            Pickup Date<span>*</span>
+                          </label>
+
+                          <DatePicker
+                            className="date-input position-relative px-5"
+                            selected={startDate}
+                            required={true}
+                            onChange={(date) => {
+                              setStartDate(date);
+                              // setPickup_DateValue(date);
+                              pickupDatePlanned_handleInputChange(
+                                indexshipment,
+                                date
+                              );
+                            }}
+                            placeholderText={"dd/mm/yyyy"}
+                            // filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
+                            // minDate={moment().toDate()}
+                            minDate={tomorrow}
+                            showYearDropdown // year show and scrolldown alos
+                            scrollableYearDropdown
+                          />
+
+                          <Dateicon
+                            className="position-absolute"
+                            style={{ top: "36%", left: "53%" }}
+                          />
+                        </div>
+                        {/* time-from */}
+                        <div className="input col-md-3">
+                          <label htmlFor="address">
+                            Pickup Time<span>*</span>
+                          </label>
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setPickup_TimeFromValue(v.target.value);
+                              pickupTimeFromPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        {/* time-to */}
+                        <div className="input col-md-3 mt-4">
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setPickup_TimeToValue(v.target.value);
+                              pickupTimeToPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="add-btn">
+                          <NavLink to="/Shipments/addAddress">
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
                             </button>
-                          )}
-                        </>
-                      );
-                    }
-                  )}
-                  <div className="control-btn">
-                    <div className="left-btn">
-                      <button
-                        className="btn-add "
-                        id="add"
-                        type="btn"
-                        onClick={() => {
-                          // setInputs([...input, ""]);
-                          addPlannedinerDetails(indexshipment);
-                          // setIndexOfTotalDetails(indexOfTotalDetails + 1);
-                          handleIncreaseIndexPlanned();
-                        }}
-                      >
-                        <i className="fa-solid fa-plus"></i> Add truck
-                      </button>
+                          </NavLink>
+                        </div>
+                      </div>
+                      <hr />
                     </div>
-                    {ischeck ? (
-                      <div className="right-btn">
-                        {/* <NavLink to="/allshipments"> */}
-                        {console.log(counter, "counter inside JSX")}
-                        {counter === numShipment - 1 ? (
-                          <button className="btn-save" type="submit">
-                            Save
-                          </button>
-                        ) : (
-                          <>
-                            {/* {                       
-                                  plannedAllShipments.shipperPlanned === "" ||
-                                  plannedAllShipments.pickupAddressPlanned ===
-                                    "" ||
-                                  plannedAllShipments.pickupDatePlanned ===
-                                    "" ||
-                                  plannedAllShipments.pickupTimeFromPlanned ===
-                                    "" ||
-                                  plannedAllShipments.pickupTimeToPlanned ===
-                                    "" ||
-                                  plannedAllShipments.dropOffPlanned === "" ||
-                                  plannedAllShipments.dropTimeFromPlanned===""||
-                                  plannedAllShipments.dropTimeToPlanned===""||
-                                  plannedAllShipments.detailsTruck.truckTypePlanned===""||
-                                  plannedAllShipments.detailsTruck.shipmentTypePlanned===""||
-                                  plannedAllShipments.detailsTruck.shipmentvaluePlanned===""||
-                                  plannedAllShipments.detailsTruck.weightPlanned===""||
-                                  plannedAllShipments.detailsTruck.numTrucksPlanned===""||
-                                  plannedAllShipments.detailsTruck.descriptionPlanned===""||
-                                  plannedAllShipments.detailsTruck.picking_ListValue===[]||
-                                  plannedAllShipments.detailsTruck.documListPlanned===[]||
-                                  plannedAllShipments.detailsTruck.commidityPlanned===[]||
-                                  plannedAllShipments.detailsTruck.uomPlanned===[]||
-                                  plannedAllShipments.detailsTruck.quantityPlanned===[] ?
-                                  <>
-                                  <span className="mx-2" style={{ color: "red" }}>please enter the requre data</span>
-                              
-                                <button
-                                  className="btn-save"
-                                  // type="submit"
-                                  // onClick={() => {
-                                  //     addNewListOfShipment();
-                                  //     counterchange(indexshipment);
-                                  // }}
-                                >
-                                  Next Shipment
-                                </button>
-                            </>
-                            : */}
-                            <button
-                              className="btn-save"
-                              type="submit"
-                              onClick={() => {
-                                addNewListOfShipment();
-                                setStartDate(null);
-                                counterchange(indexshipment);
-                              }}
-                            >
-                              Next Shipment
+                    <div className="drop-off box-inputs" onClick={tabdropoff}>
+                      <div className="box-inputs-head">Drop off</div>
+                      <div className="inputs">
+                        <div className="input input-select">
+                          <label htmlFor="address">
+                            Drop off Address<span>*</span>
+                          </label>
+                          {/* dropoff-select */}
+                          <Select
+                            classNamePrefix="select"
+                            className="basic-multi-select"
+                            // isMulti
+                            isDisabled={isDisabled}
+                            isLoading={isLoading}
+                            required
+                            isClearable={isClearable}
+                            isRtl={isRtl}
+                            isSearchable={isSearchable}
+                            name="color"
+                            options={GroupsdropoffOptions}
+                            onChange={(choice) => {
+                              setdropoffUserChoice(choice.value);
+                              detailsApi(
+                                shipperuserChoice,
+                                pickupuserChoice,
+                                choice.value
+                              );
+                              setDropoffValue(choice.value);
+                              dropoffPlanned_handleInputChange(
+                                indexshipment,
+                                choice.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="input mx-3">
+                          <label htmlFor="address">
+                            Drop off Time<span>*</span>
+                          </label>
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setDrop_TimeFromValue(v.target.value);
+                              dropTimeFromPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="input mx-3 mt-4">
+                          <input
+                            type="time"
+                            required
+                            onChange={(v) => {
+                              setDrop_TimeToValue(v.target.value);
+                              dropTimeToPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
+                        </div>
+                        <div className="add-btn">
+                          <NavLink to="/Shipments/addAddress">
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
                             </button>
-                          </>
-                        )}
+                          </NavLink>
+                        </div>
                       </div>
-                    ) : (
-                      <div className="right-btn">
-                        <button className="btn-save" type="submit">
-                          Save
-                        </button>
-                      </div>
-                    )}
-                    <Snackbar
-                      open={open}
-                      autoHideDuration={5000}
-                      onClose={handleClose}
-                      anchorOrigin={{ vertical, horizontal }}
+                      <hr />
+                    </div>
+                    <div
+                      className="details box-inputs mb-4"
+                      onClick={tabdetails}
                     >
-                      <Alert
-                        onClose={handleClose}
-                        severity="success"
-                        sx={{ width: "100%" }}
-                      >
-                        This is a success Add Shipment!
-                      </Alert>
-                    </Snackbar>
-                  </div>
-                </div>
-              </form>
+                      <div className="box-inputs-head">Details</div>
+
+                      {plannedList[indexshipment].detailsTruck.map(
+                        (item, indexdetails) => {
+                          return (
+                            <>
+                              <Inputs
+                                indexOfItem={indexdetails}
+                                shipperuserChoice={shipperuserChoice}
+                                pickupuserChoice={pickupuserChoice}
+                                detailsApi={detailsApi}
+                                detailsList={detailsList}
+                                dropoffserChoice={dropoffserChoice}
+                                pickup_DateValue={pickup_DateValue}
+                                pickup_TimeFromValue={pickup_TimeFromValue}
+                                pickup_TimeToValue={pickup_TimeToValue}
+                                dropoff_TimeFromValue={dropoff_TimeFromValue}
+                                dropoff_TimeToValue={dropoff_TimeToValue}
+                                // input={input}
+                                setTotalDetails={setTotalDetails}
+                                totaldetails={totaldetails}
+                                indexOfTotalDetails={indexOfTotalDetails}
+                                plannedList={plannedList}
+                                setPlannedList={setPlannedList}
+                                PlannedInnerDetails={PlannedInnerDetails}
+                                arrListnumShipment={arrListnumShipment}
+                                // countIndexShipmentplann={countindexshipmentplann}
+                                // countIndexdetailsplann={countindexdetailstplann}
+                                indexshipment={indexshipment}
+                                indexdetails={indexdetails}
+                              />
+                              {indexdetails > 0 && (
+                                <button
+                                  className="btn-delete"
+                                  id="delete"
+                                  onClick={(ele) => {
+                                    const newArr = totaldetails.filter(
+                                      (i, j) => {
+                                        return indexdetails !== j;
+                                      }
+                                    );
+                                    setPlannedInerDetails(newArr);
+                                    deletePlannedinerDetails(indexshipment);
+                                    handleDecreaseIndexPlanned();
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              )}
+                            </>
+                          );
+                        }
+                      )}
+                      <div className="control-btn">
+                        <div className="left-btn">
+                          <button
+                            className="btn-add "
+                            id="add"
+                            type="btn"
+                            onClick={() => {
+                              // setInputs([...input, ""]);
+                              addPlannedinerDetails(indexshipment);
+                              // setIndexOfTotalDetails(indexOfTotalDetails + 1);
+                              handleIncreaseIndexPlanned();
+                            }}
+                          >
+                            <i className="fa-solid fa-plus"></i> Add truck
+                          </button>
+                        </div>
+                        {ischeck ? (
+                          <div className="right-btn">
+                            {/* <NavLink to="/allshipments"> */}
+                            {console.log(counter, "counter inside JSX")}
+                            {counter === numShipment - 1 ? (
+                              <button className="btn-save" type="submit">
+                                Save
+                              </button>
+                            ) : (
+                              <>
+                                {plannedList[counter].shipperPlanned === "" ||
+                                plannedList[counter].pickupAddressPlanned ===
+                                  "" ||
+                                plannedList[counter].pickupDatePlanned === "" ||
+                                plannedList[counter].pickupTimeFromPlanned ===
+                                  "" ||
+                                plannedList[counter].pickupTimeToPlanned ===
+                                  "" ||
+                                plannedList[counter].dropOffPlanned === "" ||
+                                plannedList[counter].dropTimeFromPlanned ===
+                                  "" ||
+                                plannedList[counter].dropTimeToPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .shipmentTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .truckTypePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .shipmentvaluePlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .weightPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .numTrucksPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .PickingListPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .commidityPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .uomPlanned === "" ||
+                                plannedList[counter].detailsTruck[0]
+                                  .quantityPlanned === "" ? (
+                                  <>
+                                    <span
+                                      className="mx-2"
+                                      style={{ color: "red" }}
+                                    >
+                                      please enter the requre data
+                                    </span>
+
+                                    <button
+                                      className="btn-save"
+                                      // type="submit"
+                                      // onClick={() => {
+                                      //     addNewListOfShipment();
+                                      //     counterchange(indexshipment);
+                                      // }}
+                                    >
+                                      Next Shipment
+                                    </button>
+                                  </>
+                                ) : (
+                                  <button
+                                    className="btn-save"
+                                    type="submit"
+                                    onClick={() => {
+                                      addNewListOfShipment();
+                                      setStartDate(null);
+                                      counterchange(indexshipment);
+                                    }}
+                                  >
+                                    Next Shipment
+                                  </button>
+                                )}
+
+                                {/* <button
+                                            className="btn-save"
+                                            type="submit"
+                                            onClick={() => {
+                                              addNewListOfShipment();
+                                              setStartDate(null);
+                                              counterchange(indexshipment);
+                                            }}
+                                          >
+                                            Next Shipment
+                                          </button> */}
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="right-btn">
+                            <button className="btn-save" type="submit">
+                              Save
+                            </button>
+                          </div>
+                        )}
+                        <Snackbar
+                          open={open}
+                          autoHideDuration={5000}
+                          onClose={handleClose}
+                          anchorOrigin={{ vertical, horizontal }}
+                        >
+                          <Alert
+                            onClose={handleClose}
+                            severity="success"
+                            sx={{ width: "100%" }}
+                          >
+                            This is a success Add Shipment!
+                          </Alert>
+                        </Snackbar>
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </>
+              // if(indexshipment<0){
+
+              // }
             )}
           </>
         );
