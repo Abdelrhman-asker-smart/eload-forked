@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { Check } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -49,6 +50,8 @@ const Btnadd = () => {
 const initialValues = {};
 
 const Shipments = () => {
+  const navigate = useNavigate();
+
   // Alart-Snackbar
   const [state, setState] = React.useState({
     open: false,
@@ -78,6 +81,12 @@ const Shipments = () => {
     dropoff: false,
     details: false,
   });
+
+  const [order, setOrder] = useState({});
+
+  const handleOrder = order => {
+    setOrder(order);
+  };
 
   const tabPickup = () => {
     setIsActive({ pickup: true, dropoff: false, details: false });
@@ -308,6 +317,41 @@ const Shipments = () => {
     // pickuplist();
     // droppofflist();
   }, []);
+
+  useEffect(() => {
+    if (order instanceof FormData) {
+      sendOrder(order, plannedList.length == 1 ? 'orders' : 'scheduled_orders');
+      setOrder({}); // to reset the order value and thus we can resend the request when clicking on submit btn
+    }
+  }, [order]);
+
+  const sendOrder = async (formdata, endpoint) => {
+    try {
+      const response = await axios.post(
+        `https://dev.eload.smart.sa/api/v1/${endpoint}`,
+
+        formdata,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      // setName("");
+      console.log(response.data.data);
+      let id = response.data.data.id;
+      let redirect_to = endpoint == 'orders' ?
+                                    `allshipments/shipmentorder?id=${id}` : 
+                                    `allshipments?scheduled_order_id=${id}`;
+      navigate(`/${redirect_to}`, { replace: true });
+    } catch (e) {
+      // handleClick2();
+      console.log(e);
+    }
+  };
 
   // shipperoptions
   const shipperOptions = shipperList.map((item, index) => {
@@ -978,6 +1022,7 @@ const Shipments = () => {
                           return (
                             <>
                               <Inputs
+                                handleOrder={handleOrder}
                                 indexOfItem={indexdetails}
                                 shipperuserChoice={shipperuserChoice}
                                 pickupuserChoice={pickupuserChoice}
@@ -1373,6 +1418,7 @@ const Shipments = () => {
                           return (
                             <>
                               <Inputs
+                                handleOrder={handleOrder}
                                 indexOfItem={indexdetails}
                                 shipperuserChoice={shipperuserChoice}
                                 pickupuserChoice={pickupuserChoice}
