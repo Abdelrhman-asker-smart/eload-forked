@@ -221,32 +221,32 @@ const Inputs = ({
           // truck
           formdata.append(
             // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
-            `shipments[${index}][truck_type_id]`,
+            `shipments[${indexdetails}][truck_type_id]`,
             itemdetails.truckTypePlanned
           );
           // shipment
           formdata.append(
-            `shipments[${index}][shipment_type_id]`,
+            `shipments[${indexdetails}][shipment_type_id]`,
             itemdetails.shipmentTypePlanned
           );
           // shipment_value
           formdata.append(
-            `shipments[${index}][value]`,
+            `shipments[${indexdetails}][value]`,
             itemdetails.shipmentvaluePlanned
           );
           // weightPlanned
           formdata.append(
-            `shipments[${index}][weight]`,
+            `shipments[${indexdetails}][weight]`,
             itemdetails.weightPlanned
           );
           // numTrucksPlanned
           formdata.append(
-            `shipments[${index}][truck_type_qty]`,
+            `shipments[${indexdetails}][truck_type_qty]`,
             itemdetails.numTrucksPlanned
           );
           // descriptionPlanned
           formdata.append(
-            `shipments[${index}][description]`,
+            `shipments[${indexdetails}][description]`,
             itemdetails.descriptionPlanned
           );
           // PickingListPlanned

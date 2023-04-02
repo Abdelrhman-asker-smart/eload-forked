@@ -118,7 +118,7 @@ const Layout = ({ setLogin }) => {
             <Route path="/Shipments/addAddress" element={<AddAddress />} />
             <Route path="/Shipments/grouplist" element={<GroupList />} />
             <Route path="/Shipments/addnewgroup" element={<AddNewGroup />} />
-            <Route path="/allshipments/shipmentorder" element={<ShipmentOrder />} />
+            <Route path="/allshipments/shipmentorder/:id" element={<ShipmentOrder />} />
 
              {/* Abd------------------------- */}
 

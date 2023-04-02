@@ -74,7 +74,20 @@ import "./Allshipments.css";
 //   },
 // ];
 
+
+
+
 const AllShipments = () => {
+ const [idPathAll, setIDPathAll] = useState();
+
+  const PathID = ({id}) => (
+
+    <div>
+      <span>{id}</span>
+    </div>
+  );
+
+
   const columnsReady = useMemo(
     () => [
       {
@@ -94,7 +107,9 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to="/allshipments/shipmentorder">
+
+            <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}>
+
               <span>{renderedCellValue}</span>
             </NavLink>
             {/* <span>{console.log(row.original)}</span> */}
@@ -227,7 +242,8 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to="/allshipments/shipmentorder">
+            <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}>
+              
               <span>{renderedCellValue}</span>
             </NavLink>
           </Box>
@@ -363,9 +379,13 @@ const AllShipments = () => {
   const [shipmentListready, setshipmentListready] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
 
+  
+
+
   const data = shipmentList.map((item, index) => {
+    
     return {
-      id: item.id,
+      id:  item.id,
       code: item.code,
       picup: item.from_city.name,
       dropoff: item.to_city.name,
@@ -373,12 +393,13 @@ const AllShipments = () => {
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
       pickupdate: item.order.pickup_date,
-
       status: item.status_i18n,
     };
   });
+  // console.log(shipmentList,"shipmentList");
 
   const dataReady = shipmentListready.map((item, index) => {
+   
     return {
       id: item.id,
       code: item.code,
@@ -389,7 +410,6 @@ const AllShipments = () => {
       shippingcost: item.cost,
       urgent_action_needed: item.urgent_action_needed,
       pickupdate: item.order.pickup_date,
-
       status: item.status_i18n,
     };
   });
