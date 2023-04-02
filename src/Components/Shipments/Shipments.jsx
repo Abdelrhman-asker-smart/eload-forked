@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { Check } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -49,6 +50,8 @@ const Btnadd = () => {
 const initialValues = {};
 
 const Shipments = () => {
+  const navigate = useNavigate();
+
   // Alart-Snackbar
   const [state, setState] = React.useState({
     open: false,
@@ -317,15 +320,15 @@ const Shipments = () => {
 
   useEffect(() => {
     if (order instanceof FormData) {
-      sendOrder(order);
+      sendOrder(order, plannedList.length == 1 ? 'orders' : 'scheduled_orders');
       setOrder({}); // to reset the order value and thus we can resend the request when clicking on submit btn
     }
   }, [order]);
 
-  const sendOrder = async (formdata) => {
+  const sendOrder = async (formdata, endpoint) => {
     try {
-      const reponse = await axios.post(
-        "https://dev.eload.smart.sa/api/v1/orders",
+      const response = await axios.post(
+        `https://dev.eload.smart.sa/api/v1/${endpoint}`,
 
         formdata,
         {
@@ -338,7 +341,12 @@ const Shipments = () => {
         }
       );
       // setName("");
-      //   console.log(reponse);
+      console.log(response.data.data);
+      let id = response.data.data.id;
+      let redirect_to = endpoint == 'orders' ?
+                                    `allshipments/shipmentorder?id=${id}` : 
+                                    `allshipments?scheduled_order_id=${id}`;
+      navigate(`/${redirect_to}`, { replace: true });
     } catch (e) {
       // handleClick2();
       console.log(e);
