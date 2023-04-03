@@ -5,11 +5,15 @@ import { useDispatch } from "react-redux";
 import CustomSelect from '../CustomeSelect/CustomeSelect';
 import Select from 'react-select';
 import { fetchPromotionList } from "../../redux/listPromotion";
+import { fetchTruckList } from "../../redux/listTruck";
+import { fetchCityListByCountry } from "../../redux/CityListSlice";
 import "./rewards.css";
 
 const Rewards = () => {
   const dispatch = useDispatch();
   const [promotionList, setpromotionList] = useState([]);
+  const [truck_types, setTruckTypes] = useState([]);
+  const [cities, setCities] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
 
   const data = promotionList.map((item) => {
@@ -21,11 +25,41 @@ const Rewards = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchPromotionList({ token: cookie.eload_token }))
+
+    dispatch(fetchTruckList({ token: cookie.eload_token }))
     .then((res) => {
-      console.log(res, "response from api");
-      const data = res.payload.data;
-      setpromotionList(data);
+      let data = res.payload.data.map(object => {
+        return { 
+          value: object.id,
+          label: object.name
+        }
+      });
+      setTruckTypes(data);
+
+      dispatch(fetchCityListByCountry({ token: cookie.eload_token}))
+      .then((cities_res) => {
+        let data = cities_res.payload.data.data.states.map((object) => ({
+          label: object.name,
+          options: object.cities.map((sub_object) => ({
+            value: sub_object.id,
+            label: sub_object.name,
+          })),
+        }));
+        setCities(data);
+
+        dispatch(fetchPromotionList({ token: cookie.eload_token }))
+        .then((res) => {
+          console.log(res, "response from api");
+          const data = res.payload.data;
+          setpromotionList(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     })
     .catch((e) => {
       console.log(e);
@@ -43,12 +77,24 @@ const Rewards = () => {
     ];
 
     const optionsRewards = [
-      { value: "Start time", label: "Start time" },
-      { value: "End time", label: "End time" },
-      { value: "Source", label: "Source" },
-      { value: "Destination", label: "Destination" },
-      { value: "Truck type", label: "Truck type" },
+      { value: "start_time", label: "Start Time" },
+      { value: "end_time", label: "End Time" },
+      { value: "from_city_id", label: "Source" },
+      { value: "to_city_id", label: "Destination" },
+      { value: "truck_type_id", label: "Truck Type" },
     ];
+
+    const handleSelectedOptionsRewards = (conditions) => {
+      let selected_options = [];
+
+      for (let i = 0; i < optionsRewards.length; i++) {
+        if(conditions.hasOwnProperty(optionsRewards[i].value)) {
+          selected_options.push(optionsRewards[i]);
+        }
+      }
+
+      return selected_options;
+    };
 
     const handleSelect = (selectedOption) => {
       console.log("Selected option:", selectedOption);
@@ -115,6 +161,8 @@ const Rewards = () => {
             isSearchable={true}
             name="rewards_options"
             options={optionsRewards}
+            defaultValue={handleSelectedOptionsRewards(details.conditions)}
+            onChange={handleSelect}
           />
           </div>
         </div>
@@ -179,6 +227,87 @@ const Rewards = () => {
               </span>
             </div>
           </div>
+          {details.conditions.hasOwnProperty('start_time') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Start Time<span>*</span>
+              </label>
+              <input type="time" placeholder="" value={details.actions.total.value} />
+            </div>
+          ) : ('')}
+          
+          {details.conditions.hasOwnProperty('end_time') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                End Time<span>*</span>
+              </label>
+              <input type="time" placeholder="" value={details.actions.total.value} />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('from_city_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Source<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="source"
+                options={cities}
+                defaultValue={cities.find(({ value }) => value === details.conditions.from_city_id.value)}
+              />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('to_city_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Destination<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="destination"
+                options={cities}
+                defaultValue={cities.find(({ value }) => value === details.conditions.to_city_id.value)}
+              />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('truck_type_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Truck Type<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="truck_types"
+                options={truck_types}
+                defaultValue={truck_types.find(({ value }) => value === details.conditions.truck_type_id.value)}
+              />
+            </div>
+          ) : ('')}
+
           <div className="col-md-4 d-flex justify-content-center mt-4">
             <button
               className="btn add-btn"
