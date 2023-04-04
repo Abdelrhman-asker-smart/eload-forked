@@ -17,7 +17,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 
 import { combineReducers } from "redux";
 
-console.log(combineReducers);
+// console.log(combineReducers);
 // import createTeamDepartmentSlice from "redux/createTeamDepartmentSlice";
 
 const persistConfig = {
