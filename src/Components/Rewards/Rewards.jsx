@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import CustomSelect from '../CustomeSelect/CustomeSelect';
 import Select from 'react-select';
+import DatePicker from "react-datepicker";
 import { fetchPromotionList } from "../../redux/listPromotion";
 import { fetchTruckList } from "../../redux/listTruck";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
@@ -94,6 +95,24 @@ const Rewards = () => {
       }
 
       return selected_options;
+    };
+
+    const handleSelectedOptionsCities = (city_id) => {
+      let selected_option = {};
+
+      for (let i = 0; i < cities.length; i++) {
+        for (let city of cities[i].options) {
+          if (city_id == city.value) {
+            return city;
+          }
+        }
+      }
+
+      return selected_option;
+    };
+
+    const handleSelectedTime = (time) => {
+      return Date.parse(time);
     };
 
     const handleSelect = (selectedOption) => {
@@ -232,7 +251,13 @@ const Rewards = () => {
               <label htmlFor="address">
                 Start Time<span>*</span>
               </label>
-              <input type="time" placeholder="" value={details.actions.total.value} />
+              <DatePicker
+                selected={handleSelectedTime(details.conditions.start_time.value)}
+                // onChange={(date) => setStartDate(date)}
+                timeInputLabel="Time:"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                showTimeInput
+              />
             </div>
           ) : ('')}
           
@@ -241,7 +266,13 @@ const Rewards = () => {
               <label htmlFor="address">
                 End Time<span>*</span>
               </label>
-              <input type="time" placeholder="" value={details.actions.total.value} />
+              <DatePicker
+                selected={handleSelectedTime(details.conditions.end_time.value)}
+                // onChange={(date) => setStartDate(date)}
+                timeInputLabel="Time:"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                showTimeInput
+              />
             </div>
           ) : ('')}
 
@@ -261,7 +292,7 @@ const Rewards = () => {
                 isSearchable={true}
                 name="source"
                 options={cities}
-                defaultValue={cities.find(({ value }) => value === details.conditions.from_city_id.value)}
+                defaultValue={handleSelectedOptionsCities(details.conditions.from_city_id.value)}
               />
             </div>
           ) : ('')}
@@ -282,7 +313,7 @@ const Rewards = () => {
                 isSearchable={true}
                 name="destination"
                 options={cities}
-                defaultValue={cities.find(({ value }) => value === details.conditions.to_city_id.value)}
+                defaultValue={handleSelectedOptionsCities(details.conditions.to_city_id.value)}
               />
             </div>
           ) : ('')}
