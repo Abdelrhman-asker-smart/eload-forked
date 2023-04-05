@@ -119,7 +119,59 @@ const Rewards = () => {
       console.log("Selected option:", selectedOption);
     };
 
+    const handleRewardType = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.actions.total.type = value;
+      setpromotionList(promotions);
+    };
 
+    const handleRewardAmount = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.actions.total.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleDeliveredShipments = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.delivered_shipments.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleStartTime = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.start_time.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleEndTime = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.end_time.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleFromCityId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.from_city_id.value = value;
+      setpromotionList(promotions);
+    };
+    
+    const handleToCityId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.to_city_id.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleTruckTypeId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.truck_type_id.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleSubmit = (index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      let current_promotion = promotions[index];
+      console.log('current_promotion', current_promotion);
+    };
   // console.log(count3, "count");
 
 
@@ -136,7 +188,7 @@ const Rewards = () => {
       </div>
       <hr />
       {/* section-1 */}
-      {data.map(({id, name, details}) => {
+      {data.map(({id, name, details}, index) => {
       return (
       <>
       <div className="row px-4 py-2" key={id}>
@@ -168,7 +220,6 @@ const Rewards = () => {
             </div>
           </div>
           <div className="col-md-4 justfy-content-end pt-3 ">
-          {/* <CustomSelect options={optionsRewards} onSelect={handleSelect}  /> */}
           <Select
             classNamePrefix="select"
             className="basic-multi-select"
@@ -203,20 +254,26 @@ const Rewards = () => {
               name="rewards_options"
               options={typesOptions}
               defaultValue={typesOptions.find(({ value }) => value === details.actions.total.type)}
+              onChange={(choice) => handleRewardType(choice.value, index)}
             />
           </div>
           <div className="col-md-4 input-side">
             <label htmlFor="address">
               Reward Amount<span>*</span>
             </label>
-            <input type="text" placeholder="ie. 500 SAR" value={details.actions.total.value} />
+            <input
+              type="text"
+              placeholder="ie. 500 SAR"
+              value={details.actions.total.value} 
+              onChange={(v) => handleRewardAmount(v.target.value, index)}
+            />
           </div>
           <div className="col-md-4 numbers-box text-center">
             <label htmlFor="address">
               Number of trips<span>*</span>
             </label>
             <div className="qty">
-              <span
+              {/* <span
                 onClick={() => {
                   if (count1 > 1) {
                     setCount1((prevState) => prevState - 1);
@@ -225,16 +282,18 @@ const Rewards = () => {
                 className="minus"
               >
                 -
-              </span>
+              </span> */}
               {/* <span>{count1}</span> */}
               <input
-                readOnly
+                // readOnly
                 type="number"
+                min="1"
                 className="count"
                 name="qty"
                 value={details.conditions.delivered_shipments.value}
+                onChange={(v) => handleDeliveredShipments(v.target.value, index)}
               />
-              <span
+              {/* <span
                 onClick={() => {
                   if (count1 < 50) {
                     setCount1((prevState) => prevState + 1);
@@ -243,7 +302,7 @@ const Rewards = () => {
                 className="plus "
               >
                 +
-              </span>
+              </span> */}
             </div>
           </div>
           {details.conditions.hasOwnProperty('start_time') ? (
@@ -253,7 +312,7 @@ const Rewards = () => {
               </label>
               <DatePicker
                 selected={handleSelectedTime(details.conditions.start_time.value)}
-                // onChange={(date) => setStartDate(date)}
+                onChange={(date) => handleStartTime(date, index)}
                 timeInputLabel="Time:"
                 dateFormat="yyyy-MM-dd h:mm aa"
                 showTimeInput
@@ -268,7 +327,7 @@ const Rewards = () => {
               </label>
               <DatePicker
                 selected={handleSelectedTime(details.conditions.end_time.value)}
-                // onChange={(date) => setStartDate(date)}
+                onChange={(date) => handleEndTime(date, index)}
                 timeInputLabel="Time:"
                 dateFormat="yyyy-MM-dd h:mm aa"
                 showTimeInput
@@ -293,6 +352,7 @@ const Rewards = () => {
                 name="source"
                 options={cities}
                 defaultValue={handleSelectedOptionsCities(details.conditions.from_city_id.value)}
+                onChange={(choice) => handleFromCityId(choice.value, index)}
               />
             </div>
           ) : ('')}
@@ -314,6 +374,7 @@ const Rewards = () => {
                 name="destination"
                 options={cities}
                 defaultValue={handleSelectedOptionsCities(details.conditions.to_city_id.value)}
+                onChange={(choice) => handleToCityId(choice.value, index)}
               />
             </div>
           ) : ('')}
@@ -335,6 +396,7 @@ const Rewards = () => {
                 name="truck_types"
                 options={truck_types}
                 defaultValue={truck_types.find(({ value }) => value === details.conditions.truck_type_id.value)}
+                onChange={(choice) => handleTruckTypeId(choice.value, index)}
               />
             </div>
           ) : ('')}
@@ -343,8 +405,7 @@ const Rewards = () => {
             <button
               className="btn add-btn"
               style={{ padding: "6px 20px", height: "52%", width: "46%" }}
-              data-bs-toggle="modal"
-              href="#exampleModalToggle"
+              onClick={handleSubmit(index)}
             >
               Save
             </button>
