@@ -2,7 +2,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import CustomSelect from '../CustomeSelect/CustomeSelect';
+import moment from "moment";
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import { fetchPromotionList } from "../../redux/listPromotion";
@@ -170,8 +170,20 @@ const Rewards = () => {
     const handleSubmit = (index) => {
       let promotions = JSON.parse(JSON.stringify(promotionList));
       let current_promotion = promotions[index];
-      console.log('current_promotion', current_promotion);
+
+      if(current_promotion.details.conditions.hasOwnProperty('start_time')) {
+        let time_value = moment(current_promotion.details.conditions.start_time.value).format('YYYY-MM-DD HH:mm:ss');
+        current_promotion.details.conditions.start_time.value = time_value;
+      }
+
+      if(current_promotion.details.conditions.hasOwnProperty('end_time')) {
+        let time_value = moment(current_promotion.details.conditions.end_time.value).format('YYYY-MM-DD HH:mm:ss');
+        current_promotion.details.conditions.end_time.value = time_value;
+      }
+
+      // TODO: send the request (POST | PUT)
     };
+
   // console.log(count3, "count");
 
 
@@ -405,7 +417,7 @@ const Rewards = () => {
             <button
               className="btn add-btn"
               style={{ padding: "6px 20px", height: "52%", width: "46%" }}
-              onClick={handleSubmit(index)}
+              onClick={() => { handleSubmit(index) }}
             >
               Save
             </button>
