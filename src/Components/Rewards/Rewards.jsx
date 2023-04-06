@@ -116,8 +116,45 @@ const Rewards = () => {
       return Date.parse(time);
     };
 
-    const handleSelect = (selectedOption) => {
-      console.log("Selected option:", selectedOption);
+    const handleSelectedRewardsOptions = (options, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      let current_promotion = promotions[index];
+
+      // remove condition if not in the options
+      for (const condition in current_promotion.details.conditions) {
+        if(condition == 'achievement' || condition == 'delivered_shipments') {
+          continue;
+        }
+
+        for (let i = 0; i < options.length; i++) {
+          if (condition == options[i].value) {
+            break;
+          }
+
+          // the condition isn't in the options and thus we have to delete it
+          if(i == options.length - 1) {
+            delete current_promotion.details.conditions[condition];
+          }
+        }
+      }
+
+      // insert option if not exist
+      for (let i = 0; i < options.length; i++) {
+        if (!current_promotion.details.conditions.hasOwnProperty(options[i].value)) {
+          // TODO: init[options[i].value]
+          current_promotion.details.conditions[options[i].value] = null;
+        }
+      }
+
+      promotions[index] = current_promotion;
+      console.log('current_promotion', current_promotion);
+      setpromotionList(promotions);
+    };
+
+    const handleName = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].name = value;
+      setpromotionList(promotions);
     };
 
     const handleRewardType = (value, index) => {
@@ -256,7 +293,18 @@ const Rewards = () => {
                   fill="#FDC500"
                 />
               </svg>
-              <h4>{name}</h4>
+              {/* <h4>{name}</h4> */}
+              <div className="input-side">
+                <label htmlFor="address">
+                  Name<span>*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Name of the reward"
+                  value={name} 
+                  onChange={(v) => handleName(v.target.value, index)}
+                />
+              </div>
             </div>
           </div>
           <div className="col-md-4 justfy-content-end pt-3 ">
@@ -272,7 +320,7 @@ const Rewards = () => {
             name="rewards_options"
             options={optionsRewards}
             defaultValue={handleSelectedOptionsRewards(details.conditions)}
-            onChange={handleSelect}
+            onChange={(options) => handleSelectedRewardsOptions(options, index)}
           />
           </div>
         </div>
