@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import { fetchPromotionList } from "../../redux/listPromotion";
 import { fetchTruckList } from "../../redux/listTruck";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
+import axios from "axios";
 import "./rewards.css";
 
 const Rewards = () => {
@@ -167,7 +168,7 @@ const Rewards = () => {
       setpromotionList(promotions);
     };
 
-    const handleSubmit = (index) => {
+    const handleSubmit = async (index) => {
       let promotions = JSON.parse(JSON.stringify(promotionList));
       let current_promotion = promotions[index];
 
@@ -181,7 +182,34 @@ const Rewards = () => {
         current_promotion.details.conditions.end_time.value = time_value;
       }
 
-      // TODO: send the request (POST | PUT)
+      let endpoint = 'promotions';
+
+      if(current_promotion.hasOwnProperty('id')) {
+        endpoint += `/${current_promotion.id}`;
+        delete current_promotion.id;
+        current_promotion['_method'] = 'put';
+      }
+
+      console.log('endpoint', endpoint);
+      console.log('current_promotion', current_promotion);
+
+      try {
+        const response = await axios.post(
+          `https://dev.eload.smart.sa/api/v1/${endpoint}`,
+          current_promotion,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        console.log(response.data.data);
+      } catch (e) {
+        console.log(e);
+      }
     };
 
   // console.log(count3, "count");
