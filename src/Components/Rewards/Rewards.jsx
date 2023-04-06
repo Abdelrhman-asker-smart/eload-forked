@@ -72,6 +72,34 @@ const Rewards = () => {
   const [count2, setCount2] = useState(1);
   const [count3, setCount3] = useState(1);
 
+  const intial_state = {
+    'name': '',
+    'description': '',
+    'details':{
+      'conditions': {
+        'achievement': 'all',
+        'delivered_shipments': {
+          'value': 1
+        }
+      },
+      'actions': {
+        'total': {
+          'type': 'fixed',
+          'value': ''
+        }
+      }
+    }
+  }
+
+  // we can also set default values
+  const default_values = {
+    'start_time': null,
+    'end_time': null,
+    'from_city_id': null,
+    'to_city_id': null,
+    'truck_type_id': null
+  }
+
     /// dropdown
     const typesOptions = [
       { value: "fixed", label: "Fixed" },
@@ -142,13 +170,25 @@ const Rewards = () => {
       for (let i = 0; i < options.length; i++) {
         if (!current_promotion.details.conditions.hasOwnProperty(options[i].value)) {
           // TODO: init[options[i].value]
-          current_promotion.details.conditions[options[i].value] = null;
+          current_promotion.details.conditions[options[i].value] = { value: default_values[options[i]] };
         }
       }
 
       promotions[index] = current_promotion;
       console.log('current_promotion', current_promotion);
       setpromotionList(promotions);
+    };
+
+    const handleAddBtn = () => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions.push(intial_state);
+      setpromotionList(promotions);
+
+      window.scroll({
+        top: document.body.offsetHeight,
+        left: 0, 
+        behavior: 'smooth',
+      });
     };
 
     const handleName = (value, index) => {
@@ -244,6 +284,19 @@ const Rewards = () => {
           }
         );
         console.log(response.data.data);
+
+        /**
+         * if it's a new promotion we will update the current object and add the id to it 
+         * so when we submit again without refreshing the page we update it and not creating a new one
+         */
+        if (endpoint == 'promotions') {
+          current_promotion['id'] = response.data.data.id;
+          promotions[index] = current_promotion;
+          setpromotionList(promotions);
+        }
+
+        // it has to be a better alert
+        alert('Successfully Saved!');
       } catch (e) {
         console.log(e);
       }
@@ -260,7 +313,7 @@ const Rewards = () => {
           <h2>Rewards</h2>
         </div>
         <div className="col-md-8">
-          <button className="btn add-btn">Add new reward</button>
+          <button className="btn add-btn" onClick={() => handleAddBtn() }>Add new reward</button>
         </div>
       </div>
       <hr />
@@ -507,9 +560,9 @@ const Rewards = () => {
               {/* modal */}
               <div
           className="modal fade"
-          id="exampleModalToggle"
+          id="SuccessModalToggle"
           aria-hidden="true"
-          aria-labelledby="exampleModalToggleLabel"
+          aria-labelledby="SuccessModalToggleLabel"
           tabIndex="-1"
           >
           <div className="modal-dialog modal-dialog-centered">
@@ -536,7 +589,7 @@ const Rewards = () => {
                   className="my-4 mx-4"
                   style={{ fontSize: "40px", fontWeight: "500" }}
                 >
-                  Save
+                  Saved!
                 </h3>
                 <svg
                   width="105"
