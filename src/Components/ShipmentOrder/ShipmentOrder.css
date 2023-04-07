@@ -129,8 +129,10 @@
 .filesbox .card-order
 {
     border-radius: 15px;
-    border: 1px solid #c7c3c3;
-    padding: 1rem;
+    border: 2px solid #244664;
+    /* padding: 1rem; */
+    align-items: center;
+    padding: 5px 25px;
     /* margin-right: 1.5rem; */
 }
 .filesbox .img-box

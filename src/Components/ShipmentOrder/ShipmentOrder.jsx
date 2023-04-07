@@ -6,11 +6,10 @@ import { NavLink } from "react-router-dom";
 import "./ShipmentOrder.css";
 import code from "../../icons/code.png";
 import { useParams } from "react-router-dom";
-import Driverimg from '../../icons/drivers-img.png';
-import Location from '../../icons/location.png';
-// import TruckLoction from "../../icons/truck-marck.png"
-import TruckLoction from "../../icons/truckblue.png"
-
+import Driverimg from "../../icons/drivers-img.png";
+import Location from "../../icons/location.png";
+import FileIcon from "../../icons/fileIcon.png"
+import TruckLoction from "../../icons/truckblue.png";
 
 // tables
 import { useMemo } from "react";
@@ -25,11 +24,7 @@ import {
   TextField,
 } from "@mui/material";
 
-import { GoogleMap, LoadScript , Marker , MarkerF} from '@react-google-maps/api';
-
-
-
-
+import { GoogleMap, LoadScript, Marker, MarkerF } from "@react-google-maps/api";
 
 const icon = {
   url: TruckLoction,
@@ -37,23 +32,29 @@ const icon = {
 
 const ShipmentOrder = () => {
   const { id } = useParams();
-  const shipmentId= id;
+  const shipmentId = id;
   const [detailsList, setDetailsList] = useState([]);
+  // const [fileboxes, setFileboxes] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
 
-
   const containerStyle = {
-    width: '100%',
-    height: '100%',
-    borderRadius: "20px"
+    width: "100%",
+    height: "100%",
+    borderRadius: "20px",
   };
-  
+
   const center = {
     lat: Number(detailsList.from_city?.latitude),
     lng: Number(detailsList.from_city?.longitude),
   };
 
-  const MarkerTruck = () => <img src={detailsList.truck_type?.image} alt="marker" style={{width:"100%"}}/>
+  const MarkerTruck = () => (
+    <img
+      src={detailsList.truck_type?.image}
+      alt="marker"
+      style={{ width: "100%" }}
+    />
+  );
 
   // Api=====fetch__All-details
   useEffect(() => {
@@ -90,48 +91,44 @@ const ShipmentOrder = () => {
 
   // Api======Assign-tables
 
-// Api-with no change in price
-    const AssignApinochange = async (provider_id ,shipmentId ) => {
-      console.log(shipmentId,"shipmentid");
-      var urlencoded = new URLSearchParams();
-      // urlencoded.append("price", price);
-      urlencoded.append("provider_id", provider_id);
+  // Api-with no change in price
+  const AssignApinochange = async (provider_id, shipmentId) => {
+    console.log(shipmentId, "shipmentid");
+    var urlencoded = new URLSearchParams();
+    // urlencoded.append("price", price);
+    urlencoded.append("provider_id", provider_id);
 
-      try {
-        const response = await axios.put(
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/shipments/${shipmentId}`,
+        // `https://dev.eload.smart.sa/api/v1/shipments/1688`,
 
-          `https://dev.eload.smart.sa/api/v1/shipments/${shipmentId}`,
-          // `https://dev.eload.smart.sa/api/v1/shipments/1688`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
 
-          urlencoded,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        console.log(priceValue,"Assigne----done");
-
-      } catch (e) {
-        console.log(e);
-      }
-
+      console.log(priceValue, "Assigne----done");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   // Api with change in price
-  const AssignApiPrice = async (price ,interestId ) => {
-    console.log(price,"pricechanges");
+  const AssignApiPrice = async (price, interestId) => {
+    console.log(price, "pricechanges");
     var urlencoded = new URLSearchParams();
     urlencoded.append("price", price);
     // urlencoded.append("provider_id", provider_id);
 
     try {
       const response = await axios.put(
-
         `https://dev.eload.smart.sa/api/v1/interests/${interestId}`,
         // `https://dev.eload.smart.sa/api/v1/shipments/1688`,
 
@@ -146,26 +143,22 @@ const ShipmentOrder = () => {
         }
       );
 
-      console.log(priceValue,"Assigne----done");
-
+      console.log(priceValue, "Assigne----done");
     } catch (e) {
       console.log(e);
     }
-
-};
+  };
 
   // table2 with one Api
-  const AssignApiNoAction = async (provider_id ,shipmentId ,price ) => {
-    console.log(shipmentId,"shipmentid");
+  const AssignApiNoAction = async (provider_id, shipmentId, price) => {
+    console.log(shipmentId, "shipmentid");
     var urlencoded = new URLSearchParams();
     urlencoded.append("provider_id", provider_id);
     urlencoded.append("price", price);
 
     try {
       const response = await axios.put(
-
         `https://dev.eload.smart.sa/api/v1/shipments/${shipmentId}`,
-
 
         urlencoded,
         {
@@ -178,78 +171,98 @@ const ShipmentOrder = () => {
         }
       );
 
-      console.log(priceValue,"Assigne----done");
-
+      console.log(priceValue, "Assigne----done");
     } catch (e) {
       console.log(e);
     }
+  };
 
-};
+  const [changeprice, setChangePrice] = useState(false);
+  const [priceValue, setPriceValue] = useState(0);
 
-const [changeprice,setChangePrice]=useState(false);
-const [priceValue ,setPriceValue]= useState(0);
+  // ================tables================
 
-// ================tables================
-
-const columnsServiceProvide = useMemo(
-  () => [
-    {
-      accessorKey: "partner",
-      header: "PARTNER",
-      size: 60,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-            {
-             
-              detailsList?.allow_driver_to_start===true ?
+  const columnsServiceProvide = useMemo(
+    () => [
+      {
+        accessorKey: "partner",
+        header: "PARTNER",
+        size: 60,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {detailsList?.allow_driver_to_start === true ? (
               <span style={{ color: "#FF8A00" }}>{renderedCellValue}</span>
-              :
+            ) : (
               <span>{renderedCellValue}</span>
-            }
-           
-        </Box>
-      ),
-    },
-    {
-      accessorKey: "contractprice",
-      header: "CONTARCTED PRICE",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-
-            <span contentEditable={true} 
-            // onInput={handlePriceChange}
-            onInput={(e)=>{
-              setChangePrice(true);
-              console.log("changeeeeeeeeeeeeeeeed");
-              setPriceValue(Number(e.target.innerText));
-
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "contractprice",
+        header: "CONTARCTED PRICE",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <span
+              contentEditable={true}
+              // onInput={handlePriceChange}
+              onInput={(e) => {
+                setChangePrice(true);
+                console.log("changeeeeeeeeeeeeeeeed");
+                setPriceValue(Number(e.target.innerText));
               }}
               dangerouslySetInnerHTML={{ __html: renderedCellValue }}
-              ></span>
+            ></span>
 
-
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 22H21" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 22H21"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-        </Box>
-      ),
-    },
-    {
+          </Box>
+        ),
+      },
+      {
         accessorKey: "margin",
         header: "MARGIN",
         size: 30,
@@ -262,120 +275,181 @@ const columnsServiceProvide = useMemo(
             }}
           >
             {/* <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}> */}
-            {
-              renderedCellValue>=0 ? 
+            {renderedCellValue >= 0 ? (
               <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z" fill="#18AEC9"/>
-              </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z"
+                    fill="#18AEC9"
+                  />
+                </svg>
                 <span>{renderedCellValue}</span>
-                </>
-              :
-              <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z" fill="#F80F10"/>
-              </svg>
-              <span>{renderedCellValue}</span>
               </>
-            }
-
+            ) : (
+              <>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z"
+                    fill="#F80F10"
+                  />
+                </svg>
+                <span>{renderedCellValue}</span>
+              </>
+            )}
           </Box>
         ),
       },
-    {
-      accessorKey: "margin2",
-      header: "MARGIN%",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
+      {
+        accessorKey: "margin2",
+        header: "MARGIN%",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <span>{renderedCellValue} %</span>
-        </Box>
-      ),
-    },
-  
-    {
-      accessorKey: "mobile",
-      header: "MOBILE",
-      size: 30,
-    },
-    {
-      accessorKey: "email",
-      header: "EMAIL",
-      size: 30,
-    },
-    {
-      accessorKey: "type",
-      header: "TYPE",
-      size: 30,
-    },
+          </Box>
+        ),
+      },
 
-    {
-      accessorKey: "options",
-      header: "OPTIONS",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
+      {
+        accessorKey: "mobile",
+        header: "MOBILE",
+        size: 30,
+      },
+      {
+        accessorKey: "email",
+        header: "EMAIL",
+        size: 30,
+      },
+      {
+        accessorKey: "type",
+        header: "TYPE",
+        size: 30,
+      },
 
-          {
-            changeprice === true ? 
-            <button onClick={()=> {AssignApiPrice(priceValue, row.original.id);
-              console.log(row.original.id,"idinbuttonpriceeeeeeeeeeeee");  
-      
-              console.log(priceValue,"pricefuncttttttttttttttttttttt");  
-              }}
-                style={{border:"0", borderRadius: "20px", padding: "3px 8px", background:"#0E324A", color:"#fff", fontSize:"16px" , fontWeight:"400"}}>
-                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z" fill="white"/>
-                <path opacity="0.4" d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z" fill="white"/>
-                <path d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z" fill="white"/>
+      {
+        accessorKey: "options",
+        header: "OPTIONS",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            {changeprice === true ? (
+              <button
+                onClick={() => {
+                  AssignApiPrice(priceValue, row.original.id);
+                  console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
+
+                  console.log(priceValue, "pricefuncttttttttttttttttttttt");
+                }}
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 8px",
+                  background: "#0E324A",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                    fill="white"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                    fill="white"
+                  />
                 </svg>
                 {renderedCellValue}
-                </button>
-            
-            :
-
-            <button onClick={()=> {AssignApinochange(row.original.id, shipmentId);
-              console.log(row.original.id,"idinbuttonnoooooooooooo");  
-      
-          
-              }}
-                style={{border:"0", borderRadius: "20px", padding: "3px 8px", background:"#0E324A", color:"#fff", fontSize:"16px" , fontWeight:"400"}}>
-                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z" fill="white"/>
-                <path opacity="0.4" d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z" fill="white"/>
-                <path d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z" fill="white"/>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  AssignApinochange(row.original.id, shipmentId);
+                  console.log(row.original.id, "idinbuttonnoooooooooooo");
+                }}
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 8px",
+                  background: "#0E324A",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                    fill="white"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                    fill="white"
+                  />
                 </svg>
-                 {renderedCellValue}
-                </button> 
+                {renderedCellValue}
+              </button>
+            )}
+          </Box>
+        ),
+      },
+    ],
+    [priceValue, changeprice]
+  );
+  const InterstedArray = Array.isArray(detailsList.eligible?.interested)
+    ? [...detailsList.eligible?.interested]
+    : [];
 
-          }
-          
-        </Box>
-      ),
-    },
-  ],
-  [priceValue ,changeprice]
-);
-const InterstedArray =Array.isArray(detailsList.eligible?.interested
-  ) ? [...detailsList.eligible?.interested
-  ]: [];
-
-// services-table
- const dataservices = InterstedArray.map((item, index) => {
-    
+  // services-table
+  const dataservices = InterstedArray.map((item, index) => {
     return {
-      id:item.id,
+      id: item.id,
       partner: item.name,
       contractprice: item.price,
       margin: item.margin,
@@ -383,72 +457,92 @@ const InterstedArray =Array.isArray(detailsList.eligible?.interested
       mobile: item.user.phone,
       email: item.user.email,
       type: item.type,
-      options: 'Assign',
-  
+      options: "Assign",
     };
-  });// editable-input==============
+  }); // editable-input==============
 
-// ========tanle2-no-action
-const columnsServiceProvide2 = useMemo(
-  () => [
-    {
-      accessorKey: "partner",
-      header: "PARTNER",
-      size: 60,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-            {
-             
-              detailsList?.allow_driver_to_start===true ?
+  // ========tanle2-no-action
+  const columnsServiceProvide2 = useMemo(
+    () => [
+      {
+        accessorKey: "partner",
+        header: "PARTNER",
+        size: 60,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {detailsList?.allow_driver_to_start === true ? (
               <span style={{ color: "#FF8A00" }}>{renderedCellValue}</span>
-              :
+            ) : (
               <span>{renderedCellValue}</span>
-            }
-           
-        </Box>
-      ),
-    },
-    {
-      accessorKey: "contractprice",
-      header: "CONTARCTED PRICE",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-
-
-            <span contentEditable={true} 
-            // onInput={handlePriceChange}
-            onInput={(e)=>{
-              setChangePrice(true);
-              console.log("changeeeeeeeeeeeeeeeed");
-              setPriceValue(Number(e.target.innerText));
-
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "contractprice",
+        header: "CONTARCTED PRICE",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <span
+              contentEditable={true}
+              // onInput={handlePriceChange}
+              onInput={(e) => {
+                setChangePrice(true);
+                console.log("changeeeeeeeeeeeeeeeed");
+                setPriceValue(Number(e.target.innerText));
               }}
               dangerouslySetInnerHTML={{ __html: renderedCellValue }}
-              ></span>
+            ></span>
 
-
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 22H21" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 22H21"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-        </Box>
-      ),
-    },
-    {
+          </Box>
+        ),
+      },
+      {
         accessorKey: "margin",
         header: "MARGIN",
         size: 30,
@@ -461,171 +555,235 @@ const columnsServiceProvide2 = useMemo(
             }}
           >
             {/* <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}> */}
-            {
-              renderedCellValue>=0 ? 
+            {renderedCellValue >= 0 ? (
               <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z" fill="#18AEC9"/>
-              </svg>
-                <span>{renderedCellValue}</span>
-                </>
-              :
-              <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z" fill="#F80F10"/>
-              </svg>
-              <span>{renderedCellValue}</span>
-              </>
-            }
-
-          </Box>
-        ),
-      },
-    {
-      accessorKey: "margin2",
-      header: "MARGIN%",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-            <span>{renderedCellValue} %</span>
-        </Box>
-      ),
-    },
-  
-    {
-      accessorKey: "mobile",
-      header: "MOBILE",
-      size: 30,
-    },
-    {
-      accessorKey: "email",
-      header: "EMAIL",
-      size: 30,
-    },
-    {
-      accessorKey: "type",
-      header: "TYPE",
-      size: 30,
-    },
-
-    {
-      accessorKey: "options",
-      header: "OPTIONS",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
-
-            <button onClick={()=> {AssignApiNoAction(row.original.id, shipmentId , priceValue);
-              console.log(row.original.id,"table22222222222");
-              console.log(priceValue,"table22222222222pricevalue");  
-              }}
-                style={{border:"0", borderRadius: "20px", padding: "3px 8px", background:"#0E324A", color:"#fff", fontSize:"16px" , fontWeight:"400"}}>
-                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z" fill="white"/>
-                <path opacity="0.4" d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z" fill="white"/>
-                <path d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z" fill="white"/>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z"
+                    fill="#18AEC9"
+                  />
                 </svg>
-                 {renderedCellValue}
-                </button> 
-        </Box>
-      ),
-    },
-  ],
-  [priceValue ,changeprice]
-);
-// console.log(priceValue,"price");
-// services-table
+                <span>{renderedCellValue}</span>
+              </>
+            ) : (
+              <>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z"
+                    fill="#F80F10"
+                  />
+                </svg>
+                <span>{renderedCellValue}</span>
+              </>
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "margin2",
+        header: "MARGIN%",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <span>{renderedCellValue} %</span>
+          </Box>
+        ),
+      },
 
-// data-no-actions
+      {
+        accessorKey: "mobile",
+        header: "MOBILE",
+        size: 30,
+      },
+      {
+        accessorKey: "email",
+        header: "EMAIL",
+        size: 30,
+      },
+      {
+        accessorKey: "type",
+        header: "TYPE",
+        size: 30,
+      },
 
-const noActionArray =Array.isArray(detailsList.eligible?.no_action) ? [...detailsList.eligible?.no_action]: [];
+      {
+        accessorKey: "options",
+        header: "OPTIONS",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <button
+              onClick={() => {
+                AssignApiNoAction(row.original.id, shipmentId, priceValue);
+                console.log(row.original.id, "table22222222222");
+                console.log(priceValue, "table22222222222pricevalue");
+              }}
+              style={{
+                border: "0",
+                borderRadius: "20px",
+                padding: "3px 8px",
+                background: "#0E324A",
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: "400",
+              }}
+            >
+              <svg
+                width="25"
+                height="25"
+                viewBox="0 0 25 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                  fill="white"
+                />
+                <path
+                  opacity="0.4"
+                  d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                  fill="white"
+                />
+                <path
+                  d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                  fill="white"
+                />
+              </svg>
+              {renderedCellValue}
+            </button>
+          </Box>
+        ),
+      },
+    ],
+    [priceValue, changeprice]
+  );
+  // console.log(priceValue,"price");
+  // services-table
 
-const dataservicesnoaction = noActionArray.map((item, index) => {
-    
-  return {
-    id:item.id,
-    partner: item.name,
-    contractprice: item.price,
-    margin: item.margin,
-    margin2: item.margin_percentage,
-    mobile: item.user.phone,
-    email: item.user.email,
-    type: item.type,
-    options: 'Assign',
+  // data-no-actions
 
-  };
-});
-// ============table3-------------------------------------
-const columnsEligible = useMemo(
-  () => [
-    {
-      accessorKey: "partner",
-      header: "PARTNER",
-      size: 60,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-            {
-             
-              detailsList?.allow_driver_to_start===true ?
+  const noActionArray = Array.isArray(detailsList.eligible?.no_action)
+    ? [...detailsList.eligible?.no_action]
+    : [];
+
+  const dataservicesnoaction = noActionArray.map((item, index) => {
+    return {
+      id: item.id,
+      partner: item.name,
+      contractprice: item.price,
+      margin: item.margin,
+      margin2: item.margin_percentage,
+      mobile: item.user.phone,
+      email: item.user.email,
+      type: item.type,
+      options: "Assign",
+    };
+  });
+  // ============table3-------------------------------------
+  const columnsEligible = useMemo(
+    () => [
+      {
+        accessorKey: "partner",
+        header: "PARTNER",
+        size: 60,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {detailsList?.allow_driver_to_start === true ? (
               <span style={{ color: "#FF8A00" }}>{renderedCellValue}</span>
-              :
+            ) : (
               <span>{renderedCellValue}</span>
-            }
-           
-        </Box>
-      ),
-    },
-    {
-      accessorKey: "contractprice",
-      header: "CONTARCTED PRICE",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-
-
-            <span contentEditable={true} 
-            // onInput={handlePriceChange}
-            onInput={(e)=>{
-              setChangePrice(true);
-              console.log("changeeeeeeeeeeeeeeeed");
-              setPriceValue(Number(e.target.innerText));
-
+            )}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "contractprice",
+        header: "CONTARCTED PRICE",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <span
+              contentEditable={true}
+              // onInput={handlePriceChange}
+              onInput={(e) => {
+                setChangePrice(true);
+                console.log("changeeeeeeeeeeeeeeeed");
+                setPriceValue(Number(e.target.innerText));
               }}
               dangerouslySetInnerHTML={{ __html: renderedCellValue }}
-              ></span>
+            ></span>
 
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3 22H21" stroke="#18AEC9" stroke-width="1.5" strokeMiterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 22H21"
+                stroke="#18AEC9"
+                stroke-width="1.5"
+                strokeMiterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-        </Box>
-      ),
-    },
-    {
+          </Box>
+        ),
+      },
+      {
         accessorKey: "margin",
         header: "MARGIN",
         size: 30,
@@ -638,169 +796,232 @@ const columnsEligible = useMemo(
             }}
           >
             {/* <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}> */}
-            {
-              renderedCellValue>=0 ? 
+            {renderedCellValue >= 0 ? (
               <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z" fill="#18AEC9"/>
-              </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.53 12.03C15.38 12.18 15.19 12.25 15 12.25C14.81 12.25 14.62 12.18 14.47 12.03L12.75 10.31V15.5C12.75 15.91 12.41 16.25 12 16.25C11.59 16.25 11.25 15.91 11.25 15.5V10.31L9.53 12.03C9.24 12.32 8.76 12.32 8.47 12.03C8.18 11.74 8.18 11.26 8.47 10.97L11.47 7.97C11.76 7.68 12.24 7.68 12.53 7.97L15.53 10.97C15.82 11.26 15.82 11.74 15.53 12.03Z"
+                    fill="#18AEC9"
+                  />
+                </svg>
                 <span>{renderedCellValue}</span>
-                </>
-              :
-              <>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z" fill="#F80F10"/>
-              </svg>
-              <span>{renderedCellValue}</span>
               </>
-            }
-
+            ) : (
+              <>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22ZM8.47 11.97C8.62 11.82 8.81 11.75 9 11.75C9.19 11.75 9.38 11.82 9.53 11.97L11.25 13.69L11.25 8.5C11.25 8.09 11.59 7.75 12 7.75C12.41 7.75 12.75 8.09 12.75 8.5L12.75 13.69L14.47 11.97C14.76 11.68 15.24 11.68 15.53 11.97C15.82 12.26 15.82 12.74 15.53 13.03L12.53 16.03C12.24 16.32 11.76 16.32 11.47 16.03L8.47 13.03C8.18 12.74 8.18 12.26 8.47 11.97Z"
+                    fill="#F80F10"
+                  />
+                </svg>
+                <span>{renderedCellValue}</span>
+              </>
+            )}
           </Box>
         ),
       },
-    {
-      accessorKey: "margin2",
-      header: "MARGIN%",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            gap: "1rem",
-          }}
-        >
+      {
+        accessorKey: "margin2",
+        header: "MARGIN%",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <span>{renderedCellValue} %</span>
-        </Box>
-      ),
-    },
-  
-    {
-      accessorKey: "mobile",
-      header: "MOBILE",
-      size: 30,
-    },
-    {
-      accessorKey: "email",
-      header: "EMAIL",
-      size: 30,
-    },
-    {
-      accessorKey: "type",
-      header: "TYPE",
-      size: 30,
-    },
+          </Box>
+        ),
+      },
 
-    {
-      accessorKey: "options",
-      header: "OPTIONS",
-      size: 30,
-      Cell: ({ renderedCellValue, row }) => (
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-          }}
-        >
+      {
+        accessorKey: "mobile",
+        header: "MOBILE",
+        size: 30,
+      },
+      {
+        accessorKey: "email",
+        header: "EMAIL",
+        size: 30,
+      },
+      {
+        accessorKey: "type",
+        header: "TYPE",
+        size: 30,
+      },
 
-          {
-            changeprice === true ? 
-            <button onClick={()=> {AssignApiPrice(priceValue, row.original.id);
-              console.log(row.original.id,"idinbuttonpriceeeeeeeeeeeee");  
-      
-              console.log(priceValue,"pricefuncttttttttttttttttttttt");  
-              }}
-                style={{border:"0", borderRadius: "20px", padding: "3px 8px", background:"#0E324A", color:"#fff", fontSize:"16px" , fontWeight:"400"}}>
-                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z" fill="white"/>
-                <path opacity="0.4" d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z" fill="white"/>
-                <path d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z" fill="white"/>
+      {
+        accessorKey: "options",
+        header: "OPTIONS",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            {changeprice === true ? (
+              <button
+                onClick={() => {
+                  AssignApiPrice(priceValue, row.original.id);
+                  console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
+
+                  console.log(priceValue, "pricefuncttttttttttttttttttttt");
+                }}
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 8px",
+                  background: "#0E324A",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                    fill="white"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                    fill="white"
+                  />
                 </svg>
                 {renderedCellValue}
-                </button>
-            
-            :
-
-            <button onClick={()=> {AssignApinochange(row.original.id, shipmentId);
-              console.log(row.original.id,"idinbuttonnoooooooooooo");  
-      
-          
-              }}
-                style={{border:"0", borderRadius: "20px", padding: "3px 8px", background:"#0E324A", color:"#fff", fontSize:"16px" , fontWeight:"400"}}>
-                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z" fill="white"/>
-                <path opacity="0.4" d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z" fill="white"/>
-                <path d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z" fill="white"/>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  AssignApinochange(row.original.id, shipmentId);
+                  console.log(row.original.id, "idinbuttonnoooooooooooo");
+                }}
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 8px",
+                  background: "#0E324A",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                    fill="white"
+                  />
+                  <path
+                    opacity="0.4"
+                    d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                    fill="white"
+                  />
                 </svg>
-                 {renderedCellValue}
-                </button> 
-
-          }
-          
-        </Box>
-      ),
-    },
-  ],
-  [priceValue ,changeprice]
-);
-// const FinancialArray =Array.isArray(detailsList.eligible?.no_action) ? [...detailsList.eligible?.no_action]: [];
-
-// Eligible Service provider
- const dataEligible = [
-  {
-    partner: 'Driver name',
-    contractprice: '1500',
-    margin: '480',
-    margin2: '100',
-    mobile: '+92 335 252 2522',
-    email: 'test_freelance_driver@example.com',
-    type: 'Freelancer',
-    options: 'Assign',
-  },
-  {
-    partner: 'Driver name',
-    contractprice: '1500',
-    margin: '480',
-    margin2: '100',
-    mobile: '+92 335 252 2522',
-    email: 'test_freelance_driver@example.com',
-    type: 'Freelancer',
-    options: 'Assign',
-  },
-  {
-    partner: 'Freelancer',
-    contractprice: '1500',
-    margin: '480',
-    margin2: '100',
-    mobile: '+92 335 252 2522',
-    email: 'test_freelance_driver@example.com',
-    type: 'Partner',
-    options: 'Assign',
-  },
-  {
-    partner: 'Freelancer',
-    contractprice: '1500',
-    margin: '480',
-    margin2: '100',
-    mobile: '+92 335 252 2522',
-    email: 'test_freelance_driver@example.com',
-    type: 'Partner',
-    options: 'Assign',
-  },
-]
-// icon
-// const iconUrl = detailsList.truck_type?.image;
-// =========files
-console.log(detailsList?.sorted_attachments ,"filesArray");
-
-const fileboxes = [];
-
-for (const filebox in detailsList.sorted_attachments) {
-  fileboxes.push(
-    <div key={filebox}>{filebox}</div>
+                {renderedCellValue}
+              </button>
+            )}
+          </Box>
+        ),
+      },
+    ],
+    [priceValue, changeprice]
   );
-}
-const packingListArray = Array.isArray(fileboxes?.packing_list)? [...fileboxes?.packing_list]:[]; 
+  // const FinancialArray =Array.isArray(detailsList.eligible?.no_action) ? [...detailsList.eligible?.no_action]: [];
+
+  // Eligible Service provider
+  const dataEligible = [
+    {
+      partner: "Driver name",
+      contractprice: "1500",
+      margin: "480",
+      margin2: "100",
+      mobile: "+92 335 252 2522",
+      email: "test_freelance_driver@example.com",
+      type: "Freelancer",
+      options: "Assign",
+    },
+    {
+      partner: "Driver name",
+      contractprice: "1500",
+      margin: "480",
+      margin2: "100",
+      mobile: "+92 335 252 2522",
+      email: "test_freelance_driver@example.com",
+      type: "Freelancer",
+      options: "Assign",
+    },
+    {
+      partner: "Freelancer",
+      contractprice: "1500",
+      margin: "480",
+      margin2: "100",
+      mobile: "+92 335 252 2522",
+      email: "test_freelance_driver@example.com",
+      type: "Partner",
+      options: "Assign",
+    },
+    {
+      partner: "Freelancer",
+      contractprice: "1500",
+      margin: "480",
+      margin2: "100",
+      mobile: "+92 335 252 2522",
+      email: "test_freelance_driver@example.com",
+      type: "Partner",
+      options: "Assign",
+    },
+  ];
+
+  const fileboxes = [];
+
+  if (detailsList?.sorted_attachments) {
+
+    Object.values(detailsList?.sorted_attachments).map((item, index) => {
+
+      fileboxes.push(item);
+    });
+
+  }
+  console.log(fileboxes, "from fileboxes");
+
+
 
   return (
     <div className="container-fluid px-4 orderdetails">
@@ -1098,8 +1319,7 @@ const packingListArray = Array.isArray(fileboxes?.packing_list)? [...fileboxes?.
               <div className="element-info">Shipped Date</div>
             </div>
             <div className="text-element ">
-            <h4>{detailsList.order?.pickup_date}</h4>
-
+              <h4>{detailsList.order?.pickup_date}</h4>
             </div>
           </div>
           <div className="element-box col-2 br-element">
@@ -1422,296 +1642,223 @@ const packingListArray = Array.isArray(fileboxes?.packing_list)? [...fileboxes?.
                 <span className="mt-4">Food Materials</span>
               </div>
               <div className="icon">
-              <MarkerTruck/>
+                <MarkerTruck />
               </div>
             </div>
           </div>
-          <hr/>
+          <hr />
           {/* details-more */}
           <div className="locations py-3">
             <div className="source d-flex my-2 align-items-center ">
-            <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="34.5" cy="34.5" r="34.5" fill="#E8F9EE"/>
-            <circle cx="34.5" cy="34.5" r="12.5" fill="#0EBC93"/>
-            </svg>
-            <p className="mx-4">{detailsList.from_city?.name}</p>
+              <svg
+                width="69"
+                height="69"
+                viewBox="0 0 69 69"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="34.5" cy="34.5" r="34.5" fill="#E8F9EE" />
+                <circle cx="34.5" cy="34.5" r="12.5" fill="#0EBC93" />
+              </svg>
+              <p className="mx-4">{detailsList.from_city?.name}</p>
             </div>
             <div className="source d-flex my-2 align-items-center">
-            <svg width="70" height="69" viewBox="0 0 70 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="35.1234" cy="34.3422" r="34.139" fill="#E5E5FE"/>
-            <path d="M50.6118 27.9638C48.7251 19.6626 41.4841 15.9253 35.1234 15.9253C35.1234 15.9253 35.1234 15.9253 35.1055 15.9253C28.7628 15.9253 21.5038 19.6447 19.6171 27.9458C17.5149 37.2173 23.1927 45.0692 28.3316 50.0104C30.2362 51.8432 32.6798 52.7595 35.1234 52.7595C37.5671 52.7595 40.0107 51.8432 41.8973 50.0104C47.0362 45.0692 52.714 37.2352 50.6118 27.9638ZM35.1234 36.9657C31.997 36.9657 29.4635 34.4322 29.4635 31.3058C29.4635 28.1794 31.997 25.6459 35.1234 25.6459C38.2499 25.6459 40.7833 28.1794 40.7833 31.3058C40.7833 34.4322 38.2499 36.9657 35.1234 36.9657Z" fill="#5251FA"/>
-            </svg>
+              <svg
+                width="70"
+                height="69"
+                viewBox="0 0 70 69"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="35.1234" cy="34.3422" r="34.139" fill="#E5E5FE" />
+                <path
+                  d="M50.6118 27.9638C48.7251 19.6626 41.4841 15.9253 35.1234 15.9253C35.1234 15.9253 35.1234 15.9253 35.1055 15.9253C28.7628 15.9253 21.5038 19.6447 19.6171 27.9458C17.5149 37.2173 23.1927 45.0692 28.3316 50.0104C30.2362 51.8432 32.6798 52.7595 35.1234 52.7595C37.5671 52.7595 40.0107 51.8432 41.8973 50.0104C47.0362 45.0692 52.714 37.2352 50.6118 27.9638ZM35.1234 36.9657C31.997 36.9657 29.4635 34.4322 29.4635 31.3058C29.4635 28.1794 31.997 25.6459 35.1234 25.6459C38.2499 25.6459 40.7833 28.1794 40.7833 31.3058C40.7833 34.4322 38.2499 36.9657 35.1234 36.9657Z"
+                  fill="#5251FA"
+                />
+              </svg>
 
-            <p className="mx-4">{detailsList.to_city?.name}</p>
+              <p className="mx-4">{detailsList.to_city?.name}</p>
             </div>
           </div>
-          <hr/>
+          <hr />
           {/* drivers-name */}
           <div className="drivers py-3 d-flex align-items-center justify-content-between">
             <div className="source d-flex my-2 align-items-center">
               <div className="img-driver">
-             
-              <img src={Driverimg} alt="img"/>
+                <img src={Driverimg} alt="img" />
               </div>
-             <div>
+              <div>
                 <p className="mx-4 my-2">Driver’s name</p>
                 <span className="mx-4">Driver’s name</span>
-             </div>
+              </div>
             </div>
             <div className="icon-call mx-4">
-            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z" fill="#244664"/>
-            </svg>
-
+              <svg
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z"
+                  fill="#244664"
+                />
+              </svg>
             </div>
           </div>
         </div>
         <div className="col-md-6 pt-3">
           <div className="mapbox">
-
             {/* =============================== */}
- 
 
-          <LoadScript
-            googleMapsApiKey="AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4"
-          >
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={10}
-            >
-
-              <MarkerF
-                position={center}
-                icon={icon}
-                // options={{
-                //   icon:<MarkerTruck/>
-                // }}
-
-              />
-
-            </GoogleMap>
-          </LoadScript>
-           
+            <LoadScript googleMapsApiKey="AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4">
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={10}
+              >
+                <MarkerF
+                  position={center}
+                  icon={icon}
+                  // options={{
+                  //   icon:<MarkerTruck/>
+                  // }}
+                />
+              </GoogleMap>
+            </LoadScript>
           </div>
         </div>
       </div>
-{/* test */}
+      {/* test */}
 
-  {/* for (const filebox in detailsList.sorted_attachments) {
-    return(
-          <>
-          <div>test</div>
-        </>
-    );
-} */}
-    {
-    fileboxes.map((filesection,index)=>{
-      const filesListArray = Array.isArray(filesection)? [...filesection]:[];
-      console.log("testfile2222222222");
-
-        return(
-          <>
-          {/* {fileboxes} */}
-                  <div className="filesbox packing-list">
-                    <div className="head">{filesection}</div>
-                    <div className="row">
-                      { 
-                      filesListArray.map((fileitem,indexfile)=>{
-                        console.log("testfile");
-                        return(
-                          <>
-                            <div className="card-order col-2 mx-4">
-                                <div className="img-box"></div>
-                                <p>test</p>
-                                {/* <a href={fileitem.path} className="card-title text-center">file name</a> */}
-                            </div>
-                          </>
-                        )
-                      })
-                      }
-                    </div>
+      <div className="p-2">
+        {fileboxes.map((filetab, index) => {
+          // console.log(filetab,"here");
+          return filetab.map((fileitem, indexitem) => {
+            // console.log(fileitem,"here");
+            return (
+              // <div className="d-flex">
+              <div className="filesbox">
+                <div className="head d-block">
+                  {/* {
+                     fileitem.label === "packing_list"? 
+                    <h5 className="head">Picking List</h5>
+                    :
+                    <h5 className="head">Other Documntes</h5>
+                  } */}
+                  {indexitem === 0 && fileitem.label}
                   </div>
-          </>
-        )
+                {
+                  indexitem===filetab.lenght ? 
+                  <div className="row">
+                  <div className="card-order col-md-3 ">
+                    <img src={FileIcon} alt="img" className="w-25"/>
+                    <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
+                      File {indexitem+1}
+                    </a>
+                  </div>
+                </div>
+                  
+                  :
+                  <div className="row">
+                  <div className="card-order col-md-2 ">
+                    <img src={FileIcon} alt="img" className="w-25"/>
+                    <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
+                      File {indexitem+1}
+                    </a>
+                  </div>
+                </div>
+                }
 
-    })
-    
-    }
-
-
-
-{/* test111111111111111111=============== */}
-      {/* { detailsList?.sorted_attachments &&
-        detailsList.sorted_attachments.map((filebox,index)=>{
-          return(
-            <>
-                    <div className="filesbox packing-list">
-                      <div className="head">packing list atachement</div>
-                      <div className="row">
-                        { filebox?.packing_list &&
-                          filebox.packing_list.map((packingitem ,indexpacking)=>{
-                            return(
-                              <>
-                                  <div className="card-order col-2 mx-4">
-                                      <div className="img-box"></div>
-                                      <a href={packingitem.path} className="card-title text-center">file name</a>
-                                  </div>
-                              </>
-                            )
-                          })
-                        }
-
-                      </div>
-                    </div>
-            </>
-          )
-        })
-      } */}
-      {/* files-manegments */}
-      {/* <div className="filesbox packing-list">
-        <div className="head">packing list atachement</div>
-        <div className="row">
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-        </div>
+              </div> 
+            );
+          });
+        })}
       </div>
-      <hr />
-      <div className="filesbox other-doc-list">
-        <div className="head">Other documents</div>
-        <div className="row">
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4 my-2">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div className="filesbox user-files">
-        <div className="head">Driver's upload</div>
-        <div className="row">
-          <div className="card-order col-2 mx-4">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-          <div className="card-order col-2 mx-4">
-            <div className="img-box"></div>
-            <div className="card-title text-center">file name</div>
-          </div>
-        </div>
-      </div> */}
+
       {/* tables============interested1===Service provide */}
       <div className="orderhead px-2">
-          <div className="text-head">Interested Service provide</div>
-          <div className="backhuling" style={{fontSize:"18px" , fontWeight:"700", color:"#0E324A"}}>
-            <div className="orange me-3"></div>Backhuling
-          </div>
+        <div className="text-head">Interested Service provide</div>
+        <div
+          className="backhuling"
+          style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
+        >
+          <div className="orange me-3"></div>Backhuling
+        </div>
       </div>
       <MaterialReactTable
-            columns={columnsServiceProvide}
-            data={dataservices}
-            enableRowSelection
-            positionToolbarAlertBanner="bottom"
-            renderTopToolbarCustomActions={({ table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "1rem",
-                  p: "0.5rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                
-              </Box>
-            )}
-          />
-          {/* interested2-no-actions */}
-          <div className="orderhead px-2">
-          <div className="text-head">Interestes Service provide</div>
-          <div className="backhuling" style={{fontSize:"18px" , fontWeight:"700", color:"#0E324A"}}>
-            <div className="orange me-3"></div>Backhuling
-          </div>
+        columns={columnsServiceProvide}
+        data={dataservices}
+        enableRowSelection
+        positionToolbarAlertBanner="bottom"
+        renderTopToolbarCustomActions={({ table }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              p: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          ></Box>
+        )}
+      />
+      {/* interested2-no-actions */}
+      <div className="orderhead px-2">
+        <div className="text-head">Interestes Service provide</div>
+        <div
+          className="backhuling"
+          style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
+        >
+          <div className="orange me-3"></div>Backhuling
+        </div>
       </div>
       <MaterialReactTable
-            columns={columnsServiceProvide2}
-            // data={dataservices2}
-            data={dataservicesnoaction}
-
-            // dataservices2
-            enableRowSelection
-            positionToolbarAlertBanner="bottom"
-            renderTopToolbarCustomActions={({ table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "1rem",
-                  p: "0.5rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                
-              </Box>
-            )}
-          />
-{/* Eligible Service provide=table-request */}
-        <div className="orderhead px-2">
-          <div className="text-head">Financial requests</div>
-          <div className="backhuling" style={{fontSize:"18px" , fontWeight:"700", color:"#0E324A"}}>
-            <div className="orange me-3"></div>Backhuling
-          </div>
+        columns={columnsServiceProvide2}
+        // data={dataservices2}
+        data={dataservicesnoaction}
+        // dataservices2
+        enableRowSelection
+        positionToolbarAlertBanner="bottom"
+        renderTopToolbarCustomActions={({ table }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              p: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          ></Box>
+        )}
+      />
+      {/* Eligible Service provide=table-request */}
+      <div className="orderhead px-2">
+        <div className="text-head">Financial requests</div>
+        <div
+          className="backhuling"
+          style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
+        >
+          <div className="orange me-3"></div>Backhuling
+        </div>
       </div>
       <MaterialReactTable
-            columns={columnsEligible}
-            data={dataEligible}
-            enableRowSelection
-            positionToolbarAlertBanner="bottom"
-            renderTopToolbarCustomActions={({ table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "1rem",
-                  p: "0.5rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                
-              </Box>
-            )}
-          />
-
+        columns={columnsEligible}
+        data={dataEligible}
+        enableRowSelection
+        positionToolbarAlertBanner="bottom"
+        renderTopToolbarCustomActions={({ table }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              p: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          ></Box>
+        )}
+      />
     </div>
   );
 };
 
 export default ShipmentOrder;
-

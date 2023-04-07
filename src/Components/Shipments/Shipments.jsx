@@ -22,7 +22,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { Check } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -84,7 +84,7 @@ const Shipments = () => {
 
   const [order, setOrder] = useState({});
 
-  const handleOrder = order => {
+  const handleOrder = (order) => {
     setOrder(order);
   };
 
@@ -167,8 +167,7 @@ const Shipments = () => {
       setIndexOfTotalDetails((prev) => prev - 1);
     }
   };
-  // console.log(totaldetails, "total");
-  // console.log(indexOfTotalDetails, "indexOfTotalDetails");
+
 
   // pickup-Api
   const pickupListApi = async (shipper_id) => {
@@ -196,8 +195,7 @@ const Shipments = () => {
   };
   //dropoff_Api
   const droppofflist = async (shipper_id, id_pickup) => {
-    // console.log(shipper_id, "shiperiddddddddddddddddddd");
-    // console.log(id_pickup, "pickupiddddddddddddddddddd");
+
 
     try {
       const response = await axios.get(
@@ -320,7 +318,7 @@ const Shipments = () => {
 
   useEffect(() => {
     if (order instanceof FormData) {
-      sendOrder(order, plannedList.length == 1 ? 'orders' : 'scheduled_orders');
+      sendOrder(order, plannedList.length == 1 ? "orders" : "scheduled_orders");
       setOrder({}); // to reset the order value and thus we can resend the request when clicking on submit btn
     }
   }, [order]);
@@ -343,9 +341,10 @@ const Shipments = () => {
       // setName("");
       console.log(response.data.data);
       let id = response.data.data.id;
-      let redirect_to = endpoint == 'orders' ?
-                                    `allshipments/shipmentorder?id=${id}` : 
-                                    `allshipments?scheduled_order_id=${id}`;
+      let redirect_to =
+        endpoint == "orders"
+          ? `allshipments/shipmentorder?id=${id}`
+          : `allshipments?scheduled_order_id=${id}`;
       navigate(`/${redirect_to}`, { replace: true });
     } catch (e) {
       // handleClick2();
@@ -360,7 +359,6 @@ const Shipments = () => {
       label: item.name,
     };
   });
-  
 
   const handelSubmit = (e) => {
     e.preventDefault();
@@ -455,7 +453,6 @@ const Shipments = () => {
   // array_of_planned_details
   const [plannedList, setPlannedList] = useState([plannedAllShipments]);
   // const [plannedListwithshipper, setPlannedListwithshipper] = useState([plannedAllShipmentswithshipper]);
-
 
   console.log(plannedList, "plannedList");
   // addnew_listof_object
@@ -681,83 +678,7 @@ const Shipments = () => {
                   );
                 })}
               </div>
-              {/* <div className="col-md-4">
-                <div
-                  className="line-active position-absolute "
-                  style={{
-                    width: "196px",
-                    top: "185.1px",
-                    right: "45rem",
-                    height: "6px",
-                    backgroundColor: "#CBFF39",
-                  }}
-                ></div>
-                <div
-                  className="step1 d-block position-absolute  step-active"
-                  style={{
-                    top: "166px",
-                    right: "50rem",
-                    color: "#0B2339",
-                    backgroundColor: "#CBFF39",
-                    fontWeight: "500",
-                    padding: "5px 13px",
-                    borderRadius: "50px",
-                  }}
-                >
-                  <label>1</label>
-                </div>
 
-                <p
-                  className="my-2"
-                  style={{ marginLeft: "14.5rem", fontWeight: "400" }}
-                >
-                  shipment 1
-                </p>
-              </div>
-              <div className="col-md-4">
-                <div
-                  className="step1 d-block position-absolute shipmentnormal"
-                  style={{
-                    top: "166px",
-                    right: "37rem",
-                    color: "#fff",
-                    background: "#0B2339",
-                    fontWeight: "500",
-                    padding: "5px 13px",
-                    borderRadius: "50px",
-                  }}
-                >
-                  <label>2</label>
-                </div>
-                <p
-                  className="my-2"
-                  style={{ marginLeft: "5.5rem", fontWeight: "400" }}
-                >
-                  shipment 2
-                </p>
-              </div>
-              <div className="col-md-4">
-                <div
-                  className="step1 d-block position-absolute shipmentnormal"
-                  style={{
-                    top: "166px",
-                    right: "22rem",
-                    color: "#fff",
-                    background: "#0B2339",
-                    fontWeight: "500",
-                    padding: "5px 13px",
-                    borderRadius: "50px",
-                  }}
-                >
-                  <label>3</label>
-                </div>
-                <p
-                  className="my-2"
-                  style={{ marginLeft: "-1.5rem", fontWeight: "400" }}
-                >
-                  shipment 3
-                </p>
-              </div> */}
             </div>
           </div>
         </>
@@ -826,13 +747,16 @@ const Shipments = () => {
                           pickupListApi(choice.value);
                           setShipperUserChoice(choice.value);
                           setShipperValue(choice.label);
+                          // setShipperLabel(choice.value);
                           shipperPlanned_handleInputChange(
                             indexshipment,
                             choice.value
                           );
                         }}
                       />
-                      <span>{shipperValue}</span>
+                      <span>
+                        {shipperOptions[plannedList[0].shipperPlanned].label}
+                      </span>
                     </div>
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
