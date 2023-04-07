@@ -29,6 +29,33 @@ export const fetchCityList = createAsyncThunk(
     }
   }
 );
+
+export const fetchCityListByCountry = createAsyncThunk(
+  "city/fetchCityListByCountry",
+  async (token) => {
+    let country_id = 194;
+    console.log(token, "from reducer");
+    try {
+      const response = await axios.get(
+        `https://dev.eload.smart.sa/api/v1/countries/${country_id}?cities=1`,
+        {
+          // headers: header(token).headerForJson,
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token.token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      const data = await response.data;
+      // console.log(data, "data");
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
 // useSelector
 
 export const cityGetReducer = createSlice({
@@ -60,6 +87,21 @@ export const cityGetReducer = createSlice({
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },
     [fetchCityList.rejected]: (state, action) => {
+      state.status = true;
+      state.status = "failed";
+    },
+    [fetchCityListByCountry.pending]: (state, action) => {
+      // state.status = true;
+    },
+    [fetchCityListByCountry.fulfilled]: (state, action) => {
+      state.status = false;
+      // state.table = action.payload.data.products;
+      state.list = action?.payload?.data;
+      // console.log(action, "action");
+      // state.tableContainer = action.payload.list;
+      // state.table = action.data.list.length > 0 ? action.data.list : [];
+    },
+    [fetchCityListByCountry.rejected]: (state, action) => {
       state.status = true;
       state.status = "failed";
     },

@@ -96,4 +96,7 @@
 .rewards .numbers-box input:disabled{
     background-color:white;
 }
-         
+
+.rewards .mt-10{
+    margin-top: 10px;
+}

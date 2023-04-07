@@ -1,25 +1,306 @@
 import React from "react";
+import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import moment from "moment";
+import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import { fetchPromotionList } from "../../redux/listPromotion";
+import { fetchTruckList } from "../../redux/listTruck";
+import { fetchCityListByCountry } from "../../redux/CityListSlice";
+import axios from "axios";
 import "./rewards.css";
-import { useState } from "react";
-import CustomSelect from '../CustomeSelect/CustomeSelect';
 
 const Rewards = () => {
+  const dispatch = useDispatch();
+  const [promotionList, setpromotionList] = useState([]);
+  const [truck_types, setTruckTypes] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [cookie] = useCookies(["eload_token"]);
+
+  const data = promotionList.map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+      details: item.details
+    };
+  });
+
+  useEffect(() => {
+
+    dispatch(fetchTruckList({ token: cookie.eload_token }))
+    .then((res) => {
+      let data = res.payload.data.map(object => {
+        return { 
+          value: object.id,
+          label: object.name
+        }
+      });
+      setTruckTypes(data);
+
+      dispatch(fetchCityListByCountry({ token: cookie.eload_token}))
+      .then((cities_res) => {
+        let data = cities_res.payload.data.data.states.map((object) => ({
+          label: object.name,
+          options: object.cities.map((sub_object) => ({
+            value: sub_object.id,
+            label: sub_object.name,
+          })),
+        }));
+        setCities(data);
+
+        dispatch(fetchPromotionList({ token: cookie.eload_token }))
+        .then((res) => {
+          console.log(res, "response from api");
+          const data = res.payload.data;
+          setpromotionList(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+  }, []);
+
   const [count1, setCount1] = useState(1);
   const [count2, setCount2] = useState(1);
   const [count3, setCount3] = useState(1);
 
-    /// dropdown
-    const optionsRewards = [
-      { value: "Number of trips", label: "Number of trips" },
-      { value: "Number of trips covered in a specific time", label: "Number of trips covered in a specific time" },
-      { value: "Number of trips to a certain destination", label: "Number of trips to a certain destination" },
-      { value: "EgyNumber of trips based on a specific truck typept", label: "Number of trips based on a specific truck type" },
+  const intial_state = {
+    'name': '',
+    'description': '',
+    'details':{
+      'conditions': {
+        'achievement': 'all',
+        'delivered_shipments': {
+          'value': 1
+        }
+      },
+      'actions': {
+        'total': {
+          'type': 'fixed',
+          'value': ''
+        }
+      }
+    }
+  }
 
+  // we can also set default values
+  const default_values = {
+    'start_time': null,
+    'end_time': null,
+    'from_city_id': null,
+    'to_city_id': null,
+    'truck_type_id': null
+  }
+
+    /// dropdown
+    const typesOptions = [
+      { value: "fixed", label: "Fixed" },
+      { value: "percentage", label: "Percentage" },
     ];
-    const handleSelect = (selectedOption) => {
-      console.log("Selected option:", selectedOption);
+
+    const optionsRewards = [
+      { value: "start_time", label: "Start Time" },
+      { value: "end_time", label: "End Time" },
+      { value: "from_city_id", label: "Source" },
+      { value: "to_city_id", label: "Destination" },
+      { value: "truck_type_id", label: "Truck Type" },
+    ];
+
+    const handleSelectedOptionsRewards = (conditions) => {
+      let selected_options = [];
+
+      for (let i = 0; i < optionsRewards.length; i++) {
+        if(conditions.hasOwnProperty(optionsRewards[i].value)) {
+          selected_options.push(optionsRewards[i]);
+        }
+      }
+
+      return selected_options;
     };
 
+    const handleSelectedOptionsCities = (city_id) => {
+      let selected_option = {};
+
+      for (let i = 0; i < cities.length; i++) {
+        for (let city of cities[i].options) {
+          if (city_id == city.value) {
+            return city;
+          }
+        }
+      }
+
+      return selected_option;
+    };
+
+    const handleSelectedTime = (time) => {
+      return Date.parse(time);
+    };
+
+    const handleSelectedRewardsOptions = (options, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      let current_promotion = promotions[index];
+
+      // remove condition if not in the options
+      for (const condition in current_promotion.details.conditions) {
+        if(condition == 'achievement' || condition == 'delivered_shipments') {
+          continue;
+        }
+
+        for (let i = 0; i < options.length; i++) {
+          if (condition == options[i].value) {
+            break;
+          }
+
+          // the condition isn't in the options and thus we have to delete it
+          if(i == options.length - 1) {
+            delete current_promotion.details.conditions[condition];
+          }
+        }
+      }
+
+      // insert option if not exist
+      for (let i = 0; i < options.length; i++) {
+        if (!current_promotion.details.conditions.hasOwnProperty(options[i].value)) {
+          // TODO: init[options[i].value]
+          current_promotion.details.conditions[options[i].value] = { value: default_values[options[i]] };
+        }
+      }
+
+      promotions[index] = current_promotion;
+      console.log('current_promotion', current_promotion);
+      setpromotionList(promotions);
+    };
+
+    const handleAddBtn = () => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions.push(intial_state);
+      setpromotionList(promotions);
+
+      window.scroll({
+        top: document.body.offsetHeight,
+        left: 0, 
+        behavior: 'smooth',
+      });
+    };
+
+    const handleName = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].name = value;
+      setpromotionList(promotions);
+    };
+
+    const handleRewardType = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.actions.total.type = value;
+      setpromotionList(promotions);
+    };
+
+    const handleRewardAmount = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.actions.total.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleDeliveredShipments = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.delivered_shipments.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleStartTime = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.start_time.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleEndTime = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.end_time.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleFromCityId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.from_city_id.value = value;
+      setpromotionList(promotions);
+    };
+    
+    const handleToCityId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.to_city_id.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleTruckTypeId = (value, index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      promotions[index].details.conditions.truck_type_id.value = value;
+      setpromotionList(promotions);
+    };
+
+    const handleSubmit = async (index) => {
+      let promotions = JSON.parse(JSON.stringify(promotionList));
+      let current_promotion = promotions[index];
+
+      if(current_promotion.details.conditions.hasOwnProperty('start_time')) {
+        let time_value = moment(current_promotion.details.conditions.start_time.value).format('YYYY-MM-DD HH:mm:ss');
+        current_promotion.details.conditions.start_time.value = time_value;
+      }
+
+      if(current_promotion.details.conditions.hasOwnProperty('end_time')) {
+        let time_value = moment(current_promotion.details.conditions.end_time.value).format('YYYY-MM-DD HH:mm:ss');
+        current_promotion.details.conditions.end_time.value = time_value;
+      }
+
+      let endpoint = 'promotions';
+
+      if(current_promotion.hasOwnProperty('id')) {
+        endpoint += `/${current_promotion.id}`;
+        delete current_promotion.id;
+        current_promotion['_method'] = 'put';
+      }
+
+      console.log('endpoint', endpoint);
+      console.log('current_promotion', current_promotion);
+
+      try {
+        const response = await axios.post(
+          `https://dev.eload.smart.sa/api/v1/${endpoint}`,
+          current_promotion,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        console.log(response.data.data);
+
+        /**
+         * if it's a new promotion we will update the current object and add the id to it 
+         * so when we submit again without refreshing the page we update it and not creating a new one
+         */
+        if (endpoint == 'promotions') {
+          current_promotion['id'] = response.data.data.id;
+          promotions[index] = current_promotion;
+          setpromotionList(promotions);
+        }
+
+        // it has to be a better alert
+        alert('Successfully Saved!');
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
   // console.log(count3, "count");
 
@@ -32,12 +313,15 @@ const Rewards = () => {
           <h2>Rewards</h2>
         </div>
         <div className="col-md-8">
-          <button className="btn add-btn">Add new reward</button>
+          <button className="btn add-btn" onClick={() => handleAddBtn() }>Add new reward</button>
         </div>
       </div>
       <hr />
       {/* section-1 */}
-      <div className="row px-4 py-2">
+      {data.map(({id, name, details}, index) => {
+      return (
+      <>
+      <div className="row px-4 py-2" key={id}>
         {/* first-row */}
         <div className="row justify-content-between">
           <div className="col-md-6 align-items-center">
@@ -62,28 +346,75 @@ const Rewards = () => {
                   fill="#FDC500"
                 />
               </svg>
-              <h4>First Reward</h4>
+              {/* <h4>{name}</h4> */}
+              <div className="input-side">
+                <label htmlFor="address">
+                  Name<span>*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Name of the reward"
+                  value={name} 
+                  onChange={(v) => handleName(v.target.value, index)}
+                />
+              </div>
             </div>
           </div>
           <div className="col-md-4 justfy-content-end pt-3 ">
-          <CustomSelect options={optionsRewards} onSelect={handleSelect}  />
-
+          <Select
+            classNamePrefix="select"
+            className="basic-multi-select"
+            isMulti
+            isDisabled={false}
+            isLoading={false}
+            isClearable={false}
+            isRtl={false}
+            isSearchable={true}
+            name="rewards_options"
+            options={optionsRewards}
+            defaultValue={handleSelectedOptionsRewards(details.conditions)}
+            onChange={(options) => handleSelectedRewardsOptions(options, index)}
+          />
           </div>
         </div>
         {/* secound-row */}
         <div className="row py-5 align-items-center">
           <div className="col-md-4 input-side">
             <label htmlFor="address">
-              Shipment value<span>*</span>
+              Reward Type<span>*</span>
             </label>
-            <input type="text" placeholder="ie. 500 SAR" />
+            <Select
+              classNamePrefix="select"
+              className="basic-multi-select mt-10"
+              isMulti={false}
+              isDisabled={false}
+              isLoading={false}
+              isClearable={false}
+              isRtl={false}
+              isSearchable={true}
+              name="rewards_options"
+              options={typesOptions}
+              defaultValue={typesOptions.find(({ value }) => value === details.actions.total.type)}
+              onChange={(choice) => handleRewardType(choice.value, index)}
+            />
+          </div>
+          <div className="col-md-4 input-side">
+            <label htmlFor="address">
+              Reward Amount<span>*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="ie. 500 SAR"
+              value={details.actions.total.value} 
+              onChange={(v) => handleRewardAmount(v.target.value, index)}
+            />
           </div>
           <div className="col-md-4 numbers-box text-center">
             <label htmlFor="address">
-              Shipment value<span>*</span>
+              Number of trips<span>*</span>
             </label>
             <div className="qty">
-              <span
+              {/* <span
                 onClick={() => {
                   if (count1 > 1) {
                     setCount1((prevState) => prevState - 1);
@@ -92,16 +423,18 @@ const Rewards = () => {
                 className="minus"
               >
                 -
-              </span>
+              </span> */}
               {/* <span>{count1}</span> */}
               <input
-                readOnly
+                // readOnly
                 type="number"
+                min="1"
                 className="count"
                 name="qty"
-                value={count1}
+                value={details.conditions.delivered_shipments.value}
+                onChange={(v) => handleDeliveredShipments(v.target.value, index)}
               />
-              <span
+              {/* <span
                 onClick={() => {
                   if (count1 < 50) {
                     setCount1((prevState) => prevState + 1);
@@ -110,15 +443,110 @@ const Rewards = () => {
                 className="plus "
               >
                 +
-              </span>
+              </span> */}
             </div>
           </div>
+          {details.conditions.hasOwnProperty('start_time') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Start Time<span>*</span>
+              </label>
+              <DatePicker
+                selected={handleSelectedTime(details.conditions.start_time.value)}
+                onChange={(date) => handleStartTime(date, index)}
+                timeInputLabel="Time:"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                showTimeInput
+              />
+            </div>
+          ) : ('')}
+          
+          {details.conditions.hasOwnProperty('end_time') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                End Time<span>*</span>
+              </label>
+              <DatePicker
+                selected={handleSelectedTime(details.conditions.end_time.value)}
+                onChange={(date) => handleEndTime(date, index)}
+                timeInputLabel="Time:"
+                dateFormat="yyyy-MM-dd h:mm aa"
+                showTimeInput
+              />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('from_city_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Source<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="source"
+                options={cities}
+                defaultValue={handleSelectedOptionsCities(details.conditions.from_city_id.value)}
+                onChange={(choice) => handleFromCityId(choice.value, index)}
+              />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('to_city_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Destination<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="destination"
+                options={cities}
+                defaultValue={handleSelectedOptionsCities(details.conditions.to_city_id.value)}
+                onChange={(choice) => handleToCityId(choice.value, index)}
+              />
+            </div>
+          ) : ('')}
+
+          {details.conditions.hasOwnProperty('truck_type_id') ? (
+            <div className="col-md-4 input-side">
+              <label htmlFor="address">
+                Truck Type<span>*</span>
+              </label>
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select mt-10"
+                isMulti={false}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name="truck_types"
+                options={truck_types}
+                defaultValue={truck_types.find(({ value }) => value === details.conditions.truck_type_id.value)}
+                onChange={(choice) => handleTruckTypeId(choice.value, index)}
+              />
+            </div>
+          ) : ('')}
+
           <div className="col-md-4 d-flex justify-content-center mt-4">
             <button
               className="btn add-btn"
               style={{ padding: "6px 20px", height: "52%", width: "46%" }}
-              data-bs-toggle="modal"
-              href="#exampleModalToggle"
+              onClick={() => { handleSubmit(index) }}
             >
               Save
             </button>
@@ -126,189 +554,15 @@ const Rewards = () => {
         </div>
       </div>
       <hr />
-      {/* section-2 */}
-      <div className="row px-4 py-2">
-        {/* first-row */}
-        <div className="row justify-content-between">
-          <div className="col-md-6 align-items-center">
-            <div className="icon-box d-flex align-items-center">
-              <svg
-                width="71"
-                height="71"
-                viewBox="0 0 71 71"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M62.8655 54.6404L57.9843 55.7942C56.8897 56.0604 56.0318 56.8888 55.7951 57.9833L54.7597 62.3321C54.1976 64.6987 51.1801 65.4383 49.6122 63.5746L40.7668 53.3979C40.0568 52.5696 40.4414 51.2679 41.5064 51.0017C46.7426 49.7296 51.4464 46.8008 54.9076 42.6296C55.4697 41.9492 56.4755 41.8604 57.0968 42.4817L63.6643 49.0492C65.9126 51.2975 65.1139 54.1079 62.8655 54.6404Z"
-                  fill="#FD3D00"
-                />
-                <path
-                  d="M7.98762 54.6404L12.8689 55.7942C13.9634 56.0604 14.8214 56.8888 15.058 57.9833L16.0934 62.3321C16.6555 64.6987 19.673 65.4383 21.2409 63.5746L30.0864 53.3979C30.7964 52.5696 30.4118 51.2679 29.3468 51.0017C24.1105 49.7296 19.4068 46.8008 15.9455 42.6296C15.3834 41.9492 14.3776 41.8604 13.7564 42.4817L7.18887 49.0492C4.94053 51.2975 5.73928 54.1079 7.98762 54.6404Z"
-                  fill="#FD3D00"
-                />
-                <path
-                  d="M35.5001 5.91699C24.0513 5.91699 14.7917 15.1766 14.7917 26.6253C14.7917 30.9149 16.0638 34.8495 18.253 38.1332C21.448 42.8666 26.5067 46.2095 32.3938 47.0674C33.3997 47.2449 34.4351 47.3337 35.5001 47.3337C36.5651 47.3337 37.6005 47.2449 38.6063 47.0674C44.4934 46.2095 49.5522 42.8666 52.7472 38.1332C54.9363 34.8495 56.2084 30.9149 56.2084 26.6253C56.2084 15.1766 46.9488 5.91699 35.5001 5.91699ZM44.5526 25.9745L42.0972 28.4299C41.683 28.8441 41.4463 29.6428 41.5943 30.2345L42.3043 33.2816C42.8663 35.6778 41.5942 36.6245 39.4643 35.3524L36.5059 33.607C35.9734 33.2816 35.0859 33.2816 34.5534 33.607L31.5951 35.3524C29.4651 36.5949 28.193 35.6778 28.7551 33.2816L29.4651 30.2345C29.5834 29.6724 29.3763 28.8441 28.9622 28.4299L26.4476 25.9745C24.998 24.5249 25.4713 23.0753 27.483 22.7499L30.6484 22.2174C31.1809 22.1287 31.8022 21.6553 32.0388 21.182L33.7842 17.6912C34.7309 15.7978 36.2692 15.7978 37.2159 17.6912L38.9613 21.182C39.198 21.6553 39.8192 22.1287 40.3813 22.2174L43.5468 22.7499C45.5288 23.0753 46.0022 24.5249 44.5526 25.9745Z"
-                  fill="#FD3D00"
-                />
-              </svg>
-
-              <h4>Second Reward</h4>
-            </div>
-          </div>
-          <div className="col-md-4 justfy-content-end pt-3 ">
-          <CustomSelect options={optionsRewards} onSelect={handleSelect}  />
-          </div>
-        </div>
-        {/* secound-row */}
-        <div className="row py-5 align-items-center">
-          <div className="col-md-4 input-side">
-            <label htmlFor="address">
-              Shipment value<span>*</span>
-            </label>
-            <input type="text" placeholder="ie. 500 SAR" />
-          </div>
-          <div className="col-md-4 numbers-box text-center">
-            <label htmlFor="address">
-              Shipment value<span>*</span>
-            </label>
-            <div className="qty">
-              <span
-                onClick={() => {
-                  if (count2 > 1) {
-                    setCount2((prevState) => prevState - 1);
-                  }
-                }}
-                className="minus"
-              >
-                -
-              </span>
-              <input
-                type="number"
-                className="count"
-                name="qty"
-                value={count2}
-              />
-              <span
-                onClick={() => {
-                  if (count2 < 50) {
-                    setCount2((prevState) => prevState + 1);
-                  }
-                }}
-                className="plus "
-              >
-                +
-              </span>
-            </div>
-          </div>
-          <div className="col-md-4 d-flex justify-content-center mt-4">
-            <button
-              className="btn add-btn"
-              style={{ padding: "6px 20px", height: "52%", width: "46%" }}
-              data-bs-toggle="modal"
-              href="#exampleModalToggle"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <hr />
-      {/* section-3 */}
-      <div className="row px-4 py-2">
-        {/* first-row */}
-        <div className="row justify-content-between">
-          <div className="col-md-6 align-items-center">
-            <div className="icon-box d-flex align-items-center">
-              <svg
-                width="71"
-                height="71"
-                viewBox="0 0 71 71"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M62.8655 54.6404L57.9843 55.7942C56.8897 56.0604 56.0318 56.8888 55.7951 57.9833L54.7597 62.3321C54.1976 64.6987 51.1801 65.4383 49.6122 63.5746L40.7668 53.3979C40.0568 52.5696 40.4414 51.2679 41.5064 51.0017C46.7426 49.7296 51.4464 46.8008 54.9076 42.6296C55.4697 41.9492 56.4755 41.8604 57.0968 42.4817L63.6643 49.0492C65.9126 51.2975 65.1139 54.1079 62.8655 54.6404Z"
-                  fill="#ED13CA"
-                />
-                <path
-                  d="M7.98762 54.6404L12.8689 55.7942C13.9634 56.0604 14.8214 56.8888 15.058 57.9833L16.0934 62.3321C16.6555 64.6987 19.673 65.4383 21.2409 63.5746L30.0864 53.3979C30.7964 52.5696 30.4118 51.2679 29.3468 51.0017C24.1105 49.7296 19.4068 46.8008 15.9455 42.6296C15.3834 41.9492 14.3776 41.8604 13.7564 42.4817L7.18887 49.0492C4.94053 51.2975 5.73928 54.1079 7.98762 54.6404Z"
-                  fill="#ED13CA"
-                />
-                <path
-                  d="M35.5001 5.91699C24.0513 5.91699 14.7917 15.1766 14.7917 26.6253C14.7917 30.9149 16.0638 34.8495 18.253 38.1332C21.448 42.8666 26.5067 46.2095 32.3938 47.0674C33.3997 47.2449 34.4351 47.3337 35.5001 47.3337C36.5651 47.3337 37.6005 47.2449 38.6063 47.0674C44.4934 46.2095 49.5522 42.8666 52.7472 38.1332C54.9363 34.8495 56.2084 30.9149 56.2084 26.6253C56.2084 15.1766 46.9488 5.91699 35.5001 5.91699ZM44.5526 25.9745L42.0972 28.4299C41.683 28.8441 41.4463 29.6428 41.5943 30.2345L42.3043 33.2816C42.8663 35.6778 41.5942 36.6245 39.4643 35.3524L36.5059 33.607C35.9734 33.2816 35.0859 33.2816 34.5534 33.607L31.5951 35.3524C29.4651 36.5949 28.193 35.6778 28.7551 33.2816L29.4651 30.2345C29.5834 29.6724 29.3763 28.8441 28.9622 28.4299L26.4476 25.9745C24.998 24.5249 25.4713 23.0753 27.483 22.7499L30.6484 22.2174C31.1809 22.1287 31.8022 21.6553 32.0388 21.182L33.7842 17.6912C34.7309 15.7978 36.2692 15.7978 37.2159 17.6912L38.9613 21.182C39.198 21.6553 39.8192 22.1287 40.3813 22.2174L43.5468 22.7499C45.5288 23.0753 46.0022 24.5249 44.5526 25.9745Z"
-                  fill="#ED13CA"
-                />
-              </svg>
-
-              <h4>Second Reward</h4>
-            </div>
-          </div>
-          <div className="col-md-4 justfy-content-end pt-3 ">
-          <CustomSelect options={optionsRewards} onSelect={handleSelect}  />
-          </div>
-        </div>
-        {/* secound-row */}
-        <div className="row py-5 align-items-center">
-          <div className="col-md-4 input-side">
-            <label htmlFor="address">
-              Shipment value<span>*</span>
-            </label>
-            <input type="text" placeholder="ie. 500 SAR" />
-          </div>
-          <div className="col-md-4 numbers-box text-center">
-            <label htmlFor="address">
-              Shipment value<span>*</span>
-            </label>
-            <div className="qty">
-              <span
-                onClick={() => {
-                  if (count3 > 1) {
-                    setCount3((prevState) => prevState - 1);
-                  }
-                }}
-                className="minus"
-              >
-                -
-              </span>
-              <input
-                type="number"
-                className="count"
-                name="qty"
-                value={count3}
-              />
-              <span
-                onClick={() => {
-                  if (count3 < 50) {
-                    setCount3((prevState) => prevState + 1);
-                  }
-                }}
-                className="plus "
-              >
-                +
-              </span>
-            </div>
-          </div>
-          <div className="col-md-4 d-flex justify-content-center mt-4">
-            <button
-              className="btn add-btn"
-              style={{ padding: "6px 20px", height: "52%", width: "46%" }}
-              data-bs-toggle="modal"
-              href="#exampleModalToggle"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-
+      </>
+      );
+    })}
               {/* modal */}
               <div
           className="modal fade"
-          id="exampleModalToggle"
+          id="SuccessModalToggle"
           aria-hidden="true"
-          aria-labelledby="exampleModalToggleLabel"
+          aria-labelledby="SuccessModalToggleLabel"
           tabIndex="-1"
           >
           <div className="modal-dialog modal-dialog-centered">
@@ -335,7 +589,7 @@ const Rewards = () => {
                   className="my-4 mx-4"
                   style={{ fontSize: "40px", fontWeight: "500" }}
                 >
-                  Save
+                  Saved!
                 </h3>
                 <svg
                   width="105"
