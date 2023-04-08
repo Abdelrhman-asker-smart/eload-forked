@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import { useCookies } from "react-cookie";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Navbar({ setLogin, clrUserData, searchMovie }) {
   const pathanme = useLocation();
@@ -47,12 +49,64 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     }
   };
 
+  const readNotification = async (id) => {
+    try {
+      const response = await axios.get(
+        `https://dev.eload.smart.sa/api/v1/notifications/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      console.log(response.data.data);
+      setNotificationsCount(notifications_count - 1);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const showNotification = (e, notification) => {
+    e.preventDefault();
+
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h5>{notification.title}</h5>
+        <p>{notification.body}</p>
+        <a 
+          href={`/${entity_mappings[notification.notificationable_type].url}/${notification.payload.id}`} 
+          className="btn btn-info">
+          View Details
+        </a>
+
+        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+      </div>
+    )
+
+    toast(<Msg />)
+    readNotification(notification.id);
+  };
+
   useEffect(() => {
     getNotifications();
   }, []);
 
   return (
     <>
+    <ToastContainer
+      position="top-right"
+      autoClose={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      theme="light"
+    />
+
       <div className="header">
         <div className="container-fluid section-nav">
           <div className="content d-flex justify-content-between align-items-center">
@@ -86,6 +140,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                         <>
                         <div className="dropdown-divider"></div>
                         <a 
+                          onClick={(e) => showNotification(e, notification)}
                           href={`/${entity_mappings[notification.notificationable_type].url}/${notification.payload.id}`} 
                           className="dropdown-item not d-block">
                           <p>{notification.title}</p>
