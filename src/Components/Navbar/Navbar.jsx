@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 import "./NavbarRes.css";
 import Cookies from "js-cookie";
+import { useCookies } from "react-cookie";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function Navbar({ setLogin, clrUserData, searchMovie }) {
   const pathanme = useLocation();
@@ -12,6 +14,43 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
   });
+  const [cookie] = useCookies(["eload_token"]);
+
+  const [notifications_count, setNotificationsCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+
+  // endpoint is the API endpoint, url is the frontend page url
+  const entity_mappings = {
+    shipment: { endpoint: 'shipments', url: 'allshipments/shipmentorder' },
+    invoice: { endpoint: 'invoices', url: 'invoices' }
+  }
+
+  const getNotifications = async () => {
+    try {
+      const response = await axios.get(
+        'https://dev.eload.smart.sa/api/v1/notifications',
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      console.log(response.data.data);
+      let data = response.data.data;
+      setNotifications(data);
+      setNotificationsCount(data.length);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getNotifications();
+  }, []);
+
   return (
     <>
       <div className="header">
@@ -36,27 +75,25 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                       data-bs-toggle="dropdown"
                     >
                       <i className="fa-solid fa-bell"></i>
-                      <span className="position-absolute">3</span>
+                      <span className="position-absolute">{notifications_count > 0 ? notifications_count : ''}</span>
                     </a>
                     <div className="dropdown-menu dropdown-menu-end">
-                      <a href="/#" className="dropdown-item header-noti">
+                      <a href="#" className="dropdown-item header-noti">
                         Notifications
                       </a>
-                      <div className="dropdown-divider"></div>
-                      <a href="/#" className="dropdown-item not d-block">
-                        <p>Message will come here</p>
-                        <label className="time">3 days ago</label>
-                      </a>
-                      <div className="dropdown-divider"></div>
-                      <a href="/#" className="dropdown-item not d-block">
-                        <p>Message will come here</p>
-                        <label className="time">3 days ago</label>
-                      </a>
-                      <div className="dropdown-divider"></div>
-                      <a href="/#" className="dropdown-item not d-block">
-                        <p>Message will come here</p>
-                        <label className="time">3 days ago</label>
-                      </a>
+
+                      {notifications.map(notification => (
+                        <>
+                        <div className="dropdown-divider"></div>
+                        <a 
+                          href={`/${entity_mappings[notification.notificationable_type].url}/${notification.payload.id}`} 
+                          className="dropdown-item not d-block">
+                          <p>{notification.title}</p>
+                          <label className="time">{notification.body}</label>
+                        </a>
+                        </>
+                      ))} 
+
                       {/* <div className="dropdown-divider"></div> */}
                     </div>
                   </li>

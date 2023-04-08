@@ -1551,7 +1551,7 @@ const ShipmentOrder = () => {
                 </defs>
               </svg>
 
-              <div className="element-info">Unity of measurement</div>
+              <div className="element-info">Unit of measurement</div>
             </div>
             <div className="text-element ">
               <h4>{detailsList.uom?.name}</h4>
