@@ -62,6 +62,23 @@ export default function Login({ decodeData }) {
         // setLoginFlag(false);
         localStorage.setItem("email", data.data.user.email);
         localStorage.setItem("name", data.data.user.name);
+
+        let user_type = 'admin';
+        if (data.data.user.hasOwnProperty('type')) {
+          user_type = data.data.user.type;
+          let user_type_data = data.data.user[user_type];
+          localStorage.setItem('user_type_data', JSON.stringify(user_type_data));
+
+          if (user_type_data.hasOwnProperty('contract')) {
+            localStorage.setItem('is_contracted', true);
+          } else {
+            localStorage.setItem('is_contracted', false);
+          }
+        }
+
+        localStorage.setItem('user_type', user_type);
+
+
         setCookie("eload_token", data.data.token.access);
         window.location.replace("/dashboard");
         // navigate('/dashboard');

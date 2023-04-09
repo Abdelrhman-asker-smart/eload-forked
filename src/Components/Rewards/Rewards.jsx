@@ -149,19 +149,27 @@ const Rewards = () => {
       let current_promotion = promotions[index];
 
       // remove condition if not in the options
-      for (const condition in current_promotion.details.conditions) {
-        if(condition == 'achievement' || condition == 'delivered_shipments') {
-          continue;
-        }
-
-        for (let i = 0; i < options.length; i++) {
-          if (condition == options[i].value) {
-            break;
+      if (options.length == 0){
+        let conditions = current_promotion.details.conditions;
+        current_promotion.details.conditions = {
+          achievement: conditions.achievement,
+          delivered_shipments: conditions.delivered_shipments
+        };
+      } else {
+        for (const condition in current_promotion.details.conditions) {
+          if(condition == 'achievement' || condition == 'delivered_shipments') {
+            continue;
           }
-
-          // the condition isn't in the options and thus we have to delete it
-          if(i == options.length - 1) {
-            delete current_promotion.details.conditions[condition];
+  
+          for (let i = 0; i < options.length; i++) {
+            if (condition == options[i].value) {
+              break;
+            }
+  
+            // the condition isn't in the options and thus we have to delete it
+            if(i == options.length - 1) {
+              delete current_promotion.details.conditions[condition];
+            }
           }
         }
       }
@@ -169,7 +177,6 @@ const Rewards = () => {
       // insert option if not exist
       for (let i = 0; i < options.length; i++) {
         if (!current_promotion.details.conditions.hasOwnProperty(options[i].value)) {
-          // TODO: init[options[i].value]
           current_promotion.details.conditions[options[i].value] = { value: default_values[options[i]] };
         }
       }

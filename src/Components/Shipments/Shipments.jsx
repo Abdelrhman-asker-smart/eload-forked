@@ -343,7 +343,7 @@ const Shipments = () => {
       let id = response.data.data.id;
       let redirect_to =
         endpoint == "orders"
-          ? `allshipments/shipmentorder?id=${id}`
+          ? `allshipments?order_id=${id}`
           : `allshipments?scheduled_order_id=${id}`;
       navigate(`/${redirect_to}`, { replace: true });
     } catch (e) {
@@ -1118,7 +1118,7 @@ const Shipments = () => {
                             severity="success"
                             sx={{ width: "100%" }}
                           >
-                            This is a success Add Shipment!
+                            The shipment have been added successfully!
                           </Alert>
                         </Snackbar>
                       </div>
@@ -1454,7 +1454,7 @@ const Shipments = () => {
                                       className="mx-2"
                                       style={{ color: "red" }}
                                     >
-                                      please enter the requre data
+                                      Please enter the required data
                                     </span>
 
                                     <button
@@ -1514,7 +1514,7 @@ const Shipments = () => {
                             severity="success"
                             sx={{ width: "100%" }}
                           >
-                            This is a success Add Shipment!
+                            The planned shipment have been added successfully!
                           </Alert>
                         </Snackbar>
                       </div>

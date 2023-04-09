@@ -769,7 +769,7 @@ const Inputs = ({
         </div>
         <div className="input col-2">
           <label htmlFor="address">
-            Unity of measurement<span>*</span>
+            Unit of measurement<span>*</span>
           </label>
           <Select
             classNamePrefix="select"
