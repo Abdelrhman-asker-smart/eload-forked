@@ -76,9 +76,167 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
       <div>
         <h5>{notification.title}</h5>
         <p>{notification.body}</p>
+        {
+          notification.notificationable_type==="shipment"?
+          <>
+            <div className="row py-3 px-2">
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.5 18V7C3.5 3 4.5 2 8.5 2H15.5C19.5 2 20.5 3 20.5 7V17C20.5 17.14 20.5 17.28 20.49 17.42" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6.35 15H20.5V18.5C20.5 20.43 18.93 22 17 22H7C5.07 22 3.5 20.43 3.5 18.5V17.85C3.5 16.28 4.78 15 6.35 15Z" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 7H16" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 10.5H13" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+                <h4 className="m-0">Status:</h4>
+              </div>
+              <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.status}</label>
+              </div>
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.9999 13.4299C13.723 13.4299 15.1199 12.0331 15.1199 10.3099C15.1199 8.58681 13.723 7.18994 11.9999 7.18994C10.2768 7.18994 8.87988 8.58681 8.87988 10.3099C8.87988 12.0331 10.2768 13.4299 11.9999 13.4299Z" stroke="#A9A9A9" stroke-width="1.5"/>
+              <path d="M3.6202 8.49C5.5902 -0.169998 18.4202 -0.159997 20.3802 8.5C21.5302 13.58 18.3702 17.88 15.6002 20.54C13.5902 22.48 10.4102 22.48 8.3902 20.54C5.6302 17.88 2.4702 13.57 3.6202 8.49Z" stroke="#A9A9A9" stroke-width="1.5"/>
+              </svg>
+
+                <h4 className="my-0 mx-1">Pickup:</h4>
+                </div>
+                <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.from_city_name}</label>
+              </div>
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.9999 13.4299C13.723 13.4299 15.1199 12.0331 15.1199 10.3099C15.1199 8.58681 13.723 7.18994 11.9999 7.18994C10.2768 7.18994 8.87988 8.58681 8.87988 10.3099C8.87988 12.0331 10.2768 13.4299 11.9999 13.4299Z" stroke="#A9A9A9" stroke-width="1.5"/>
+              <path d="M3.6202 8.49C5.5902 -0.169998 18.4202 -0.159997 20.3802 8.5C21.5302 13.58 18.3702 17.88 15.6002 20.54C13.5902 22.48 10.4102 22.48 8.3902 20.54C5.6302 17.88 2.4702 13.57 3.6202 8.49Z" stroke="#A9A9A9" stroke-width="1.5"/>
+              </svg>
+                <h4 className="m-0">DropOff:</h4>
+                </div>
+                <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.to_city_name}</label>
+              </div>
+              <div className="col-md-7 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 2V5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 2V5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 9.08984H20.5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.6947 13.7002H15.7037" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.6947 16.7002H15.7037" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.9955 13.7002H12.0045" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.9955 16.7002H12.0045" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.29431 13.7002H8.30329" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.29431 16.7002H8.30329" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+                <h4 className="m-0">Pickup Date:</h4>
+                </div>
+                <div className="col-md-5 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.pickup_date}</label>
+              </div>
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.16992 7.43994L11.9999 12.5499L20.7699 7.46994" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 21.61V12.54" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.93014 2.47979L4.59014 5.43979C3.38014 6.10979 2.39014 7.78979 2.39014 9.16979V14.8198C2.39014 16.1998 3.38014 17.8798 4.59014 18.5498L9.93014 21.5198C11.0701 22.1498 12.9401 22.1498 14.0801 21.5198L19.4201 18.5498C20.6301 17.8798 21.6201 16.1998 21.6201 14.8198V9.16979C21.6201 7.78979 20.6301 6.10979 19.4201 5.43979L14.0801 2.46979C12.9301 1.83979 11.0701 1.83979 9.93014 2.47979Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+                <h4 className="m-0">Shipment Type:</h4>
+                </div>
+                <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.shipment_type_name}</label>
+              </div>
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 2V12C15 13.1 14.1 14 13 14H2V6C2 3.79 3.79 2 6 2H15Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 14V17C22 18.66 20.66 20 19 20H18C18 18.9 17.1 18 16 18C14.9 18 14 18.9 14 20H10C10 18.9 9.1 18 8 18C6.9 18 6 18.9 6 20H5C3.34 20 2 18.66 2 17V14H13C14.1 14 15 13.1 15 12V5H16.84C17.56 5 18.22 5.39001 18.58 6.01001L20.29 9H19C18.45 9 18 9.45 18 10V13C18 13.55 18.45 14 19 14H22Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 22C9.10457 22 10 21.1046 10 20C10 18.8954 9.10457 18 8 18C6.89543 18 6 18.8954 6 20C6 21.1046 6.89543 22 8 22Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 22C17.1046 22 18 21.1046 18 20C18 18.8954 17.1046 18 16 18C14.8954 18 14 18.8954 14 20C14 21.1046 14.8954 22 16 22Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 12V14H19C18.45 14 18 13.55 18 13V10C18 9.45 18.45 9 19 9H20.29L22 12Z" stroke="#B2B2B2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+                <h4 className="m-0">Truck Type:</h4>
+                </div>
+                <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.truck_type_name}</label>
+              </div>
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22.7499C8 22.7499 4.75 19.8799 4.75 16.3499V12.6499C4.75 12.2399 5.09 11.8999 5.5 11.8999C5.91 11.8999 6.25 12.2399 6.25 12.6499C6.25 15.2699 8.72 17.2499 12 17.2499C15.28 17.2499 17.75 15.2699 17.75 12.6499C17.75 12.2399 18.09 11.8999 18.5 11.8999C18.91 11.8999 19.25 12.2399 19.25 12.6499V16.3499C19.25 19.8799 16 22.7499 12 22.7499ZM6.25 16.4599C6.32 19.1099 8.87 21.2499 12 21.2499C15.13 21.2499 17.68 19.1099 17.75 16.4599C16.45 17.8699 14.39 18.7499 12 18.7499C9.61 18.7499 7.56 17.8699 6.25 16.4599Z" fill="#A9A9A9"/>
+              <path d="M12 13.75C9.24 13.75 6.75999 12.51 5.54999 10.51C5.02999 9.66 4.75 8.67 4.75 7.65C4.75 5.93 5.52 4.31 6.91 3.09C8.27 1.9 10.08 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65C19.25 8.67 18.97 9.65 18.45 10.51C17.24 12.51 14.76 13.75 12 13.75ZM12 2.75C10.44 2.75 8.98001 3.27 7.89001 4.23C6.83001 5.15 6.25 6.37 6.25 7.65C6.25 8.4 6.44999 9.1 6.82999 9.73C7.77999 11.29 9.76 12.25 12 12.25C14.24 12.25 16.22 11.28 17.17 9.73C17.56 9.1 17.75 8.4 17.75 7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              <path d="M12 18.75C7.87 18.75 4.75 16.13 4.75 12.65V7.65C4.75 4.12 8 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65V12.65C19.25 16.13 16.13 18.75 12 18.75ZM12 2.75C8.83 2.75 6.25 4.95 6.25 7.65V12.65C6.25 15.27 8.72 17.25 12 17.25C15.28 17.25 17.75 15.27 17.75 12.65V7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              </svg>
+
+                <h4 className="m-0">Provider Price:</h4>
+                </div>
+                <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.provider_price}</label>
+              </div>
+            </div>
+          </>
+           :
+          <>        
+            <div className="row py-3 px-2">
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.5 18V7C3.5 3 4.5 2 8.5 2H15.5C19.5 2 20.5 3 20.5 7V17C20.5 17.14 20.5 17.28 20.49 17.42" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6.35 15H20.5V18.5C20.5 20.43 18.93 22 17 22H7C5.07 22 3.5 20.43 3.5 18.5V17.85C3.5 16.28 4.78 15 6.35 15Z" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 7H16" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 10.5H13" stroke="#A9A9A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+                <h4 className="m-0">Status:</h4>
+              </div>
+              <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.status}</label>
+              </div>
+              {/* currency */}
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22.7499C8 22.7499 4.75 19.8799 4.75 16.3499V12.6499C4.75 12.2399 5.09 11.8999 5.5 11.8999C5.91 11.8999 6.25 12.2399 6.25 12.6499C6.25 15.2699 8.72 17.2499 12 17.2499C15.28 17.2499 17.75 15.2699 17.75 12.6499C17.75 12.2399 18.09 11.8999 18.5 11.8999C18.91 11.8999 19.25 12.2399 19.25 12.6499V16.3499C19.25 19.8799 16 22.7499 12 22.7499ZM6.25 16.4599C6.32 19.1099 8.87 21.2499 12 21.2499C15.13 21.2499 17.68 19.1099 17.75 16.4599C16.45 17.8699 14.39 18.7499 12 18.7499C9.61 18.7499 7.56 17.8699 6.25 16.4599Z" fill="#A9A9A9"/>
+              <path d="M12 13.75C9.24 13.75 6.75999 12.51 5.54999 10.51C5.02999 9.66 4.75 8.67 4.75 7.65C4.75 5.93 5.52 4.31 6.91 3.09C8.27 1.9 10.08 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65C19.25 8.67 18.97 9.65 18.45 10.51C17.24 12.51 14.76 13.75 12 13.75ZM12 2.75C10.44 2.75 8.98001 3.27 7.89001 4.23C6.83001 5.15 6.25 6.37 6.25 7.65C6.25 8.4 6.44999 9.1 6.82999 9.73C7.77999 11.29 9.76 12.25 12 12.25C14.24 12.25 16.22 11.28 17.17 9.73C17.56 9.1 17.75 8.4 17.75 7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              <path d="M12 18.75C7.87 18.75 4.75 16.13 4.75 12.65V7.65C4.75 4.12 8 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65V12.65C19.25 16.13 16.13 18.75 12 18.75ZM12 2.75C8.83 2.75 6.25 4.95 6.25 7.65V12.65C6.25 15.27 8.72 17.25 12 17.25C15.28 17.25 17.75 15.27 17.75 12.65V7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              </svg>
+                <h4 className="m-0">Currency:</h4>
+              </div>
+              <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.currency}</label>
+              </div>
+              {/* du-date */}
+              <div className="col-md-7 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 2V5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 2V5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 9.08984H20.5" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z" stroke="#A9A9A9" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.6947 13.7002H15.7037" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15.6947 16.7002H15.7037" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.9955 13.7002H12.0045" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11.9955 16.7002H12.0045" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.29431 13.7002H8.30329" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.29431 16.7002H8.30329" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+                <h4 className="m-0">Due date:</h4>
+              </div>
+              <div className="col-md-5 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.due_date}</label>
+              </div>
+              {/* total */}
+              <div className="col-md-8 d-flex align-items-center my-2">
+              <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22.7499C8 22.7499 4.75 19.8799 4.75 16.3499V12.6499C4.75 12.2399 5.09 11.8999 5.5 11.8999C5.91 11.8999 6.25 12.2399 6.25 12.6499C6.25 15.2699 8.72 17.2499 12 17.2499C15.28 17.2499 17.75 15.2699 17.75 12.6499C17.75 12.2399 18.09 11.8999 18.5 11.8999C18.91 11.8999 19.25 12.2399 19.25 12.6499V16.3499C19.25 19.8799 16 22.7499 12 22.7499ZM6.25 16.4599C6.32 19.1099 8.87 21.2499 12 21.2499C15.13 21.2499 17.68 19.1099 17.75 16.4599C16.45 17.8699 14.39 18.7499 12 18.7499C9.61 18.7499 7.56 17.8699 6.25 16.4599Z" fill="#A9A9A9"/>
+              <path d="M12 13.75C9.24 13.75 6.75999 12.51 5.54999 10.51C5.02999 9.66 4.75 8.67 4.75 7.65C4.75 5.93 5.52 4.31 6.91 3.09C8.27 1.9 10.08 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65C19.25 8.67 18.97 9.65 18.45 10.51C17.24 12.51 14.76 13.75 12 13.75ZM12 2.75C10.44 2.75 8.98001 3.27 7.89001 4.23C6.83001 5.15 6.25 6.37 6.25 7.65C6.25 8.4 6.44999 9.1 6.82999 9.73C7.77999 11.29 9.76 12.25 12 12.25C14.24 12.25 16.22 11.28 17.17 9.73C17.56 9.1 17.75 8.4 17.75 7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              <path d="M12 18.75C7.87 18.75 4.75 16.13 4.75 12.65V7.65C4.75 4.12 8 1.25 12 1.25C13.92 1.25 15.72 1.9 17.09 3.08C18.48 4.31 19.25 5.93 19.25 7.65V12.65C19.25 16.13 16.13 18.75 12 18.75ZM12 2.75C8.83 2.75 6.25 4.95 6.25 7.65V12.65C6.25 15.27 8.72 17.25 12 17.25C15.28 17.25 17.75 15.27 17.75 12.65V7.65C17.75 6.37 17.17 5.15 16.1 4.21C15.01 3.27 13.56 2.75 12 2.75Z" fill="#A9A9A9"/>
+              </svg>
+                <h4 className="m-0">Total:</h4>
+              </div>
+              <div className="col-md-4 d-flex align-items-center my-2">
+                <label className="mx-2">{notification.payload.total}</label>
+              </div>
+            </div>  
+          </>
+        }
         <a 
           href={`/${entity_mappings[notification.notificationable_type].url}/${notification.payload.id}`} 
-          className="btn btn-info">
+          className="btn btndetails">
           View Details
         </a>
 
@@ -87,8 +245,9 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     )
 
     toast(<Msg />)
-    readNotification(notification.id);
+    // readNotification(notification.id);
   };
+  console.log(notifications,"notification");
 
   useEffect(() => {
     getNotifications();
@@ -131,7 +290,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                       <i className="fa-solid fa-bell"></i>
                       <span className="position-absolute">{notifications_count > 0 ? notifications_count : ''}</span>
                     </a>
-                    <div className="dropdown-menu dropdown-menu-end">
+                    <div className="dropdown-menu dropdown-menu-end" style={{height: "288px", overflowY: "scroll"}}>
                       <a href="#" className="dropdown-item header-noti">
                         Notifications
                       </a>

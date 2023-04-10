@@ -93,5 +93,32 @@
     color: #fff;
 }
 
+/* notifications */
+.Toastify__toast {
+    padding: 20px 16px !important;
+    border-radius: 25px !important;
+}
+
+.Toastify__toast-body h5{
+    color: #9dcc1b;
+    font-size: 22px !important;
+    font-weight: 500;
+}
+.Toastify__toast-body h4{
+    font-size: 16px;
+    color: rgba(14, 50, 74, 1);
+}
+.Toastify__toast-body label{
+    font-size: 14px;
+    font-weight: 500;
+    color: #868585;
+}
+.Toastify__toast-body .btndetails{
+    border-radius: 25px;
+    background-color: #0B2339;
+    color: #fff;
+    font-weight: 500;
+}
+
 
 

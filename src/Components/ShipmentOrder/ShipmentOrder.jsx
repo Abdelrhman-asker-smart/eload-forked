@@ -4,13 +4,13 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import moment from "moment";
 import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 import "./ShipmentOrder.css";
 import code from "../../icons/code.png";
 import { useParams } from "react-router-dom";
 import Driverimg from "../../icons/drivers-img.png";
-import Location from "../../icons/location.png";
 import FileIcon from "../../icons/fileIcon.png"
-import TruckLoction from "../../icons/truckblue.png";
 import Truckred from '../../icons/truckred.png';
 // tables
 import { useMemo } from "react";
@@ -26,6 +26,12 @@ import {
 } from "@mui/material";
 
 import { GoogleMap, LoadScript, Marker, MarkerF , DirectionsService , DirectionsRenderer} from "@react-google-maps/api";
+
+// check-user-email
+const userType = localStorage.getItem("user_type");
+// console.log(localStorage.getItem("user_type"),"useType");
+// console.log(localStorage.getItem("name"),"useType");
+
 
 const icon = {
   url: Truckred,
@@ -1776,33 +1782,41 @@ const ShipmentOrder = () => {
 
             </div>
           </div>
-          <hr />
           {/* drivers-name */}
-          <div className="drivers py-3 d-flex align-items-center justify-content-between">
-            <div className="source d-flex my-2 align-items-center">
-              <div className="img-driver">
-                <img src={Driverimg} alt="img" />
+          {detailsList?.driver ===null? 
+            ""
+          :
+            <>
+            <hr />
+              <div className="drivers py-3 d-flex align-items-center justify-content-between">
+                <div className="source d-flex my-2 align-items-center">
+                  <div className="img-driver">
+                    <img src={Driverimg} alt="img" />
+                  </div>
+                  <div>
+                    <p className="mx-4 my-2">Driver’s name</p>
+                    <span className="mx-4">{detailsList?.driver?.user}</span>
+                  </div>
+                </div>
+                <div className="icon-call mx-4">
+                  +2 011756376
+                  <svg
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z"
+                      fill="#244664"
+                    />
+                  </svg>
+                </div>
               </div>
-              <div>
-                <p className="mx-4 my-2">Driver’s name</p>
-                <span className="mx-4">Driver’s name</span>
-              </div>
-            </div>
-            <div className="icon-call mx-4">
-              <svg
-                width="34"
-                height="34"
-                viewBox="0 0 34 34"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z"
-                  fill="#244664"
-                />
-              </svg>
-            </div>
-          </div>
+            </>
+          }
+
         </div>
         <div className="col-md-6 pt-3">
           <div className="mapbox">
@@ -1942,30 +1956,39 @@ const ShipmentOrder = () => {
           ></Box>
         )}
       />
-      {/* Eligible Service provide=table-request */}
-      <div className="orderhead px-2">
-        <div className="text-head">Financial requests</div>
+      {/* Financial Service provide=table-request */}
+      {
+        userType==="admin"? 
+        ""
+        :
+        <>
+            <div className="orderhead px-2">
+            <div className="text-head">Financial requests</div>
 
-      </div>
-      <MaterialReactTable
-        columns={columnsEligible}
-        // data={dataEligible}
-        data={dataFinancial}
+          </div>
+          <MaterialReactTable
+            columns={columnsEligible}
+            // data={dataEligible}
+            data={dataFinancial}
 
-        // dataFinancial
-        enableRowSelection
-        positionToolbarAlertBanner="bottom"
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              p: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          ></Box>
-        )}
-      />
+            // dataFinancial
+            enableRowSelection
+            positionToolbarAlertBanner="bottom"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              ></Box>
+            )}
+          />
+        </>
+
+      }
+
     </div>
   );
 };
