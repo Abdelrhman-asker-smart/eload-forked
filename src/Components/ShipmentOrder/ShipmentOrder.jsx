@@ -12,9 +12,13 @@ import { useParams } from "react-router-dom";
 import Driverimg from "../../icons/drivers-img.png";
 import FileIcon from "../../icons/fileIcon.png"
 import Truckred from '../../icons/truckred.png';
+import { ToastContainer, toast } from "react-toastify";
+
 // tables
 import { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 // import Map from "./Map";
 import {
   Box,
@@ -29,8 +33,34 @@ import { GoogleMap, LoadScript, Marker, MarkerF , DirectionsService , Directions
 
 // check-user-email
 const userType = localStorage.getItem("user_type");
-// console.log(localStorage.getItem("user_type"),"useType");
-// console.log(localStorage.getItem("name"),"useType");
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+let Msg = ({ closeToast, toastProps }) => (
+  <div>
+    <h5>Assign successfully!</h5>
+    {/* <p>{notification.body}</p> */}
+  </div>
+)
+
+const showNotification = (e) => {
+  e.preventDefault();
+
+  // let Msg = ({ closeToast, toastProps }) => (
+  //   <div>
+  //     <h5>Done</h5>
+  //     {/* <p>{notification.body}</p> */}
+  //   </div>
+  // )
+
+  toast(<Msg />)
+  window.location.reload();
+  // readNotification(notification.id);
+};
+
+
 
 
 const icon = {
@@ -44,6 +74,7 @@ const ShipmentOrder = () => {
   // const [fileboxes, setFileboxes] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
 
+  // map=============
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -73,6 +104,34 @@ const ShipmentOrder = () => {
       style={{ width: "100%" }}
     />
   );
+  // alrt
+    // Alart-Snackbar
+    const [state, setState] = React.useState({
+      open: false,
+      vertical: "top",
+      horizontal: "center",
+    });
+    const { vertical, horizontal, open } = state;
+  
+    const handleClick = (newState, Transition) => {
+      setState({ open: true, ...newState, Transition });
+    };
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      // handleClick() {
+        // Reload the current page
+        window.location.reload();
+      // }
+      setState({ ...state, open: false });
+    };
+
+    // const [count, setCount] = useState(0);
+
+    // const reRender = () => {
+    //   setCount(count + 1);
+    // }
 
   // Api=====fetch__All-details
   useEffect(() => {
@@ -192,6 +251,15 @@ const ShipmentOrder = () => {
       console.log(priceValue, "Assigne----doneAiiprice");
       setPriceValue(0);
       setChangePrice(false);
+      // alrt-done
+      // handleClick({
+      //   vertical: "bottom",
+      //   horizontal: "center",
+      //   Transition: "SlideTransition",
+      // });
+      toast(<Msg />)
+      window.location.reload();
+      
     } catch (e) {
       console.log(e);
     }
@@ -1027,6 +1095,16 @@ const ShipmentOrder = () => {
 
   return (
     <div className="container-fluid px-4 orderdetails">
+          <ToastContainer
+          position="top-right"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="light"
+        />
       <div className="orderhead px-2">
         <div className="text-head">Shipment:{detailsList?.code}</div>
         <div className="img-head mb-3">
@@ -1736,8 +1814,8 @@ const ShipmentOrder = () => {
             <p className="my-2">Shipment number</p>
             <div className="info-box d-flex justify-content-between mt-3">
               <div className="info">
-                <h5 className="my-3">ELD00027</h5>
-                <span className="mt-4">Food Materials</span>
+                <h5 className="my-3">{detailsList?.code}</h5>
+                <span className="mt-4">{detailsList.shipment_type?.name}</span>
               </div>
               <div className="icon">
                 <MarkerTruck />
@@ -1872,25 +1950,25 @@ const ShipmentOrder = () => {
                     :
                     <h5 className="head">Other Documntes</h5>
                   } */}
-                  {indexitem === 0 && fileitem.label}
+                  {indexitem === 0 && fileitem.label.replace(/_/g,' ').toUpperCase()}
                   </div>
                 {
                   indexitem===filetab.lenght ? 
                   <div className="row">
-                  <div className="card-order col-md-3 ">
-                    <img src={FileIcon} alt="img" className="w-25"/>
+                  <div className="card-order col-md-3 d-flex  align-items-center">
+                    <img src={FileIcon} alt="img" style={{width: "25px"}}/>
                     <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
-                      File {indexitem+1}
+                      file {indexitem+1}
                     </a>
                   </div>
                 </div>
                   
                   :
                   <div className="row">
-                  <div className="card-order col-md-2 ">
-                    <img src={FileIcon} alt="img" className="w-25"/>
+                  <div className="card-order col-md-2 d-flex align-items-center">
+                    <img src={FileIcon} alt="img" style={{width: "25px"}}/>
                     <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
-                      File {indexitem+1}
+                      file {indexitem+1}
                     </a>
                   </div>
                 </div>
@@ -1988,6 +2066,22 @@ const ShipmentOrder = () => {
         </>
 
       }
+
+      {/* alrt */}
+                    <Snackbar
+                          open={open}
+                          autoHideDuration={5000}
+                          onClose={handleClose}
+                          anchorOrigin={{ vertical, horizontal }}
+                        >
+                          <Alert
+                            onClose={handleClose}
+                            severity="success"
+                            sx={{ width: "100%" }}
+                          >
+                            Assign successfully!
+                          </Alert>
+                      </Snackbar>
 
     </div>
   );
