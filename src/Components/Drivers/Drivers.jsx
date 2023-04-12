@@ -165,16 +165,10 @@ const Drivers = () => {
     <div>
       <header className="driver-head px-5">
         <div className="container-fluid">
-          <div className="box-left">
-            <div className="driver-card">
-              <h4>10</h4>
-              <h4>Pending Driver</h4>
+        <div className="head-text">
+              <h2>Drivers</h2>
+
             </div>
-            <div className="driver-card driver-card-blue">
-              <h4>15</h4>
-              <h4>Active Driver</h4>
-            </div>
-          </div>
           <div className="box-right">
             <NavLink to="/Serviceproviders/adddriver">
               <button className="btn-driver">
@@ -187,25 +181,6 @@ const Drivers = () => {
       <div className="driver container-fluid px-5">
         <div className="head-input container-fluid">
           <div className="box-left">
-            <div className="head-text">
-              <h2>Drivers</h2>
-              <p>20 Drivers</p>
-            </div>
-            {/* <div className="input-head">
-              <span>Search a Driver</span>
-              <div className="input-group input-group-sm mb-3">
-                <span className="input-group-text" id="inputGroup-sizing-sm">
-                  <i className="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm"
-                  placeholder=" Enter Driver’s Name"
-                />
-              </div>
-            </div> */}
           </div>
 
         </div>

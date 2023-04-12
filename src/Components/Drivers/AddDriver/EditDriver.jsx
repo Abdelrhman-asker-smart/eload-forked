@@ -4,11 +4,11 @@ import { useState } from 'react'
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
-import  {ReactComponent as Dateicon} from '../../icons/date-icon.svg';
-import  {ReactComponent as Vector} from '../../icons/Vector.svg';
+import  {ReactComponent as Dateicon} from '../../../icons/date-icon.svg';
+import  {ReactComponent as Vector} from '../../../icons/Vector.svg';
 
 
-const AddDriver = () => {
+const EditDriver = () => {
   const [input, setInputs] = useState([])
   const date  = new Date()
   const [startDate, setStartDate] = useState(date);
@@ -204,4 +204,4 @@ const AddDriver = () => {
   )
 }
 
-export default AddDriver
+export default EditDriver

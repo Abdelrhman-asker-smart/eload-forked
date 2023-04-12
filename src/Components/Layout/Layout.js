@@ -19,7 +19,7 @@ import Reports from '../Reports/Reports.jsx'
 import Personinformation from "../Personinformation/Personinformation.jsx";
 import ItemInfo from "../Iteminfo/Iteminfo.jsx";
 import Driver from "../Drivers/Drivers.jsx";
-import AddDriver from "../AddDriver/AddDriver.jsx";
+import AddDriver from "../Drivers/AddDriver/AddDriver.jsx";
 
 // AddDriver
 
@@ -59,6 +59,8 @@ import EditProfile from "../ProfilePage/EditProfile";
 import ViewShipper from "../ViewShipper/ViewShipper";
 import Employes from "../Employees/Employees";
 import AddEmployees from "../Employees/AddEmployees";
+import EditDriver from "../Drivers/AddDriver/EditDriver";
+import Drivers from './../Drivers/Drivers';
 
 
 
@@ -139,9 +141,11 @@ const Layout = ({ setLogin }) => {
             <Route path="/allshipments" element={<AllShipments />} />
             <Route path="/allorders" element={<Allorders />} />
             <Route path="/Serviceproviders/personinfo" element={<Personinformation />} />
-            <Route path="/Serviceproviders/adddriver" element={<AddDriver />} />
+            
 
             <Route path="/Serviceproviders/driver" element={<Driver />} />
+            <Route path="/Serviceproviders/adddriver" element={<AddDriver />} />
+            <Route path="/Serviceproviders/editdriver" element={<EditDriver />} />
             <Route path="/Serviceproviders/viewdriver" element={<ViewDriver />} />
 
             
