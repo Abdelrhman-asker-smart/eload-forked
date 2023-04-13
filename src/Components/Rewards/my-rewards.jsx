@@ -47,6 +47,7 @@ const MyRewards = () => {
 
   useEffect(() => {
     getRewardsByStatus();
+    getRewardsByStatus('ACHIEVED');
     console.log('wallet', wallet);
   }, []);
 
@@ -66,18 +67,34 @@ const MyRewards = () => {
 
         <h5 className="mt-10">In Progress Targets</h5>
 
-      {in_progress_rewards.map((reward) => {
-      return (
-        <div className="col-md-6 top-section target-section mt-10">
-          <h6>{reward.details.conditions.delivered_shipments.value} shipments</h6>
-          <div class="progress">
-            <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        {in_progress_rewards.map((reward, index) => {
+        return (
+          <div className={`col-md-5 top-section target-section mt-10 ${index % 2 == 0 ? '' : 'offset-md-1'}`}>
+            <h6>{reward.details.conditions.delivered_shipments.value} shipments to deliver</h6>
+            <div class="progress">
+              <div className="progress-bar" style={{width: reward.details.conditions.delivered_shipments.current_value * 100 /reward.details.conditions.delivered_shipments.value + '%'}} role="progressbar" aria-valuenow={reward.details.conditions.delivered_shipments.current_value * 100 /reward.details.conditions.delivered_shipments.value} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p className="mt-10"><i class="fa fa-gift"></i> {reward.details.actions.total.value} {reward.details.actions.total.type == 'fixed' ? 'SAR' : '%'}</p>
+            <p className="float-end">{reward.details.conditions.delivered_shipments.current_value}/{reward.details.conditions.delivered_shipments.value}</p>
           </div>
-          <p className="mt-10"><i class="fa fa-gift"></i> {reward.details.actions.total.value} {reward.details.actions.total.type == 'fixed' ? 'SAR' : '%'}</p>
-          <p className="float-end">{reward.details.conditions.delivered_shipments.current_value}/{reward.details.conditions.delivered_shipments.value}</p>
-        </div>
-      )
-      })}
+        )
+        })}
+
+        <h5 className="mt-30">Achieved Targets</h5>
+
+        {achieved_rewards.map((reward, index) => {
+        return (
+          <div className={`col-md-5 top-section target-section mt-10 ${index % 2 == 0 ? '' : 'offset-md-1'}`}>
+            <h6>{reward.details.conditions.delivered_shipments.value} shipments to deliver</h6>
+            <div class="progress">
+              <div className="progress-bar" style={{width: reward.details.conditions.delivered_shipments.current_value * 100 /reward.details.conditions.delivered_shipments.value + '%'}} role="progressbar" aria-valuenow={reward.details.conditions.delivered_shipments.current_value * 100 /reward.details.conditions.delivered_shipments.value} aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p className="mt-10"><i class="fa fa-gift"></i> {reward.details.actions.total.value} {reward.details.actions.total.type == 'fixed' ? 'SAR' : '%'}</p>
+            <p className="float-end">{reward.details.conditions.delivered_shipments.current_value}/{reward.details.conditions.delivered_shipments.value}</p>
+          </div>
+        )
+        })}
+
       </div>
     </div>
   );
