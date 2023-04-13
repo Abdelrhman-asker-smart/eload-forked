@@ -1,19 +1,19 @@
-.rewards .add-btn{
+.my-rewards .add-btn{
     background: #0E324A;
     border-radius: 42px;
     color: #fff;
     padding: 5px 40px;
 }
-.rewards h2{
+.my-rewards h2{
     font-size: 22px;
     font-weight: 500;
     color: #0B2339;
 }
-.rewards h4{
+.my-rewards h4{
     font-size: 20px;
     font-weight: 500;
 }
-.rewards .input-side input{
+.my-rewards .input-side input{
     border: 1px solid #ccc;
     color: #0B2339 !important;
     border-radius: 20px;
@@ -21,15 +21,15 @@
     width: 90%;
     margin-top: 10px;
 }
-.rewards .input-side label{
+.my-rewards .input-side label{
     font-weight: 600;
 }
-.rewards .numbers-box label{
+.my-rewards .numbers-box label{
     font-weight: 600;
     margin-bottom: 20px;
 }
 /* number-style */
-.rewards .numbers-box .qty .count {
+.my-rewards .numbers-box .qty .count {
     color: #000;
     display: inline-block;
     vertical-align: top;
@@ -40,8 +40,8 @@
     min-width: 50px;
     text-align: center;
 }
-.rewards .numbers-box .qty .plus ,
-.rewards .numbers-box .qty .minus{
+.my-rewards .numbers-box .qty .plus ,
+.my-rewards .numbers-box .qty .minus{
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
@@ -54,7 +54,7 @@
     text-align: center;
     border: 1px solid #292D32;
     }
-/* .rewards .numbers-box .qty .minus {
+/* .my-rewards .numbers-box .qty .minus {
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
@@ -71,34 +71,42 @@
 /* div {
     text-align: center;
 } */
-.rewards .numbers-box .minus:hover ,
-.rewards .numbers-box .plus:hover{
+.my-rewards .numbers-box .minus:hover ,
+.my-rewards .numbers-box .plus:hover{
     background: #0E324A;
     color: #fff;
     border: 0;
 }
 
 /*Prevent text selection*/
-.rewards .numbers-box span{
+.my-rewards .numbers-box span{
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
-.rewards .numbers-box input{  
+.my-rewards .numbers-box input{  
     border: 0;
     width: 2%;
 }
-.rewards .numbers-box nput::-webkit-outer-spin-button,
-.rewards .numbers-box input::-webkit-inner-spin-button {
+.my-rewards .numbers-box nput::-webkit-outer-spin-button,
+.my-rewards .numbers-box input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-.rewards .numbers-box input:disabled{
+.my-rewards .numbers-box input:disabled{
     background-color:white;
 }
 
-.rewards .mt-10{
+.my-rewards .mt-10{
     margin-top: 10px;
+}
+
+.my-rewards{
+    color: #244664;
+}
+
+.my-rewards h5{
+    font-weight: 500;
 }
 
 .top-section{
@@ -109,7 +117,6 @@
 
 .balance-section{
     margin-top: 30px;
-    color: #244664;
 }
 
 .balance-section h6{
@@ -118,4 +125,8 @@
 
 .balance-section h4{
     font-weight: bold;
+}
+
+.target-section, .target-section h6{
+    font-weight: 400;
 }
