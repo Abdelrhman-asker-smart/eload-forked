@@ -80,7 +80,7 @@ export default function Login({ decodeData }) {
 
 
         setCookie("eload_token", data.data.token.access);
-        window.location.replace("/dashboard");
+        window.location.replace(`/${user_type == 'admin' ? 'dashboard' : 'allshipments'}`);
         // navigate('/dashboard');
         setLoginFlag(false);
 

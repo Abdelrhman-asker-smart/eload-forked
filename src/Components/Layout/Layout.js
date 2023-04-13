@@ -31,6 +31,7 @@ import Allitems from "../Allitems/Allitems";
 // import OverallReport from "../OverallReport/OverallReport.jsx"
 // import Financialrequests from '../FinancialList/FinancialList.jsx';
 import Rewards from '../Rewards/Rewards.jsx';
+import MyRewards from '../Rewards/my-rewards.jsx';
 import ViewDriver from "../ViewDriver/ViewDriver";
 import CategoryList from "../Setting/Category list/Category-List";
 import CategortAdd from "../Setting/Category list/Categort-Add";
@@ -161,6 +162,7 @@ const Layout = ({ setLogin }) => {
             {/* <Route path="/overallreport" element={<OverallReport />} />
             <Route path="/financialrequests" element={<Financialrequests />} /> */}
             <Route path="/rewards" element={<Rewards />} />
+            <Route path="/my-rewards" element={<MyRewards />} />
 
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />
