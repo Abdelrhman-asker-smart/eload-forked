@@ -36,7 +36,7 @@ const EditDriver = () => {
 
   return (
     <div className='container-fluid adddriver p-5'>
-      <h3>PERSONAL INFORMATION</h3>
+     <h3>DRIVER INFORMATION</h3>
       <form>
       {/* name+email */}
       <div className='row my-4'>

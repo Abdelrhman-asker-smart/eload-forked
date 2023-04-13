@@ -1,14 +1,107 @@
 import React from "react";
-// import Drivericon from "../../icons/Driver-icon.svg";
-// import Dr2 from '../../icons/download 1.svg'
-import { ReactComponent as Dr2 } from "../../icons/download 1.svg";
-// import { ReactComponent as User } from '../../icons/user-icon.png';
-// import { User } from '../../icons/user-icon.png';
-
-import "./ViewDriver.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 
+import { ReactComponent as Dr2 } from "../../icons/download 1.svg";
+import MaterialReactTable from "material-react-table";
+import { Box, Button } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+
+import "./ViewDriver.css";
+
+
+
+const columns = [
+
+  {
+    accessorKey: "#",
+    header: "Id",
+    size: 30,
+  },
+  {
+    accessorKey: "code",
+    header: "Code",
+    size: 30,
+  },
+
+  {
+    accessorKey: "pickup",
+    header: "Pick up",
+    size: 30,
+  },
+  {
+    accessorKey: "dropoff",
+    header: "Drop Off",
+    size: 30,
+  },
+  {
+    accessorKey: "dropoff",
+    header: "Drop Off",
+    size: 30,
+  },
+  {
+    accessorKey: "shipmenttype",
+    header: "Shipment Type",
+    size: 30,
+  },
+  {
+    accessorKey: "shippingcost",
+    header: "Shipping Cost",
+    size: 30,
+  },
+  {
+    accessorKey: "pickupdate",
+    header: "pickup Date",
+    size: 30,
+  },
+  {
+    accessorKey: "status",
+    header: "STATUS",
+    size: 30,
+  },
+];
+
+const csvOptions = {
+  fieldSeparator: ",",
+  quoteStrings: '"',
+  decimalSeparator: ".",
+  showLabels: true,
+  useBom: true,
+  useKeysAsHeaders: false,
+  headers: columns.map((c) => c.header),
+};
+
+const csvExporter = new ExportToCsv(csvOptions);
+
 const ViewDriver = () => {
+  const [driverList, setDriverList] = useState([]);
+  const [removeableId, setRemoveableId] = useState(null);
+  const [reload, setReload] = useState(false);
+  const [cookie] = useCookies(["eload_token"]);
+  const data = driverList.map((item, index) => {
+    return {
+      id: item.id,
+      code: "",
+      Pickup:"",
+      dropoff:"",
+      shipmenttype:"",
+      trucktype:"",
+      shippingcost:"",
+      pickupdate:"",
+      statuse:"",
+
+    };
+  });
+  const handleExportRows = (rows) => {
+    csvExporter.generateCsv(rows.map((row) => row.original));
+  };
+
+  const handleExportData = () => {
+    csvExporter.generateCsv(data);
+  };
   return (
     <div className="viewdriver">
       <div className="header-card">
@@ -74,11 +167,11 @@ const ViewDriver = () => {
 
                   <span>7 Shipments</span>
                 </div>
-                <div className="data-card">
+                {/* <div className="data-card">
                   <a href="/#"  className="btn-data-card mx-5">
                     View All
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -86,7 +179,68 @@ const ViewDriver = () => {
       </div>
       <div className="freelancer-content">
         <div className="container-fluid">
-          <table className="table">
+                    {/* table */}
+          <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          positionToolbarAlertBanner="bottom"
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box
+              sx={{
+                display: "flex",
+                gap: "1rem",
+                p: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <Button
+                color="primary"
+                //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                onClick={handleExportData}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Data
+              </Button>
+              <Button
+                disabled={table.getPrePaginationRowModel().rows.length === 0}
+                //export all rows, including from the next page, (still respects filtering and sorting)
+                onClick={() =>
+                  handleExportRows(table.getPrePaginationRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Rows
+              </Button>
+              <Button
+                disabled={table.getRowModel().rows.length === 0}
+                //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                onClick={() => handleExportRows(table.getRowModel().rows)}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Page Rows
+              </Button>
+              <Button
+                disabled={
+                  !table.getIsSomeRowsSelected() &&
+                  !table.getIsAllRowsSelected()
+                }
+                //only export selected rows
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Selected Rows
+              </Button>
+            </Box>
+          )}
+        />
+          {/* <table className="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -309,7 +463,7 @@ const ViewDriver = () => {
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
     </div>

@@ -10,10 +10,9 @@ const AddTruck = () => {
   const [image, setImage] = useState("");
 
   const [cookie] = useCookies(["eload_token"]);
-  // console.log(name, "name");
-  // console.log(image, "image");
 
-  const recordCategory = async () => {
+
+  const recordTruck = async () => {
     const formdata = new FormData();
     formdata.append("name", name);
     formdata.append("image", image);
@@ -94,7 +93,7 @@ const AddTruck = () => {
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
-            onClick={recordCategory}
+            onClick={recordTruck}
           >
             Save
           </button>

@@ -179,10 +179,7 @@ const CategoryList = () => {
   });
   // console.log(process.env.REACT_BASE_URL);
   useEffect(() => {
-    // const response = async () => {
-    // const response = dispatch(fetchCategoryList({ token: cookie.eload_token }));
-    // const token = cookie.eload_token;
-    // const response22 = async () => {
+
     dispatch(fetchCategoryList({ token: cookie.eload_token }))
       .then((res) => {
         console.log(res, "response from api");
@@ -193,38 +190,6 @@ const CategoryList = () => {
         console.log(e);
       });
 
-    // console.log(response333.data, "response333");
-    // };
-    // response22();
-    // const allCategory = async () => {
-    //   // setCookie("eload_token", data.data.token.access);
-    //   try {
-    //     const response = await axios.get(
-    //       // https://dev.eload.smart.sa/api/v1/categories
-    //       // `${process.env.REACT_BASE_URL}/categories`,
-
-    //       "https://dev.eload.smart.sa/api/v1/categories",
-    //       {
-    //         headers: {
-    //           Accept: "application/json",
-    //           Authorization: `Bearer ${cookie.eload_token}`,
-
-    //           "api-key":
-    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-    //         },
-    //       }
-    //     );
-
-    //     const data = response.data.data;
-    //     // console.log(data);
-    //     setCategoryList(data);
-    //     return data;
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // };
-
-    // allCategory();
   }, [reload]);
   //
 

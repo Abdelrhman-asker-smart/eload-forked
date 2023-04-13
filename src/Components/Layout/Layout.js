@@ -14,7 +14,7 @@ import Shipments from '../Shipments/Shipments.jsx'
 import AddAddress from '../AddAddress/AddAddress.jsx';
 import GroupList from '../GroupList/GroupList.jsx';
 import AddNewGroup from '../AddnewGroup/AddnewGroup.jsx'
-import Reports from '../Reports/Reports.jsx'
+// import Reports from '../Reports/Reports.jsx'
 
 import Personinformation from "../Personinformation/Personinformation.jsx";
 import ItemInfo from "../Iteminfo/Iteminfo.jsx";
@@ -61,6 +61,7 @@ import Employes from "../Employees/Employees";
 import AddEmployees from "../Employees/AddEmployees";
 import EditDriver from "../Drivers/AddDriver/EditDriver";
 import Drivers from './../Drivers/Drivers';
+import EditItem from "../Iteminfo/editItem";
 
 
 
@@ -136,7 +137,7 @@ const Layout = ({ setLogin }) => {
 
 
             <Route path="/user" element={<User />} />
-            <Route path="/reports" element={<Reports />} />
+            {/* <Route path="/reports" element={<Reports />} /> */}
 
             <Route path="/allshipments" element={<AllShipments />} />
             <Route path="/allorders" element={<Allorders />} />
@@ -148,9 +149,13 @@ const Layout = ({ setLogin }) => {
             <Route path="/Serviceproviders/editdriver" element={<EditDriver />} />
             <Route path="/Serviceproviders/viewdriver" element={<ViewDriver />} />
 
-            
-            <Route path="/iteminfo" element={<ItemInfo />} />
+            {/* items */}
             <Route path="/allitems" element={<Allitems />} />
+            {/* add-item */}
+            <Route path="/allitems/iteminfo" element={<ItemInfo />} />
+            <Route path="/allitems/edititem" element={<EditItem />} />
+
+            
             
             {/* OverallReport */}
             {/* <Route path="/overallreport" element={<OverallReport />} />
