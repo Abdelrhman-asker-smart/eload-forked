@@ -101,6 +101,10 @@
     margin-top: 10px;
 }
 
+.my-rewards .mt-30{
+    margin-top: 30px;
+}
+
 .my-rewards{
     color: #244664;
 }
@@ -129,4 +133,8 @@
 
 .target-section, .target-section h6{
     font-weight: 400;
+}
+
+.progress-bar{
+    background-color: #cbff04;
 }
