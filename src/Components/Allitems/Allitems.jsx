@@ -196,16 +196,46 @@ const Allitems = () => {
   });
   useEffect(() => {
     console.log(id,"id-----");
-    dispatch(fetchitemsList({ token: cookie.eload_token , id:id }))
-      .then((res) => {
-        console.log(res, "response from api");
-        const data = res.payload.data;
+    const ItemsFetch = async (id) => {
+      try {
+        const response = await axios.get(
+  
+          `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+  
+        const data = response.data;
+        console.log(response);
         setItemsList(data);
-      })
-      .catch((e) => {
+        // if (data.is_success && data.status_code === 200) {
+        //   setReload(!reload);
+        // } else {
+        //   console.log("error");
+        // }
+        return data;
+      } catch (e) {
         console.log(e);
-      });
-  }, [reload]);
+      }
+    };
+
+    ItemsFetch();
+    // dispatch(fetchitemsList({ token: cookie.eload_token , id:id }))
+    //   .then((res) => {
+    //     console.log(res, "response from api");
+    //     const data = res.payload.data;
+    //     setItemsList(data);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
+  }, []);
 
   const handelItemRemove = async (id) => {
     try {
