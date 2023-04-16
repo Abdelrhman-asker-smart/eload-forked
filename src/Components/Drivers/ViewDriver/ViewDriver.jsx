@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 
-import { ReactComponent as Dr2 } from "../../icons/download 1.svg";
+import { ReactComponent as Dr2 } from "../../../icons/download 1.svg";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -14,28 +16,58 @@ import "./ViewDriver.css";
 
 
 
-const columns = [
+const ViewDriver = () => {
+  const [prvidersList, setProvidersList] = useState([]);
+  const [allprov,setAllprov]= useState();
+  const { id } = useParams();
 
+  const [cookie] = useCookies(["eload_token"]);
+
+  useEffect(() => {
+    const allproviders = async () => {
+      try {
+        const response = await axios.get(
+          `https://dev.eload.smart.sa/api/v1/providers/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        const data = response.data.data.shipments;
+        const datas = response.data.data;
+        console.log(data);
+        console.log(datas,"datas");
+        setProvidersList(data);
+        setAllprov(datas);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    allproviders();
+  }, []);
+
+  
+  const columns = useMemo(
+    () => [
   {
-    accessorKey: "#",
+    accessorKey: "id",
     header: "Id",
     size: 30,
   },
   {
     accessorKey: "code",
     header: "Code",
-    size: 30,
+    size: 40,
   },
-
   {
-    accessorKey: "pickup",
+    accessorKey: "Pickup",
     header: "Pick up",
-    size: 30,
-  },
-  {
-    accessorKey: "dropoff",
-    header: "Drop Off",
-    size: 30,
+    size: 40,
   },
   {
     accessorKey: "dropoff",
@@ -58,12 +90,25 @@ const columns = [
     size: 30,
   },
   {
-    accessorKey: "status",
-    header: "STATUS",
+    accessorKey: "statuse",
+    header: "Status",
     size: 30,
+    Cell: ({ renderedCellValue, row }) => (
+      <Box
+        sx={{
+          display: "flex",
+          gap: "1rem",
+        }}
+      >
+        <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
+          <span>{renderedCellValue}</span>
+        </div>
+      </Box>
+    ),
   },
-];
-
+],
+[]
+);
 const csvOptions = {
   fieldSeparator: ",",
   quoteStrings: '"',
@@ -73,26 +118,20 @@ const csvOptions = {
   useKeysAsHeaders: false,
   headers: columns.map((c) => c.header),
 };
-
 const csvExporter = new ExportToCsv(csvOptions);
 
-const ViewDriver = () => {
-  const [driverList, setDriverList] = useState([]);
-  const [removeableId, setRemoveableId] = useState(null);
-  const [reload, setReload] = useState(false);
-  const [cookie] = useCookies(["eload_token"]);
-  const data = driverList.map((item, index) => {
+console.log(prvidersList,"prvidersList");
+
+  const data = prvidersList.map((item, index) => {
     return {
       id: item.id,
-      code: "",
-      Pickup:"",
-      dropoff:"",
-      shipmenttype:"",
-      trucktype:"",
-      shippingcost:"",
+      code: item.code,
+      Pickup:item.from_city.name,
+      dropoff:item.to_city.name,
+      shipmenttype:item.shipment_type.name,
+      shippingcost:item.cost,
       pickupdate:"",
-      statuse:"",
-
+      statuse:item.status_i18n,
     };
   });
   const handleExportRows = (rows) => {
@@ -110,7 +149,10 @@ const ViewDriver = () => {
             <div className="information-user col-3 card-header br-right">
               <Dr2 className="mx-5 my-3" style={{ borderRadius: "70px" }} />
 
-              <div className="name-user">Test freelancer Driver</div>
+              {/* <div className="name-user">Test freelancer Driver</div> */}
+              <div className="name-user">{allprov?.user?.name}</div>
+
+              {/* {prvidersList?.user?.name} */}
             </div>
             <div className="phone-place-data col-3 card-header  br-right py-5">
               <div className="card-box">
@@ -121,8 +163,8 @@ const ViewDriver = () => {
                 <path d="M19 7.25H10.25" stroke="#244664" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M14 27.25C14.6904 27.25 15.25 26.6904 15.25 26C15.25 25.3096 14.6904 24.75 14 24.75C13.3096 24.75 12.75 25.3096 12.75 26C12.75 26.6904 13.3096 27.25 14 27.25Z" stroke="#244664" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-
-                  <span>+92 335 252 2522</span>
+                  {/* <span>+3235345346</span> */}
+                  <span>{allprov?.user?.phone}</span>
                 </div>
                 <div className="data-card">
                 <svg className="mx-3" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,8 +173,9 @@ const ViewDriver = () => {
                 <path d="M10 16.25H15" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M10 21.25H20" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-
-                  <NavLink to="/allitems" className="btn-data-card">
+                  {/* take contract-id */}
+                  {/* ${allprov?.contract.id} */}
+                  <NavLink to={`/allitems/${allprov?.contract.id}`} className="btn-data-card">
                     View contract details
                   </NavLink>
                 </div>
@@ -152,7 +195,7 @@ const ViewDriver = () => {
                   <span>Wallet amount</span>
                 </div>
                 <div className="data-card">
-                  <h5 className="head-card-text mx-3 my-2">SAR 6,000</h5>
+                  <h5 className="head-card-text mx-3 my-2">SAR{allprov?.user?.wallet?.balance}</h5>
                 </div>
               </div>
             </div>
@@ -165,13 +208,8 @@ const ViewDriver = () => {
                 <path d="M9.92989 2.48004L4.58989 5.44004C3.37989 6.11004 2.38989 7.79004 2.38989 9.17004V14.82C2.38989 16.2 3.37989 17.88 4.58989 18.55L9.92989 21.52C11.0699 22.15 12.9399 22.15 14.0799 21.52L19.4199 18.55C20.6299 17.88 21.6199 16.2 21.6199 14.82V9.17004C21.6199 7.79004 20.6299 6.11004 19.4199 5.44004L14.0799 2.47004C12.9299 1.84004 11.0699 1.84004 9.92989 2.48004Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
 
-                  <span>7 Shipments</span>
+                  <span>{prvidersList.length} Shipments</span>
                 </div>
-                {/* <div className="data-card">
-                  <a href="/#"  className="btn-data-card mx-5">
-                    View All
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>
@@ -240,230 +278,6 @@ const ViewDriver = () => {
             </Box>
           )}
         />
-          {/* <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Code</th>
-                <th scope="col">Pick Up </th>
-                <th scope="col">Drop off</th>
-                <th scope="col">Shipment TYPE</th>
-                <th scope="col">Truck TYPE</th>
-                <th scope="col">Shipping cost</th>
-                <th scope="col">Pick up Date</th>
-                <th scope="col">STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-blur-table btn-table">New</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-blur-table btn-table">New</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-red-table btn-table">Assigned</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-red-table btn-table">Assigned</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-blue-light-table btn-table">
-                    On the Way{" "}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-blue-light-table btn-table">
-                    On the Way{" "}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input me-3"
-                      id="customCheck1"
-                    />
-                    <label className="custom-control-label" for="customCheck1">
-                      1
-                    </label>
-                  </div>
-                </td>
-                <td>ELD00028</td>
-                <td>
-                  Jeddah{" "}
-                  <span className="ms-3">
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </span>
-                </td>
-                <td>Mecca</td>
-                <td>Dry 40 high cube</td>
-                <td>Flatbed</td>
-                <td>SAR17,756.000</td>
-                <td>2022-09-14</td>
-                <td>
-                  <span className="btn-orange-table btn-table">DISPATCH</span>
-                </td>
-              </tr>
-            </tbody>
-          </table> */}
         </div>
       </div>
     </div>

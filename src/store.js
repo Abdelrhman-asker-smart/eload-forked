@@ -8,6 +8,11 @@ import cityGetReducer from './redux/CityListSlice';
 import stateGetReducer from './redux/StateListSlice';
 import PromotionGetReducer from './redux/listPromotion';
 
+// driver
+import DriverGetReducer from './redux/Drivers/driverList';
+import  ItemsGetReducer from "./redux/Items/ItemsList";
+
+
 
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -36,6 +41,9 @@ const rootReducer = combineReducers({
   cityList: cityGetReducer,
   stateList: stateGetReducer,
   PromotionList: PromotionGetReducer,
+  // driver
+  DriverList:DriverGetReducer,
+  ItemsList:ItemsGetReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -32,7 +32,7 @@ import Allitems from "../Allitems/Allitems";
 // import Financialrequests from '../FinancialList/FinancialList.jsx';
 import Rewards from '../Rewards/Rewards.jsx';
 import MyRewards from '../Rewards/my-rewards.jsx';
-import ViewDriver from "../ViewDriver/ViewDriver";
+import ViewDriver from "../Drivers/ViewDriver/ViewDriver";
 import CategoryList from "../Setting/Category list/Category-List";
 import CategortAdd from "../Setting/Category list/Categort-Add";
 import TruckList from "../Setting/Truck/TruckList.jsx";
@@ -147,14 +147,14 @@ const Layout = ({ setLogin }) => {
 
             <Route path="/Serviceproviders/driver" element={<Driver />} />
             <Route path="/Serviceproviders/adddriver" element={<AddDriver />} />
-            <Route path="/Serviceproviders/editdriver" element={<EditDriver />} />
-            <Route path="/Serviceproviders/viewdriver" element={<ViewDriver />} />
+            <Route path="/Serviceproviders/editdriver/:id" element={<EditDriver />} />
+            <Route path="/Serviceproviders/viewdriver/:id" element={<ViewDriver />} />
 
             {/* items */}
-            <Route path="/allitems" element={<Allitems />} />
+            <Route path="/allitems/:id" element={<Allitems />} />
             {/* add-item */}
             <Route path="/allitems/iteminfo" element={<ItemInfo />} />
-            <Route path="/allitems/edititem" element={<EditItem />} />
+            <Route path="/allitems/edititem/:id" element={<EditItem />} />
 
             
             

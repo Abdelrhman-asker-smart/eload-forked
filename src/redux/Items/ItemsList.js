@@ -4,13 +4,14 @@ import axios from "axios";
 // import header from "config/header";
 
 // api().fetchTeamData
-export const fetchdriverList = createAsyncThunk(
-  "category/fetchCategoryList",
-  async (token) => {
+export const fetchitemsList = createAsyncThunk(
+  "items/fetchitemsList",
+  async (token , id) => {
     // console.log(token, "from reducer");
     try {
       const response = await axios.get(
-        "https://dev.eload.smart.sa/api/v1/providers?type=freelancer",
+        // "https://dev.eload.smart.sa/api/v1/contract_items",
+        `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
         {
           // headers: header(token).headerForJson,
           headers: {
@@ -31,8 +32,8 @@ export const fetchdriverList = createAsyncThunk(
 );
 // useSelector
 
-export const driverGetReducer = createSlice({
-  name: "categories",
+export const ItemsGetReducer = createSlice({
+  name: "items",
   initialState: {
     list: [],
     // tableContainer: [],
@@ -48,10 +49,10 @@ export const driverGetReducer = createSlice({
   // },
 
   extraReducers: {
-    [fetchdriverList.pending]: (state, action) => {
+    [fetchitemsList.pending]: (state, action) => {
       // state.status = true;
     },
-    [fetchdriverList.fulfilled]: (state, action) => {
+    [fetchitemsList.fulfilled]: (state, action) => {
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
@@ -59,11 +60,11 @@ export const driverGetReducer = createSlice({
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },
-    [fetchdriverList.rejected]: (state, action) => {
+    [fetchitemsList.rejected]: (state, action) => {
       state.status = true;
       state.status = "failed";
     },
   },
 });
 // export const { filterdTable } = categoryGetReducer.actions;
-export default driverGetReducer.reducer;
+export default ItemsGetReducer.reducer;

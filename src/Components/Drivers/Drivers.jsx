@@ -91,7 +91,8 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-      <NavLink to="/Serviceproviders/viewdriver">
+
+    <NavLink to={`/Serviceproviders/viewdriver/${id}`}>
       <button
       className="btn-table"
       style={{
@@ -108,6 +109,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       View
     </button>
     </NavLink>
+    <NavLink to={`/Serviceproviders/editdriver/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -123,6 +125,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
+      </NavLink>
       <button
       className="btn-table"
       data-bs-toggle="modal"
@@ -193,7 +196,7 @@ const Drivers = () => {
   useEffect(() => {
     dispatch(fetchdriverList({ token: cookie.eload_token }))
       .then((res) => {
-        console.log(res, "response from api");
+        // console.log(res, "response from api");
         const data = res.payload.data;
         setDriverList(data);
       })
@@ -202,7 +205,11 @@ const Drivers = () => {
       });
   }, [reload]);
 
-  const { list, status } = useSelector((state) => state.categoryList);
+
+  // const { list, status } = useSelector((state) => state.categoryList);
+
+  // console.log(list,"all");
+
 
 const handelItemRemove = async (id) => {
     try {

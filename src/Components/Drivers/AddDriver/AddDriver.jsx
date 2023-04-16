@@ -8,6 +8,9 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
 import { ReactComponent as Vector } from "../../../icons/Vector.svg";
+import { NavLink } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+
 
 const AddDriver = () => {
   // const [input, setInputs] = useState([])
@@ -15,6 +18,26 @@ const AddDriver = () => {
   const [startDate, setStartDate] = useState();
 
   const [cookie] = useCookies(["eload_token"]);
+  const showNotification = () => {
+    // e.preventDefault();
+
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Done</h4>
+        <NavLink to="/Serviceproviders/driver">
+        <button 
+          className="btn btndetails">
+          Back to Drivers
+        </button>
+        </NavLink>
+
+        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+      </div>
+    )
+
+    toast(<Msg />)
+    // readNotification(notification.id);
+  };
 
   // select-options
   const [isClearable, setIsClearable] = useState(true);
@@ -23,39 +46,7 @@ const AddDriver = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
 
-  const CountrySelect = [
-    { value: "Reham", label: "Reham" },
-    { value: "Eman", label: "Eman" },
-    { value: "Abdullah ", label: "Abdullah " },
-    { value: "Loqman ELgrahy ", label: "Loqman ELgrahy " },
-  ];
 
-  const TruckSelect = [
-    {
-      value: "Truck1",
-      label: (
-        <div>
-          <Vector className="mx-3" /> Truck1
-        </div>
-      ),
-    },
-    {
-      value: "Truck2",
-      label: (
-        <div>
-          <Vector className="mx-3" /> Truck2
-        </div>
-      ),
-    },
-    {
-      value: "Truck3",
-      label: (
-        <div>
-          <Vector className="mx-3" /> Truck3
-        </div>
-      ),
-    },
-  ];
   // States================================
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -135,6 +126,7 @@ const AddDriver = () => {
 
       // setName("");
       console.log("DoneAdddddddddddd");
+      showNotification();
     } catch (e) {
       console.log(e);
     }
@@ -215,9 +207,21 @@ const AddDriver = () => {
     // ),
     value: item.id,
   }));
+  // message-done
+
 
   return (
     <div className="container-fluid adddriver p-5">
+          <ToastContainer
+      position="top-right"
+      autoClose={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      theme="light"
+    />
       <h3>DRIVER INFORMATION</h3>
       <form onSubmit={apiAddDriver}>
         {/* name+email */}
@@ -227,6 +231,7 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               name="namedriver"
+              required
               type="text"
               placeholder="Name"
               onChange={(e) => {
@@ -239,6 +244,7 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               name="emaildriver"
+              required
               type="email"
               placeholder="E-mail"
               onChange={(e) => {
@@ -254,6 +260,7 @@ const AddDriver = () => {
             <input
               type="file"
               name="imgdriver"
+              required
               className="input-box"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -267,6 +274,7 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               type="password"
+              required
               name="passdriver"
               placeholder="Password"
               onChange={(e) => {
@@ -296,6 +304,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="nameowner"
               type="text"
+              required
               placeholder="Owner name"
               // setOwnerName
               onChange={(e) => {
@@ -309,6 +318,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="phoneowner"
               type="tele"
+              required
               placeholder="Owner Phone "
               onChange={(e) => {
                 setOwnerPhone(e.target.value);
@@ -336,19 +346,12 @@ const AddDriver = () => {
         <div className="row my-4">
           <div className="col-md-4">
             <label className="my-2 d-block">ID Copy</label>
-            {/* <input
-              className="input-box px-3"
-              name="phoneowner"
-              type="tele"
-              placeholder="driver id "
-              onChange={(e) => {
-                setIdCope(e.target.value);
-              }}
-            /> */}
+
             <input
               type="file"
               className="input-box"
               name="idcope"
+              required
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
               onChange={(e) => {
@@ -361,6 +364,7 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               name="driverlicensephone"
+              required
               type="tele"
               placeholder="Driving License Number"
               onChange={(e) => {
@@ -374,6 +378,7 @@ const AddDriver = () => {
               type="file"
               className="input-box"
               name="driverlicensecope"
+              required
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
               onChange={(e) => {
@@ -389,6 +394,7 @@ const AddDriver = () => {
             <input
               type="file"
               className="input-box"
+              required
               name="licensecopeid"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -402,6 +408,7 @@ const AddDriver = () => {
             <DatePicker
               className="date-input  px-5 input-box"
               selected={startDate}
+              required
               placeholderText={"dd/mm/yyyy"}
               onChange={(date) => {
                 setStartDate(date);
@@ -422,6 +429,7 @@ const AddDriver = () => {
               className="basic-multi-select"
               // isMulti
               isDisabled={isDisabled}
+              required
               isLoading={isLoading}
               isClearable={isClearable}
               options={GroupsCountryOptions}
@@ -445,6 +453,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="sponsername"
               type="text"
+              required
               placeholder="Sponsor Establishment name"
               onChange={(e) => {
                 setSponsorName(e.target.value);
@@ -457,6 +466,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="sponsernumber"
               type="text"
+              required
               placeholder="Sponsor Establishment Number"
               onChange={(e) => {
                 setSponsorNumber(e.target.value);
@@ -475,6 +485,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="truckmodel"
               type="text"
+              required
               placeholder="Truck Model"
               onChange={(e) => {
                 setTruckModel(e.target.value);
@@ -486,6 +497,7 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               name="trucknumber"
+              required
               type="tele"
               placeholder="Truck Plate Number"
               onChange={(e) => {
@@ -500,6 +512,7 @@ const AddDriver = () => {
               name="chassisnumber"
               type="tele"
               placeholder="Chassis Number"
+              required
               onChange={(e) => {
                 setChassisNumber(e.target.value);
               }}
@@ -514,6 +527,7 @@ const AddDriver = () => {
               className="input-box px-3"
               name="trucklicensenumber"
               type="tele"
+              required
               placeholder="Chassis Number"
               onChange={(e) => {
                 setTruckLinceseNumber(e.target.value);
@@ -525,6 +539,7 @@ const AddDriver = () => {
             <input
               type="file"
               className="input-box"
+              required
               name="trucklicensecope"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -541,6 +556,7 @@ const AddDriver = () => {
               // isMulti
               isDisabled={isDisabled}
               isLoading={isLoading}
+              required
               isClearable={isClearable}
               isRtl={isRtl}
               isSearchable={isSearchable}
@@ -552,10 +568,13 @@ const AddDriver = () => {
             />
           </div>
         </div>
-
-        <button type="submit" className="btn-save my-3">
+        {/* <NavLink to="/Serviceproviders/driver"> */}
+        <button type="submit" className="btn-save my-3"
+          // onClick={showNotification}
+        >
           SAVE
         </button>
+        {/* </NavLink> */}
       </form>
     </div>
   );
