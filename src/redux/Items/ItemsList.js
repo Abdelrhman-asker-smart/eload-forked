@@ -11,7 +11,7 @@ export const fetchitemsList = createAsyncThunk(
     try {
       const response = await axios.get(
         // "https://dev.eload.smart.sa/api/v1/contract_items",
-        `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
+        `https://dev.eload.smart.sa/api/v1/contracts/${id}`,
         {
           // headers: header(token).headerForJson,
           headers: {
@@ -22,7 +22,7 @@ export const fetchitemsList = createAsyncThunk(
           },
         }
       );
-      const data = await response.data;
+      const data = await response.data.items;
       // console.log(data, "data");
       return data;
     } catch (e) {

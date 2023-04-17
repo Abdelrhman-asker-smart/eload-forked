@@ -13,6 +13,11 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
 import { fetchitemsList } from "../../redux/Items/ItemsList";
+import { fetchCityListByCountry } from "../../redux/CityListSlice";
+import { fetchPromotionList } from "../../redux/listPromotion";
+import { fetchTruckList } from "../../redux/listTruck";
+// import { fetchCityListByCountry } from "../../redux/CityListSlice";
+
 // import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
@@ -72,7 +77,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  console.log(id, "id");
                 }}
               >
                 {" "}
@@ -90,7 +95,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
 
-    <NavLink to={`/Serviceproviders/editdriver/${id}`}>
+    <NavLink to={`/allitems/edititem/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -177,8 +182,12 @@ const csvExporter = new ExportToCsv(csvOptions);
 
 const Allitems = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const [promotionList, setpromotionList] = useState([]);
+  const [truck_types, setTruckTypes] = useState([]);
+  const [cities, setCities] = useState([]);
 
+  const { id } = useParams();
+// console.log(id,"--------")
 
   const [itemsList, setItemsList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
@@ -186,11 +195,11 @@ const Allitems = () => {
   const [cookie] = useCookies(["eload_token"]);
   const data = itemsList.map((item, index) => {
     return {
-      source: "",
-      destnition: "",
-      trucktype: "",
-      shipmenttype: "",
-      price: "",
+      source: item.from_city.name,
+      destnition: item.to_city.name,
+      trucktype: item.truck_type.name,
+      shipmenttype: item.shipment_type.name,
+      price: item.price,
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
@@ -200,7 +209,7 @@ const Allitems = () => {
       try {
         const response = await axios.get(
   
-          `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
+          `https://dev.eload.smart.sa/api/v1/contracts/${id}`,
           {
             headers: {
               Accept: "application/json",
@@ -211,8 +220,8 @@ const Allitems = () => {
           }
         );
   
-        const data = response.data;
-        console.log(response);
+        const data = response.data.data.items;
+        console.log(data);
         setItemsList(data);
         // if (data.is_success && data.status_code === 200) {
         //   setReload(!reload);
@@ -225,19 +234,14 @@ const Allitems = () => {
       }
     };
 
-    ItemsFetch();
-    // dispatch(fetchitemsList({ token: cookie.eload_token , id:id }))
-    //   .then((res) => {
-    //     console.log(res, "response from api");
-    //     const data = res.payload.data;
-    //     setItemsList(data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-  }, []);
+    ItemsFetch(id);
+
+  }, [reload]);
+
 
   const handelItemRemove = async (id) => {
+    console.log(id,"re----------");
+    
     try {
       const response = await axios.delete(
 
@@ -253,6 +257,8 @@ const Allitems = () => {
       );
 
       const data = response.data;
+      console.log("remove");
+
       console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
@@ -283,7 +289,8 @@ const Allitems = () => {
             <br/>
           </div>
           <div className="box-right">
-            <NavLink to="/allitems/iteminfo">
+            {/* item[0]contract_id */}
+            <NavLink to={`/allitems/iteminfo/${id}`}>
               <button className="btn-Items">
                 <i className="fa-solid fa-plus me-3"></i>Add New Items
               </button>

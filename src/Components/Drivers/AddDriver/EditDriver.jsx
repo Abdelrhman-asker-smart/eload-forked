@@ -84,18 +84,11 @@ const EditDriver = () => {
       setTruckLinceseCope(item.TruckLinceseCope);
       setTruckType(item.TruckType);
 
-
-
-
-
     };
     finddriver();
   }, []);
   
   const edit = () => {
-    // console.log(name, "name");
-    // console.log(cookie.eload_token, "token");
-    // console.log(id, "id");
 
     const formdata = new FormData();
     formdata.append("name", name);

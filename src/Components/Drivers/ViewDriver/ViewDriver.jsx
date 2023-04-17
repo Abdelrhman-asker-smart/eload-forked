@@ -84,11 +84,11 @@ const ViewDriver = () => {
     header: "Shipping Cost",
     size: 30,
   },
-  {
-    accessorKey: "pickupdate",
-    header: "pickup Date",
-    size: 30,
-  },
+  // {
+  //   accessorKey: "pickupdate",
+  //   header: "pickup Date",
+  //   size: 30,
+  // },
   {
     accessorKey: "statuse",
     header: "Status",
@@ -130,7 +130,7 @@ console.log(prvidersList,"prvidersList");
       dropoff:item.to_city.name,
       shipmenttype:item.shipment_type.name,
       shippingcost:item.cost,
-      pickupdate:"",
+      // pickupdate:"",
       statuse:item.status_i18n,
     };
   });
@@ -175,7 +175,7 @@ console.log(prvidersList,"prvidersList");
                 </svg>
                   {/* take contract-id */}
                   {/* ${allprov?.contract.id} */}
-                  <NavLink to={`/allitems/${allprov?.contract.id}`} className="btn-data-card">
+                  <NavLink to={`/allitems/${id}`} className="btn-data-card">
                     View contract details
                   </NavLink>
                 </div>

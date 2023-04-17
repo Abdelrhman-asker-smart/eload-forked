@@ -153,7 +153,7 @@ const Layout = ({ setLogin }) => {
             {/* items */}
             <Route path="/allitems/:id" element={<Allitems />} />
             {/* add-item */}
-            <Route path="/allitems/iteminfo" element={<ItemInfo />} />
+            <Route path="/allitems/iteminfo/:id" element={<ItemInfo />} />
             <Route path="/allitems/edititem/:id" element={<EditItem />} />
 
             

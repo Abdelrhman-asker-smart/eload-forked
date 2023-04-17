@@ -9,22 +9,36 @@ import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import { ReactComponent as Vector } from "../../icons/Vector.svg";
 import { NavLink } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchitemsList } from "../../redux/Items/ItemsList";
+import { fetchCityListByCountry } from "../../redux/CityListSlice";
+import { fetchPromotionList } from "../../redux/listPromotion";
+import { fetchTruckList } from "../../redux/listTruck";
+
+import { useParams } from "react-router-dom";
+
 
 import "./Iteminfo.css";
 
 const Iteminfo = () => {
   const [cookie] = useCookies(["eload_token"]);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  // const [truck_types, setTruckTypes] = useState([]);
+  const [cities, setCities] = useState([]);
 
   const showNotification = () => {
     // e.preventDefault();
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/Serviceproviders/driver">
+        <h4 style={{color:"#289b0c"}}>Done</h4>
+        <NavLink to={`/allitems/${id}`}>
         <button 
           className="btn btndetails">
-          Back to Drivers
+          Back to Items
         </button>
         </NavLink>
 
@@ -53,12 +67,15 @@ const Iteminfo = () => {
       // country_list
   const [countryList, setCountryList] = useState([]);
   const [truckList, setTruckList] = useState([]);
+  const [shipmentList, setShipmentList] = useState([]);
+
 
     // Api-post==========================
     const apiAddItems = async (e) => {
+      // console.log(id,"iddddddddd");
       e.preventDefault();
       const formdata = new FormData();
-      formdata.append("contract_id", "");
+      formdata.append("contract_id", id);
       formdata.append("from_city_id", source);
       formdata.append("to_city_id", destination);
       formdata.append("truck_type_id", truckType);
@@ -93,7 +110,7 @@ const Iteminfo = () => {
       const Countrylist = async () => {
         try {
           const response = await axios.get(
-            "https://dev.eload.smart.sa/api/v1/countries",
+            "https://dev.eload.smart.sa/api/v1/countries/194?cities=1",
   
             {
               headers: {
@@ -106,7 +123,7 @@ const Iteminfo = () => {
             }
           );
   
-          const data = response.data.data;
+          const data = response.data.data.data.states;
   
           setCountryList(data);
           // console.log(data, "datacountry");
@@ -116,6 +133,22 @@ const Iteminfo = () => {
         }
       };
       Countrylist();
+
+      dispatch(fetchCityListByCountry({ token: cookie.eload_token}))
+      .then((cities_res) => {
+        let data = cities_res.payload.data.data.states.map((object) => ({
+          label: object.name,
+          options: object.cities.map((sub_object) => ({
+            value: sub_object.id,
+            label: sub_object.name,
+          })),
+        }));
+        setCities(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
     }, []);
     // Api-fetch-truck
     useEffect(() => {
@@ -138,7 +171,7 @@ const Iteminfo = () => {
           const data = response.data.data;
   
           setTruckList(data);
-          // console.log(data, "datacountry");
+          console.log(data, "dataTruck");
           return data;
         } catch (e) {
           console.log(e);
@@ -146,39 +179,47 @@ const Iteminfo = () => {
       };
       Trucklist();
     }, []);
-  
-    // options_Country
-    const GroupsCountryOptions = countryList.map((item, index) => ({
-      label: item.name,
-      value: item.id,
-    }));
+        // Api-fetch-shipment
+    useEffect(() => {
+          const Shipmentlist = async () => {
+            try {
+              const response = await axios.get(
+                "https://dev.eload.smart.sa/api/v1/shipment_types",
+      
+                {
+                  headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${cookie.eload_token}`,
+      
+                    "api-key":
+                      "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+                  },
+                }
+              );
+      
+              const data = response.data.data;
+      
+              setShipmentList(data);
+              console.log(data, "datashipment");
+              return data;
+            } catch (e) {
+              console.log(e);
+            }
+          };
+          Shipmentlist();
+    }, []);
+
     // truckoptions
     const GroupsTruckOptions = truckList.map((item, index) => ({
       label: item.name,
       value: item.id,
     }));
-     
-       const SourceSelect= [
-        { value: 'Jeddah ', label: 'Jeddah ' },
-        { value: 'Mecca', label: 'Mecca' },
-        { value: 'Mecca ', label: 'Mecca ' },
-        { value: 'Jeddah ', label: 'Jeddah ' },
-      ];
-      const DestnationSelect= [
-        { value: 'Jeddah ', label: 'Jeddah ' },
-        { value: 'Mecca', label: 'Mecca' },
-        { value: 'Mecca ', label: 'Mecca ' },
-        { value: 'Jeddah ', label: 'Jeddah ' },
-      ];
-      const TruckSelect= [
-        { value: 'Truck1', label:<div><Vector className='mx-3'/> Truck1</div> },
-        { value: 'Truck2', label:<div><Vector className='mx-3'/> Truck2</div> },
-        { value: 'Truck3', label:<div><Vector className='mx-3'/> Truck3</div> },
-      ];
-      const shipmentOptions= [
-        { value: 'Freezed', label: "Freezed" },
-        { value: 'Normal', label: 'Normal' },
-      ]; 
+    // truckoptions
+    const GroupsShipmentOptions = shipmentList.map((item, index) => ({
+      label: item.name,
+      value: item.id,
+    }));
+
   return (
     <div className="container-fluid iteminfo p-5">
       <h3>ITEM INFORMATION</h3>
@@ -189,40 +230,34 @@ const Iteminfo = () => {
          
           <label className="my-2 d-block">Source </label>
           <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={isClearable}
-          required
-          isRtl={isRtl}
-          isSearchable={isSearchable}
-          name="color"
-          options={GroupsCountryOptions}
-          onChange={(e) => {
-            setSource(e.target.value);
-          }}
-        />
+            classNamePrefix="select"
+            className="basic-multi-select"
+            isMulti={false}
+            isDisabled={false}
+            isLoading={false}
+            isClearable={false}
+            isRtl={false}
+            isSearchable={true}
+            name="source"
+            options={cities}
+            onChange={(choice) => setSource(choice.value)}
+          />
         </div>
         <div className="col-md-2">
           <label className="my-2 d-block ">Destination</label>
           <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          required
-          isClearable={isClearable}
-          isRtl={isRtl}
-          isSearchable={isSearchable}
-          name="color"
-          options={GroupsCountryOptions}
-          onChange={(e) => {
-            setDestination(e.target.value);
-          }}
-        />
+            classNamePrefix="select"
+            className="basic-multi-select"
+            isMulti={false}
+            isDisabled={false}
+            isLoading={false}
+            isClearable={false}
+            isRtl={false}
+            isSearchable={true}
+            name="destination"
+            options={cities}
+            onChange={(choice) => setDestination(choice.value)}
+          />
         </div>
         <div className="col-md-2">
           <label className="my-2 d-block ">Truck Type</label>
@@ -236,11 +271,12 @@ const Iteminfo = () => {
           isClearable={isClearable}
           isRtl={isRtl}
           isSearchable={isSearchable}
-          name="color"
+          name="truck"
           options={GroupsTruckOptions}
-          onChange={(e) => {
-            setTruckType(e.target.value);
+          onChange={(choice) => {
+            setTruckType(choice.value);
           }}
+
         />
         </div>
         {/* <div className="col-md-3 d-flex align-items-center"> */}
@@ -256,10 +292,10 @@ const Iteminfo = () => {
           isRtl={isRtl}
           required
           isSearchable={isSearchable}
-          name="color"
-          options={shipmentOptions}
-          onChange={(e) => {
-            setShipmentType(e.target.value);
+          name="shipment"
+          options={GroupsShipmentOptions}
+          onChange={(choice) => {
+            setShipmentType(choice.value);
           }}
         />
           </div>
