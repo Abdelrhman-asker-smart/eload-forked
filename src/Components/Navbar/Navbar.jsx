@@ -40,7 +40,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       let data = response.data.data;
       setNotifications(data);
       setNotificationsCount(data.length);
@@ -247,7 +247,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     toast(<Msg />)
     // readNotification(notification.id);
   };
-  console.log(notifications,"notification");
+  // console.log(notifications,"notification");
 
   useEffect(() => {
     getNotifications();

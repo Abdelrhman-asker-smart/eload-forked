@@ -11,6 +11,7 @@ export const EditItemFunction = createAsyncThunk(
     try {
       const response = await axios.put(
         `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
+        // `https://dev.eload.smart.sa/api/v1/contracts/${id}`,
         formdata,
         {
           headers: {
@@ -21,8 +22,8 @@ export const EditItemFunction = createAsyncThunk(
           },
         }
       );
-      const data = await response.data;
-      console.log(response, "response");
+      const data = await response.data.data;
+      console.log(data, "datafromreeeitemeditttt");
       return data;
     } catch (e) {
       console.log(e);

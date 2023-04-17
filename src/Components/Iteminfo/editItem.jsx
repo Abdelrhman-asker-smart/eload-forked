@@ -10,15 +10,13 @@ import  {ReactComponent as Vector} from '../../icons/Vector.svg';
 import { useParams } from "react-router-dom";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  EditItemFunction,
-} from "../../redux/Items/EditItems";
+import { EditItemFunction } from "../../redux/Items/EditItems";
 import "./Iteminfo.css";
 
 const EditItem = () => {
 
   // const { list, status } = useSelector((state) => state.ItemsList);
-  const { list, setList } = useState();
+  const { item, setItem } = useState();
 
   const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
@@ -47,7 +45,6 @@ const EditItem = () => {
   useEffect(() => {
     console.log(id,"id-----");
     const ItemsFetch = async (id) => {
-
       try {
         const response = await axios.get(
   
@@ -63,14 +60,14 @@ const EditItem = () => {
         );
   
         const data = response.data.data;
-        console.log(data);
-        setList(data);
-        setSource(list.from_city.name);
-        setDestination(list.to_city.name);
-        setTruckType(list.truck_type.name);
-        // ddddddddddddddd grby kda el select el source (-_-) Mahmoud hhhhh 
-        setShipmentType(list.shipment_type.name);
-        setPrice(list.price);
+        console.log(data,"itemfromAPiiiiiiiiiiii");
+        setItem(data);
+
+        setSource(item.from_city?.name);
+        setDestination(item.to_city?.name);
+        setTruckType(item.truck_type?.name);
+        setShipmentType(item.shipment_type?.name);
+        setPrice(item.price);
         return data;
       } catch (e) {
         console.log(e);
@@ -78,23 +75,19 @@ const EditItem = () => {
     };
 
     ItemsFetch(id);
-
-
   }, []);
-
 
   // useEffect(() => {
   //   const finditem = () => {
-  //     console.log(list,"testiddddd");
+  //     // console.log(list,"testfinditemmmmm");
   //     // let item = list.find((item, _) => item.id == id);
   //     // let item = list.find((item, _) => item.id === id);
-  //     // console.log(item,"eeeeeeeeeeeeeee");
-  //     setSource(list.from_city.id);
-  //     setDestination(list.to_city.id);
-  //     setTruckType(list.truck_type.id);
-  //     // ddddddddddddddd grby kda el select el source (-_-) Mahmoud hhhhh 
-  //     setShipmentType(list.shipment_type.id);
-  //     setPrice(list.price);
+  //     console.log(item,"eeeeeeeeeeeeeee");
+  //     setSource(item.from_city?.name);
+  //     setDestination(item.to_city?.name);
+  //     setTruckType(item.truck_type?.name);
+  //     setShipmentType(item.shipment_type?.name);
+  //     setPrice(item.price);
 
   //   };
   //   finditem();
@@ -112,19 +105,19 @@ const EditItem = () => {
     formdata.append("price", price);
 
     console.log("editDone");
-    // dispatch(
-    //   EditItemFunction({
-    //     token: cookie.eload_token,
-    //     id,
-    //     formdata,
-    //   })
-    // )
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    dispatch(
+      EditItemFunction({
+        token: cookie.eload_token,
+        id,
+        formdata,
+      })
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
       // Api-fetch-Country================
@@ -193,7 +186,7 @@ const EditItem = () => {
           const data = response.data.data;
   
           setTruckList(data);
-          console.log(data, "dataTruck");
+          // console.log(data, "dataTruck");
           return data;
         } catch (e) {
           console.log(e);
@@ -222,7 +215,7 @@ const EditItem = () => {
               const data = response.data.data;
       
               setShipmentList(data);
-              console.log(data, "datashipment");
+              // console.log(data, "datashipment");
               return data;
             } catch (e) {
               console.log(e);

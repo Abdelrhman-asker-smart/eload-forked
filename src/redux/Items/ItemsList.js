@@ -23,7 +23,7 @@ export const fetchitemsList = createAsyncThunk(
         }
       );
       const data = await response.data.items;
-      // console.log(data, "data");
+      console.log(data, "datafromreeeitemlist");
       return data;
     } catch (e) {
       console.log(e);
