@@ -1,0 +1,35 @@
+.wallet h2{
+    font-size: 22px;
+    font-weight: 500;
+    color: #0B2339;
+}
+.wallet h4{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.wallet .mt-10{
+    margin-top: 10px;
+}
+
+.wallet .mt-30{
+    margin-top: 30px;
+}
+
+.wallet{
+    color: #244664;
+}
+
+.wallet h5{
+    font-weight: 500;
+}
+
+.wallet h6{
+    font-weight: 500;
+}
+
+.top-section{
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+}
