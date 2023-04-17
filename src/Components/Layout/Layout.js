@@ -63,7 +63,8 @@ import AddEmployees from "../Employees/AddEmployees";
 import EditDriver from "../Drivers/AddDriver/EditDriver";
 import Drivers from './../Drivers/Drivers';
 import EditItem from "../Iteminfo/editItem";
-
+import Wallet from '../Wallet/Wallet';
+import Invoice from '../Invoice/Invoice';
 
 
 
@@ -163,6 +164,8 @@ const Layout = ({ setLogin }) => {
             <Route path="/financialrequests" element={<Financialrequests />} /> */}
             <Route path="/rewards" element={<Rewards />} />
             <Route path="/my-rewards" element={<MyRewards />} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route path="/invoices/:id" element={<Invoice />} />
 
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />
