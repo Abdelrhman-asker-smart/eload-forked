@@ -16,7 +16,7 @@ import "./Iteminfo.css";
 const EditItem = () => {
 
   // const { list, status } = useSelector((state) => state.ItemsList);
-  const { item, setItem } = useState();
+  const { item, setItem } = useState({});
 
   const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
@@ -61,13 +61,16 @@ const EditItem = () => {
   
         const data = response.data.data;
         console.log(data,"itemfromAPiiiiiiiiiiii");
-        setItem(data);
+        // setItem(data);
 
-        setSource(item.from_city?.name);
-        setDestination(item.to_city?.name);
-        setTruckType(item.truck_type?.name);
-        setShipmentType(item.shipment_type?.name);
-        setPrice(item.price);
+        setSource(data.from_city_id);
+        setDestination(data.to_city_id);
+        setTruckType(data.truck_type_id);
+        setShipmentType(data.shipment_type_id);
+        setPrice(data.price);
+        console.log(data.price,"price");
+        console.log(data.truck_type.name,"truck");
+
         return data;
       } catch (e) {
         console.log(e);
@@ -79,15 +82,15 @@ const EditItem = () => {
 
   // useEffect(() => {
   //   const finditem = () => {
-  //     // console.log(list,"testfinditemmmmm");
+  //     console.log(list,"testfinditemmmmm");
   //     // let item = list.find((item, _) => item.id == id);
-  //     // let item = list.find((item, _) => item.id === id);
+  //     let item = list?.find((item, _) => item.id === id);
   //     console.log(item,"eeeeeeeeeeeeeee");
-  //     setSource(item.from_city?.name);
-  //     setDestination(item.to_city?.name);
-  //     setTruckType(item.truck_type?.name);
-  //     setShipmentType(item.shipment_type?.name);
-  //     setPrice(item.price);
+  //     setSource(item?.from_city.name);
+  //     setDestination(item?.to_city.name);
+  //     setTruckType(item?.truck_type.name);
+  //     setShipmentType(item?.shipment_type.name);
+  //     setPrice(item?.price);
 
   //   };
   //   finditem();
@@ -234,6 +237,20 @@ const EditItem = () => {
       label: item.name,
       value: item.id,
     }));
+    const handleSelectedOptionsCities = (city_id) => {
+      console.log(city_id,"cityidddd");
+      let selected_option = {};
+
+      for (let i = 0; i < cities.length; i++) {
+        for (let city of cities[i].options) {
+          if (city_id == city.value) {
+            return city;
+          }
+        }
+      }
+
+      return selected_option;
+    };
   return (
     <div className="container-fluid iteminfo p-5">
       <h3>ITEM INFORMATION</h3>
@@ -241,7 +258,8 @@ const EditItem = () => {
       {/* name+email */}
       <div className="row my-4 iteminfo">
         <div className="col-md-2">
-          <label className="my-2 d-block">Source </label>
+          <label className="my-2 d-block">Source</label>
+          <span>{source}</span>
           <Select
           classNamePrefix="select"
           className="basic-multi-select"
@@ -249,17 +267,21 @@ const EditItem = () => {
           isDisabled={isDisabled}
           isLoading={isLoading}
           isClearable={isClearable}
-          value={source}
+          // value={cities.find((item,_)=>console.log(item.id,"item"))}
+          // value={cities[source]}
+          defaultValue={handleSelectedOptionsCities(source)}
+
           isRtl={isRtl}
-          defaultValue={source}
+          // defaultValue={cities[source]}
           isSearchable={isSearchable}
-          name="color"
+          name="source"
           options={cities}
           onChange={(choice) => setSource(choice.value)}
         />
         </div>
         <div className="col-md-2">
           <label className="my-2 d-block ">Destination</label>
+          <span>{destination}</span>
           <Select
           classNamePrefix="select"
           className="basic-multi-select"
@@ -270,7 +292,8 @@ const EditItem = () => {
           isRtl={isRtl}
           isSearchable={isSearchable}
           name="destnition"
-          value={destination}
+          value={cities[destination]}
+          // defaultValue={destination}
           options={cities}
           onChange={(choice) => setDestination(choice.value)}
         />
@@ -287,7 +310,7 @@ const EditItem = () => {
           isRtl={isRtl}
           isSearchable={isSearchable}
           name="truck"
-          value={truckType}
+          // value={truckType}
           options={GroupsTruckOptions}
           onChange={(choice) => setTruckType(choice.value)}
 
@@ -306,7 +329,7 @@ const EditItem = () => {
           isRtl={isRtl}
           isSearchable={isSearchable}
           name="shipment"
-          value={shipmentType}
+          // value={shipmentType}
           options={GroupsShipmentOptions}
           onChange={(choice) => setShipmentType(choice.value)}
 
@@ -315,6 +338,7 @@ const EditItem = () => {
           {/* price */}
           <div className=" col-md-2 truck">
             <label className="my-2 d-block ">Price</label>
+            {/* <span>{price}</span> */}
             <input
               className="input-box small-input px-2"
               type="number"
