@@ -7,26 +7,95 @@ import { ReactComponent as EditIcon } from "../../icons/editicon.svg";
 import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
 import { ReactComponent as View } from "../../icons/eye.svg";
 
-// import { useLocation } from "react-router-dom";
-// import MaterialReactTable from "material-react-table";
-// import { Box, Button } from "@mui/material";
-// import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import { useLocation } from "react-router-dom";
+import MaterialReactTable from "material-react-table";
+import { Box, Button } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+import { useDispatch, useSelector } from "react-redux";
+// import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
+import { fetchPartnerList } from "../../redux/Partner/partnerList";
 import "./Partners.css";
 // btns-action
+
+const RemoveModal = ({ handelItemRemove, id }) => {
+  return (
+    <div
+      className="modal fade"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabIndex="-1"
+    >
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content" style={{ borderRadius: "25px" }}>
+          <div className="modal-body  text-center my-5 ">
+            <p
+              className="my-4 mx-4"
+              style={{ fontSize: "27px", fontWeight: "500" }}
+            >
+              Are you sure to Remove this Item ?
+            </p>
+            <div className="btns-box d-flex justify-content-center">
+              <button
+                className="btn-table active"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style={{
+                  textAlign: "center",
+                  padding: "1% 3%",
+                  border: "1px solid #0e324a",
+                  borderRadius: "20px",
+                  marginRight: "4%",
+                  color: "#fff",
+                  backgroundColor: "#0b2339",
+                }}
+              >
+                {" "}
+                close{" "}
+              </button>
+              <button
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                className="btn-table active"
+                style={{
+                  textAlign: "center",
+                  padding: "1% 3%",
+                  border: "1px solid #0e324a",
+                  borderRadius: "20px",
+                  marginRight: "4%",
+                  color: "#fff",
+                  backgroundColor: "#0b2339",
+                }}
+                onClick={() => {
+                  handelItemRemove(id);
+                  // console.log(id, "id");
+                }}
+              >
+                {" "}
+                Remove{" "}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-
+      <NavLink to={`/Serviceproviders/Partners/viewpartner/${id}`}>
       <button
       className="btn-table"
-      data-bs-toggle="modal"
-      href="#exampleModalToggle"
+      // data-bs-toggle="modal"
+      // href="#exampleModalToggle"
       style={{
         textAlign: "center",
         padding: "1% 3%",
         border: "1px solid #0e324a",
         borderRadius: "20px",
-        marginRight: "4%",
+        // marginRight: "4%",
         color: "#0b2339",
         backgroundColor: "transparent",
       }}
@@ -35,6 +104,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       <View className="mx-1" />
       View
     </button>
+    </NavLink>
     
       <button
         className="btn-table active"
@@ -43,7 +113,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
           padding: "1% 3%",
           border: "1px solid #0e324a",
           borderRadius: "20px",
-          marginRight: "4%",
+          // marginRight: "4%",
           color: "#fff",
           backgroundColor: "#0b2339",
         }}
@@ -61,7 +131,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         padding: "1% 3%",
         border: "1px solid #0e324a",
         borderRadius: "20px",
-        marginRight: "4%",
+        // marginRight: "4%",
         color: "#0b2339",
         backgroundColor: "transparent",
       }}
@@ -76,20 +146,20 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 const columns = [
 
   {
-    accessorKey: "id",
-    header: "Id",
-    size: 100,
-  },
-  {
     accessorKey: "name",
     header: "Name",
-    size: 100,
+    size: 50,
   },
-  // {
-  //   accessorKey: "phone",
-  //   header: "Phone Number",
-  //   size: 100,
-  // },
+  {
+    accessorKey: "email",
+    header: "Email",
+    size: 50,
+  },
+  {
+    accessorKey: "phone",
+    header: "Phone Number",
+    size: 80,
+  },
 
   {
     accessorKey: "btns",
@@ -111,50 +181,60 @@ const csvOptions = {
 const csvExporter = new ExportToCsv(csvOptions);
 
 const Partners = () => {
+  const dispatch = useDispatch();
 
   const [partnerList, setPartnerList] = useState([]);
-  // const [removeableId, setRemoveableId] = useState(null);
-  // const [reload, setReload] = useState(false);
+  const [removeableId, setRemoveableId] = useState(null);
+  const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
   const data = partnerList.map((item, index) => {
     return {
-      id: item.id,
+
       name: item.name,
-      btns: <ButtonEdit  />,
+      email: " ",
+      phone: " ",
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
-
   useEffect(() => {
-    const allShipper = async () => {
-      // setCookie("eload_token", data.data.token.access);
-      try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
+    dispatch(fetchPartnerList({ token: cookie.eload_token }))
+      .then((res) => {
 
-          "https://dev.eload.smart.sa/api/v1/shippers",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        const data = response.data.data;
-        console.log(data);
+        const data = res.payload.data;
         setPartnerList(data);
-        return data;
-      } catch (e) {
+      })
+      .catch((e) => {
         console.log(e);
-      }
-    };
+      });
+  }, [reload]);
 
-    allShipper();
-  }, []);
+  const handelItemRemove = async (id) => {
+    try {
+      const response = await axios.delete(
+
+        `https://dev.eload.smart.sa/api/v1/providers/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data;
+      console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        console.log("error");
+      }
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
@@ -163,6 +243,7 @@ const Partners = () => {
   const handleExportData = () => {
     csvExporter.generateCsv(data);
   };
+
   return (
     <div>
       <header className="partner-head px-5">
@@ -170,23 +251,9 @@ const Partners = () => {
           <div className="box-left">
             <div className="head-text">
               <h2>Partners</h2>
-              <p>20 Partners</p>
+
             </div>
-            <div className="input-head">
-              <span>Search a Partners</span>
-              <div className="input-group input-group-sm mb-3">
-                <span className="input-group-text" id="inputGroup-sizing-sm">
-                  <i className="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-sm"
-                  placeholder=" Enter Partners Name"
-                />
-              </div>
-            </div>
+
           </div>
           <div className="box-right">
             <NavLink to="/addpartners">
@@ -199,150 +266,71 @@ const Partners = () => {
       </header>
       <div className="partner container-fluid px-5">
         <div className="head-input container-fluid">
-          <div className="box-right">
-            <div className="print">
-              <button className="print-btn">
-                <i className="fa-solid fa-print mx-2"></i>
-                Print
-              </button>
-            </div>
-          </div>
         </div>
-        <hr />
-        <div className="partner-table">
-          <table className="table">
-            <thead>
-              <tr className="head-tr">
-                <th scope="col" className="taple-head">
-                  Name
-                </th>
-                <th scope="col" className="taple-head">
-                  E-mail
-                </th>
-                <th scope="col" className="taple-head">
-                  PHONE NUMBER
-                </th>
-                <th scope="col" className="taple-head">
-                  Edit / remove
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-              <tr className="body-tr">
-                <td>Freelance Driver</td>
-                <td>test_freelance_driver@example.com</td>
-                <td>+92 335 252 2522</td>
-                <td>
-                <button className="btn-table">
-                    <i className="fa-solid fa-eye me-3"></i>View
-                  </button>
-                  <button className="btn-table active">
-                    <i className="fa-solid fa-pen me-3"></i>Edit
-                  </button>
-                  <button className="btn-table">
-                    <i className="fa-solid fa-user me-3"></i>Remove
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+   
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          positionToolbarAlertBanner="bottom"
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box
+              sx={{
+                display: "flex",
+                gap: "1rem",
+                p: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <Button
+                color="primary"
+                //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                onClick={handleExportData}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Data
+              </Button>
+              <Button
+                disabled={table.getPrePaginationRowModel().rows.length === 0}
+                //export all rows, including from the next page, (still respects filtering and sorting)
+                onClick={() =>
+                  handleExportRows(table.getPrePaginationRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Rows
+              </Button>
+              <Button
+                disabled={table.getRowModel().rows.length === 0}
+                //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                onClick={() => handleExportRows(table.getRowModel().rows)}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Page Rows
+              </Button>
+              <Button
+                disabled={
+                  !table.getIsSomeRowsSelected() &&
+                  !table.getIsAllRowsSelected()
+                }
+                //only export selected rows
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Selected Rows
+              </Button>
+            </Box>
+          )}
+        />
+
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
       </div>
     </div>
   );

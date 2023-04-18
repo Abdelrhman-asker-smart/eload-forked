@@ -4,13 +4,13 @@ import axios from "axios";
 // import header from "config/header";
 
 // api().fetchTeamData
-export const fetchdriverList = createAsyncThunk(
-  "driver/fetchdriverList",
+export const fetchPartnerList = createAsyncThunk(
+  "partner/fetchPartnerList",
   async (token) => {
     // console.log(token, "from reducer");
     try {
       const response = await axios.get(
-        "https://dev.eload.smart.sa/api/v1/providers?type=freelancer",
+        "https://dev.eload.smart.sa/api/v1/providers?type=partner",
         {
           // headers: header(token).headerForJson,
           headers: {
@@ -22,7 +22,7 @@ export const fetchdriverList = createAsyncThunk(
         }
       );
       const data = await response.data;
-      // console.log(data, "data");
+      console.log(data, "data");
       return data;
     } catch (e) {
       console.log(e);
@@ -31,8 +31,8 @@ export const fetchdriverList = createAsyncThunk(
 );
 // useSelector
 
-export const driverGetReducer = createSlice({
-  name: "categories",
+export const partnerGetReducer = createSlice({
+  name: "partner",
   initialState: {
     list: [],
     // tableContainer: [],
@@ -48,10 +48,10 @@ export const driverGetReducer = createSlice({
   // },
 
   extraReducers: {
-    [fetchdriverList.pending]: (state, action) => {
+    [fetchPartnerList.pending]: (state, action) => {
       // state.status = true;
     },
-    [fetchdriverList.fulfilled]: (state, action) => {
+    [fetchPartnerList.fulfilled]: (state, action) => {
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
@@ -59,11 +59,11 @@ export const driverGetReducer = createSlice({
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },
-    [fetchdriverList.rejected]: (state, action) => {
+    [fetchPartnerList.rejected]: (state, action) => {
       state.status = true;
       state.status = "failed";
     },
   },
 });
 // export const { filterdTable } = categoryGetReducer.actions;
-export default driverGetReducer.reducer;
+export default partnerGetReducer.reducer;

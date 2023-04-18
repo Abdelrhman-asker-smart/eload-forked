@@ -65,6 +65,7 @@ import Drivers from './../Drivers/Drivers';
 import EditItem from "../Iteminfo/editItem";
 import Wallet from '../Wallet/Wallet';
 import Invoice from '../Invoice/Invoice';
+import ViewPartner from "../Partners/ViewPartner";
 
 
 
@@ -118,6 +119,9 @@ const Layout = ({ setLogin }) => {
             {/* service */}
             <Route path="/Serviceproviders/Partners" element={<Partners/>}/>
             <Route path="/addpartners" element={<Addpartners />} />
+            {/* partner */}
+            <Route path="/Serviceproviders/Partners/viewpartner/:id" element={<ViewPartner/>}/>
+
             
             {/* Abd------------------------- */}
             <Route path="/Shipments/addAddress" element={<AddAddress />} />
