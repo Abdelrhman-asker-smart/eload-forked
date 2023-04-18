@@ -19,7 +19,9 @@ const EditItem = () => {
   const { item, setItem } = useState({});
 
   const dispatch = useDispatch();
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState([]); 
+  const [groupsTruckOptions, setGroupsTruckOptions] = useState([]);
+  const [groupsShipmentOptions, setGroupsShipmentOptions] = useState([]);
 
   const { id } = useParams();
   const [cookie] = useCookies(["eload_token"]);
@@ -77,30 +79,96 @@ const EditItem = () => {
       }
     };
 
+    const Shipmentlist = async () => {
+      try {
+        const response = await axios.get(
+          "https://dev.eload.smart.sa/api/v1/shipment_types",
+
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setShipmentList(data);
+
+        // shipmentoptions
+        let groupsShipmentOptionsData = data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+
+        setGroupsShipmentOptions(groupsShipmentOptionsData);
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const Trucklist = async () => {
+      try {
+        const response = await axios.get(
+          "https://dev.eload.smart.sa/api/v1/truck_types",
+
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setTruckList(data);
+
+        // truckoptions
+        let groupsTruckOptionsData = data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+
+        setGroupsTruckOptions(groupsTruckOptionsData);
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
     ItemsFetch(id);
+    Shipmentlist();
+    Trucklist();
+
+    dispatch(fetchCityListByCountry({ token: cookie.eload_token}))
+    .then((cities_res) => {
+      let data = cities_res.payload.data.data.states.map((object) => ({
+        label: object.name,
+        options: object.cities.map((sub_object) => ({
+          value: sub_object.id,
+          label: sub_object.name,
+        })),
+      }));
+      setCities(data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
   }, []);
-
-  // useEffect(() => {
-  //   const finditem = () => {
-  //     console.log(list,"testfinditemmmmm");
-  //     // let item = list.find((item, _) => item.id == id);
-  //     let item = list?.find((item, _) => item.id === id);
-  //     console.log(item,"eeeeeeeeeeeeeee");
-  //     setSource(item?.from_city.name);
-  //     setDestination(item?.to_city.name);
-  //     setTruckType(item?.truck_type.name);
-  //     setShipmentType(item?.shipment_type.name);
-  //     setPrice(item?.price);
-
-  //   };
-  //   finditem();
-  // }, []);
 
   const edit = () => {
 
     const formdata = new FormData();
 
-    formdata.append("contract_id", 3);
+    formdata.append("_method", 'put');
     formdata.append("from_city_id", source);
     formdata.append("to_city_id", destination);
     formdata.append("truck_type_id", truckType);
@@ -117,130 +185,14 @@ const EditItem = () => {
     )
       .then((res) => {
         console.log(res);
+        alert('Successfully Saved!');
       })
       .catch((e) => {
         console.log(e);
       });
   };
 
-      // Api-fetch-Country================
-      useEffect(() => {
-        const Countrylist = async () => {
-          try {
-            const response = await axios.get(
-              "https://dev.eload.smart.sa/api/v1/countries/194?cities=1",
-    
-              {
-                headers: {
-                  Accept: "application/json",
-                  Authorization: `Bearer ${cookie.eload_token}`,
-    
-                  "api-key":
-                    "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                },
-              }
-            );
-    
-            const data = response.data.data.data.states;
-    
-            setCountryList(data);
-            // console.log(data, "datacountry");
-            return data;
-          } catch (e) {
-            console.log(e);
-          }
-        };
-        Countrylist();
-  
-        dispatch(fetchCityListByCountry({ token: cookie.eload_token}))
-        .then((cities_res) => {
-          let data = cities_res.payload.data.data.states.map((object) => ({
-            label: object.name,
-            options: object.cities.map((sub_object) => ({
-              value: sub_object.id,
-              label: sub_object.name,
-            })),
-          }));
-          setCities(data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-  
-      }, []);
-    // Api-fetch-truck
-    useEffect(() => {
-      const Trucklist = async () => {
-        try {
-          const response = await axios.get(
-            "https://dev.eload.smart.sa/api/v1/truck_types",
-  
-            {
-              headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${cookie.eload_token}`,
-  
-                "api-key":
-                  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-              },
-            }
-          );
-  
-          const data = response.data.data;
-  
-          setTruckList(data);
-          // console.log(data, "dataTruck");
-          return data;
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      Trucklist();
-    }, []);
-        // Api-fetch-shipment
-    useEffect(() => {
-          const Shipmentlist = async () => {
-            try {
-              const response = await axios.get(
-                "https://dev.eload.smart.sa/api/v1/shipment_types",
-      
-                {
-                  headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${cookie.eload_token}`,
-      
-                    "api-key":
-                      "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                  },
-                }
-              );
-      
-              const data = response.data.data;
-      
-              setShipmentList(data);
-              // console.log(data, "datashipment");
-              return data;
-            } catch (e) {
-              console.log(e);
-            }
-          };
-          Shipmentlist();
-    }, []);
-
-    // truckoptions
-    const GroupsTruckOptions = truckList.map((item, index) => ({
-      label: item.name,
-      value: item.id,
-    }));
-    // truckoptions
-    const GroupsShipmentOptions = shipmentList.map((item, index) => ({
-      label: item.name,
-      value: item.id,
-    }));
     const handleSelectedOptionsCities = (city_id) => {
-      console.log(city_id,"cityidddd");
-      let selected_option = {};
-
       for (let i = 0; i < cities.length; i++) {
         for (let city of cities[i].options) {
           if (city_id == city.value) {
@@ -249,7 +201,7 @@ const EditItem = () => {
         }
       }
 
-      return selected_option;
+      return {};
     };
   return (
     <div className="container-fluid iteminfo p-5">
@@ -259,81 +211,84 @@ const EditItem = () => {
       <div className="row my-4 iteminfo">
         <div className="col-md-2">
           <label className="my-2 d-block">Source</label>
-          <span>{source}</span>
-          <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={isClearable}
-          // value={cities.find((item,_)=>console.log(item.id,"item"))}
-          // value={cities[source]}
-          defaultValue={handleSelectedOptionsCities(source)}
-
-          isRtl={isRtl}
-          // defaultValue={cities[source]}
-          isSearchable={isSearchable}
-          name="source"
-          options={cities}
-          onChange={(choice) => setSource(choice.value)}
-        />
+          {
+            cities.length > 0 && source &&
+              <Select
+              classNamePrefix="select"
+              className="basic-multi-select"
+              // isMulti
+              isDisabled={isDisabled}
+              isLoading={isLoading}
+              isClearable={isClearable}
+              defaultValue={handleSelectedOptionsCities(source)}
+              isRtl={isRtl}
+              isSearchable={isSearchable}
+              name="source"
+              options={cities}
+              onChange={(choice) => setSource(choice.value)}
+            />
+          }
         </div>
         <div className="col-md-2">
           <label className="my-2 d-block ">Destination</label>
-          <span>{destination}</span>
-          <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={isClearable}
-          isRtl={isRtl}
-          isSearchable={isSearchable}
-          name="destnition"
-          value={cities[destination]}
-          // defaultValue={destination}
-          options={cities}
-          onChange={(choice) => setDestination(choice.value)}
-        />
+          {
+            cities.length > 0 && destination &&
+              <Select
+              classNamePrefix="select"
+              className="basic-multi-select"
+              // isMulti
+              isDisabled={isDisabled}
+              isLoading={isLoading}
+              isClearable={isClearable}
+              defaultValue={handleSelectedOptionsCities(destination)}
+              isRtl={isRtl}
+              isSearchable={isSearchable}
+              name="destination"
+              options={cities}
+              onChange={(choice) => setDestination(choice.value)}
+            />
+          }
         </div>
         <div className="col-md-2">
           <label className="my-2 d-block ">Truck Type</label>
-          <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={isClearable}
-          isRtl={isRtl}
-          isSearchable={isSearchable}
-          name="truck"
-          // value={truckType}
-          options={GroupsTruckOptions}
-          onChange={(choice) => setTruckType(choice.value)}
-
-        />
+          {
+            groupsTruckOptions.length > 0 && truckType &&
+            <Select
+            classNamePrefix="select"
+            className="basic-multi-select"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="truck"
+            options={groupsTruckOptions}
+            defaultValue={groupsTruckOptions.find(({ value }) => value === truckType)}
+            onChange={(choice) => setTruckType(choice.value)}
+          />
+          }
         </div>
         {/* <div className="col-md-3 d-flex align-items-center"> */}
           <div className=" col-md-2 truck">
             <label className="my-2 d-block ">Shipment type</label>
-            <Select
-          classNamePrefix="select"
-          className="basic-multi-select"
-          // isMulti
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          isClearable={isClearable}
-          isRtl={isRtl}
-          isSearchable={isSearchable}
-          name="shipment"
-          // value={shipmentType}
-          options={GroupsShipmentOptions}
-          onChange={(choice) => setShipmentType(choice.value)}
-
-        />
+            {
+              groupsShipmentOptions.length > 0 && shipmentType &&
+              <Select
+              classNamePrefix="select"
+              className="basic-multi-select"
+              // isMulti
+              isDisabled={isDisabled}
+              isLoading={isLoading}
+              isClearable={isClearable}
+              isRtl={isRtl}
+              isSearchable={isSearchable}
+              name="shipment"
+              options={groupsShipmentOptions}
+              defaultValue={groupsShipmentOptions.find(({ value }) => value === shipmentType)}
+              onChange={(choice) => setShipmentType(choice.value)}
+              />
+            }
           </div>
           {/* price */}
           <div className=" col-md-2 truck">
