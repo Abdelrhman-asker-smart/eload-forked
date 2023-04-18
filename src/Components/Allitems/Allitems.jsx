@@ -26,168 +26,170 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 
 import "./Allitems.css";
 
-const RemoveModal = ({ handelItemRemove, id }) => {
-  return (
-    <div
-      className="modal fade"
-      id="exampleModalToggle"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel"
-      tabIndex="-1"
-    >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content" style={{ borderRadius: "25px" }}>
-          <div className="modal-body  text-center my-5 ">
-            <p
-              className="my-4 mx-4"
-              style={{ fontSize: "27px", fontWeight: "500" }}
-            >
-              Are you sure to Remove this Item ?
-            </p>
-            <div className="btns-box d-flex justify-content-center">
-              <button
-                className="btn-table active"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                style={{
-                  textAlign: "center",
-                  padding: "1% 3%",
-                  border: "1px solid #0e324a",
-                  borderRadius: "20px",
-                  marginRight: "4%",
-                  color: "#fff",
-                  backgroundColor: "#0b2339",
-                }}
+const Allitems = () => {
+  const dispatch = useDispatch();
+  const [promotionList, setpromotionList] = useState([]);
+  const [truck_types, setTruckTypes] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const { id } = useParams();
+
+  const RemoveModal = ({ handelItemRemove, id }) => {
+    return (
+      <div
+        className="modal fade"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
+        tabIndex="-1"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content" style={{ borderRadius: "25px" }}>
+            <div className="modal-body  text-center my-5 ">
+              <p
+                className="my-4 mx-4"
+                style={{ fontSize: "27px", fontWeight: "500" }}
               >
-                {" "}
-                close{" "}
-              </button>
-              <button
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                className="btn-table active"
-                style={{
-                  textAlign: "center",
-                  padding: "1% 3%",
-                  border: "1px solid #0e324a",
-                  borderRadius: "20px",
-                  marginRight: "4%",
-                  color: "#fff",
-                  backgroundColor: "#0b2339",
-                }}
-                onClick={() => {
-                  handelItemRemove(id);
-                  console.log(id, "id");
-                }}
-              >
-                {" "}
-                Remove{" "}
-              </button>
+                Are you sure to Remove this Item ?
+              </p>
+              <div className="btns-box d-flex justify-content-center">
+                <button
+                  className="btn-table active"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  style={{
+                    textAlign: "center",
+                    padding: "1% 3%",
+                    border: "1px solid #0e324a",
+                    borderRadius: "20px",
+                    marginRight: "4%",
+                    color: "#fff",
+                    backgroundColor: "#0b2339",
+                  }}
+                >
+                  {" "}
+                  close{" "}
+                </button>
+                <button
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  className="btn-table active"
+                  style={{
+                    textAlign: "center",
+                    padding: "1% 3%",
+                    border: "1px solid #0e324a",
+                    borderRadius: "20px",
+                    marginRight: "4%",
+                    color: "#fff",
+                    backgroundColor: "#0b2339",
+                  }}
+                  onClick={() => {
+                    handelItemRemove(id);
+                    console.log(id, "id");
+                  }}
+                >
+                  {" "}
+                  Remove{" "}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-// btns-action
-const ButtonEdit = ({ id, setRemoveableId }) => (
-  <div className="w-100">
-
-    <NavLink to={`/allitems/edititem/${id}`}>
-      <button
-        className="btn-table active"
+    );
+  };
+  
+  // btns-action
+  const ButtonEdit = ({ id, setRemoveableId }) => (
+    <div className="w-100">
+  
+      <NavLink to={`/allitems/edititem/${id}`}>
+        <button
+          className="btn-table active"
+          style={{
+            textAlign: "center",
+            padding: "1% 3%",
+            border: "1px solid #0e324a",
+            borderRadius: "20px",
+            marginRight: "4%",
+            color: "#fff",
+            backgroundColor: "#0b2339",
+          }}
+        >
+          <EditIcon className="mx-1" />
+          EDIT
+        </button>
+        </NavLink>
+        <button
+        className="btn-table"
+        data-bs-toggle="modal"
+        href="#exampleModalToggle"
         style={{
           textAlign: "center",
           padding: "1% 3%",
           border: "1px solid #0e324a",
           borderRadius: "20px",
           marginRight: "4%",
-          color: "#fff",
-          backgroundColor: "#0b2339",
+          color: "#0b2339",
+          backgroundColor: "transparent",
         }}
+        onClick={() => setRemoveableId(id)}
       >
-        <EditIcon className="mx-1" />
-        EDIT
+        <DeleteIcon className="mx-1" />
+        REMOVE
       </button>
-      </NavLink>
-      <button
-      className="btn-table"
-      data-bs-toggle="modal"
-      href="#exampleModalToggle"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-      onClick={() => setRemoveableId(id)}
-    >
-      <DeleteIcon className="mx-1" />
-      REMOVE
-    </button>
-  </div>
-);
+    </div>
+  );
 
-const columns = [
+  const columns = [
+    {
+      accessorKey: "source",
+      header: "Source",
+      size: 60,
+    },
+    {
+      accessorKey: "destnition",
+      header: "Destination",
+      size: 60,
+    },
+  
+    {
+      accessorKey: "trucktype",
+      header: "Truck type",
+      size: 60,
+    },
+    {
+      accessorKey: "shipmenttype",
+      header: "Shipment type",
+      size: 60,
+    },
+    {
+      accessorKey: "price",
+      header: "Price",
+      size: 60,
+    }
+  ];
 
-  {
-    accessorKey: "source",
-    header: "Source",
-    size: 60,
-  },
-  {
-    accessorKey: "destnition",
-    header: "Destination",
-    size: 60,
-  },
-
-  {
-    accessorKey: "trucktype",
-    header: "Truck type",
-    size: 60,
-  },
-  {
-    accessorKey: "shipmenttype",
-    header: "Shipment type",
-    size: 60,
-  },
-  {
-    accessorKey: "price",
-    header: "Price",
-    size: 60,
-  },
-  {
-    accessorKey: "btns",
-    header: "Edit / Remove",
-    size: 120,
-  },
-];
-
-const csvOptions = {
-  fieldSeparator: ",",
-  quoteStrings: '"',
-  decimalSeparator: ".",
-  showLabels: true,
-  useBom: true,
-  useKeysAsHeaders: false,
-  headers: columns.map((c) => c.header),
-};
-
-const csvExporter = new ExportToCsv(csvOptions);
-
-const Allitems = () => {
-  const dispatch = useDispatch();
-  const [promotionList, setpromotionList] = useState([]);
-  const [truck_types, setTruckTypes] = useState([]);
-  const [cities, setCities] = useState([]);
-
-  const { id } = useParams();
-// console.log(id,"--------")
+  if (user_type == 'admin') {
+    columns.push({
+      accessorKey: "btns",
+      header: "Edit / Remove",
+      size: 120,
+    });
+  }
+  
+  const csvOptions = {
+    fieldSeparator: ",",
+    quoteStrings: '"',
+    decimalSeparator: ".",
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions);
 
   const [itemsList, setItemsList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
@@ -234,7 +236,7 @@ const Allitems = () => {
       }
     };
 
-    ItemsFetch(id);
+    ItemsFetch(user_type == 'provider' ? user_type_data.id : id);
 
   }, [reload]);
 
@@ -288,14 +290,18 @@ const Allitems = () => {
             </div>
             <br/>
           </div>
-          <div className="box-right">
-            {/* item[0]contract_id */}
-            <NavLink to={`/allitems/iteminfo/${id}`}>
-              <button className="btn-Items">
-                <i className="fa-solid fa-plus me-3"></i>Add New Items
-              </button>
-            </NavLink>
-          </div>
+          {
+            user_type == 'admin' &&
+            <div className="box-right">
+              {/* item[0]contract_id */}
+              <NavLink to={`/allitems/iteminfo/${id}`}>
+                <button className="btn-Items">
+                  <i className="fa-solid fa-plus me-3"></i>Add New Items
+                </button>
+              </NavLink>
+            </div>
+          }
+
         </div>
       </header>
       <div className="Items container-fluid px-4">

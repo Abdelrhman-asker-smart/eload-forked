@@ -16,6 +16,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
   });
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
   const [cookie] = useCookies(["eload_token"]);
 
   const [notifications_count, setNotificationsCount] = useState(0);
@@ -64,6 +65,27 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
       );
       console.log(response.data.data);
       setNotificationsCount(notifications_count - 1);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const sendInterest = async (e, shipment_id) => {
+    try {
+      const response = await axios.post(
+        'https://dev.eload.smart.sa/api/v1/interests',
+        {shipment_id},
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      console.log(response.data.data);
+      alert('Sent Successfully!');
     } catch (e) {
       console.log(e);
     }
@@ -239,6 +261,10 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           className="btn btndetails">
           View Details
         </a>
+        {
+          notification.payload.status == 'READY' && user_type == 'provider' &&
+          <button className="btn btn-success" onClick={(e) => sendInterest(e, notification.payload.id)}>I'm Interested!</button>
+        }
 
         {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
       </div>
@@ -434,7 +460,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                 </ul>
               </div>
               <span style={{ fontWeight: "500", fontSize: "16px" }}>
-                Hi,Admin
+                Hi, {user.name}
               </span>
             </div>
           </div>
