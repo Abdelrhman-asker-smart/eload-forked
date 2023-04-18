@@ -48,6 +48,7 @@ import { ReactComponent as Settings } from '../../icons/icon-settings.svg';
 
 const Sidebar = () => {
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   const [isOpen, setIsOpen] = useState({ firstLevel1: false, firstLevel2: false, firstLevel3: false, firstLevel4: false, firstLevel5: false ,firstLevel6: false , firstLevel7 : false , firstLevel8 : false , firstLevel9 : false , firstLevel10 : false , firstLevel11 : false , firstLevel12 : false , firstLevel13 : false , firstLevel14 : false , firstLevel15 : false , firstLevel16 : false , firstLevel17 : false , firstLevel18 : false });
 
@@ -1002,7 +1003,7 @@ const Sidebar = () => {
                           : "d-flex justify-content-start align-items-center"
                       }
                       style={{padding: "20px 22px"}}
-                      to="/allitems"
+                      to={`/allitems/${user_type_data.id}`}
                     >
                       <Rewards className="mx-1"/>
 
