@@ -9,7 +9,7 @@ export const EditItemFunction = createAsyncThunk(
     console.log(id, "id from reducer");
     console.log(formdata, "urlencoded from reducer");
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
         // `https://dev.eload.smart.sa/api/v1/contracts/${id}`,
         formdata,
