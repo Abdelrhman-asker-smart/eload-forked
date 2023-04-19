@@ -31,9 +31,6 @@ import {
 
 import { GoogleMap, LoadScript, Marker, MarkerF , DirectionsService , DirectionsRenderer} from "@react-google-maps/api";
 
-// check-user-email
-const userType = localStorage.getItem("user_type");
-
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -73,6 +70,30 @@ const ShipmentOrder = () => {
   const [detailsList, setDetailsList] = useState([]);
   // const [fileboxes, setFileboxes] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+
+  const sendInterest = async (e, shipment_id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        'https://dev.eload.smart.sa/api/v1/interests',
+        {shipment_id},
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+      console.log(response.data.data);
+      alert('Sent Successfully!');
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // map=============
   const containerStyle = {
@@ -1128,6 +1149,12 @@ const ShipmentOrder = () => {
             <span className="info-text text-center">Status</span>
             <button className="btn-info">{detailsList?.status_i18n}</button>
           </div>
+          {
+            user_type == 'provider' && detailsList?.status === 'READY' &&
+            <div className="info-box col-12 text-center">
+              <button className="btn btn-success mt-5" onClick={(e) => sendInterest(e, detailsList?.id)}>I'm Interested!</button>
+            </div>
+          }
         </div>
       </div>
       <hr />
@@ -1540,10 +1567,11 @@ const ShipmentOrder = () => {
                 />
               </svg>
 
-              <div className="element-info">Shipping cost</div>
+              
+              <div className="element-info">{user_type == 'provider' ? 'Price' : 'Shipping cost'}</div>
             </div>
             <div className="text-element text-center">
-              <h4>{detailsList?.cost}</h4>
+              <h4>{user_type == 'provider' ? detailsList?.provider_price : detailsList?.cost}</h4>
             </div>
           </div>
           <div className="element-box col-2 br-element">
@@ -1981,6 +2009,8 @@ const ShipmentOrder = () => {
       </div>
 
       {/* tables============interested1===Service provide */}
+      { user_type == 'admin' &&
+      <>
       <div className="orderhead px-2">
         <div className="text-head">Interested Service providers</div>
         <div
@@ -2034,9 +2064,12 @@ const ShipmentOrder = () => {
           ></Box>
         )}
       />
+      </>
+      }
+
       {/* Financial Service provide=table-request */}
       {
-        userType==="admin"? 
+        user_type==="shipper"? 
         ""
         :
         <>

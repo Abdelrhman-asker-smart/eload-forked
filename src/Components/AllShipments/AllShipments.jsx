@@ -7,72 +7,16 @@ import { NavLink } from "react-router-dom";
 import { useMemo } from "react";
 
 import MaterialReactTable from "material-react-table";
-import {
-  Box,
-  Button,
-  ListItemIcon,
-  MenuItem,
-  Typography,
-  TextField,
-} from "@mui/material";
+import {Box, Button} from "@mui/material";
 
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
 import "./Allshipments.css";
 
-// const columns = [
-//   {
-//     accessorKey: "id",
-//     header: "ID",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "code",
-//     header: "Code",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "picup",
-//     header: "Pick Up",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "dropoff",
-//     header: "Drop Off",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "shipmenttype",
-//     header: "Shipment Type",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "trucktype",
-//     header: "Truck Type",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "shippingcost",
-//     header: "Shipping Cost",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "pickupdate",
-//     header: "Pickup Date",
-//     size: 30,
-//   },
-//   {
-//     accessorKey: "status",
-//     header: "Status",
-//     size: 30,
-//   },
-// ];
-
-
-
-
 const AllShipments = () => {
+
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
 
   const columnsReady = useMemo(
     () => [
@@ -123,8 +67,9 @@ const AllShipments = () => {
         size: 30,
       },
       {
+        accessorFn: (row) => `${ user_type == 'provider' ? row.provider_price : row.shippingcost }`,
         accessorKey: "shippingcost",
-        header: "Shipping Cost",
+        header: `${ user_type == 'provider' ? 'Price' : 'Shipping Cost'}`,
         size: 30,
       },
       // {
@@ -256,8 +201,9 @@ const AllShipments = () => {
         size: 30,
       },
       {
+        accessorFn: (row) => `${ user_type == 'provider' ? row.provider_price : row.shippingcost }`,
         accessorKey: "shippingcost",
-        header: "Shipping Cost",
+        header: `${ user_type == 'provider' ? 'Price' : 'Shipping Cost'}`,
         size: 30,
       },
       {
@@ -378,6 +324,7 @@ const AllShipments = () => {
       shipmenttype: item.shipment_type.name,
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
+      provider_price: item.provider_price,
       pickupdate: item.order.pickup_date,
       status: item.status_i18n,
     };
@@ -394,6 +341,7 @@ const AllShipments = () => {
       shipmenttype: item.shipment_type.name,
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
+      provider_price: item.provider_price,
       urgent_action_needed: item.urgent_action_needed,
       pickupdate: item.order.pickup_date,
       status: item.status_i18n,

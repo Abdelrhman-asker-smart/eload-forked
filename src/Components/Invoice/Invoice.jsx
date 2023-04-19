@@ -64,6 +64,7 @@ const Invoice = () => {
   const columns = useMemo(
     () => [
       {
+        accessorFn: (row) => `${row.itemable_type} #${row.itemable_id}`,
         accessorKey: "id",
         header: "Item",
         size: 30,
@@ -75,7 +76,7 @@ const Invoice = () => {
             }}
           >
             <NavLink style={{ color: "#0085FF" }} to={`/${entity_mappings[row.original.itemable_type].url}/${row.original.itemable_id}`}>
-              <span>{row.original.itemable_type} #{row.original.itemable_id}</span>
+              <span>{renderedCellValue}</span>
             </NavLink>
           </Box>
         ),
@@ -224,15 +225,15 @@ const Invoice = () => {
           <table className="table table-striped">
             <tr>
               <td>Subtotal</td>
-              <td>{invoice?.total} SAR</td>
+              <td>{invoice?.total} {invoice?.currency}</td>
             </tr>
             <tr>
               <td>Tax</td>
-              <td>0.00 SAR</td>
+              <td>0.00 {invoice?.currency}</td>
             </tr>
             <tr>
               <td>Total</td>
-              <td>{invoice?.total} SAR</td>
+              <td>{invoice?.total} {invoice?.currency}</td>
             </tr>
           </table>
         </div>

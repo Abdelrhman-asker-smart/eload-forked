@@ -57,6 +57,7 @@ const Wallet = () => {
   const columns = useMemo(
     () => [
       {
+        accessorFn: (row) => `TRX#${row.id}`,
         accessorKey: "id",
         header: "Reference",
         size: 30,
@@ -67,7 +68,7 @@ const Wallet = () => {
               gap: "1rem",
             }}
           >
-            TRX#{row.original.id}
+            {renderedCellValue}
             {
               entity_mappings.hasOwnProperty(row.original.transactionable_type) &&
               <NavLink style={{ color: "#0085FF" }} to={`/${entity_mappings[row.original.transactionable_type].url}/${row.original.transactionable_id}`}>
