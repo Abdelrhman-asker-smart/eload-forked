@@ -66,6 +66,10 @@ import EditItem from "../Iteminfo/editItem";
 import Wallet from '../Wallet/Wallet';
 import Invoice from '../Invoice/Invoice';
 import ViewPartner from "../Partners/ViewPartner";
+import PartDriverList from "../Partners/PartDriver/PartDriverList";
+import AddDriverPart from "../Partners/PartDriver/Adddriver";
+import EditPrtDriver from "../Partners/PartDriver/EditPrtDriver";
+
 
 
 
@@ -116,11 +120,16 @@ const Layout = ({ setLogin }) => {
             <Route path="/dashboard" element={<Dashbord />} />
             <Route path="/Shipments" element={<Shipments />} />
 
-            {/* service */}
+            {/* service--partner */}
             <Route path="/Serviceproviders/Partners" element={<Partners/>}/>
             <Route path="/addpartners" element={<Addpartners />} />
-            {/* partner */}
             <Route path="/Serviceproviders/Partners/viewpartner/:id" element={<ViewPartner/>}/>
+            <Route path="/Serviceproviders/Partners/part-driverlist/:id" element={<PartDriverList/>}/>
+            <Route path="/Serviceproviders/Partners/part-adddriver/:id" element={<AddDriverPart/>}/>
+            <Route path="/Serviceproviders/Partners/part-editdriver/:id" element={<EditPrtDriver/>}/>
+
+
+
 
             
             {/* Abd------------------------- */}

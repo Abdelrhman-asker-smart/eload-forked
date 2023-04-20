@@ -216,7 +216,7 @@ console.log(prvidersList,"prvidersList");
             </div>
             <div className="shipments-data col-3 card-header py-5">
               <div className="card-box">
-                <div className="data-card">
+                <div className="data-card my-2">
                 <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3.16992 7.43994L11.9999 12.5499L20.7699 7.46994" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M12 21.61V12.54" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -226,7 +226,7 @@ console.log(prvidersList,"prvidersList");
                   <span>{prvidersList.length} Shipments</span>
                 </div>
                 {/* drivers */}
-                <div className="data-card d-flex">
+                <div className="data-card d-flex my-2">
                 <svg className="mx-3" width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1264_14016)">
                 <path d="M12.5075 9.97808C12.4529 10.0479 12.3983 10.1177 12.3437 10.1875L12.375 9.88378L12.5075 9.97808ZM12.5075 9.97808C12.5178 9.96359 12.5297 9.94949 12.5415 9.93536C12.584 9.88462 12.6269 9.83342 12.6022 9.76188C12.5753 9.68373 12.5022 9.67843 12.4323 9.67335C12.4204 9.67249 12.4085 9.67163 12.3971 9.67042M12.5075 9.97808L12.3759 9.87514L12.3797 9.83868M12.3971 9.67042C12.2884 9.65921 12.1798 9.64801 12.0714 9.63694L12.3447 9.85074L12.3755 9.87481L12.3793 9.83881M12.3971 9.67042L12.3793 9.83881M12.3971 9.67042L12.3797 9.83868M12.3793 9.83881L12.3797 9.83868M12.3793 9.83881L12.3797 9.83868M12.3339 9.85449L12.3746 9.88346L12.3424 10.1892C12.3284 10.2071 12.3143 10.2251 12.3003 10.243C12.2658 10.2281 12.2243 10.2051 12.1822 10.1697C12.108 10.1074 12.0602 10.0305 12.0351 9.95762L12.3339 9.85449ZM12.3339 9.85449L12.0368 9.64304C12.0296 9.66324 12.023 9.68639 12.0181 9.71229C12.0018 9.79725 12.0092 9.88272 12.035 9.95762L12.3339 9.85449ZM9.27775 10.0708L9.28642 10.0707L9.29508 10.0704C9.92865 10.0461 10.7215 10.1071 11.5795 10.1907C10.6759 11.3462 9.77224 12.5035 8.87394 13.6669L8.85372 13.6678L8.82311 13.6691C7.24891 13.7233 5.77307 14.2035 4.52274 15.3359C3.65081 16.1153 3.0373 17.119 2.9007 18.3797C2.51588 18.3754 2.13026 18.3764 1.73999 18.3825C1.60091 18.2114 1.45899 18.0452 1.32255 17.8855L1.32019 17.8827C1.17731 17.7154 1.04035 17.555 0.907976 17.3916L0.90799 17.3916L0.904992 17.388C0.486236 16.8793 0.49682 16.218 0.848103 15.843L0.850688 15.8402C1.63557 14.9916 2.18498 13.9808 2.69274 13.0467C2.81218 12.8269 2.92931 12.6114 3.04666 12.4033C3.27979 11.9966 3.50414 11.5828 3.71962 11.1708L3.71964 11.1708L3.72131 11.1675C3.93141 10.7597 4.24706 10.5376 4.69096 10.4391L4.69096 10.4391L4.69356 10.4385C5.48784 10.2586 6.31167 10.1944 7.18731 10.1273L7.18873 10.1272C7.72995 10.0844 8.25859 10.0798 9.00395 10.0733C9.09207 10.0725 9.18321 10.0717 9.27775 10.0708ZM2.87844 18.6345C2.87835 18.6344 2.87866 18.6321 2.87961 18.6279C2.87901 18.6326 2.87853 18.6347 2.87844 18.6345Z" stroke="#244664" stroke-width="1.2"/>
@@ -242,13 +242,13 @@ console.log(prvidersList,"prvidersList");
                 </svg>
 
                 <div className="d-flex">
-                <span> Drivers</span>
-                  <NavLink to=""  className="mx-3">View All</NavLink>
+                <span className="mx-2"> Drivers</span>
+                  <NavLink to={`/Serviceproviders/Partners/part-driverlist/${id}`}  className="mx-3">View All</NavLink>
                 </div>
 
                 </div>
                 {/* trucks */}
-                <div className="data-card d-flex">
+                <div className="data-card d-flex my-2">
                 <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15 2V12C15 13.1 14.1 14 13 14H2V6C2 3.79 3.79 2 6 2H15Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M22 14V17C22 18.66 20.66 20 19 20H18C18 18.9 17.1 18 16 18C14.9 18 14 18.9 14 20H10C10 18.9 9.1 18 8 18C6.9 18 6 18.9 6 20H5C3.34 20 2 18.66 2 17V14H13C14.1 14 15 13.1 15 12V5H16.84C17.56 5 18.22 5.39001 18.58 6.01001L20.29 9H19C18.45 9 18 9.45 18 10V13C18 13.55 18.45 14 19 14H22Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -258,7 +258,7 @@ console.log(prvidersList,"prvidersList");
                 </svg>
 
                 <div className="d-flex">
-                  <span> Trucks</span>
+                  <span > Trucks</span>
                   <NavLink to=""  className="mx-3">View All</NavLink>
                   </div>
                 </div>
