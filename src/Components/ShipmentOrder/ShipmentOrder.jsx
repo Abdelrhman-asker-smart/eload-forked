@@ -37,7 +37,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 let Msg = ({ closeToast, toastProps }) => (
   <div>
-    <h5>Assign successfully!</h5>
+    <h5>Assigned successfully!</h5>
     {/* <p>{notification.body}</p> */}
   </div>
 )
@@ -286,6 +286,32 @@ const ShipmentOrder = () => {
     }
   };
 
+  const assignDriver = async (driver_id) => {
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("driver_id", driver_id);
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/shipments/${detailsList.id}`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      toast(<Msg />)
+      window.location.reload();
+      
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const [changeprice, setChangePrice] = useState(false);
   const [priceValue, setPriceValue] = useState(0);
 
@@ -305,7 +331,7 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {detailsList?.allow_driver_to_start === true ? (
+            {row.original.is_backhauling === true ? (
               <span style={{ color: "#FF8A00" }}>{renderedCellValue}</span>
             ) : (
               <span>{renderedCellValue}</span>
@@ -636,6 +662,7 @@ const ShipmentOrder = () => {
       contractprice: item.price,
       margin: item.margin,
       margin2: item.margin_percentage,
+      is_backhauling: item.is_backhauling,
       mobile: item.user.phone,
       email: item.user.email,
       type: item.type,
@@ -660,7 +687,7 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {detailsList?.allow_driver_to_start === true ? (
+            {row.original.is_backhauling === true ? (
               <span style={{ color: "#FF8A00" }}>{renderedCellValue}</span>
             ) : (
               <span>{renderedCellValue}</span>
@@ -991,6 +1018,7 @@ const ShipmentOrder = () => {
       contractprice: item.price,
       margin: item.margin,
       margin2: item.margin_percentage,
+      is_backhauling: item.is_backhauling,
       mobile: item.user.phone,
       email: item.user.email,
       type: item.type,
@@ -1096,6 +1124,90 @@ const ShipmentOrder = () => {
       currency: item.currency,
       Describtion: item.description,
       Status: item.status,
+    };
+  });
+
+
+  // =============== eligible drivers =============== 
+  const drivers_columns = useMemo(
+    () => [
+      {
+        accessorKey: "name",
+        header: "Name",
+        size: 60,
+      },
+      {
+        accessorKey: "email",
+        header: "Email",
+        size: 30,
+      },
+      {
+        accessorKey: "phone",
+        header: "Phone",
+        size: 30,
+      },
+      {
+        accessorKey: "options",
+        header: "OPTIONS",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <button
+            onClick={ () => assignDriver(row.original.id) }
+            style={{
+              border: "0",
+              borderRadius: "20px",
+              padding: "3px 8px",
+              background: "#0E324A",
+              color: "#fff",
+              fontSize: "16px",
+              fontWeight: "400",
+              display: `${detailsList.status === "PARTNER-ASSIGNED" ? 'initial' : 'none'}`
+            }}
+            >
+              <svg
+                width="25"
+                height="25"
+                viewBox="0 0 25 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                  fill="white"
+                />
+                <path
+                  opacity="0.4"
+                  d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                  fill="white"
+                />
+                <path
+                  d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                  fill="white"
+                />
+              </svg>
+              {renderedCellValue}
+            </button>
+          </Box>
+        ),
+      },
+    ],
+    [detailsList.status]
+  );
+
+  const drivers_array = Array.isArray(detailsList?.drivers) ? [...detailsList?.drivers]: [];
+  const drivers_data = drivers_array.map((item) => {
+    return {
+      id: item.id,
+      name: item.user?.name,
+      email: item.user?.email,
+      phone: item.user?.phone,
+      options: "Assign"
     };
   });
 
@@ -1835,6 +1947,7 @@ const ShipmentOrder = () => {
       </div>
       <hr />
       {/* maping-section */}
+      {detailsList.latitude && detailsList.longitude &&
       <div className="row mapsection px-4 py-2">
         <div className="col-md-6">
           <div className="headingdetails">
@@ -1946,11 +2059,10 @@ const ShipmentOrder = () => {
                         options={{
                           origin:{lat:origin.lat , lng:origin.lng},
                           destination:{lat:destination.lat , lng:destination.lng},
-
                           travelMode: "DRIVING",
                         }}
                         callback={(result) => {
-                          if (result !== null) {
+                          if (result !== null && !directions) {
                               setDirections(result);
                           }
                         }}
@@ -1961,6 +2073,7 @@ const ShipmentOrder = () => {
           </div>
         </div>
       </div>
+      }
       {/* test */}
 
       <div className="p-2">
@@ -2065,6 +2178,32 @@ const ShipmentOrder = () => {
         )}
       />
       </>
+      }
+
+      {/* Eligible Drivers */}
+      {
+        user_type === "provider" && detailsList.provider &&
+        <>
+          <div className="orderhead px-2">
+            <div className="text-head">Eligible Drivers</div>
+          </div>
+          <MaterialReactTable
+            columns={drivers_columns}
+            data={drivers_data}
+            enableRowSelection
+            positionToolbarAlertBanner="bottom"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              ></Box>
+            )}
+          />
+        </>
       }
 
       {/* Financial Service provide=table-request */}
