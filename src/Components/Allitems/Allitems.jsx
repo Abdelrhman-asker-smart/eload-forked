@@ -28,9 +28,6 @@ import "./Allitems.css";
 
 const Allitems = () => {
   const dispatch = useDispatch();
-  const [promotionList, setpromotionList] = useState([]);
-  const [truck_types, setTruckTypes] = useState([]);
-  const [cities, setCities] = useState([]);
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
   const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
   const { id } = useParams();
@@ -236,7 +233,7 @@ const Allitems = () => {
       }
     };
 
-    ItemsFetch(user_type == 'provider' ? user_type_data.id : id);
+    ItemsFetch(user_type == 'admin' ? id : user_type_data.id);
 
   }, [reload]);
 
