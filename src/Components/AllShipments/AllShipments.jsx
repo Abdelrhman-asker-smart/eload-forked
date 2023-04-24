@@ -394,7 +394,11 @@ const AllShipments = () => {
         console.log(e);
       }
     };
-    readyShipment();
+
+    if (user_type != 'shipper') {
+      readyShipment();
+    }
+
     allShipment();
   }, []);
 
@@ -418,82 +422,85 @@ const AllShipments = () => {
     <div>
       <div className="container-fluid Allshipment  py-3 px-0">
         {/* ready-shipment */}
-        <div className=" p-3 tableshipment tableready table-resbon">
-          {/* <div className="w-75"> */}
-          {/* table */}
-          <h3
-            style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
-            className="my-3 mx-3"
-          >
-            Shipments:
-            <span style={{ color: "#31A02F" }} className="mx-2">
-              Ready
-            </span>
-          </h3>
-          <MaterialReactTable
-            columns={columnsReady}
-            data={dataReady}
-            enableRowSelection
-            positionToolbarAlertBanner="bottom"
-            renderTopToolbarCustomActions={({ table }) => (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: "1rem",
-                  p: "0.5rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                <Button
-                  color="primary"
-                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                  onClick={handleExportDataready}
-                  startIcon={<FileDownloadIcon />}
-                  variant="contained"
+        {
+          user_type != 'shipper' &&
+          <div className=" p-3 tableshipment tableready table-resbon">
+            {/* <div className="w-75"> */}
+            {/* table */}
+            <h3
+              style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
+              className="my-3 mx-3"
+            >
+              Shipments:
+              <span style={{ color: "#31A02F" }} className="mx-2">
+                Ready
+              </span>
+            </h3>
+            <MaterialReactTable
+              columns={columnsReady}
+              data={dataReady}
+              enableRowSelection
+              positionToolbarAlertBanner="bottom"
+              renderTopToolbarCustomActions={({ table }) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "1rem",
+                    p: "0.5rem",
+                    flexWrap: "wrap",
+                  }}
                 >
-                  Export All Data
-                </Button>
-                <Button
-                  disabled={table.getPrePaginationRowModel().rows.length === 0}
-                  //export all rows, including from the next page, (still respects filtering and sorting)
-                  onClick={() =>
-                    handleExportRowsready(table.getPrePaginationRowModel().rows)
-                  }
-                  startIcon={<FileDownloadIcon />}
-                  variant="contained"
-                >
-                  Export All Rows
-                </Button>
-                <Button
-                  disabled={table.getRowModel().rows.length === 0}
-                  //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                  onClick={() =>
-                    handleExportRowsready(table.getRowModel().rows)
-                  }
-                  startIcon={<FileDownloadIcon />}
-                  variant="contained"
-                >
-                  Export Page Rows
-                </Button>
-                <Button
-                  disabled={
-                    !table.getIsSomeRowsSelected() &&
-                    !table.getIsAllRowsSelected()
-                  }
-                  //only export selected rows
-                  onClick={() =>
-                    handleExportRowsready(table.getSelectedRowModel().rows)
-                  }
-                  startIcon={<FileDownloadIcon />}
-                  variant="contained"
-                >
-                  Export Selected Rows
-                </Button>
-              </Box>
-            )}
-          />
-          {/* </div> */}
-        </div>
+                  <Button
+                    color="primary"
+                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                    onClick={handleExportDataready}
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export All Data
+                  </Button>
+                  <Button
+                    disabled={table.getPrePaginationRowModel().rows.length === 0}
+                    //export all rows, including from the next page, (still respects filtering and sorting)
+                    onClick={() =>
+                      handleExportRowsready(table.getPrePaginationRowModel().rows)
+                    }
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export All Rows
+                  </Button>
+                  <Button
+                    disabled={table.getRowModel().rows.length === 0}
+                    //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                    onClick={() =>
+                      handleExportRowsready(table.getRowModel().rows)
+                    }
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export Page Rows
+                  </Button>
+                  <Button
+                    disabled={
+                      !table.getIsSomeRowsSelected() &&
+                      !table.getIsAllRowsSelected()
+                    }
+                    //only export selected rows
+                    onClick={() =>
+                      handleExportRowsready(table.getSelectedRowModel().rows)
+                    }
+                    startIcon={<FileDownloadIcon />}
+                    variant="contained"
+                  >
+                    Export Selected Rows
+                  </Button>
+                </Box>
+              )}
+            />
+            {/* </div> */}
+          </div>
+        }
 
         {/* table-data */}
         <div className=" p-3 tableshipment table-resbon">
