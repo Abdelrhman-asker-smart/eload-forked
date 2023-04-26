@@ -66,6 +66,7 @@ import EditItem from "../Iteminfo/editItem";
 import Wallet from '../Wallet/Wallet';
 import Invoice from '../Invoice/Invoice';
 import ViewPartner from "../Partners/ViewPartner";
+import Details from "../order/Details";
 
 
 
@@ -183,6 +184,7 @@ const Layout = ({ setLogin }) => {
             <Route path="/shipmentlist" element={<ShipmentTypes/>} />
             <Route path="/addshipment" element={<AddShipment/>} />
             <Route path="/editshipment/:id" element={<Editshipment/>} />
+            <Route path="/orders/:id" element={<Details />} />
 
             
             <Route path="/measurements" element={<Measurements/>} />

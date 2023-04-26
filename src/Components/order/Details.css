@@ -1,0 +1,202 @@
+.Details .filter-side {
+  background-color: #f5f5f5 !important;
+  color: #244664;
+  width: 180px;
+}
+.Details .filter-side h5 {
+  font-weight: bolder;
+}
+.Details .filter-side .accordion {
+  --bs-accordion-border-color: none;
+  --bs-accordion-border-width: 0;
+  border-color: transparent !important;
+}
+.Details .filter-side .accordion-button {
+  background-color: #f5f5f5 !important;
+  color: #244664;
+  border: none !important;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: none !important;
+}
+.Details .filter-side .accordion-button:not(.collapsed)::after {
+  background-image: none;
+  transform: none;
+}
+.Details .filter-side .accordion-button::after {
+  background-image: none;
+  content: "_";
+  font-size: 20px;
+  font-weight: 600;
+}
+.Details .filter-side .accordion-body label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.Details .filter-side .accordion-item {
+  background-color: #f5f5f5 !important;
+  color: #244664;
+  border-bottom: 2px solid #244664;
+  /* padding-left: 30px; */
+}
+.Details .filter-side .date-input {
+  border: none;
+  color: #fff;
+  background-color: #244664 !important;
+  border-radius: 25px;
+  width: 88%;
+}
+.Details .filter-side .date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  margin-right: 10px;
+}
+/* city-input */
+.Details .filter-side .select-city {
+  border-radius: 25px;
+  background-color: #244664;
+  width: 80%;
+  color: #fff !important;
+}
+
+/* checkbox */
+.Details .filter-side .check-filter[type="checkbox"] {
+  border-radius: 0 !important;
+  border: none !important;
+  background-color: #244664 !important;
+}
+.Details .filter-side .form-check-label {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+}
+/* .Details .filter-side .css-13cymwt-control {
+    background-color: #244664;
+} */
+/* .Details .filter-side .css-1dimb5e-singleValue{
+    color: #fff ;
+} */
+/* .Details .filter-side .select__control--is-focused{
+    color: #244664 !important;
+} */
+/* btns */
+.filter-side .btn-search,
+.filter-side .btn-rest {
+  color: #fff !important;
+  margin: 5% 12%;
+  background-color: #244664 !important;
+  font-size: 14px;
+  font-weight: 400;
+  width: 76%;
+  padding-top: 5px;
+  height: 37px;
+  border-radius: 15px;
+  /* font-family: 'Lato', sans-serif !important; */
+}
+/* header-style */
+.export-side {
+  left: 65%;
+}
+
+.export-side .Sort-list-btn {
+  background-color: transparent !important;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 3px;
+  color: #a9a9a9;
+  padding: 10px 28px;
+}
+.export-side .Sort-list-btn:focus,
+.Sort-list-btn.show,
+.Sort-list-btn:hover {
+  background-color: transparent !important;
+  color: #a9a9a9;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
+.export-side .dropdown-toggle::after {
+  margin-left: 1em !important;
+}
+.export-side .btn-secondary.dropdown-toggle:hover,
+.btn-secondary.dropdown-toggle:focus {
+  background-color: transparent !important;
+}
+/* table-style */
+.table {
+  scroll-behavior: smooth;
+}
+
+.Details div.mdb-datatable div.mdb-datatable-filter {
+  text-align: right;
+  width: 100%;
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+.Details div.mdb-datatable div.mdb-datatable-filter input {
+  justify-content: start;
+  min-width: 400px;
+  border-radius: 25px;
+  padding: 11px 25px;
+}
+.Details .pagination .page-item .page-link {
+  font-size: 0.9rem;
+  color: white;
+  background-color: #244664;
+  border: 0;
+  outline: 0;
+  transition: all 0.3s linear;
+}
+.Details .pagination .page-item .page-link:hover {
+  background-color: #ccc;
+  color: #244664;
+  border-radius: 0.125rem;
+  transition: all 0.3s linear;
+}
+.Details div.mdb-datatable div.mdb-datatable-entries {
+  display: none;
+}
+.Details table.table th,
+table.table td {
+  padding-top: 1.1rem;
+  padding-bottom: 1rem;
+  font-size: 10px;
+  font-weight: 600;
+}
+.Details tr > td:last-of-type {
+  color: #31a02f;
+  font-size: 12px;
+  font-weight: 500;
+}
+.Details .table-hover > tbody > tr:hover td:last-of-type {
+  color: #31a02f;
+}
+.accordion-body {
+  padding: 0;
+}
+.Details .tableready .css-8uhtka {
+  color: #31a02f !important;
+}
+/* .Details .tableready .css-sghohy-MuiButtonBase-root-MuiButton-root {
+background-color:  #31A02F !important;
+} */
+.Details .tableready .css-1hw9j7s {
+  background-color: #31a02f !important;
+}
+/* .Details .css-10q8335-MuiTableCell-root{ */
+.Details .MuiTableCell-body {
+  /* MuiTableCell-body */
+  color: #0e324a !important;
+  font-weight: 500 !important;
+}
+.table-resbon {
+  min-width: 50rem;
+  max-width: 80rem;
+}
+
+@media screen and (max-width: 1440px) {
+  .table-resbon {
+    min-width: 40rem;
+    max-width: 70rem;
+  }
+}
+
