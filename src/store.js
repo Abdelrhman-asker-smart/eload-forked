@@ -8,6 +8,10 @@ import cityGetReducer from './redux/CityListSlice';
 import stateGetReducer from './redux/StateListSlice';
 import PromotionGetReducer from './redux/listPromotion';
 
+// partners
+import partnerGetReducer from './redux/Partner/partnerList';
+
+
 // driver
 import DriverGetReducer from './redux/Drivers/driverList';
 import  ItemsGetReducer from "./redux/Items/ItemsList";
@@ -41,6 +45,8 @@ const rootReducer = combineReducers({
   cityList: cityGetReducer,
   stateList: stateGetReducer,
   PromotionList: PromotionGetReducer,
+  // partners
+  PartnersList:partnerGetReducer,
   // driver
   DriverList:DriverGetReducer,
   ItemsList:ItemsGetReducer,

@@ -105,8 +105,8 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       View
     </button>
     </NavLink>
-    
-      <button
+    <NavLink to={`/Serviceproviders/Partners/editpartner/${id}`}>
+    <button
         className="btn-table active"
         style={{
           textAlign: "center",
@@ -121,6 +121,9 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
+
+    </NavLink>
+
    
     <button
       className="btn-table"

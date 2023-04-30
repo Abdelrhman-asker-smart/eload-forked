@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // api().fetchTeamData
-export const EditDriverFunction = createAsyncThunk(
-  "truck/editTruck",
+export const EditpartnerFunction = createAsyncThunk(
+  "driver/EditDriverFunction",
   async ({ token, id, formdata }) => {
     console.log(token, "from reducer");
     console.log(id, "id from reducer");
@@ -11,7 +11,6 @@ export const EditDriverFunction = createAsyncThunk(
     try {
       const response = await axios.post(
         `https://dev.eload.smart.sa/api/v1/providers/${id}`,
-        // partnert ---providers ======> drivers
         formdata,
         {
           headers: {

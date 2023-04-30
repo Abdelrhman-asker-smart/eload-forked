@@ -59,34 +59,85 @@ const EditDriver = () => {
   const [truckList, setTruckList] = useState([]);
 
   useEffect(() => {
-    const finddriver = () => {
-      let item = list.find((item, _) => item.id == id);
-      // console.log(item);
-      setName(item.name);
-      setEmail(item.email);
-      setProfileimg(item.profileimg);
-      setPassword(item.password);
-      setOwnerName(item.ownerName);
-      setOwnerPhone(item.ownerPhone);
-      setOwnerNID(item.ownerNID);
-      setIdCope(item.idCope);
-      setDrivingLincese(item.drivingLincese);
-      setDrivingLincese_Cope(item.drivingLincese_Cope);
-      setLinceseId(item.LinceseId);
-      setExpirydate(item.expirydate);
-      setNationality(item.nationality);
-      setSponsorName(item.sponsorName);
-      setSponsorNumber(item.setChassisNumber);
-      setTruckModel(item.truckModel);
-      settruckPlateNumber(item.truckPlateNumber);
-      setChassisNumber(item.chassisNumber);
-      setTruckLinceseNumber(item.TruckLinceseNumber);
-      setTruckLinceseCope(item.TruckLinceseCope);
-      setTruckType(item.TruckType);
+    console.log(id,"id-----");
+    const partnerFetch = async (id) => {
+      try {
+        const response = await axios.get(
+  
+          `https://dev.eload.smart.sa/api/v1/providers/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+  
+        const data = response.data.data;
+        console.log(data,"driverfromAPiiiiiiiiiiii");
 
+      // setName(item.name);
+      // setEmail(item.email);
+      // setProfileimg(item.profileimg);
+      // setPassword(item.password);
+      // setOwnerName(data.driver.ownerName);=======================
+      // setOwnerPhone(item.ownerPhone);
+      // setOwnerNID(item.ownerNID);
+      // setIdCope(item.idCope);
+      // setDrivingLincese(item.drivingLincese);
+      // setDrivingLincese_Cope(item.drivingLincese_Cope);
+      // setLinceseId(item.LinceseId);
+      // setExpirydate(item.expirydate);
+      // setNationality(item.nationality);
+      // setSponsorName(item.sponsorName);
+      // setSponsorNumber(item.setChassisNumber);
+      // setTruckModel(item.truckModel);
+      // settruckPlateNumber(item.truckPlateNumber);
+      // setChassisNumber(item.chassisNumber);
+      // setTruckLinceseNumber(item.TruckLinceseNumber);
+      // setTruckLinceseCope(item.TruckLinceseCope);
+      // setTruckType(item.TruckType);
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
     };
-    finddriver();
+    partnerFetch(id);
+
   }, []);
+
+  // useEffect(() => {
+  //   const finddriver = () => {
+  //     let item = list.find((item, _) => item.id == id);
+  //     console.log(item);
+
+  //     setName(item.name);
+  //     setEmail(item.email);
+  //     setProfileimg(item.profileimg);
+  //     setPassword(item.password);
+  //     setOwnerName(item.ownerName);
+  //     setOwnerPhone(item.ownerPhone);
+  //     setOwnerNID(item.ownerNID);
+  //     setIdCope(item.idCope);
+  //     setDrivingLincese(item.drivingLincese);
+  //     setDrivingLincese_Cope(item.drivingLincese_Cope);
+  //     setLinceseId(item.LinceseId);
+  //     setExpirydate(item.expirydate);
+  //     setNationality(item.nationality);
+  //     setSponsorName(item.sponsorName);
+  //     setSponsorNumber(item.setChassisNumber);
+  //     setTruckModel(item.truckModel);
+  //     settruckPlateNumber(item.truckPlateNumber);
+  //     setChassisNumber(item.chassisNumber);
+  //     setTruckLinceseNumber(item.TruckLinceseNumber);
+  //     setTruckLinceseCope(item.TruckLinceseCope);
+  //     setTruckType(item.TruckType);
+
+  //   };
+  //   finddriver();
+  // }, []);
   
   const edit = () => {
 

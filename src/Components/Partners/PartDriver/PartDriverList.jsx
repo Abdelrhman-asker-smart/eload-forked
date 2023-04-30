@@ -207,7 +207,7 @@ const PartDriverList = () => {
 
               const response = await axios.get(
                
-                `https://dev.eload.smart.sa/api/v1/drivers?provider_id${id}`,
+                `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${id}`,
                 {
                   headers: {
                     Accept: "application/json",

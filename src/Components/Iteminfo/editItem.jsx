@@ -39,7 +39,7 @@ const EditItem = () => {
     const [shipmentType, setShipmentType] = useState("");
     const [price, setPrice] = useState("");
 
-      // country_list
+      // selects_list
   const [countryList, setCountryList] = useState([]);
   const [truckList, setTruckList] = useState([]);
   const [shipmentList, setShipmentList] = useState([]);

@@ -69,6 +69,7 @@ import ViewPartner from "../Partners/ViewPartner";
 import PartDriverList from "../Partners/PartDriver/PartDriverList";
 import AddDriverPart from "../Partners/PartDriver/Adddriver";
 import EditPrtDriver from "../Partners/PartDriver/EditPrtDriver";
+import EditPartners from "../Addpartners/Editpartners";
 
 
 
@@ -123,7 +124,9 @@ const Layout = ({ setLogin }) => {
             {/* service--partner */}
             <Route path="/Serviceproviders/Partners" element={<Partners/>}/>
             <Route path="/addpartners" element={<Addpartners />} />
+            <Route path="/Serviceproviders/Partners/editpartner/:id" element={<EditPartners/>}/>
             <Route path="/Serviceproviders/Partners/viewpartner/:id" element={<ViewPartner/>}/>
+            {/* drivers */}
             <Route path="/Serviceproviders/Partners/part-driverlist/:id" element={<PartDriverList/>}/>
             <Route path="/Serviceproviders/Partners/part-adddriver/:id" element={<AddDriverPart/>}/>
             <Route path="/Serviceproviders/Partners/part-editdriver/:id" element={<EditPrtDriver/>}/>

@@ -22,7 +22,7 @@ export const fetchdriverList = createAsyncThunk(
         }
       );
       const data = await response.data;
-      // console.log(data, "data");
+      console.log(data, "data");
       return data;
     } catch (e) {
       console.log(e);
