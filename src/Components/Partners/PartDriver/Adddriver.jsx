@@ -23,7 +23,7 @@ const Adddriver = () => {
   
       let Msg = ({ closeToast, toastProps }) => (
         <div>
-          <h4>Done</h4>
+          <h5>Done</h5>
           <NavLink to={`/Serviceproviders/Partners/part-driverlist/${id}`}>
             {/* /Serviceproviders/Partners/part-driverlist/ */}
             {/* {`/Serviceproviders/Partners/viewpartner/${id}`} */}

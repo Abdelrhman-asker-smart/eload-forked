@@ -72,7 +72,7 @@ const Editpartners = () => {
         setEmail(data.user.email);
         setProfileimg(data.user.avatar);
         // setPassword(data.password);
-        setOwnerName(data.name);
+        // setOwnerName(data.name);
         setOwnerPhone(data.user.phone);
         setOwnerNID(data.user.national_id);
         return data;
@@ -99,7 +99,7 @@ const Editpartners = () => {
     }
     formdata.append("avatar", profileimg);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
 
@@ -213,7 +213,7 @@ const Editpartners = () => {
         <h3>OWNER INFORMATION</h3>
         {/* name+PHONE+id */}
         <div className="row my-4">
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <label className="my-2 d-block">Owner name</label>
             <input
               className="input-box px-3"
@@ -225,7 +225,7 @@ const Editpartners = () => {
                 setOwnerName(e.target.value);
               }}
             />
-          </div>
+          </div> */}
           <div className="col-md-4">
             <label className="my-2 d-block">Owner Phone </label>
             <input

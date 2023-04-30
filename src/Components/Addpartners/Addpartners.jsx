@@ -61,7 +61,7 @@ const Addpartners = () => {
     formdata.append("avatar", profileimg);
     formdata.append("password", password);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
 
@@ -173,7 +173,7 @@ const Addpartners = () => {
         <h3>OWNER INFORMATION</h3>
         {/* name+PHONE+id */}
         <div className="row my-4">
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <label className="my-2 d-block">Owner name</label>
             <input
               className="input-box px-3"
@@ -184,7 +184,7 @@ const Addpartners = () => {
                 setOwnerName(e.target.value);
               }}
             />
-          </div>
+          </div> */}
           <div className="col-md-4">
             <label className="my-2 d-block">Owner Phone </label>
             <input
