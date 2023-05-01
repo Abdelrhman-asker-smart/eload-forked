@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import  {ReactComponent as Dateicon} from '../../../icons/date-icon.svg';
 import  {ReactComponent as Vector} from '../../../icons/Vector.svg';
 
+
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,12 +20,23 @@ import './AddDriver.css';
 
 
 const EditDriver = () => {
-  const { list, status } = useSelector((state) => state.DriverList);
-  const dispatch = useDispatch();
+  // const { list, status } = useSelector((state) => state.DriverList);
+
   const [startDate, setStartDate] = useState();
+
+  const dispatch = useDispatch();
+  const [cities, setCities] = useState([]); 
+  const [groupsTruckOptions, setGroupsTruckOptions] = useState([]);
+  const [groupsShipmentOptions, setGroupsShipmentOptions] = useState([]);
 
   const { id } = useParams();
   const [cookie] = useCookies(["eload_token"]);
+  // select-options
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
 
 
   // States================================
@@ -60,7 +72,7 @@ const EditDriver = () => {
 
   useEffect(() => {
     console.log(id,"id-----");
-    const partnerFetch = async (id) => {
+    const driverFetch = async (id) => {
       try {
         const response = await axios.get(
   
@@ -78,34 +90,92 @@ const EditDriver = () => {
         const data = response.data.data;
         console.log(data,"driverfromAPiiiiiiiiiiii");
 
-      // setName(item.name);
-      // setEmail(item.email);
-      // setProfileimg(item.profileimg);
+      setName(data.name);
+      setEmail(data.user.email);
+      setProfileimg(data.user.avatar);
+    //   {
+    //     password!="" &&(
+    //         formdata.append("password", password)
+    //     )
+    // }
       // setPassword(item.password);
       // setOwnerName(data.driver.ownerName);=======================
-      // setOwnerPhone(item.ownerPhone);
-      // setOwnerNID(item.ownerNID);
-      // setIdCope(item.idCope);
-      // setDrivingLincese(item.drivingLincese);
-      // setDrivingLincese_Cope(item.drivingLincese_Cope);
-      // setLinceseId(item.LinceseId);
-      // setExpirydate(item.expirydate);
-      // setNationality(item.nationality);
-      // setSponsorName(item.sponsorName);
-      // setSponsorNumber(item.setChassisNumber);
-      // setTruckModel(item.truckModel);
-      // settruckPlateNumber(item.truckPlateNumber);
-      // setChassisNumber(item.chassisNumber);
-      // setTruckLinceseNumber(item.TruckLinceseNumber);
-      // setTruckLinceseCope(item.TruckLinceseCope);
-      // setTruckType(item.TruckType);
+      setOwnerPhone(data.user.phone);
+      setOwnerNID(data.user.national_id);
+      setIdCope(data.driver.id_copy);
+      setDrivingLincese(data.driver.driving_license_number);
+      setDrivingLincese_Cope(data.driver.driving_license_copy);
+      setLinceseId(data.driver.license_id);
+      setExpirydate(data.driver.expiry_date);
+      setNationality(data.driver.nationality_id);
+      setSponsorName(data.driver.sponsor_establishment_name);
+      setSponsorNumber(data.driver.sponsor_establishment_number );
+      setTruckModel(data.driver.truck.model);
+      settruckPlateNumber(data.driver.truck.plate_number );
+      setChassisNumber(data.driver.truck.chassis_number);
+      setTruckLinceseNumber(data.driver.truck.license_number);
+      setTruckLinceseCope(data.driver.truck.license_copy);
+      setTruckType(data.driver.truck.truck_type_id);
         return data;
       } catch (e) {
         console.log(e);
       }
     };
-    partnerFetch(id);
+    // country
+    const Countrylist = async () => {
+      try {
+        const response = await axios.get(
+          "https://dev.eload.smart.sa/api/v1/countries",
 
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setCountryList(data);
+        // console.log(data, "datacountry");
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    // truck
+    const Trucklist = async () => {
+      try {
+        const response = await axios.get(
+          "https://dev.eload.smart.sa/api/v1/truck_types",
+
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+
+        const data = response.data.data;
+
+        setTruckList(data);
+        // console.log(data, "datacountry");
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    driverFetch(id);
+    Countrylist();
+    Trucklist();
   }, []);
 
   // useEffect(() => {
@@ -142,13 +212,20 @@ const EditDriver = () => {
   const edit = () => {
 
     const formdata = new FormData();
+    formdata.append("_method", 'put');
+
     formdata.append("name", name);
     formdata.append("type", "freelancer");
     formdata.append("email", email);
     formdata.append("avatar", profileimg);
-    formdata.append("password", password);
+    {
+      password!="" &&(
+          formdata.append("password", password)
+      )
+    }
+    // formdata.append("password", password);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
     // id info
@@ -171,6 +248,7 @@ const EditDriver = () => {
     formdata.append("truck[truck_type_id]", TruckType);
 
     dispatch(
+      // EditDriverFunction
       EditDriverFunction({
         token: cookie.eload_token,
         id,
@@ -179,78 +257,72 @@ const EditDriver = () => {
     )
       .then((res) => {
         console.log(res);
+        alert('Successfully Saved!');
       })
       .catch((e) => {
         console.log(e);
       });
   };
-    // select-options
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
-
 
     // select-fetch
       // Api-fetch-Country================
-  useEffect(() => {
-    const Countrylist = async () => {
-      try {
-        const response = await axios.get(
-          "https://dev.eload.smart.sa/api/v1/countries",
+  // useEffect(() => {
+  //   const Countrylist = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://dev.eload.smart.sa/api/v1/countries",
 
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
+  //         {
+  //           headers: {
+  //             Accept: "application/json",
+  //             Authorization: `Bearer ${cookie.eload_token}`,
 
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
+  //             "api-key":
+  //               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+  //           },
+  //         }
+  //       );
 
-        const data = response.data.data;
+  //       const data = response.data.data;
 
-        setCountryList(data);
-        // console.log(data, "datacountry");
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    Countrylist();
-  }, []);
+  //       setCountryList(data);
+  //       // console.log(data, "datacountry");
+  //       return data;
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   Countrylist();
+  // }, []);
   // Api-fetch-truck
-  useEffect(() => {
-    const Trucklist = async () => {
-      try {
-        const response = await axios.get(
-          "https://dev.eload.smart.sa/api/v1/truck_types",
+  // useEffect(() => {
+  //   const Trucklist = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://dev.eload.smart.sa/api/v1/truck_types",
 
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
+  //         {
+  //           headers: {
+  //             Accept: "application/json",
+  //             Authorization: `Bearer ${cookie.eload_token}`,
 
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
+  //             "api-key":
+  //               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+  //           },
+  //         }
+  //       );
 
-        const data = response.data.data;
+  //       const data = response.data.data;
 
-        setTruckList(data);
-        // console.log(data, "datacountry");
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    Trucklist();
-  }, []);
+  //       setTruckList(data);
+  //       // console.log(data, "datacountry");
+  //       return data;
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   Trucklist();
+  // }, []);
   
   // options_Country
   const GroupsCountryOptions = countryList.map((item, index) => ({
@@ -260,13 +332,12 @@ const EditDriver = () => {
   // truckoptions
   const GroupsTruckOptions = truckList.map((item, index) => ({
     label: item.name,
-
     value: item.id,
   }));
   return (
     <div className='container-fluid adddriver p-5'>
      <h3>DRIVER INFORMATION</h3>
-     <form onSubmit={edit}>
+     <form>
         {/* name+email */}
         <div className="row my-4">
           <div className="col-md-6">
@@ -346,7 +417,7 @@ const EditDriver = () => {
         <h3>OWNER INFORMATION</h3>
         {/* name+PHONE+id */}
         <div className="row my-4">
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <label className="my-2 d-block">Owner name</label>
             <input
               className="input-box px-3"
@@ -359,7 +430,7 @@ const EditDriver = () => {
                 setOwnerName(e.target.value);
               }}
             />
-          </div>
+          </div> */}
           <div className="col-md-4">
             <label className="my-2 d-block">Owner Phone </label>
             <input
@@ -483,23 +554,29 @@ const EditDriver = () => {
           <div className="col-md-4">
             <label className="my-2 d-block">Nationality</label>
             {/* Country-select */}
+            {
+            GroupsCountryOptions.length >= 0 && nationality &&
+            // conver id "1" to 1 in the data
             <Select
               classNamePrefix="select"
               className="basic-multi-select"
               // isMulti
               isDisabled={isDisabled}
-              value={nationality}
+              // value={nationality}
               required
               isLoading={isLoading}
               isClearable={isClearable}
               options={GroupsCountryOptions}
               isRtl={isRtl}
               isSearchable={isSearchable}
+              defaultValue={GroupsCountryOptions.find(({ value }) => value === nationality)}
+              // onChange={(choice) => setTruckType(choice.value)}
               name="color"
               onChange={(choice) => {
                 setNationality(choice.value);
               }}
             />
+            }
           </div>
         </div>
         {/* line-3 */}
@@ -619,6 +696,8 @@ const EditDriver = () => {
           </div>
           <div className="col-md-4">
             <label className="my-2 d-block">Truck Type</label>
+            {
+            groupsTruckOptions.length >= 0 && TruckType &&
             <Select
               classNamePrefix="select"
               className="basic-multi-select"
@@ -629,18 +708,17 @@ const EditDriver = () => {
               isClearable={isClearable}
               isRtl={isRtl}
               isSearchable={isSearchable}
-              value={TruckType}
               name="color"
               options={GroupsTruckOptions}
-              onChange={(choice) => {
-                setTruckType(choice.value);
-              }}
+              defaultValue={GroupsTruckOptions.find(({ value }) => value === TruckType)}
+              onChange={(choice) => setTruckType(choice.value)}
             />
+            }
           </div>
         </div>
         {/* <NavLink to="/Serviceproviders/driver"> */}
-        <button type="submit" className="btn-save my-3"
-          // onClick={showNotification}
+        <button type="button" className="btn-save my-3"
+          onClick={edit}
         >
           SAVE
         </button>
