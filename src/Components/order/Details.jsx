@@ -20,6 +20,7 @@ const Details = () => {
   const [order, setOrder] = useState({});
   const [shipments, setShipments] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
 
   const columns = useMemo(
     () => [
@@ -155,6 +156,28 @@ const Details = () => {
         accessorKey: "action",
         header: "Action",
         size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            {
+              user_type == 'admin' && (row.original.status == 'PENDING' || row.original.status == 'MODIFICATION-REQUEST') &&
+              <>
+              <button className="btn btn-primary btn-sm">
+                Change Cost
+              </button>
+
+              <button className="btn btn-primary btn-sm">
+                Approve
+              </button>
+              </>
+            }
+          </Box>
+        ),
       },
     ],
     []
