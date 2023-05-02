@@ -10,12 +10,14 @@ import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv";
+import { ToastContainer, toast } from "react-toastify";
 import "./invoice.css";
 
 const Invoice = () => {
   const dispatch = useDispatch();
   const [cookie] = useCookies(["eload_token"]);
   const [invoice, setInvoice] = useState({});
+  const [attachments, setAttachments] = useState([]);
   const [items, setItems] = useState([]);
   const { id } = useParams();
 
@@ -25,6 +27,38 @@ const Invoice = () => {
     request: { endpoint: 'requests', url: 'requests' },
     shipment: { endpoint: 'shipments', url: 'allshipments/shipmentorder' },
     order: { endpoint: 'orders', url: 'orders' },
+  }
+
+  let Msg = ({ closeToast, toastProps }) => (
+    <div>
+      <h5>updated successfully!</h5>
+      <p>the page will be refreshed in a moment...</p>
+    </div>
+  )
+
+  const changeStatus = async(status = 'PAID') => {
+    var urlencoded = new URLSearchParams();
+    urlencoded.append('status', status);
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/invoices/${invoice.id}`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      toast(<Msg />)
+      setTimeout(() => window.location.reload(), 5000);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   const getInvoiceDetails = async () => {
@@ -43,6 +77,7 @@ const Invoice = () => {
 
       let data = response.data.data;
       setInvoice(data);
+      setAttachments(data.attachments);
 
       let items = data.items.map((item) => {
         return {
@@ -126,6 +161,16 @@ const Invoice = () => {
 
   return (
     <div className="container invoice px-4">
+        <ToastContainer
+          position="top-right"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="light"
+        />
       <div className="row p-4">
         <h2 className="mb-20">
           <strong>
@@ -151,7 +196,18 @@ const Invoice = () => {
             <h5>Status: 
               <span class={`badge badge-${invoice.status == 'PAID' ? 'success' : 'danger'}`}>{invoice.status}</span>
             </h5>
+            {
+              invoice.status == 'PENDING' && attachments.length > 0 && 
+              <button className="btn btn-success btn-sm" onClick={() => changeStatus()}>Mark As Paid</button>
+            }
         </div>
+        {
+          attachments.length > 0 &&
+          <div className="col-md-4">
+            <h5>Attachments:</h5>
+            {attachments.map((attachment, index) => <><a href={attachment.path} target="_blank" className="text-primary">File {index + 1}</a><br /> </>)} 
+          </div>
+        }
       </div>
 
       <h6 className="mt-10">All Items</h6>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import { useMemo } from "react";
 
@@ -21,6 +22,39 @@ const Details = () => {
   const [shipments, setShipments] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+
+  let Msg = ({ closeToast, toastProps }) => (
+    <div>
+      <h5>updated successfully!</h5>
+      <p>the page will be refreshed in a moment...</p>
+    </div>
+  )
+
+  const changeCost = async(id, cost) => {
+    console.log('cost', cost);
+    var urlencoded = new URLSearchParams();
+    urlencoded.append('cost', cost);
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/shipments/${id}`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      toast(<Msg />)
+      setTimeout(() => window.location.reload(), 5000);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const columns = useMemo(
     () => [
@@ -71,6 +105,63 @@ const Details = () => {
         accessorKey: "shippingcost",
         header: 'Shipping Cost',
         size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+          {
+            user_type == 'admin' && (row.original.status == 'PENDING' || row.original.status == 'MODIFICATION-REQUEST') ?
+            <>
+              <span
+                contentEditable={true}
+                onInput={(e) => {
+                  row.original.shippingcost = Number(e.target.innerText);
+                }}
+                dangerouslySetInnerHTML={{ __html: renderedCellValue }}
+              ></span>
+
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                  stroke="#18AEC9"
+                  stroke-width="1.5"
+                  strokeMiterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                  stroke="#18AEC9"
+                  stroke-width="1.5"
+                  strokeMiterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3 22H21"
+                  stroke="#18AEC9"
+                  stroke-width="1.5"
+                  strokeMiterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </>
+            :
+            <span dangerouslySetInnerHTML={{ __html: renderedCellValue }}></span>
+          }
+          </Box>
+        ),
       },
       {
         accessorKey: "pickupdate",
@@ -167,13 +258,16 @@ const Details = () => {
             {
               user_type == 'admin' && (row.original.status == 'PENDING' || row.original.status == 'MODIFICATION-REQUEST') &&
               <>
-              <button className="btn btn-primary btn-sm">
+              <button className="btn btn-primary btn-sm" onClick={() => { changeCost(row.original.id, row.original.shippingcost) }}>
                 Change Cost
               </button>
 
-              <button className="btn btn-primary btn-sm">
-                Approve
-              </button>
+              {
+                row.original.shippingcost && row.original.shippingcost != '-' &&
+                <button className="btn btn-success btn-sm" onClick={() => { changeCost(row.original.id, row.original.shippingcost) }}>
+                  Approve
+                </button>
+              }
               </>
             }
           </Box>
@@ -203,7 +297,7 @@ const Details = () => {
       dropoff: item.to_city.name,
       shipmenttype: item.shipment_type.name,
       trucktype: item.truck_type.name,
-      shippingcost: item.cost,
+      shippingcost: item.cost ? item.cost : '-',
       provider_price: item.provider_price,
       pickupdate: order?.pickup_date,
       status_i18n: item.status_i18n,
@@ -250,6 +344,18 @@ const Details = () => {
 
   return (
     <div>
+
+        <ToastContainer
+          position="top-right"
+          autoClose={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="light"
+        />
+      
       <div className="container-fluid Allshipment  py-3 px-0">
         {/* table-data */}
         <div className=" p-3 tableshipment table-resbon">
