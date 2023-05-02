@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -11,138 +11,135 @@ import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
+// import './viewpartner.css'
+import "./viewdriver.css"
 
-import "./ViewDriver.css";
-
-
-
-const ViewDriver = () => {
-  const [driverList, setDriversList] = useState([]);
-  const [allprov,setAllprov]= useState();
-  const { id } = useParams();
-
-  const [cookie] = useCookies(["eload_token"]);
-
-  useEffect(() => {
-    const allproviders = async () => {
-      try {
-        const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/providers/${id}`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-        const data = response.data.data.shipments;
-        const datas = response.data.data;
-        console.log(data);
-        console.log(datas,"datas");
-        setDriversList(data);
-        setAllprov(datas);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    allproviders();
-  }, []);
-
+const ViewDriverP = () => {
+    const [driverList, setDriversList] = useState([]);
+    const [allprov,setAllprov]= useState();
+    const { id } = useParams();
   
-  const columns = useMemo(
-    () => [
-  {
-    accessorKey: "id",
-    header: "Id",
-    size: 30,
-  },
-  {
-    accessorKey: "code",
-    header: "Code",
-    size: 40,
-  },
-  {
-    accessorKey: "Pickup",
-    header: "Pick up",
-    size: 40,
-  },
-  {
-    accessorKey: "dropoff",
-    header: "Drop Off",
-    size: 30,
-  },
-  {
-    accessorKey: "shipmenttype",
-    header: "Shipment Type",
-    size: 30,
-  },
-  {
-    accessorKey: "shippingcost",
-    header: "Shipping Cost",
-    size: 30,
-  },
-  // {
-  //   accessorKey: "pickupdate",
-  //   header: "pickup Date",
-  //   size: 30,
-  // },
-  {
-    accessorKey: "statuse",
-    header: "Status",
-    size: 30,
-    Cell: ({ renderedCellValue, row }) => (
-      <Box
-        sx={{
-          display: "flex",
-          gap: "1rem",
-        }}
-      >
-        <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
-          <span>{renderedCellValue}</span>
-        </div>
-      </Box>
-    ),
-  },
-],
-[]
-);
-const csvOptions = {
-  fieldSeparator: ",",
-  quoteStrings: '"',
-  decimalSeparator: ".",
-  showLabels: true,
-  useBom: true,
-  useKeysAsHeaders: false,
-  headers: columns.map((c) => c.header),
-};
-const csvExporter = new ExportToCsv(csvOptions);
+    const [cookie] = useCookies(["eload_token"]);
 
-console.log(driverList,"prvidersList");
+    useEffect(() => {
+        const allproviders = async () => {
+          try {
+            const response = await axios.get(
+              `https://dev.eload.smart.sa/api/v1/drivers/${id}`,
+              {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${cookie.eload_token}`,
+                  "api-key":
+                    "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+                },
+              }
+            );
+            const data = response.data.data.shipments;
+            const datas = response.data.data;
+            console.log(data);
+            console.log(datas,"datas");
+            setDriversList(data);
+            setAllprov(datas);
+            return data;
+          } catch (e) {
+            console.log(e);
+          }
+        };
+        allproviders();
+      }, []);
 
-  const data = driverList.map((item, index) => {
-    return {
-      id: item.id,
-      code: item.code,
-      Pickup:item.from_city.name,
-      dropoff:item.to_city.name,
-      shipmenttype:item.shipment_type.name,
-      shippingcost:item.cost,
-      // pickupdate:"",
-      statuse:item.status_i18n,
+      const columns = useMemo(
+        () => [
+      {
+        accessorKey: "id",
+        header: "Id",
+        size: 30,
+      },
+      {
+        accessorKey: "code",
+        header: "Code",
+        size: 40,
+      },
+      {
+        accessorKey: "Pickup",
+        header: "Pick up",
+        size: 40,
+      },
+      {
+        accessorKey: "dropoff",
+        header: "Drop Off",
+        size: 30,
+      },
+      {
+        accessorKey: "shipmenttype",
+        header: "Shipment Type",
+        size: 30,
+      },
+      {
+        accessorKey: "shippingcost",
+        header: "Shipping Cost",
+        size: 30,
+      },
+      // {
+      //   accessorKey: "pickupdate",
+      //   header: "pickup Date",
+      //   size: 30,
+      // },
+      {
+        accessorKey: "statuse",
+        header: "Status",
+        size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
+              <span>{renderedCellValue}</span>
+            </div>
+          </Box>
+        ),
+      },
+    ],
+    []
+    );
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: false,
+      headers: columns.map((c) => c.header),
     };
-  });
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
-
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+    const csvExporter = new ExportToCsv(csvOptions);
+    
+    console.log(driverList,"driverssList");
+    
+      const data = driverList.map((item, index) => {
+        return {
+          id: item.id,
+          code: item.code,
+          Pickup:item.from_city.name,
+          dropoff:item.to_city.name,
+          shipmenttype:item.shipment_type.name,
+          shippingcost:item.cost,
+          // pickupdate:"",
+          statuse:item.status_i18n,
+        };
+      });
+      const handleExportRows = (rows) => {
+        csvExporter.generateCsv(rows.map((row) => row.original));
+      };
+    
+      const handleExportData = () => {
+        csvExporter.generateCsv(data);
+      };  
   return (
-    <div className="viewdriver">
+<div className="viewdriver">
       <div className="header-card">
         <div className="container-fluid">
           <div className="row">
@@ -281,6 +278,7 @@ console.log(driverList,"prvidersList");
         </div>
       </div>
     </div>
-  );
-};
-export default ViewDriver;
+  )
+}
+
+export default ViewDriverP

@@ -5,18 +5,19 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as EditIcon } from "../../../icons/editicon.svg";
 import { ReactComponent as DeleteIcon } from "../../../icons/deleteicon.svg";
-import { ReactComponent as View } from "../../../icons/eye.svg";
+// import { ReactComponent as View } from "../../icons/eye.svg";
 import { useParams } from "react-router-dom";
 
+
+import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
-import { fetchPartDriverList } from "../../../redux/Partner/partDriver";
-import "../Partners.css";
-// btns-action
+// import { fetchPartnerList } from "../../redux/Partner/partnerList";
+import './TruckList.css';
 
 const RemoveModal = ({ handelItemRemove, id }) => {
   return (
@@ -69,7 +70,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  console.log(id, "id");
+                  // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -83,37 +84,17 @@ const RemoveModal = ({ handelItemRemove, id }) => {
   );
 };
 
-const ButtonEdit = ({ id, setRemoveableId }) => (
+const ButtonEdit = ({ id, setRemoveableId ,idprov }) => (
   <div className="w-100">
-      <NavLink to={`/Serviceproviders/Partners/viewdriver-partner/${id}`}>
-      <button
-      className="btn-table"
-      // data-bs-toggle="modal"
-      // href="#exampleModalToggle"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        // marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-      onClick={() => setRemoveableId(id)}
-    >
-      <View className="mx-1" />
-      View
-    </button>
-    </NavLink>
-      <NavLink to={`/Serviceproviders/Partners/part-editdriver/${id}`}>
-      <button
+    <NavLink to={`/Serviceproviders/Partners/part-EditTruck/${id}/provider/${idprov}`}>
+    <button
         className="btn-table active mx-1"
         style={{
           textAlign: "center",
           padding: "1% 3%",
           border: "1px solid #0e324a",
           borderRadius: "20px",
-        //   margin: "4%",
+          // marginRight: "4%",
           color: "#fff",
           backgroundColor: "#0b2339",
         }}
@@ -121,9 +102,9 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-      </NavLink>
 
-   
+    </NavLink>
+
     <button
       className="btn-table"
       data-bs-toggle="modal"
@@ -133,7 +114,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         padding: "1% 3%",
         border: "1px solid #0e324a",
         borderRadius: "20px",
-        marginTop: "4px",
+        // marginRight: "4%",
         color: "#0b2339",
         backgroundColor: "transparent",
       }}
@@ -148,25 +129,35 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 const columns = [
 
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "trucktype",
+    header: "Truck type",
     size: 10,
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "trucknumber",
+    header: "Plate Number",
     size: 10,
   },
   {
-    accessorKey: "phone",
-    header: "Phone Number",
+    accessorKey: "truckmodel",
+    header: "Truck Model",
+    size: 10,
+  },
+  {
+    accessorKey: "chissisnumber",
+    header: "Chissis Number",
+    size: 10,
+  },
+  {
+    accessorKey: "driver",
+    header: "Driver",
     size: 10,
   },
 
   {
     accessorKey: "btns",
     header: "Edit / Remove",
-    size: 120,
+    size: 100,
   },
 ];
 
@@ -182,115 +173,111 @@ const csvOptions = {
 
 const csvExporter = new ExportToCsv(csvOptions);
 
-const PartDriverList = () => {
-    const dispatch = useDispatch();
-    const { id } = useParams();
+const PartTruclList = () => {
+  const { id } = useParams();
+  const [prov_id,setprov_id]=useState("");
 
-    const [partnerList, setPartnerList] = useState([]);
-    const [removeableId, setRemoveableId] = useState(null);
-    const [reload, setReload] = useState(false);
-    const [cookie] = useCookies(["eload_token"]);
-    const data = partnerList.map((item, index) => {
-      return {
-        id:item.id,
-        name: item.user?.name,
-        email: item.user?.email,
-        phone: item.user?.phone,
-        btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
-      };
-    });
-    useEffect(() => {
-        const allpartDrivers = async () => {
-            // console.log(id);
-            try {
-            // console.log(id);
+  const [trucksList, setTrucksList] = useState([]);
+  const [removeableId, setRemoveableId] = useState(null);
+  const [reload, setReload] = useState(false);
+  const [cookie] = useCookies(["eload_token"]);
 
-              const response = await axios.get(
-               
-                `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${id}`,
-                {
-                  headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${cookie.eload_token}`,
-                    "api-key":
-                      "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                  },
-                }
-              );
-            //   const data = response.data.data.shipments;
-              const data = response.data.data;
-              console.log(data);
-              console.log(data,"datas");
-              setPartnerList(data);
-            //   setAllprov(datas);
-              return data;
-            } catch (e) {
-              console.log(e);
+  const data = trucksList.map((item, index) => {
+    return {
+      id: item.id,
+      trucktype: item.type.name,
+      trucknumber:item.plate_number,
+      truckmodel: item.model,
+      chissisnumber: item.chassis_number,
+      driver: item.driver.user.name,
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idprov={prov_id} />,
+    };
+  });
+
+  useEffect(() => {
+    const allpartTruckss = async () => {
+        
+        try {
+      
+          const response = await axios.get(
+           
+            `https://dev.eload.smart.sa/api/v1/trucks?provider_id=${id}`,
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${cookie.eload_token}`,
+                "api-key":
+                  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+              },
             }
-          };
-          allpartDrivers();
-    //   dispatch(fetchPartDriverList({ token: cookie.eload_token , id:id}))
-    //     .then((res) => {
-  
-    //       const data = res.payload.data;
-    //       setPartnerList(data);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    }, [reload]);
-  
-    const handelItemRemove = async (idrow) => {
-        console.log(idrow);
-      try {
-        const response = await axios.delete(
-  
-          `https://dev.eload.smart.sa/api/v1/drivers/${idrow}`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-  
-        const data = response.data;
-        console.log(response);
-        if (data.is_success && data.status_code === 200) {
-          setReload(!reload);
-        } else {
-          console.log("error");
+          );
+        
+          const data = response.data.data;
+          console.log(data);
+          console.log(data,"datas");
+          setTrucksList(data);
+          setprov_id(id);
+            
+          return data;
+        } catch (e) {
+          console.log(e);
         }
-        return data;
-      } catch (e) {
-        console.log(e);
+      };
+      allpartTruckss();
+
+}, [reload]);
+
+const handelItemRemove = async (idrow) => {
+    console.log(idrow);
+  try {
+    const response = await axios.delete(
+
+      `https://dev.eload.smart.sa/api/v1/trucks/${idrow}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${cookie.eload_token}`,
+          "api-key":
+            "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+        },
       }
-    };
-  
-    const handleExportRows = (rows) => {
-      csvExporter.generateCsv(rows.map((row) => row.original));
-    };
-  
-    const handleExportData = () => {
-      csvExporter.generateCsv(data);
-    };
+    );
+
+    const data = response.data;
+    console.log(response);
+    if (data.is_success && data.status_code === 200) {
+      setReload(!reload);
+    } else {
+      console.log("error");
+    }
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const handleExportRows = (rows) => {
+  csvExporter.generateCsv(rows.map((row) => row.original));
+};
+
+const handleExportData = () => {
+  csvExporter.generateCsv(data);
+};
   return (
     <div>
     <header className="partner-head px-5">
       <div className="container-fluid">
         <div className="box-left">
           <div className="head-text">
-            <h2>Drivers</h2>
+            <h2>Trucks</h2>
 
           </div>
 
         </div>
         <div className="box-right">
-          <NavLink to={`/Serviceproviders/Partners/part-adddriver/${id}`}>
+          <NavLink to={`/Serviceproviders/Partners/part-AddTruck/${id}`}>
             <button className="btn-partner">
-              <i className="fa-solid fa-plus me-2"></i>Add Driver
+              <i className="fa-solid fa-plus me-2"></i>Add Truck
             </button>
           </NavLink>
         </div>
@@ -368,4 +355,4 @@ const PartDriverList = () => {
   )
 }
 
-export default PartDriverList
+export default PartTruclList

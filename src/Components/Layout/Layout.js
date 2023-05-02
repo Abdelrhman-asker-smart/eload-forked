@@ -70,6 +70,12 @@ import PartDriverList from "../Partners/PartDriver/PartDriverList";
 import AddDriverPart from "../Partners/PartDriver/Adddriver";
 import EditPrtDriver from "../Partners/PartDriver/EditPrtDriver";
 import EditPartners from "../Addpartners/Editpartners";
+import ViewDriverP from "../Partners/PartDriver/ViewDriverP";
+
+// part-truck
+import TruclListPartner from "../Partners/PertTrucks/TruckListPartner.jsx";
+import AddTruckP from "../Partners/PertTrucks/AddTruckP";
+import EditTruckP from "../Partners/PertTrucks/EditTruckP";
 
 
 
@@ -130,6 +136,14 @@ const Layout = ({ setLogin }) => {
             <Route path="/Serviceproviders/Partners/part-driverlist/:id" element={<PartDriverList/>}/>
             <Route path="/Serviceproviders/Partners/part-adddriver/:id" element={<AddDriverPart/>}/>
             <Route path="/Serviceproviders/Partners/part-editdriver/:id" element={<EditPrtDriver/>}/>
+            <Route path="/Serviceproviders/Partners/viewdriver-partner/:id" element={<ViewDriverP/>}/>
+            {/* truck-partner */}
+            <Route path="/Serviceproviders/Partners/part-trucklist/:id" element={<TruclListPartner/>}/>
+            <Route path="/Serviceproviders/Partners/part-AddTruck/:id" element={<AddTruckP/>}/>
+            <Route path="/Serviceproviders/Partners/part-EditTruck/:id/provider/:id_p" element={<EditTruckP/>}/>
+
+
+
 
 
 

@@ -1,0 +1,88 @@
+.viewdriver .header-card
+{
+    padding: 0.5rem 2rem;
+    background-color: #F5F5F5;
+}
+.viewdriver .header-card .br-right
+{
+    border-right: 1px solid #D9D9D9;
+}
+.viewdriver .header-card .card-box
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.viewdriver .header-card .name-user
+{
+    font-size: 24px;
+    font-weight: 600;
+    color: #244664;
+}
+.viewdriver .header-card .head-card-text{
+    font-weight: 500;
+    font-size: 28px;
+    color: #244664;
+}
+
+.viewdriver .header-card .data-card 
+{
+    width: 100%;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.viewdriver .header-card .data-card i
+{
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+.viewdriver .header-card .data-card span
+{
+    font-weight: 600;
+    font-size: 14px;
+    color: #0E324A;
+}
+.viewdriver .header-card .data-card a
+{
+    font-weight: 600;
+    font-size: 14px;
+    color: #18AEC9;
+}
+.freelancer-content
+{
+    margin-top: 2rem;
+}
+.freelancer-content .table .btn-table
+{
+    background: #0085FF;
+    border-radius: 23px;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.freelancer-content .table .btn-blur-table
+{
+    background: #0085FF;
+}
+.freelancer-content .table .btn-red-table
+{
+    background: #F80F10;
+}
+.freelancer-content .table .btn-blue-light-table
+{
+    background: #18AEC9;
+}
+.freelancer-content .table .btn-orange-table
+{
+    background: #FF8A00;
+}
+.freelancer-content  table.table th, table.table td {
+    font-weight: 700 ;
+    font-size: 12px ;
+    color: #0E324A;
+}

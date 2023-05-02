@@ -259,7 +259,7 @@ console.log(prvidersList,"prvidersList");
 
                 <div className="d-flex">
                   <span > Trucks</span>
-                  <NavLink to=""  className="mx-3">View All</NavLink>
+                  <NavLink to={`/Serviceproviders/Partners/part-trucklist/${id}`}  className="mx-3">View All</NavLink>
                   </div>
                 </div>
               </div>

@@ -473,7 +473,7 @@ const EditDriver = () => {
               className="input-box"
               name="idcope"
               required
-              value={idCope}
+              // value={idCope}
               accept="image/png, image/jpeg"
               placeholder={idCope}
               aria-describedby="inputGroupFileAddon03"
@@ -504,7 +504,7 @@ const EditDriver = () => {
               className="input-box"
               name="driverlicensecope"
               required
-              value={drivingLincese_Cope}
+              // value={drivingLincese_Cope}
               accept="image/png, image/jpeg"
               placeholder={drivingLincese_Cope}
               aria-describedby="inputGroupFileAddon03"
@@ -524,7 +524,7 @@ const EditDriver = () => {
               className="input-box"
               required
               name="licensecopeid"
-              value={LinceseId}
+              // value={LinceseId}
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
               onChange={(e) => {
@@ -684,7 +684,7 @@ const EditDriver = () => {
               className="input-box"
               required
               name="trucklicensecope"
-              value={TruckLinceseCope}
+              // value={TruckLinceseCope}
               accept="image/png, image/jpeg"
               placeholder={TruckLinceseCope}
               aria-describedby="inputGroupFileAddon03"
