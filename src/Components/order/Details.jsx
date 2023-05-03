@@ -3,8 +3,9 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Select from 'react-select';
 
 import { useMemo } from "react";
 
@@ -18,15 +19,38 @@ import "./Details.css";
 
 const Details = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const [order, setOrder] = useState({});
   const [shipments, setShipments] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [any_confirmation , setAnyConfirmation] = useState(false);
+  const [selected_payment_method, setSelectedPaymentMethod] = useState('');
+  const [attachments, setAttachments] = useState([]);
+
+  const paymentMethods = [
+    { value: "ONLINE", label: "Online" },
+    { value: "BANK-TRANSFER", label: "Bank Transfer" },
+  ];
 
   let Msg = ({ closeToast, toastProps }) => (
     <div>
       <h5>updated successfully!</h5>
       <p>the page will be refreshed in a moment...</p>
+    </div>
+  )
+
+  let PaidMsg = ({ closeToast, toastProps }) => (
+    <div>
+      <h5>Paid Successfully!</h5>
+      <p>the page will be refreshed in a moment...</p>
+    </div>
+  )
+
+  let NotPaidMsg = ({ closeToast, toastProps }) => (
+    <div>
+      <h5 className="text-danger">There is an Error</h5>
+      <p>try to pay again later on</p>
     </div>
   )
 
@@ -53,6 +77,123 @@ const Details = () => {
       setTimeout(() => window.location.reload(), 5000);
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  const sendModificationRequest = async(id, type, reason = '') => {
+    var urlencoded = new URLSearchParams();
+    urlencoded.append('modification_type', type);
+
+    if (type == 'OTHER') {
+      urlencoded.append('modification_reason', reason);
+    }
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/shipments/${id}`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      toast(<Msg />)
+      setTimeout(() => window.location.reload(), 5000);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const confirm = async(id) => {
+    var urlencoded = new URLSearchParams();
+    urlencoded.append('status', 'CONFIRMED');
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/shipments/${id}`,
+        urlencoded,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      toast(<Msg />)
+      setTimeout(() => window.location.reload(), 5000);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const pay = async() => {
+    var formdata = new FormData();
+    formdata.append('payment_method', selected_payment_method);
+
+    if (selected_payment_method == 'BANK-TRANSFER') {
+      for (let key in attachments) {
+        if (attachments.hasOwnProperty(key)) {
+          formdata.append(`attachments[${key}]`, attachments[key]);
+        }
+      }
+    }
+
+    if (selected_payment_method == 'ONLINE') {
+      formdata.append('callback_url', window.location.href);
+    }
+
+    try {
+      const response = await axios.post(
+        `https://dev.eload.smart.sa/api/v1/orders/${order.id}/pay`,
+        formdata,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      if (response.data.data.hasOwnProperty('redirect_to')) {
+        window.location.replace(response.data.data.redirect_to);
+      } else {
+        toast(<Msg />)
+        setTimeout(() => window.location.reload(), 5000);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const check = async(data) => {
+    try {
+      const response = await axios.post(
+        `https://dev.eload.smart.sa/api/v1/orders/${id}/check`,
+        data,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+        toast(<PaidMsg />)
+        setTimeout(() => { window.location = window.location.pathname; }, 5000);
+    } catch (e) {
+      console.log(e);
+      toast(<NotPaidMsg />)
     }
   }
 
@@ -238,10 +379,40 @@ const Details = () => {
         ),
       },
       {
-        accessorFn: (row) => `${ row.status == 'MODIFICATION-REQUEST' ? row.modification_reason : '' }`,
+        accessorFn: (row) => {
+          if (user_type == 'shipper' && row.status == 'REVIEWED') {
+            return 'I need to change ...';
+          }
+
+          return `${ row.status == 'MODIFICATION-REQUEST' ? row.modification_reason : '' }`;
+        },
         accessorKey: "modification_reason",
         header: "Notes",
         size: 30,
+        Cell: ({ renderedCellValue, row }) => (
+          <Box
+            sx={{
+              display: "flex",
+              // alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+          {
+            user_type == 'shipper' && row.original.status == 'REVIEWED' ?
+            <>
+              <span
+                contentEditable={true}
+                onInput={(e) => {
+                  row.original.modification_reason = e.target.innerText;
+                }}
+                dangerouslySetInnerHTML={{ __html: renderedCellValue }}
+              ></span>
+            </>
+            :
+            <span dangerouslySetInnerHTML={{ __html: renderedCellValue }}></span>
+          }
+          </Box>
+        ),
       },
       {
         accessorKey: "action",
@@ -270,6 +441,23 @@ const Details = () => {
               }
               </>
             }
+
+            {
+              user_type == 'shipper' && row.original.status == 'REVIEWED' &&
+              <>
+              <button className="btn btn-info btn-sm" onClick={() => { sendModificationRequest(row.original.id, 'CHANGE-COST') }}>
+                Change Cost
+              </button>
+
+              <button className="btn btn-info btn-sm" onClick={() => { sendModificationRequest(row.original.id, 'OTHER', row.original.modification_reason) }}>
+                Other
+              </button>
+
+              <button className="btn btn-success btn-sm" onClick={() => { confirm(row.original.id) }}>
+                Confirm
+              </button>
+              </>
+            }
           </Box>
         ),
       },
@@ -290,6 +478,11 @@ const Details = () => {
   const csvExporter = new ExportToCsv(csvOptions);
 
   const data = shipments.map((item) => {
+
+    if (!any_confirmation && item.status == 'CONFIRMED') {
+      setAnyConfirmation(true);
+    }
+
     return {
       id:  item.id,
       code: item.code,
@@ -308,6 +501,10 @@ const Details = () => {
   });
 
   useEffect(() => {
+    if (searchParams.get('TranId')) {
+      check(Object.fromEntries([...searchParams]));
+    }
+
     const getOrder = async (id) => {
       try {
         const response = await axios.get(
@@ -365,7 +562,18 @@ const Details = () => {
             style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
             className="my-3 mx-3"
           >
-            Order Details
+
+            <strong>
+              Order Details
+              { order.invoice &&
+                <>
+                <span> , </span>
+                <NavLink style={{ color: "#0085FF" }} to={`/invoices/${order.invoice.id}`}>
+                  <span> Invoice details for this order</span>
+                </NavLink>
+                </>
+              }
+            </strong>
           </h3>
           <MaterialReactTable
             columns={columns}
@@ -427,6 +635,61 @@ const Details = () => {
               </Box>
             )}
           />
+
+          {user_type == 'shipper' && any_confirmation && !order.invoice &&
+            <div className="row p-4 mb-4 mt-4">
+              <div className="col-md-12 text-center">
+                <div>
+                  <label htmlFor="payment_method">
+                    Payment Method<span>*</span>
+                  </label>
+                  <Select
+                    classNamePrefix="select"
+                    className="basic-multi-select mt-2"
+                    isMulti={false}
+                    isDisabled={false}
+                    isLoading={false}
+                    isClearable={false}
+                    isRtl={false}
+                    isSearchable={true}
+                    name="payment_methods"
+                    options={paymentMethods}
+                    onChange={(choice) => setSelectedPaymentMethod(choice.value)}
+                  />
+                </div>
+
+                { selected_payment_method == 'BANK-TRANSFER' &&
+                  <div className="mt-3">
+                    <label htmlFor="attachments">
+                      Attachments<span>*</span>
+                    </label>
+                    <div className="input-group ">
+                      <input
+                        type="file"
+                        multiple="multiple"
+                        accept="audio/*,video/*,image/*,.pdf,.doc"
+                        className="input-file form-control"
+                        required
+                        id="inputGroupFile03"
+                        aria-describedby="inputGroupFileAddon03"
+                        aria-label="Upload"
+                        onChange={(e) => { setAttachments(e.target.files); }}
+                      />
+                    </div>
+                  </div>
+                }
+
+                {
+                  selected_payment_method && 
+                  <button
+                  disabled={selected_payment_method == 'BANK-TRANSFER' && attachments.length == 0 ? 'disabled' : ''}
+                  onClick={() => { pay() }}
+                  className="btn btn-success w-100 mt-3">Pay</button>
+                }
+              </div>
+            </div>
+          }
+
           {/* </div> */}
         </div>
         {/* </div> */}
