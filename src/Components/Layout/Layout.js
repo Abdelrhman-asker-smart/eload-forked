@@ -149,18 +149,17 @@ const Layout = ({ setLogin }) => {
 
 
             
-            {/* Abd------------------------- */}
+            {/* Address------------------------- */}
             <Route path="/Shipments/addAddress" element={<AddAddress />} />
             <Route path="/Shipments/grouplist" element={<GroupList />} />
             <Route path="/Shipments/addnewgroup" element={<AddNewGroup />} />
             <Route path="/allshipments/shipmentorder/:id" element={<ShipmentOrder />} />
 
-             {/* Abd------------------------- */}
 
              {/* shippers */}
             <Route path="/allshippers" element={<AllShippers />} />
             <Route path="/addshippers" element={<AddShippers />} />
-            <Route path="/allshippers/viewshipper" element={<ViewShipper />} />
+            <Route path="/allshippers/viewshipper/:id" element={<ViewShipper />} />
             <Route path="/allshippers/employes" element={<Employes />} />
             <Route path="/allshippers/addemployes" element={<AddEmployees />} />
 

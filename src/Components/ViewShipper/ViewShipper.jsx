@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import { useMemo } from "react";
 import './ViewShipper.css';
 
@@ -23,199 +23,129 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 
 const ViewShipper = () => {
      // all-date
-//   const columnsAll = useMemo(
-//     () => [
-//       {
-//         accessorKey: "id",
-//         header: "ID",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "code",
-//         header: "Code",
-//         size: 30,
-//         Cell: ({ renderedCellValue, row }) => (
-//           <Box
-//             sx={{
-//               display: "flex",
-//               gap: "1rem",
-//             }}
-//           >
-//             <NavLink style={{ color: "#0085FF" }} to="/shipmentorder">
-//               <span>{renderedCellValue}</span>
-//             </NavLink>
-//           </Box>
-//         ),
-//       },
-//       {
-//         accessorKey: "picup",
-//         header: "Pick Up",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "dropoff",
-//         header: "Drop Off",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "shipmenttype",
-//         header: "Shipment Type",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "trucktype",
-//         header: "Truck Type",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "shippingcost",
-//         header: "Shipping Cost",
-//         size: 30,
-//       },
-//       {
-//         accessorKey: "pickupdate",
-//         header: "Pickup Date",
-//         size: 30,
-//         Cell: ({ renderedCellValue, row }) => (
-//           <Box
-//             sx={{
-//               display: "flex",
-//               // alignItems: "center",
-//               gap: "1rem",
-//             }}
-//           >
-//             {row.original.urgent_action_needed == true ? (
-//               <div className="position-relative" style={{ color: "#E80102" }}>
-//                 <div
-//                   className="red-circle position-absolute"
-//                   style={{
-//                     width: "10px",
-//                     height: "10px",
-//                     borderRadius: "25px",
-//                     top: "4px",
-//                     left: "-11px",
-//                     backgroundColor: "#E80102",
-//                   }}
-//                 ></div>
-//                 {renderedCellValue}
-//                 <span
-//                   className="position-absolute"
-//                   style={{
-//                     color: "#E80102",
-//                     fontWeight: "500",
-//                     top: "-11px",
-//                     fontSize: "18px",
-//                   }}
-//                 >
-//                   !
-//                 </span>
-//               </div>
-//             ) : (
-//               <div className="position-relative">
-//                 <div
-//                   className="red-circle position-absolute"
-//                   style={{
-//                     width: "10px",
-//                     height: "10px",
-//                     borderRadius: "25px",
-//                     top: "4px",
-//                     left: "-11px",
-//                     backgroundColor: "#CBFF39",
-//                   }}
-//                 ></div>
-//                 {renderedCellValue}
-//               </div>
-//             )}
-//           </Box>
-//         ),
-//       },
-//       {
-//         accessorKey: "status",
-//         header: "Status",
-//         size: 30,
-//         Cell: ({ renderedCellValue, row }) => (
-//           <Box
-//             sx={{
-//               display: "flex",
-//               // alignItems: "center",
-//               gap: "1rem",
-//             }}
-//           >
-//             <span style={{ color: "#31A02F" }}>{renderedCellValue}</span>
-//             {/* <span>{console.log(row.original, "ready")}</span> */}
-//           </Box>
-//         ),
-//       },
-//     ],
-//     []
-//   );
+     const [shipperList, setShippersList] = useState([]);
+     const { id } = useParams();
+   
+     const [cookie] = useCookies(["eload_token"]);
+   
+     useEffect(() => {
+       const viewShippers = async () => {
+        console.log(id , "id");
+         try {
+           const response = await axios.get(
+             `https://dev.eload.smart.sa/api/v1/shippers/${id}`,
+             {
+               headers: {
+                 Accept: "application/json",
+                 Authorization: `Bearer ${cookie.eload_token}`,
+                 "api-key":
+                   "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+               },
+             }
+           );
+           const data = response.data.data;
+           console.log(data,"fromshipper");
 
-//   const csvOptions = {
-//     fieldSeparator: ",",
-//     quoteStrings: '"',
-//     decimalSeparator: ".",
-//     showLabels: true,
-//     useBom: true,
-//     useKeysAsHeaders: false,
-//     headers: columnsAll.map((c) => c.header),
-//   };
+           setShippersList(data);
 
+           return data;
+         } catch (e) {
+           console.log(e);
+         }
+       };
+       viewShippers();
+     }, []);
+   
+     
+     const columns = useMemo(
+       () => [
+     {
+       accessorKey: "id",
+       header: "Id",
+       size: 30,
+     },
+     {
+       accessorKey: "code",
+       header: "Code",
+       size: 40,
+     },
+     {
+       accessorKey: "Pickup",
+       header: "Pick up",
+       size: 40,
+     },
+     {
+       accessorKey: "dropoff",
+       header: "Drop Off",
+       size: 30,
+     },
+     {
+       accessorKey: "shipmenttype",
+       header: "Shipment Type",
+       size: 30,
+     },
+     {
+       accessorKey: "shippingcost",
+       header: "Shipping Cost",
+       size: 30,
+     },
+     // {
+     //   accessorKey: "pickupdate",
+     //   header: "pickup Date",
+     //   size: 30,
+     // },
+     {
+       accessorKey: "statuse",
+       header: "Status",
+       size: 30,
+       Cell: ({ renderedCellValue, row }) => (
+         <Box
+           sx={{
+             display: "flex",
+             gap: "1rem",
+           }}
+         >
+           <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
+             <span>{renderedCellValue}</span>
+           </div>
+         </Box>
+       ),
+     },
+   ],
+   []
+   );
+   const csvOptions = {
+     fieldSeparator: ",",
+     quoteStrings: '"',
+     decimalSeparator: ".",
+     showLabels: true,
+     useBom: true,
+     useKeysAsHeaders: false,
+     headers: columns.map((c) => c.header),
+   };
+   const csvExporter = new ExportToCsv(csvOptions);
+   
+   console.log(shipperList,"shipperList");
+   
+     const data = shipperList.map((item, index) => {
+       return {
+         id: "",
+         code: "",
+         Pickup:"",
+         dropoff:"",
+         shipmenttype:"",
+         shippingcost:"",
+         // pickupdate:"",
+         statuse:"",
+       };
+     });
 
-
-//   const csvExporter = new ExportToCsv(csvOptions);
-
-
-  const [shippertList, setshipperList] = useState([]);
-
-  const [cookie] = useCookies(["eload_token"]);
-
-//   const data = shippertList.map((item, index) => {
-//     return {
-//       id: item.id,
-//       code: item.code,
-//       picup: item.from_city.name,
-//       dropoff: item.to_city.name,
-//       shipmenttype: item.shipment_type.name,
-//       trucktype: item.truck_type.name,
-//       shippingcost: item.cost,
-//       pickupdate: item.order.pickup_date,
-
-//       status: item.status_i18n,
-//     };
-//   });
-  useEffect(() => {
-    const allShipper = async () => {
-      try {
-        const response = await axios.get(
-          "https://dev.eload.smart.sa/api/v1/shippers",
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        const data = response.data.data;
-        console.log(response);
-        setshipperList(data);
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    allShipper();
-  }, []);
-
-//   const handleExportRows = (rows) => {
-//     csvExporter.generateCsv(rows.map((row) => row.original));
-//   };
-//   const handleExportData = () => {
-//     csvExporter.generateCsv(data);
-//   };
+  const handleExportRows = (rows) => {
+    csvExporter.generateCsv(rows.map((row) => row.original));
+  };
+  const handleExportData = () => {
+    csvExporter.generateCsv(data);
+  };
   return (
     <div className='viewshipper'>
             <div className="header-card">
@@ -278,7 +208,7 @@ const ViewShipper = () => {
                             <path d="M12 21.61V12.54" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M9.92989 2.48004L4.58989 5.44004C3.37989 6.11004 2.38989 7.79004 2.38989 9.17004V14.82C2.38989 16.2 3.37989 17.88 4.58989 18.55L9.92989 21.52C11.0699 22.15 12.9399 22.15 14.0799 21.52L19.4199 18.55C20.6299 17.88 21.6199 16.2 21.6199 14.82V9.17004C21.6199 7.79004 20.6299 6.11004 19.4199 5.44004L14.0799 2.47004C12.9299 1.84004 11.0699 1.84004 9.92989 2.48004Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span>7 Shipments</span>
+                            <span>7 Orders</span>
                             <NavLink to="/allshipments" className="btn-data-card mx-4">
                                 View All
                             </NavLink>
@@ -316,7 +246,69 @@ const ViewShipper = () => {
                 </div>
             </div>
         <div className='table-side'>
-                    {/* table-data */}
+        <div className="container-fluid">
+                    {/* table */}
+          <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          positionToolbarAlertBanner="bottom"
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box
+              sx={{
+                display: "flex",
+                gap: "1rem",
+                p: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <Button
+                color="primary"
+                //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                onClick={handleExportData}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Data
+              </Button>
+              <Button
+                disabled={table.getPrePaginationRowModel().rows.length === 0}
+                //export all rows, including from the next page, (still respects filtering and sorting)
+                onClick={() =>
+                  handleExportRows(table.getPrePaginationRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export All Rows
+              </Button>
+              <Button
+                disabled={table.getRowModel().rows.length === 0}
+                //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                onClick={() => handleExportRows(table.getRowModel().rows)}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Page Rows
+              </Button>
+              <Button
+                disabled={
+                  !table.getIsSomeRowsSelected() &&
+                  !table.getIsAllRowsSelected()
+                }
+                //only export selected rows
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+              >
+                Export Selected Rows
+              </Button>
+            </Box>
+          )}
+        />
+        </div>
        
         </div>
     </div>
