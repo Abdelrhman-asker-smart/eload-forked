@@ -51,6 +51,8 @@ const initialValues = {};
 
 const Shipments = () => {
   const navigate = useNavigate();
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   // Alart-Snackbar
   const [state, setState] = React.useState({
@@ -311,7 +313,17 @@ const Shipments = () => {
       }
     };
 
-    allshipper();
+    if (user_type == 'admin') {
+      allshipper();
+    }
+
+    if (user_type == 'shipper') {
+      pickupListApi(user_type_data.id);
+      setShipperUserChoice(user_type_data.id);
+      setShipperValue(user_type_data.name);
+      shipperPlanned_handleInputChange(0, user_type_data.id);
+    }
+
     // pickuplist();
     // droppofflist();
   }, []);
@@ -726,6 +738,7 @@ const Shipments = () => {
               <>
                 {indexshipment > 0 ? (
                   <form onSubmit={handelSubmit}>
+                    { user_type == 'admin' &&
                     <div className="input-shipper " style={{ width: "49%" }}>
                       <p>
                         Shipper<span>*</span>
@@ -758,6 +771,7 @@ const Shipments = () => {
                         {shipperOptions[plannedList[0].shipperPlanned].label}
                       </span>
                     </div>
+                    }
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
@@ -1126,6 +1140,7 @@ const Shipments = () => {
                   </form>
                 ) : (
                   <form onSubmit={handelSubmit}>
+                    { user_type == 'admin' &&
                     <div className="input-shipper " style={{ width: "49%" }}>
                       <p>
                         Shipper<span>*</span>
@@ -1154,6 +1169,7 @@ const Shipments = () => {
                         }}
                       />
                     </div>
+                    }
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
