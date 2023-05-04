@@ -15,6 +15,7 @@ import './AddShippers.css';
 
 
 const AddShippers = () => {
+
   const [cookie] = useCookies(["eload_token"]);
   const showNotification = () => {
     // e.preventDefault();
@@ -76,8 +77,6 @@ const AddShippers = () => {
     formdata.append("create_contract", contacted);
 
 
-
-
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/shippers",
@@ -102,7 +101,7 @@ const AddShippers = () => {
 
   return (
     <div className='container-fluid addshipper p-5'>
-    <h3>PARTNER INFORMATION</h3>
+    <h3>SHIPPER INFORMATION</h3>
     <form onSubmit={apiAddShipper}>
     {/* name+email */}
         <div className="row my-4">

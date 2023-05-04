@@ -1,19 +1,44 @@
-import React from 'react'
+import React from "react";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import axios from "axios";
-import {  NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
-import '../AddnewGroup/addnewgroup.css'
+import { NavLink } from "react-router-dom";
+
+import "../AddnewGroup/addnewgroup.css";
 
 const AddnewGroup = () => {
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
+  const { id } = useParams();
+  const showNotification = () => {
+    // e.preventDefault();
+
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Done</h4>
+        <NavLink to={`/Shipments/grouplist/${id}`}>
+          <button className="btn btndetails">Back to Drivers</button>
+        </NavLink>
+
+        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+      </div>
+    );
+
+    toast(<Msg />);
+    // readNotification(notification.id);
+  };
+
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
+  urlencoded.append("shipper_id", id);
 
-  const recordgroup = async () => {
+  const recordgroup = async (e) => {
+
+    e.preventDefault();
     console.log("save triggered");
     try {
       const reponse = await axios.post(
@@ -29,52 +54,71 @@ const AddnewGroup = () => {
         }
       );
 
-      setName("");
-        console.log(reponse);
+      // setName("");
+      console.log(reponse);
+      showNotification();
     } catch (e) {
       console.log(e);
     }
   };
 
-
   return (
-    <div className='newgroup px-3'>
+    <div className="newgroup px-3">
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
       <div className="container-fluid">
         <div className="header-newgroup">
           <h2>Add new group</h2>
-          
-          <button>
-          <NavLink to="/Shipments/grouplist">
-            <p className="linkview">View All</p>
-            </NavLink>
-            </button>
-          
-        </div>
-        <div className="content-newgroup">
-          <p>New</p>
-          <input type="text" name="Name" id="" placeholder='Name' 
-            // value={name}
-            onChange={(e) => {
-            setName(e.target.value);
-            }}
-          />
-        </div>
-        <div className="footer-newgroup text-center">
-          <button className="btn btn-newgroup"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
-            onClick={recordgroup}
-          >Save</button>
-        </div>
 
-          {/* modal */}
-          <div
+          <button>
+            <NavLink to={`/Shipments/grouplist/${id}`}>
+              <p className="linkview">View All</p>
+            </NavLink>
+          </button>
+        </div>
+        <form onSubmit={recordgroup}>
+          <div className="content-newgroup">
+            <p>Name</p>
+            <input
+              type="text"
+              name="Name"
+              id=""
+              placeholder="Name"
+              // value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+          </div>
+          <div className="footer-newgroup text-center">
+            <button
+              className="btn btn-newgroup"
+              type="submit"
+              // data-bs-toggle="modal"
+              // href="#exampleModalToggle"
+              // onClick={recordgroup}
+            >
+              Save
+            </button>
+          </div>
+        </form>
+
+        {/* modal */}
+        <div
           className="modal fade"
           id="exampleModalToggle"
           aria-hidden="true"
           aria-labelledby="exampleModalToggleLabel"
           tabIndex="-1"
-          >
+        >
           <div className="modal-dialog modal-dialog-centered">
             <div
               className="modal-content"
@@ -87,13 +131,12 @@ const AddnewGroup = () => {
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                   
                   ></button>
                 </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"
@@ -119,7 +162,7 @@ const AddnewGroup = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddnewGroup
+export default AddnewGroup;

@@ -2,9 +2,14 @@ import React from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Select from 'react-select';
+import { useParams } from "react-router-dom";
+
 import "../AddAddress/addAddress.css";
 
 const AddAddress = () => {
+
+    const { id } = useParams();
+
     // select-options
     const [isClearable, setIsClearable] = useState(true);
     const [isSearchable, setIsSearchable] = useState(true);
@@ -42,7 +47,7 @@ const AddAddress = () => {
                 <div className="input-select col-6">
                   <div className="input-select-info">
                     <p className="head-text">Choose Group</p>
-                    <NavLink to="/Shipments/grouplist">
+                    <NavLink to={`/Shipments/grouplist/${id}`}>
                       <button>
                         <a href="/#">View All</a>
                       </button>
@@ -63,7 +68,7 @@ const AddAddress = () => {
                 />
                 </div>
                 <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                  <NavLink to="/Shipments/addnewgroup">
+                  <NavLink to={`/Shipments/addnewgroup/${id}`}>
                     <button className="btn btn-adress">+ Add new group</button>
                   </NavLink>
                 </div>

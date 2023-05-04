@@ -78,6 +78,8 @@ import AddTruckP from "../Partners/PertTrucks/AddTruckP";
 import EditTruckP from "../Partners/PertTrucks/EditTruckP";
 
 import Details from "../order/Details";
+import EditShipper from "../AddShippers/EditShipper";
+import EditGroup from "../AddnewGroup/EditGroup";
 
 
 
@@ -151,15 +153,19 @@ const Layout = ({ setLogin }) => {
 
             
             {/* Address------------------------- */}
-            <Route path="/Shipments/addAddress" element={<AddAddress />} />
-            <Route path="/Shipments/grouplist" element={<GroupList />} />
-            <Route path="/Shipments/addnewgroup" element={<AddNewGroup />} />
+            <Route path="/Shipments/addAddress/:id" element={<AddAddress />} />
+            <Route path="/Shipments/grouplist/:id" element={<GroupList />} />
+            <Route path="/Shipments/addnewgroup/:id" element={<AddNewGroup />} />
+            <Route path="/Shipments/editgroup/:id/shipper/:idshipper" element={<EditGroup />} />
+
             <Route path="/allshipments/shipmentorder/:id" element={<ShipmentOrder />} />
 
 
              {/* shippers */}
             <Route path="/allshippers" element={<AllShippers />} />
             <Route path="/addshippers" element={<AddShippers />} />
+            <Route path="/allshippers/editshipper/:id" element={<EditShipper />} />
+
             <Route path="/allshippers/viewshipper/:id" element={<ViewShipper />} />
             <Route path="/allshippers/employes" element={<Employes />} />
             <Route path="/allshippers/addemployes" element={<AddEmployees />} />

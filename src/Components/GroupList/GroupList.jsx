@@ -8,6 +8,8 @@ import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
 // import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
+import { useParams } from "react-router-dom";
+
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 import "../GroupList/GroupList.css";
@@ -79,10 +81,10 @@ const RemoveModal = ({ handelItemRemove, id }) => {
   );
 };
 // btns-action
-const ButtonEdit = ({ id, setRemoveableId }) => (
-  // const { id } = useParams();
+const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
+  // const { idshipper } = useParams();
   <div className="w-100">
-    {/* <NavLink to={`/catogry-edit/${id}`}> */}
+    <NavLink to={`/Shipments/editgroup/${id}/shipper/${idshipper}`}>
       <button
         className="btn-table active"
         style={{
@@ -99,7 +101,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-    {/* </NavLink> */}
+    </NavLink>
 
     <button
       className="btn-table"
@@ -158,11 +160,15 @@ const GroupList = () => {
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
+  const { id } = useParams();
+
+  // console.log(idshipper,"shipperid");
+
   const data = groupList.map((item, index) => {
     return {
       id: item.id,
       name: item.name,
-      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={id} />,
     };
   });
   useEffect(() => {
@@ -173,7 +179,7 @@ const GroupList = () => {
           // https://dev.eload.smart.sa/api/v1/categories
           // `${process.env.REACT_BASE_URL}/categories`,
 
-          "https://dev.eload.smart.sa/api/v1/groups",
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${id}`,
           {
             headers: {
               Accept: "application/json",
@@ -243,7 +249,7 @@ const GroupList = () => {
             </div>
           </div>
           <div className="box-right">
-            <NavLink to="/Shipments/addnewgroup">
+            <NavLink to={`/Shipments/addnewgroup/${id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-3"></i>Add new group
             </button>

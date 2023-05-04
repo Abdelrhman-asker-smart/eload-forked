@@ -23,7 +23,9 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 
 const ViewShipper = () => {
      // all-date
-     const [shipperList, setShippersList] = useState([]);
+     const [shipperorderList, setShippersOrderList] = useState([]);
+  const [allshipper,setAllShipper]= useState();
+
      const { id } = useParams();
    
      const [cookie] = useCookies(["eload_token"]);
@@ -43,10 +45,15 @@ const ViewShipper = () => {
                },
              }
            );
-           const data = response.data.data;
-           console.log(data,"fromshipper");
+           const data = response.data.data.orders;
+           const dataall = response.data.data;
 
-           setShippersList(data);
+           console.log(data,"fromshipperorder");
+           console.log(dataall,"fromshipperall");
+
+
+          setShippersOrderList(data);
+           setAllShipper(dataall);
 
            return data;
          } catch (e) {
@@ -56,93 +63,112 @@ const ViewShipper = () => {
        viewShippers();
      }, []);
    
-     
-     const columns = useMemo(
-       () => [
-     {
-       accessorKey: "id",
-       header: "Id",
-       size: 30,
-     },
-     {
-       accessorKey: "code",
-       header: "Code",
-       size: 40,
-     },
-     {
-       accessorKey: "Pickup",
-       header: "Pick up",
-       size: 40,
-     },
-     {
-       accessorKey: "dropoff",
-       header: "Drop Off",
-       size: 30,
-     },
-     {
-       accessorKey: "shipmenttype",
-       header: "Shipment Type",
-       size: 30,
-     },
-     {
-       accessorKey: "shippingcost",
-       header: "Shipping Cost",
-       size: 30,
-     },
-     // {
-     //   accessorKey: "pickupdate",
-     //   header: "pickup Date",
-     //   size: 30,
-     // },
-     {
-       accessorKey: "statuse",
-       header: "Status",
-       size: 30,
-       Cell: ({ renderedCellValue, row }) => (
-         <Box
-           sx={{
-             display: "flex",
-             gap: "1rem",
-           }}
-         >
-           <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
-             <span>{renderedCellValue}</span>
-           </div>
-         </Box>
-       ),
-     },
-   ],
-   []
-   );
-   const csvOptions = {
-     fieldSeparator: ",",
-     quoteStrings: '"',
-     decimalSeparator: ".",
-     showLabels: true,
-     useBom: true,
-     useKeysAsHeaders: false,
-     headers: columns.map((c) => c.header),
-   };
-   const csvExporter = new ExportToCsv(csvOptions);
-   
-   console.log(shipperList,"shipperList");
-   
-     const data = shipperList.map((item, index) => {
-       return {
-         id: "",
-         code: "",
-         Pickup:"",
-         dropoff:"",
-         shipmenttype:"",
-         shippingcost:"",
-         // pickupdate:"",
-         statuse:"",
-       };
-     });
+     console.log(shipperorderList,"listorder");
+    //  console.log(allshipper,"listAll");
 
+
+     const columns = useMemo(
+      () => [
+    {
+      accessorKey: "id",
+      header: "Id",
+      size: 30,
+    },
+    {
+      accessorKey: "code",
+      header: "Code",
+      size: 40,
+      Cell: ({ renderedCellValue, row }) => (
+        <Box
+          sx={{
+            display: "flex",
+            // alignItems: "center",
+            gap: "1rem",
+          }}
+        >
+
+          <NavLink style={{ color: "#0085FF" }} to={`/orders/${row.original.id}`}>
+
+            <span>{renderedCellValue}</span>
+          </NavLink>
+          {/* <span>{console.log(row.original)}</span> */}
+        </Box>
+      ),
+    },
+    {
+      accessorKey: "Pickup",
+      header: "Pick up",
+      size: 40,
+    },
+    {
+      accessorKey: "dropoff",
+      header: "Drop Off",
+      size: 30,
+    },
+    // {
+    //   accessorKey: "shipmenttype",
+    //   header: "Shipment Type",
+    //   size: 30,
+    // },
+    // {
+    //   accessorKey: "shippingcost",
+    //   header: "Shipping Cost",
+    //   size: 30,
+    // },
+    {
+      accessorKey: "pickupdate",
+      header: "pickup Date",
+      size: 30,
+    },
+    // {
+    //   accessorKey: "statuse",
+    //   header: "Status",
+    //   size: 30,
+    //   Cell: ({ renderedCellValue, row }) => (
+    //     <Box
+    //       sx={{
+    //         display: "flex",
+    //         gap: "1rem",
+    //       }}
+    //     >
+    //       <div style={{ backgroundColor: "#31A02F" , color:"#fff",borderRadius:"20px" , padding:"5px 15px" , fontSize:"12px" }}>
+    //         <span>{renderedCellValue}</span>
+    //       </div>
+    //     </Box>
+    //   ),
+    // },
+  ],
+  []
+  );
+const csvOptions = {
+  fieldSeparator: ",",
+  quoteStrings: '"',
+  decimalSeparator: ".",
+  showLabels: true,
+  useBom: true,
+  useKeysAsHeaders: false,
+  headers: columns.map((c) => c.header),
+};
+const csvExporter = new ExportToCsv(csvOptions);
+   
+  //  console.log(shipperList,"shipperList");
+   
+  const data = shipperorderList?.map((item, index) => {
+    return {
+      id: item.id,
+      code: item.id,
+      Pickup:item.from_address.name,
+      dropoff:item.to_address.name,
+      // shipmenttype:"",
+      // shippingcost:"",
+      pickupdate:item.pickup_date,
+      // statuse:"",
+    };
+  });
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
   };
+
   const handleExportData = () => {
     csvExporter.generateCsv(data);
   };
@@ -154,7 +180,7 @@ const ViewShipper = () => {
                     <div className="information-user col-3 card-header br-right">
                     <Dr2 className="mx-5 my-3" style={{ borderRadius: "70px" }} />
 
-                    <div className="name-user">Test freelancer Driver</div>
+                    <div className="name-user">{allshipper?.name}</div>
                     </div>
                     <div className="phone-place-data col-3 card-header  br-right py-5">
                     <div className="card-box">
@@ -166,7 +192,7 @@ const ViewShipper = () => {
                         <path d="M14 27.25C14.6904 27.25 15.25 26.6904 15.25 26C15.25 25.3096 14.6904 24.75 14 24.75C13.3096 24.75 12.75 25.3096 12.75 26C12.75 26.6904 13.3096 27.25 14 27.25Z" stroke="#244664" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
 
-                        <span>+92 335 252 2522</span>
+                        <span>{allshipper?.user?.phone}</span>
                         </div>
                         <div className="data-card">
                         <svg className="mx-3" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,7 +222,7 @@ const ViewShipper = () => {
                         <span>Wallet amount</span>
                         </div>
                         <div className="data-card">
-                        <h5 className="head-card-text mx-3 my-2">SAR 6,000</h5>
+                        <h5 className="head-card-text mx-3 my-2">SAR {allshipper?.user?.wallet?.balance}</h5>
                         </div>
                     </div>
                     </div>
@@ -208,7 +234,7 @@ const ViewShipper = () => {
                             <path d="M12 21.61V12.54" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M9.92989 2.48004L4.58989 5.44004C3.37989 6.11004 2.38989 7.79004 2.38989 9.17004V14.82C2.38989 16.2 3.37989 17.88 4.58989 18.55L9.92989 21.52C11.0699 22.15 12.9399 22.15 14.0799 21.52L19.4199 18.55C20.6299 17.88 21.6199 16.2 21.6199 14.82V9.17004C21.6199 7.79004 20.6299 6.11004 19.4199 5.44004L14.0799 2.47004C12.9299 1.84004 11.0699 1.84004 9.92989 2.48004Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span>7 Orders</span>
+                            <span>{shipperorderList.length} Orders</span>
                             <NavLink to="/allshipments" className="btn-data-card mx-4">
                                 View All
                             </NavLink>

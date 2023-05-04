@@ -128,6 +128,8 @@ const Shipments = () => {
 
   // state-add
   const [shipperValue, setShipperValue] = useState("");
+  const [shipperid, setShipperid] = useState("");
+
   // pickup-chooses
   const [pickupValue, setPickupValue] = useState("");
   const [pickup_DateValue, setPickup_DateValue] = useState("");
@@ -189,6 +191,7 @@ const Shipments = () => {
       const data = response.data.data;
       // console.log(data, "pickup");
       setPickupList(data);
+      setShipperid(shipper_id);
       // console.log(pickupList, "pickup list hereeee");
       return data;
     } catch (e) {
@@ -306,6 +309,7 @@ const Shipments = () => {
         const data = response.data.data;
         // console.log(data);
         setShipperList(data);
+
 
         return data;
       } catch (e) {
@@ -864,7 +868,7 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="add-btn">
-                          <NavLink to="/Shipments/addAddress">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
                               Address
@@ -939,7 +943,7 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="add-btn">
-                          <NavLink to="/Shipments/addAddress">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
                               Address
@@ -1262,7 +1266,7 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="add-btn">
-                          <NavLink to="/Shipments/addAddress">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
                               Address
@@ -1337,7 +1341,7 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="add-btn">
-                          <NavLink to="/Shipments/addAddress">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
                               Address
