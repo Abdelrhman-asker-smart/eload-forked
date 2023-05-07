@@ -190,6 +190,9 @@ const PartDriverList = () => {
     const [removeableId, setRemoveableId] = useState(null);
     const [reload, setReload] = useState(false);
     const [cookie] = useCookies(["eload_token"]);
+    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+
     const data = partnerList.map((item, index) => {
       return {
         id:item.id,
@@ -207,7 +210,7 @@ const PartDriverList = () => {
 
               const response = await axios.get(
                
-                `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${id}`,
+                `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${user_type == 'admin' ? id : user_type_data.id}`,
                 {
                   headers: {
                     Accept: "application/json",
@@ -288,7 +291,7 @@ const PartDriverList = () => {
 
         </div>
         <div className="box-right">
-          <NavLink to={`/Serviceproviders/Partners/part-adddriver/${id}`}>
+          <NavLink to={`/Serviceproviders/Partners/part-adddriver/${user_type == 'admin' ? id : user_type_data.id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-2"></i>Add Driver
             </button>

@@ -16,17 +16,19 @@ import "./PartDriverList";
 const Adddriver = () => {
     const [startDate, setStartDate] = useState();
     const { id } = useParams();
-
     const [cookie] = useCookies(["eload_token"]);
+    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+
     const showNotification = () => {
       // e.preventDefault();
   
       let Msg = ({ closeToast, toastProps }) => (
         <div>
           <h5>Done</h5>
-          <NavLink to={`/Serviceproviders/Partners/part-driverlist/${id}`}>
+          <NavLink to={`/Serviceproviders/Partners/part-driverlist/${user_type == 'admin' ? id : user_type_data.id}`}>
             {/* /Serviceproviders/Partners/part-driverlist/ */}
-            {/* {`/Serviceproviders/Partners/viewpartner/${id}`} */}
+            {/* {`/Serviceproviders/Partners/viewpartner/${user_type == 'admin' ? id : user_type_data.id}`} */}
           <button 
             className="btn btndetails">
             Back to Drivers
