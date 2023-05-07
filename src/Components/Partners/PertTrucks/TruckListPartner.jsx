@@ -181,6 +181,8 @@ const PartTruclList = () => {
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   const data = trucksList.map((item, index) => {
     return {
@@ -201,7 +203,7 @@ const PartTruclList = () => {
       
           const response = await axios.get(
            
-            `https://dev.eload.smart.sa/api/v1/trucks?provider_id=${id}`,
+            `https://dev.eload.smart.sa/api/v1/trucks?provider_id=${user_type == 'admin' ? id : user_type_data.id}`,
             {
               headers: {
                 Accept: "application/json",
@@ -216,7 +218,7 @@ const PartTruclList = () => {
           console.log(data);
           console.log(data,"datas");
           setTrucksList(data);
-          setprov_id(id);
+          setprov_id(user_type == 'admin' ? id : user_type_data.id);
             
           return data;
         } catch (e) {
@@ -275,7 +277,7 @@ const handleExportData = () => {
 
         </div>
         <div className="box-right">
-          <NavLink to={`/Serviceproviders/Partners/part-AddTruck/${id}`}>
+          <NavLink to={`/Serviceproviders/Partners/part-AddTruck/${user_type == 'admin' ? id : user_type_data.id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-2"></i>Add Truck
             </button>
