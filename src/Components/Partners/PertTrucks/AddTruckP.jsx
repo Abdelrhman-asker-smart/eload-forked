@@ -18,13 +18,15 @@ const AddTruckP = () => {
     const [startDate, setStartDate] = useState();
     const { id } = useParams();
     const [cookie] = useCookies(["eload_token"]);
+    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
     const showNotification = () => {
       // e.preventDefault();
   
       let Msg = ({ closeToast, toastProps }) => (
         <div>
           <h4>Done</h4>
-          <NavLink to={`/Serviceproviders/Partners/part-trucklist/${id}`}>
+          <NavLink to={`/Serviceproviders/Partners/part-trucklist/${user_type == 'admin' ? id : user_type_data.id}`}>
           <button 
             className="btn btndetails">
             Back to Drivers
@@ -131,7 +133,7 @@ useEffect(() => {
     const Driverslist = async () => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${id}`,
+          `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${user_type == 'admin' ? id : user_type_data.id}`,
 
           {
             headers: {
