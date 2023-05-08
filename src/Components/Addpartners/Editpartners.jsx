@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { EditpartnerFunction } from "../../redux/Partner/EditPartner";
+import CompanyForm from '../Common/CompanyForm';
 import "./Addpartners.css";
 
 const Editpartners = () => {
@@ -47,6 +48,7 @@ const Editpartners = () => {
   const [ownerName, setOwnerName] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
   const [ownerNID, setOwnerNID] = useState("");
+  const [company, setCompany] = useState({});
 
   useEffect(() => {
     console.log(id,"id-----");
@@ -75,6 +77,7 @@ const Editpartners = () => {
         // setOwnerName(data.name);
         setOwnerPhone(data.user.phone);
         setOwnerNID(data.user.national_id);
+        setCompany(data.company);
         return data;
       } catch (e) {
         console.log(e);
@@ -102,6 +105,10 @@ const Editpartners = () => {
     // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
+
+    for (var key in company) {
+      formdata.append(`company[${key}]`, company[key]);
+    }
 
     console.log("editDone");
     dispatch(
@@ -254,6 +261,8 @@ const Editpartners = () => {
             />
           </div>
         </div>
+        <hr className="my-5" />
+        <CompanyForm company={company} setCompany={setCompany} />
         {/* line-2 */}
         <button type="button" className="btn-save my-3"
            onClick={edit}
