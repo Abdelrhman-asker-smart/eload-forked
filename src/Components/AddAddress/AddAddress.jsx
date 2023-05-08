@@ -12,13 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+// import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader,  MarkerF } from "@react-google-maps/api";
+
 
 import "../AddAddress/addAddress.css";
 
 const AddAddress = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-
   const [cities, setCities] = useState([]);
   const [countryList, setCountryList] = useState([]);
 
@@ -29,7 +31,7 @@ const AddAddress = () => {
     let Msg = ({ closeToast, toastProps }) => (
       <div>
         <h4>Done</h4>
-        <NavLink to="/Serviceproviders/driver">
+        <NavLink to={`/Shipments/grouplist/${id}`}>
           <button className="btn btndetails">Back to Drivers</button>
         </NavLink>
 
@@ -41,6 +43,7 @@ const AddAddress = () => {
     // readNotification(notification.id);
   };
 
+
   // select-options
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
@@ -49,6 +52,11 @@ const AddAddress = () => {
   const [isRtl, setIsRtl] = useState(false);
 
   // States================================
+
+  const intialList = {
+    phoneNumber: "",
+    nameoption: "",
+  };
   const [group, setGroup] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -56,26 +64,41 @@ const AddAddress = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nameoption, setNameoption] = useState("");
   const [Address, setAddress] = useState("");
+  const [optionList, setOptionList] = useState([intialList]);
+
+  console.log(optionList, "listobject");
+    // ==================================map==========================
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+  
+    const { isLoaded } = useJsApiLoader({
+      id: "google-map-script",
+      googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
+    });
+  
+    const mapContainerStyle = {
+      height: "500px",
+      width: "100%",
+    };
+  
+    const center = {
+      lat:  24.684798959411857,
+      lng: 46.69830664691359,
+    };
+    const handleClick=(event)=>{
+      setLatitude(event.latLng.lat()); // set the latitude state variable
+      setLongitude(event.latLng.lng()); // set the longitude state variable
+    }
 
   // selct_list
   const [groupList, setGrouopList] = useState([]);
   // const [cityList, setCityList] = useState([]);
   const [addOptionList, setAddOptionList] = useState([]);
   const newElement = "newvalue";
+  const newArray = [...addOptionList];
 
-  // const intialList = {
-  //   truckTypePlanned: "",
-  //   shipmentTypePlanned: "",
-  //   shipmentvaluePlanned: "",
-  //   weightPlanned: "",
-  //   numTrucksPlanned: "",
-  //   descriptionPlanned: "",
-  //   PickingListPlanned: [],
-  //   documListPlanned: [],
-  //   commidityPlanned: "",
-  //   uomPlanned: "",
-  //   quantityPlanned: "",
-  // };
+  console.log(addOptionList, "addOptionList");
+
 
   // Api-post==========================
   const apiAddAddress = async (e) => {
@@ -87,10 +110,15 @@ const AddAddress = () => {
     urlencoded.append("name", name);
     urlencoded.append("type", type);
     urlencoded.append("address", Address);
-    urlencoded.append("latitude", "26.160366");
-    urlencoded.append("longitude", "50.137523");
-    urlencoded.append("phones[0][phone]", phoneNumber);
-    urlencoded.append("phones[0][name]", nameoption);
+    urlencoded.append("latitude", latitude);
+    urlencoded.append("longitude", longitude);
+    // urlencoded.append("phones[0][phone]", phoneNumber);
+    // urlencoded.append("phones[0][name]", nameoption);
+
+    optionList.map((itemdetails, indexdetails) => {
+      urlencoded.append(`phones[${indexdetails}][phone]`, optionList[indexdetails].phoneNumber);
+      urlencoded.append(`phones[${indexdetails}][name]`, optionList[indexdetails].nameoption);
+    });
 
     try {
       const reponse = await axios.post(
@@ -145,7 +173,6 @@ const AddAddress = () => {
     label: item.name,
     value: item.id,
   }));
-
   // Api-fetch-Country================
   useEffect(() => {
     const Countrylist = async () => {
@@ -190,27 +217,28 @@ const AddAddress = () => {
         console.log(e);
       });
   }, []);
-  const handelAddOptions = () => {
-    const newElement = "new value";
-    const newArray = [...addOptionList]; // create a copy of the existing array
-    newArray.push(newElement);
-    setAddOptionList(newArray);
-  };
-
   /* type-select */
   const typeOptions = [
     { value: "Pick up", label: "Pick up" },
     { value: "Drop off", label: "Drop off" },
   ];
-  {
-    /* city-select */
-  }
-  const cityOptions = [
-    { value: "Jeddah ", label: "Jeddah " },
-    { value: "Mecca ", label: "Mecca " },
-    { value: "Jeddah", label: "Jeddah" },
-    { value: "Mecca ", label: "Mecca " },
-  ];
+
+  // ==========================testMap=====================
+  // const [center, setCenter] = useState(null);
+  // useEffect(() => {
+  //   if (isLoaded) {
+  //     const geocoder = new window.google.maps.Geocoder();
+  //     geocoder.geocode({ address: "Cairo"}, (results, status) => {
+  //       if (status === "OK") {
+  //         setCenter(results[0].geometry.location);
+  //       } else {
+  //         console.error("Geocode was not successful for the following reason:", status);
+  //       }
+  //     });
+  //   }
+  // }, [isLoaded]);
+
+
   return (
     <div>
       <form onSubmit={apiAddAddress}>
@@ -315,9 +343,37 @@ const AddAddress = () => {
                 onChange={(choice) => setCity(choice.value)}
               />
             </div>
+            {
+              city !=="" ?
+              <div className="address-input w-100 mb-5">
+                  {
+                      isLoaded  ? 
+                        <div>
+                          <h2>Click on the map to get the latitude and longitude</h2>
+                          <GoogleMap
+                            mapContainerStyle={mapContainerStyle}
+                            center={center}
+                            zoom={10}
+                            onClick={handleClick}
+                          >
+                            {latitude && longitude && (
+                              <MarkerF position={{ lat: latitude, lng: longitude }} />
+                            )}
+                          </GoogleMap>
+                          {latitude && <p>Latitude: {latitude}</p>}
+                          {longitude && <p>Longitude: {longitude}</p>}
+                        </div>
+                       : 
+                        <div>Loading...</div>
+                      
+                  }
+              </div>
+              :
+              <></>
+            }
             <div className="address-input w-100 mb-5">
               {/*=========================== row addition =====================*/}
-              <div className="row">
+              <div className="row optionbox">
                 <div className="input-1 col-4 me-5">
                   <p className="head-text mb-2">Phone number</p>
                   <input
@@ -327,9 +383,22 @@ const AddAddress = () => {
                     required
                     onChange={(e) => {
                       setPhoneNumber(e.target.value);
+                      const newList = [...optionList]; // create a copy of the array
+                      newList[0].phoneNumber = e.target.value; // update the nameoption property
+                      setOptionList(newList);
                     }}
                   />
                 </div>
+                {/* 
+                    const intialList = {
+                      phoneNumber: "",
+                      nameoption: "",
+                  };
+                  const [optionList, setOptionList] = useState([intialList]);
+                      setNameoption(e.target.value);
+
+                  */}
+
                 <div className="input-2 col-4 ms-5">
                   <p className="head-text mb-2">Name (Optional)</p>
                   <input
@@ -338,13 +407,20 @@ const AddAddress = () => {
                     placeholder="Name"
                     onChange={(e) => {
                       setNameoption(e.target.value);
+                      const newList = [...optionList]; // create a copy of the array
+                      newList[0].nameoption = e.target.value; // update the nameoption property
+                      setOptionList(newList);
                     }}
                   />
                 </div>
-                <div className="input-add col-3 text-center"
-                  // onClick={
-                  //   handelAddOptions()
-                  // }
+                <div
+                  className="input-add col-3 text-center"
+                  onClick={() => {
+                    const newArray = [...addOptionList];
+                    newArray.push(newElement);
+                    setAddOptionList(newArray);
+                    setOptionList([...optionList, intialList]);
+                  }}
                 >
                   <i className="fa-solid fa-plus"></i>
                 </div>
@@ -352,7 +428,7 @@ const AddAddress = () => {
               {addOptionList.map((item, indexdetails) => {
                 return (
                   <>
-                    <div className="row my-3">
+                    <div className="row my-3 optionbox">
                       <div className="input-1 col-4 me-5">
                         <p className="head-text mb-2">Phone number</p>
                         <input
@@ -362,6 +438,10 @@ const AddAddress = () => {
                           required
                           onChange={(e) => {
                             setPhoneNumber(e.target.value);
+                            const newList = [...optionList]; // create a copy of the array
+                            newList[indexdetails + 1].phoneNumber =
+                              e.target.value; // update the nameoption property
+                            setOptionList(newList);
                           }}
                         />
                       </div>
@@ -373,18 +453,35 @@ const AddAddress = () => {
                           placeholder="Name"
                           onChange={(e) => {
                             setNameoption(e.target.value);
+                            const newList = [...optionList]; // create a copy of the array
+                            newList[indexdetails + 1].nameoption =
+                              e.target.value; // update the nameoption property
+                            setOptionList(newList);
                           }}
                         />
                       </div>
-                      <div className="input-add col-1 text-center">
+                      <div
+                        className="input-add col-1 text-center"
+                        onClick={() => {
+                          const newArray = [...addOptionList];
+                          newArray.push(newElement);
+                          setAddOptionList(newArray);
+                        }}
+                      >
                         <i className="fa-solid fa-plus"></i>
                       </div>
-                      <div className="input-add col-1 text-center" style={{backgroundColor:"#ccc"}}
-                        onClick={
-                          setAddOptionList(addOptionList.slice(0, -1))
-                        }
+                      <div
+                        className="input-add col-1 text-center"
+                        style={{ backgroundColor: "#ccc" }}
+                        onClick={() => {
+                          setAddOptionList(addOptionList.slice(0, -1));
+                          setOptionList(optionList.slice(0, -1));
+                        }}
                       >
-                        <i className="fa-solid fa-close" style={{color:"red"}}></i>
+                        <i
+                          className="fa-solid fa-close"
+                          style={{ color: "red" }}
+                        ></i>
                       </div>
                     </div>
                   </>
