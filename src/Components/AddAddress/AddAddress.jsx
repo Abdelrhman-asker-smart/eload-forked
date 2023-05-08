@@ -81,10 +81,7 @@ const AddAddress = () => {
       width: "100%",
     };
   
-    const center = {
-      lat:  24.684798959411857,
-      lng: 46.69830664691359,
-    };
+
     const handleClick=(event)=>{
       setLatitude(event.latLng.lat()); // set the latitude state variable
       setLongitude(event.latLng.lng()); // set the longitude state variable
@@ -194,7 +191,7 @@ const AddAddress = () => {
         const data = response.data.data.data.states;
 
         setCountryList(data);
-        // console.log(data, "datacountry");
+        console.log(data, "datacountry");
         return data;
       } catch (e) {
         console.log(e);
@@ -208,6 +205,8 @@ const AddAddress = () => {
           label: object.name,
           options: object.cities.map((sub_object) => ({
             value: sub_object.id,
+            lat: sub_object.latitude,
+            long: sub_object.longitude,
             label: sub_object.name,
           })),
         }));
@@ -217,6 +216,14 @@ const AddAddress = () => {
         console.log(e);
       });
   }, []);
+  const [selectLat, setSelectLat] = useState("");
+  const [selectLong, setSelectLong] = useState("");
+  
+  const center = {
+    lat: Number(selectLat) ,
+    lng: Number(selectLong) ,
+  };
+  console.log(center,"center");
   /* type-select */
   const typeOptions = [
     { value: "Pick up", label: "Pick up" },
@@ -340,11 +347,20 @@ const AddAddress = () => {
                 isSearchable={isSearchable}
                 name="color"
                 options={cities}
-                onChange={(choice) => setCity(choice.value)}
+                onChange={(choice) => {
+                  setCity(choice.value);
+                  console.log(choice.lat,"lat");
+                  setSelectLat(choice.lat);
+                  setSelectLong(choice.long);
+                }}
               />
+              {/* 
+                const [selectLat, setSelectLat] = useState("");
+  const [selectLong, setSelectLong] = useState("");
+              */}
             </div>
             {
-              city !=="" ?
+              center.lat && center.lng !=="" ?
               <div className="address-input w-100 mb-5">
                   {
                       isLoaded  ? 
@@ -360,8 +376,8 @@ const AddAddress = () => {
                               <MarkerF position={{ lat: latitude, lng: longitude }} />
                             )}
                           </GoogleMap>
-                          {latitude && <p>Latitude: {latitude}</p>}
-                          {longitude && <p>Longitude: {longitude}</p>}
+                          {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
+                          {longitude && <p>Longitude: {longitude} center: {center.lng}</p>}
                         </div>
                        : 
                         <div>Loading...</div>
