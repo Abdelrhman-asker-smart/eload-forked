@@ -161,6 +161,8 @@ const GroupList = () => {
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
   const { id } = useParams();
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   // console.log(idshipper,"shipperid");
 
@@ -168,7 +170,7 @@ const GroupList = () => {
     return {
       id: item.id,
       name: item.name,
-      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={id} />,
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={user_type == 'admin' ? id : user_type_data.id} />,
     };
   });
   useEffect(() => {
@@ -179,7 +181,7 @@ const GroupList = () => {
           // https://dev.eload.smart.sa/api/v1/categories
           // `${process.env.REACT_BASE_URL}/categories`,
 
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
           {
             headers: {
               Accept: "application/json",
@@ -249,7 +251,7 @@ const GroupList = () => {
             </div>
           </div>
           <div className="box-right">
-            <NavLink to={`/Shipments/addnewgroup/${id}`}>
+            <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-3"></i>Add new group
             </button>

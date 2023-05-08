@@ -23,6 +23,9 @@ const AddAddress = () => {
   const [countryList, setCountryList] = useState([]);
 
   const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+
   const showNotification = () => {
     // e.preventDefault();
 
@@ -116,7 +119,7 @@ const AddAddress = () => {
     const Grouplist = async (id) => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
 
           {
             headers: {
@@ -223,7 +226,7 @@ const AddAddress = () => {
                   <div className="input-select col-6">
                     <div className="input-select-info">
                       <p className="head-text">Choose Group</p>
-                      <NavLink to={`/Shipments/grouplist/${id}`}>
+                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
                         <button>
                           <a href="/#">View All</a>
                         </button>
@@ -248,7 +251,7 @@ const AddAddress = () => {
                     />
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                    <NavLink to={`/Shipments/addnewgroup/${id}`}>
+                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
                       <button className="btn btn-adress">
                         + Add new group
                       </button>
