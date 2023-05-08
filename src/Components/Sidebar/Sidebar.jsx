@@ -1124,7 +1124,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{marginLeft: "20px"}}
-                            to="/addresses"
+                            to={`/Shipments/grouplist/${user_type_data.id}`}
                           >
                             <svg
                             className="mx-2"
@@ -1161,7 +1161,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{marginLeft: "20px"}}
-                            to="/address_new"
+                            to={`/Shipments/addAddress/${user_type_data.id}`}
                           >
                             <Addshipper className="mx-2"/>
 

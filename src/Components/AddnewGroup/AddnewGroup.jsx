@@ -13,13 +13,16 @@ const AddnewGroup = () => {
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   const { id } = useParams();
+  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  
   const showNotification = () => {
     // e.preventDefault();
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
         <h4>Done</h4>
-        <NavLink to={`/Shipments/grouplist/${id}`}>
+        <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
           <button className="btn btndetails">Back to Drivers</button>
         </NavLink>
 
@@ -34,7 +37,7 @@ const AddnewGroup = () => {
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
-  urlencoded.append("shipper_id", id);
+  urlencoded.append("shipper_id", user_type == 'admin' ? id : user_type_data.id);
 
   const recordgroup = async (e) => {
 
@@ -79,7 +82,7 @@ const AddnewGroup = () => {
           <h2>Add new group</h2>
 
           <button>
-            <NavLink to={`/Shipments/grouplist/${id}`}>
+            <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
               <p className="linkview">View All</p>
             </NavLink>
           </button>
