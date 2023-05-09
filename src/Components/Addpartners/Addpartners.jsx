@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import CompanyForm from '../Common/CompanyForm';
+import AccountForm from '../Common/AccountForm';
 import "./Addpartners.css";
 
 const Addpartners = () => {
@@ -51,6 +52,7 @@ const Addpartners = () => {
   const [ownerPhone, setOwnerPhone] = useState("");
   const [ownerNID, setOwnerNID] = useState("");
   const [company, setCompany] = useState({});
+  const [account, setAccount] = useState({});
 
 
   // Api-post==========================
@@ -69,6 +71,10 @@ const Addpartners = () => {
 
     for (var key in company) {
       formdata.append(`company[${key}]`, company[key]);
+    }
+
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
     }
 
     try {
@@ -219,6 +225,8 @@ const Addpartners = () => {
         </div>
         <hr className="my-5" />
         <CompanyForm company={company} setCompany={setCompany} />
+        <hr className="my-5" />
+        <AccountForm account={account} setAccount={setAccount} />
 
         {/* line-2 */}
         <button type="submit" className="btn-save my-3"

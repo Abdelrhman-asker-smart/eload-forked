@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { EditpartnerFunction } from "../../redux/Partner/EditPartner";
 import CompanyForm from '../Common/CompanyForm';
+import AccountForm from '../Common/AccountForm';
 import "./Addpartners.css";
 
 const Editpartners = () => {
@@ -49,6 +50,7 @@ const Editpartners = () => {
   const [ownerPhone, setOwnerPhone] = useState("");
   const [ownerNID, setOwnerNID] = useState("");
   const [company, setCompany] = useState({});
+  const [account, setAccount] = useState({});
 
   useEffect(() => {
     console.log(id,"id-----");
@@ -78,6 +80,7 @@ const Editpartners = () => {
         setOwnerPhone(data.user.phone);
         setOwnerNID(data.user.national_id);
         setCompany(data.company);
+        setAccount(data.user.account);
         return data;
       } catch (e) {
         console.log(e);
@@ -108,6 +111,10 @@ const Editpartners = () => {
 
     for (var key in company) {
       formdata.append(`company[${key}]`, company[key]);
+    }
+
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
     }
 
     console.log("editDone");
@@ -263,6 +270,11 @@ const Editpartners = () => {
         </div>
         <hr className="my-5" />
         <CompanyForm company={company} setCompany={setCompany} />
+        <hr className="my-5" />
+        {
+          Object.keys(account).length > 0 &&
+          <AccountForm account={account} setAccount={setAccount} />
+        }
         {/* line-2 */}
         <button type="button" className="btn-save my-3"
            onClick={edit}
