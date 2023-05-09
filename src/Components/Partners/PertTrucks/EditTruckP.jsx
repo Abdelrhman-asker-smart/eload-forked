@@ -133,8 +133,13 @@ const EditTruckP = () => {
             const data = response.data.data;
     
             setTruckList(data);
-            // console.log(data, "datacountry");
-            return data;
+            
+            let groupsTruckOptionsData = data.map((item) => ({
+              label: item.name,
+              value: item.id,
+            }));
+    
+            setGroupsTruckOptions(groupsTruckOptionsData);
           } catch (e) {
             console.log(e);
           }
@@ -176,7 +181,7 @@ const EditTruckP = () => {
           });
       };  
       const GroupsDriverOptions = driversList.map((item, index) => ({
-        label: item.name,
+        label: item.user.name,
         value: item.id,
       }));
       // truckoptions
@@ -269,7 +274,7 @@ const EditTruckP = () => {
           <div className="col-md-4">
             <label className="my-2 d-block">Truck Type</label>
             {
-            groupsTruckOptions.length >= 0 && TruckType &&
+            groupsTruckOptions.length > 0 && TruckType &&
             <Select
               classNamePrefix="select"
               className="basic-multi-select"

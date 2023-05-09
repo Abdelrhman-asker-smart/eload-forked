@@ -12,7 +12,8 @@ import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { EditshipperFunction } from "../../redux/Shipper/EditShipper";
-
+import CompanyForm from '../Common/CompanyForm';
+import AccountForm from '../Common/AccountForm';
 import "./AddShippers.css";
 
 const EditShipper = () => {
@@ -50,6 +51,8 @@ const EditShipper = () => {
   const [followupName, setFollowupName] = useState("");
   const [followupnumber, setFollowupNumber] = useState("");
 //   const [contacted, setContacted] = useState("");
+  const [company, setCompany] = useState({});
+  const [account, setAccount] = useState({});
 
   useEffect(() => {
     console.log(id, "id-----");
@@ -78,6 +81,8 @@ const EditShipper = () => {
         setFollowupName(data.follow_up_name);
         setFollowupNumber(data.follow_up_phone);
         // setContacted(data?.user.create_contract);
+        setCompany(data.company);
+        setAccount(data.user.account);
 
         return data;
       } catch (e) {
@@ -105,6 +110,14 @@ const EditShipper = () => {
 
     // formdata.append("create_contract", contacted);
 
+    for (var key in company) {
+      formdata.append(`company[${key}]`, company[key]);
+    }
+
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
+    }
+    
     console.log("editDone");
     dispatch(
       EditshipperFunction({
@@ -327,6 +340,13 @@ const EditShipper = () => {
             </div>
           </div>
         </div>
+        <hr className="my-5" />
+        <CompanyForm company={company} setCompany={setCompany} />
+        <hr className="my-5" />
+        {
+          Object.keys(account).length > 0 &&
+          <AccountForm account={account} setAccount={setAccount} />
+        }
         {/* line-2 */}
 
         <button type="button" className="btn-save my-3" onClick={edit}>

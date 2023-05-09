@@ -8,7 +8,7 @@ import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
 import  {ReactComponent as Dateicon} from '../../../icons/date-icon.svg';
 import  {ReactComponent as Vector} from '../../../icons/Vector.svg';
-
+import AccountForm from '../../Common/AccountForm';
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,6 +65,7 @@ const EditDriver = () => {
   const [TruckLinceseNumber, setTruckLinceseNumber] = useState("");
   const [TruckLinceseCope, setTruckLinceseCope] = useState("");
   const [TruckType, setTruckType] = useState("");
+  const [account, setAccount] = useState({});
 
   // country_list
   const [countryList, setCountryList] = useState([]);
@@ -116,6 +117,7 @@ const EditDriver = () => {
       setTruckLinceseNumber(data.driver.truck.license_number);
       setTruckLinceseCope(data.driver.truck.license_copy);
       setTruckType(data.driver.truck.truck_type_id);
+      setAccount(data.user.account);
         return data;
       } catch (e) {
         console.log(e);
@@ -167,8 +169,13 @@ const EditDriver = () => {
         const data = response.data.data;
 
         setTruckList(data);
-        // console.log(data, "datacountry");
-        return data;
+
+        let groupsTruckOptionsData = data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+
+        setGroupsTruckOptions(groupsTruckOptionsData);
       } catch (e) {
         console.log(e);
       }
@@ -246,6 +253,10 @@ const EditDriver = () => {
     formdata.append("truck[license_number]", TruckLinceseNumber);
     formdata.append("truck[license_copy]", TruckLinceseCope);
     formdata.append("truck[truck_type_id]", TruckType);
+
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
+    }
 
     dispatch(
       // EditDriverFunction
@@ -555,7 +566,7 @@ const EditDriver = () => {
             <label className="my-2 d-block">Nationality</label>
             {/* Country-select */}
             {
-            GroupsCountryOptions.length >= 0 && nationality &&
+            GroupsCountryOptions.length > 0 &&
             // conver id "1" to 1 in the data
             <Select
               classNamePrefix="select"
@@ -569,7 +580,7 @@ const EditDriver = () => {
               options={GroupsCountryOptions}
               isRtl={isRtl}
               isSearchable={isSearchable}
-              defaultValue={GroupsCountryOptions.find(({ value }) => value === nationality)}
+              defaultValue={GroupsCountryOptions.find(({ value }) => value == nationality)}
               // onChange={(choice) => setTruckType(choice.value)}
               name="color"
               onChange={(choice) => {
@@ -697,7 +708,7 @@ const EditDriver = () => {
           <div className="col-md-4">
             <label className="my-2 d-block">Truck Type</label>
             {
-            groupsTruckOptions.length >= 0 && TruckType &&
+            groupsTruckOptions.length > 0 && TruckType &&
             <Select
               classNamePrefix="select"
               className="basic-multi-select"
@@ -716,6 +727,11 @@ const EditDriver = () => {
             }
           </div>
         </div>
+        <hr className="my-5" />
+        {
+          Object.keys(account).length > 0 &&
+          <AccountForm account={account} setAccount={setAccount} />
+        }
         {/* <NavLink to="/Serviceproviders/driver"> */}
         <button type="button" className="btn-save my-3"
           onClick={edit}

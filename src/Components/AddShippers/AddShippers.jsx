@@ -9,7 +9,8 @@ import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import { ReactComponent as Vector } from "../../icons/Vector.svg";
 import { NavLink } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
-
+import CompanyForm from '../Common/CompanyForm';
+import AccountForm from '../Common/AccountForm';
 import './AddShippers.css';
 
 
@@ -56,6 +57,8 @@ const AddShippers = () => {
     const [followupName, setFollowupName] = useState("");
     const [followupnumber, setFollowupNumber] = useState("");
     const [contacted, setContacted] = useState("");
+    const [company, setCompany] = useState({});
+    const [account, setAccount] = useState({});
 
       // Api-post==========================
   const apiAddShipper = async (e) => {
@@ -76,7 +79,14 @@ const AddShippers = () => {
 
     formdata.append("create_contract", contacted);
 
+    for (var key in company) {
+      formdata.append(`company[${key}]`, company[key]);
+    }
 
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
+    }
+    
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/shippers",
@@ -257,6 +267,10 @@ const AddShippers = () => {
 
       </div>
     </div>
+    <hr className="my-5" />
+    <CompanyForm company={company} setCompany={setCompany} />
+    <hr className="my-5" />
+    <AccountForm account={account} setAccount={setAccount} />
     {/* line-2 */}
 
     <button type='submit' className='btn-save my-3'>SAVE</button>
