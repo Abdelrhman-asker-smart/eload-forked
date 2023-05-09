@@ -169,8 +169,13 @@ const EditDriver = () => {
         const data = response.data.data;
 
         setTruckList(data);
-        // console.log(data, "datacountry");
-        return data;
+
+        let groupsTruckOptionsData = data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+
+        setGroupsTruckOptions(groupsTruckOptionsData);
       } catch (e) {
         console.log(e);
       }
@@ -561,7 +566,7 @@ const EditDriver = () => {
             <label className="my-2 d-block">Nationality</label>
             {/* Country-select */}
             {
-            GroupsCountryOptions.length >= 0 && nationality &&
+            GroupsCountryOptions.length > 0 &&
             // conver id "1" to 1 in the data
             <Select
               classNamePrefix="select"
@@ -575,7 +580,7 @@ const EditDriver = () => {
               options={GroupsCountryOptions}
               isRtl={isRtl}
               isSearchable={isSearchable}
-              defaultValue={GroupsCountryOptions.find(({ value }) => value === nationality)}
+              defaultValue={GroupsCountryOptions.find(({ value }) => value == nationality)}
               // onChange={(choice) => setTruckType(choice.value)}
               name="color"
               onChange={(choice) => {
@@ -703,7 +708,7 @@ const EditDriver = () => {
           <div className="col-md-4">
             <label className="my-2 d-block">Truck Type</label>
             {
-            groupsTruckOptions.length >= 0 && TruckType &&
+            groupsTruckOptions.length > 0 && TruckType &&
             <Select
               classNamePrefix="select"
               className="basic-multi-select"
