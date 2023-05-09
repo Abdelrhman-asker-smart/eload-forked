@@ -80,6 +80,8 @@ import EditTruckP from "../Partners/PertTrucks/EditTruckP";
 import Details from "../order/Details";
 import EditShipper from "../AddShippers/EditShipper";
 import EditGroup from "../AddnewGroup/EditGroup";
+import AddressList from './../AddressList/addressList';
+import EditAddress from "../AddAddress/EditAddress";
 
 
 
@@ -154,9 +156,13 @@ const Layout = ({ setLogin }) => {
             
             {/* Address------------------------- */}
             <Route path="/Shipments/addAddress/:id" element={<AddAddress />} />
+            <Route path="/Shipments/editAddress/:id/shipper/:idshipper" element={<EditAddress />} />
+
             <Route path="/Shipments/grouplist/:id" element={<GroupList />} />
             <Route path="/Shipments/addnewgroup/:id" element={<AddNewGroup />} />
             <Route path="/Shipments/editgroup/:id/shipper/:idshipper" element={<EditGroup />} />
+            <Route path="/Shipments/addresslist/:id/shipper/:idshipper" element={<AddressList />} />
+
 
             <Route path="/allshipments/shipmentorder/:id" element={<ShipmentOrder />} />
 

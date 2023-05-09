@@ -83,7 +83,27 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
   // const { idshipper } = useParams();
+    
+
   <div className="w-100">
+        <NavLink to={`/Shipments/addresslist/${id}/shipper/${idshipper}`}>
+      <button
+        className="btn-table active"
+        style={{
+          textAlign: "center",
+          padding: "1% 3%",
+          border: "1px solid #0e324a",
+          borderRadius: "20px",
+          marginRight: "4%",
+          color: "#fff",
+          backgroundColor: "#0b2339",
+        }}
+      >
+        <EditIcon className="mx-1" />
+        View
+      </button>
+    </NavLink>
+    {/* edit */}
     <NavLink to={`/Shipments/editgroup/${id}/shipper/${idshipper}`}>
       <button
         className="btn-table active"
