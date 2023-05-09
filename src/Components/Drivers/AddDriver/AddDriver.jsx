@@ -10,7 +10,7 @@ import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
 import { ReactComponent as Vector } from "../../../icons/Vector.svg";
 import { NavLink } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
-
+import AccountForm from '../../Common/AccountForm';
 
 const AddDriver = () => {
   // const [input, setInputs] = useState([])
@@ -73,6 +73,7 @@ const AddDriver = () => {
   const [TruckLinceseNumber, setTruckLinceseNumber] = useState("");
   const [TruckLinceseCope, setTruckLinceseCope] = useState("");
   const [TruckType, setTruckType] = useState("");
+  const [account, setAccount] = useState({});
 
   // country_list
   const [countryList, setCountryList] = useState([]);
@@ -109,6 +110,10 @@ const AddDriver = () => {
     formdata.append("truck[license_number]", TruckLinceseNumber);
     formdata.append("truck[license_copy]", TruckLinceseCope);
     formdata.append("truck[truck_type_id]", TruckType);
+
+    for (var key in account) {
+      formdata.append(`account[${key}]`, account[key]);
+    }
 
     try {
       const reponse = await axios.post(
@@ -567,6 +572,8 @@ const AddDriver = () => {
             />
           </div>
         </div>
+        <hr className="my-5" />
+        <AccountForm account={account} setAccount={setAccount} />
         {/* <NavLink to="/Serviceproviders/driver"> */}
         <button type="submit" className="btn-save my-3"
           // onClick={showNotification}
