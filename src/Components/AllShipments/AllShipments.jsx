@@ -325,6 +325,7 @@ const AllShipments = () => {
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
       provider_price: item.provider_price,
+      urgent_action_needed: item.urgent_action_needed,
       pickupdate: item.order.pickup_date,
       status: item.status_i18n,
     };
