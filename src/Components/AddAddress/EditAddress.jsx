@@ -53,6 +53,8 @@ const EditAddress = () => {
   const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nameoption, setNameoption] = useState("");
+// phones
+  const [listPhone,setListPhone] =useState([]);
   const [Address, setAddress] = useState("");
   const [optionList, setOptionList] = useState([intialList]);
  
@@ -109,10 +111,9 @@ const EditAddress = () => {
         const data = response.data.data;
         console.log(data,"addressfromAPiiiiiiiiiiii");
 
-    //   setGroup(data.group.name);
+      setGroup(data.group.name);
       setName(data.name);
     //   setCity(data.user.avatar);
-
       setAddress(data.address);
 
       
@@ -125,6 +126,7 @@ const EditAddress = () => {
     addressFetch(id);
 
   }, []);
+//   console.log(group,"group");
 
   // Api-fetch-Country================
   useEffect(() => {
@@ -277,6 +279,8 @@ const EditAddress = () => {
                       </NavLink>
                     </div>
                     {/* choose-group */}
+                    {
+                     GroupsCountryOptions.length > 0 &&
                     <Select
                       classNamePrefix="select"
                       className="basic-multi-select"
@@ -286,7 +290,7 @@ const EditAddress = () => {
                       isClearable={isClearable}
                       isRtl={isRtl}
                       required
-                      defaultValue={GroupsCountryOptions.find(({ value }) => value === group)}
+                      defaultValue={GroupsCountryOptions.find(({ value }) => value == group)}
                       isSearchable={isSearchable}
                       name="color"
                       options={GroupsCountryOptions}
@@ -294,6 +298,7 @@ const EditAddress = () => {
                         setGroup(choice.value);
                       }}
                     />
+                    }   
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
                     <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
