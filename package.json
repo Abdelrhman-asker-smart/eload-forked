@@ -23,7 +23,7 @@
     "chart.js": "^4.0.1",
     "dayjs": "^1.11.7",
     "export-to-csv": "^0.2.1",
-    "firebase": "^9.15.0",
+    "firebase": "^9.21.0",
     "formik": "^2.2.9",
     "google-map-react": "^2.2.0",
     "google-maps-api": "^2.0.1",

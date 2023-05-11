@@ -83,11 +83,28 @@ import EditGroup from "../AddnewGroup/EditGroup";
 import AddressList from './../AddressList/addressList';
 import EditAddress from "../AddAddress/EditAddress";
 
+import { useEffect, useState } from "react";
+
+import firebase from "../../Firebase";
+
 
 
 
 
 const Layout = ({ setLogin }) => {
+
+  // useEffect(() => {
+  //   const messaging = firebase.messaging()
+  //   messaging.requestPermission().then(()=>{
+  //     return messaging.getToken()
+  //   }).then(token=>{
+  //     console.log('Token :' , token)
+  //   }).catch(()=>{
+  //     console.log('error');
+  //   })
+
+  // }, []);
+  
 // const [cookie, setCookie, removeToken] = useCookies([""]);
 // const routes =[{
 //   name:'/dashboard',component:<Dashbord />,
