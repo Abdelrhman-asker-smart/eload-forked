@@ -440,6 +440,7 @@ const AllShipments = () => {
             <MaterialReactTable
               columns={columnsReady}
               data={dataReady}
+              initialState={{ columnVisibility: user_type == 'provider' ? { shippingcost: false } : {} }}
               enableRowSelection
               positionToolbarAlertBanner="bottom"
               renderTopToolbarCustomActions={({ table }) => (
