@@ -7,8 +7,9 @@ import Layout from "./Components/Layout/Layout";
 import Login from "./Components/Login/Login";
 
 
-// import firebase from "../../Firebase";
-
+import firebase from "./Firebase.js";
+// import * as firebase from 'firebase/app';
+// import '@firebase/messaging';
 
 
 function App() {
@@ -29,6 +30,15 @@ function App() {
       // navigate('/dashboard');
     }
   },[]);
+
+  useEffect(()=>{
+    const msg=firebase.messaging();
+    msg.requestPermission().then(()=>{
+      return msg.getToken();
+    }).then((data)=>{
+      console.log("token",data)
+    })
+  },[]); 
 
 console.log(login,'login')
   return (
