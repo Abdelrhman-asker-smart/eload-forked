@@ -282,7 +282,7 @@ const EditAddress = () => {
                   <div className="input-select col-6">
                     <div className="input-select-info">
                       <p className="head-text">Choose Group</p>
-                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
+                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
                         <button>
                           <a href="/#">View All</a>
                         </button>
@@ -311,7 +311,7 @@ const EditAddress = () => {
                     }   
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
+                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
                       <button className="btn btn-adress">
                         + Add new group
                       </button>
