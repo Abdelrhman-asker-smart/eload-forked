@@ -101,6 +101,18 @@ const EditAddress = () => {
       return selected_options;
     };
 
+    const handleSelectedOptionsCities = () => {
+      for (let i = 0; i < cities.length; i++) {
+        for (let current_city of cities[i].options) {
+          if (city == current_city.value) {
+            return current_city;
+          }
+        }
+      }
+
+      return {};
+    };
+
   // selct_list
   const [groupList, setGrouopList] = useState([]);
 
@@ -129,6 +141,7 @@ const EditAddress = () => {
       setGroup(data.group.id);
       setName(data.name);
       setCities(data.city.id);
+      setCity(data.city.id);
       setAddress(data.address);
       setLatitude(data.latitude);
       setLongitude(data.longitude);
@@ -383,7 +396,7 @@ const EditAddress = () => {
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">City</p>
               {
-                cities.length > 0 &&
+                cities.length > 0 && city &&
               <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
@@ -393,7 +406,7 @@ const EditAddress = () => {
                 isClearable={isClearable}
                 required
                 isRtl={isRtl}
-                defaultValue={cities.find(({ value }) => value === city)}
+                defaultValue={handleSelectedOptionsCities()}
                 isSearchable={isSearchable}
                 name="color"
                 options={cities}
