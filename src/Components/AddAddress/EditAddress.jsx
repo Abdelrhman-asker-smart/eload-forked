@@ -290,7 +290,7 @@ const EditAddress = () => {
                     </div>
                     {/* choose-group */}
                     {
-                     GroupsCountryOptions.length > 0 &&
+                     GroupsCountryOptions.length > 0 && group &&
                     <Select
                       classNamePrefix="select"
                       className="basic-multi-select"
