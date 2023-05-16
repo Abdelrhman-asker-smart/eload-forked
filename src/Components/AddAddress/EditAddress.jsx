@@ -24,7 +24,7 @@ const EditAddress = () => {
     
   const [cities, setCities] = useState([]); 
 
-  const { id } = useParams();
+  const { id, idshipper } = useParams();
   const [cookie] = useCookies(["eload_token"]);
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
   const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
@@ -240,7 +240,7 @@ const EditAddress = () => {
     const Grouplist = async (id) => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? idshipper : user_type_data.id}`,
 
           {
             headers: {
