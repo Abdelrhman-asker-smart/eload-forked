@@ -85,6 +85,22 @@ const EditAddress = () => {
       setLongitude(event.latLng.lng()); // set the longitude state variable
     }
 
+    const handleSelectedOptionsTypes = () => {
+      let selected_options = [];
+
+      console.log('type', type);
+
+      for (let i = 0; i < typeOptions.length; i++) {
+        if (type.indexOf(typeOptions[i].value) > -1) {
+          selected_options.push(typeOptions[i]);
+        }
+      }
+
+      console.log('selected_options', selected_options);
+
+      return selected_options;
+    };
+
   // selct_list
   const [groupList, setGrouopList] = useState([]);
 
@@ -116,6 +132,7 @@ const EditAddress = () => {
       setAddress(data.address);
       setLatitude(data.latitude);
       setLongitude(data.longitude);
+      setType(data.type);
       // setListPhone(data.phones);
       for(var i=0 ; i < data.phones.length-1 ; i++){
         boxarray.push(data.phones[i]);
@@ -196,8 +213,8 @@ const EditAddress = () => {
   console.log(center,"center");
   /* ==============================type-select===================== */
   const typeOptions = [
-    { value: "Pick up", label: "Pick up" },
-    { value: "Drop off", label: "Drop off" },
+    { value: "pickup", label: "Pick up" },
+    { value: "dropoff", label: "Drop off" },
   ];
 // ============================================edit-Address============================
   const edit = () => {
@@ -206,7 +223,7 @@ const EditAddress = () => {
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
     urlencoded.append("name", name);
-    urlencoded.append("type", type);
+    urlencoded.append("type", type.toString());
     urlencoded.append("address", Address);
     urlencoded.append("latitude", latitude);
     urlencoded.append("longitude", longitude);
@@ -340,7 +357,7 @@ const EditAddress = () => {
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">Type</p>
               {
-              typeOptions.length > 0 &&
+              typeOptions.length > 0 && type &&
               <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
@@ -348,7 +365,7 @@ const EditAddress = () => {
                 isDisabled={isDisabled}
                 isLoading={isLoading}
                 isClearable={isClearable}
-                defaultValue={typeOptions.find(({ value }) => value === type)}
+                defaultValue={handleSelectedOptionsTypes()}
                 isRtl={isRtl}
                 required
                 isSearchable={isSearchable}
