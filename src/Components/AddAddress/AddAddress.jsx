@@ -108,7 +108,7 @@ const AddAddress = () => {
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
     urlencoded.append("name", name);
-    urlencoded.append("type", type);
+    urlencoded.append("type", type.toString());
     urlencoded.append("address", Address);
     urlencoded.append("latitude", latitude);
     urlencoded.append("longitude", longitude);
@@ -229,8 +229,8 @@ const AddAddress = () => {
   console.log(center,"center");
   /* type-select */
   const typeOptions = [
-    { value: "Pick up", label: "Pick up" },
-    { value: "Drop off", label: "Drop off" },
+    { value: "pickup", label: "Pick up" },
+    { value: "dropoff", label: "Drop off" },
   ];
 
   // ==========================testMap=====================
