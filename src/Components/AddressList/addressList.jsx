@@ -172,7 +172,7 @@ const AddressList = () => {
       return {
         id: item.id,
         name: item.name,
-        btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={user_type == 'admin' ? id : user_type_data.id} />,
+        btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={idshipper} />,
       };
     });
 
@@ -184,7 +184,7 @@ const AddressList = () => {
               // https://dev.eload.smart.sa/api/v1/categories
               // `${process.env.REACT_BASE_URL}/categories`,
     
-              `https://dev.eload.smart.sa/api/v1/addresses?group_id=${user_type == 'admin' ? id : user_type_data.id}`,
+              `https://dev.eload.smart.sa/api/v1/groups/${id}`,
               {
                 headers: {
                   Accept: "application/json",
@@ -198,7 +198,7 @@ const AddressList = () => {
     
             const data = response.data.data;
             console.log(data);
-            setAddressList(data);
+            setAddressList(data.addresses);
             return data;
           } catch (e) {
             console.log(e);
@@ -255,7 +255,7 @@ const AddressList = () => {
           </div>
           <div className="box-right">
             {/* idshipper */}
-            <NavLink to={`/Shipments/addAddress/${user_type == 'admin' ? id : user_type_data.idshipper}`}>
+            <NavLink to={`/Shipments/addAddress/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-3"></i>Add new Address
             </button>

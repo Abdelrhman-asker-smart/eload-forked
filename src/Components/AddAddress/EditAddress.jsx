@@ -232,6 +232,7 @@ const EditAddress = () => {
 // ============================================edit-Address============================
   const edit = () => {
     const urlencoded = new URLSearchParams();
+    urlencoded.append("_method", 'put');
     urlencoded.append("addressable_type", "group");
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
@@ -248,12 +249,13 @@ const EditAddress = () => {
       urlencoded.append(`phones[${indexdetails}][name]`, optionList[indexdetails].nameoption);
     });
 
+    console.log('urlencoded =>', urlencoded);
+
     dispatch(
-      // EditDriverFunction
       EditAddressFunction({
         token: cookie.eload_token,
         id,
-        urlencoded,
+        formdata: urlencoded,
       })
     )
       .then((res) => {
@@ -576,7 +578,7 @@ const EditAddress = () => {
             </div>
           </div>
           <div className="footer-address text-center">
-            <button className="btn btn-adress" type="button">
+            <button className="btn btn-adress" type="button" onClick={edit}>
               Save
             </button>
           </div>
