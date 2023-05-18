@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { ReactComponent as EditIcon } from "../../icons/editicon.svg";
 import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
+import { ReactComponent as View } from "../../icons/eye.svg";
 // import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
@@ -92,15 +93,15 @@ const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
         style={{
           textAlign: "center",
           padding: "1% 3%",
-          border: "1px solid #0e324a",
+          border: "1px solid #7b82be",
           borderRadius: "20px",
           marginRight: "4%",
           color: "#fff",
-          backgroundColor: "#0b2339",
+          backgroundColor: "#7b82be",
         }}
       >
-        <EditIcon className="mx-1" />
-        View
+        <View className="mx-1" />
+        Addresses
       </button>
     </NavLink>
     {/* edit */}

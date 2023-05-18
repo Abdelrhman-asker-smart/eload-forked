@@ -202,7 +202,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                         <path d="M10 21.25H20" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
 
-                        <NavLink to="/allitems" className="btn-data-card">
+                        <NavLink to={`/allitems/${id}`} className="btn-data-card">
                             View contract details
                         </NavLink>
                         </div>
@@ -235,9 +235,9 @@ const csvExporter = new ExportToCsv(csvOptions);
                             <path d="M9.92989 2.48004L4.58989 5.44004C3.37989 6.11004 2.38989 7.79004 2.38989 9.17004V14.82C2.38989 16.2 3.37989 17.88 4.58989 18.55L9.92989 21.52C11.0699 22.15 12.9399 22.15 14.0799 21.52L19.4199 18.55C20.6299 17.88 21.6199 16.2 21.6199 14.82V9.17004C21.6199 7.79004 20.6299 6.11004 19.4199 5.44004L14.0799 2.47004C12.9299 1.84004 11.0699 1.84004 9.92989 2.48004Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>{shipperorderList.length} Orders</span>
-                            <NavLink to="/allshipments" className="btn-data-card mx-4">
+                            {/* <NavLink to="/allshipments" className="btn-data-card mx-4">
                                 View All
-                            </NavLink>
+                            </NavLink> */}
                         </div>
                         <div className="data-card p-0 d-flex my-3">
                         <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,7 +245,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                         <path d="M3.6202 8.49C5.5902 -0.169998 18.4202 -0.159997 20.3802 8.5C21.5302 13.58 18.3702 17.88 15.6002 20.54C13.5902 22.48 10.4102 22.48 8.3902 20.54C5.6302 17.88 2.4702 13.57 3.6202 8.49Z" stroke="#244664" stroke-width="1.5"/>
                         </svg>
                             <span>Addresses</span>
-                            <NavLink to="/Shipments/grouplist" className="btn-data-card mx-4">
+                            <NavLink to={`/Shipments/grouplist/${id}`} className="btn-data-card mx-4">
                                 View All
                             </NavLink>
                         </div>
