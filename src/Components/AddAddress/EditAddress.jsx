@@ -24,7 +24,7 @@ const EditAddress = () => {
     
   const [cities, setCities] = useState([]); 
 
-  const { id } = useParams();
+  const { id, idshipper } = useParams();
   const [cookie] = useCookies(["eload_token"]);
   const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
   const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
@@ -85,6 +85,34 @@ const EditAddress = () => {
       setLongitude(event.latLng.lng()); // set the longitude state variable
     }
 
+    const handleSelectedOptionsTypes = () => {
+      let selected_options = [];
+
+      console.log('type', type);
+
+      for (let i = 0; i < typeOptions.length; i++) {
+        if (type.indexOf(typeOptions[i].value) > -1) {
+          selected_options.push(typeOptions[i]);
+        }
+      }
+
+      console.log('selected_options', selected_options);
+
+      return selected_options;
+    };
+
+    const handleSelectedOptionsCities = () => {
+      for (let i = 0; i < cities.length; i++) {
+        for (let current_city of cities[i].options) {
+          if (city == current_city.value) {
+            return current_city;
+          }
+        }
+      }
+
+      return {};
+    };
+
   // selct_list
   const [groupList, setGrouopList] = useState([]);
 
@@ -113,9 +141,11 @@ const EditAddress = () => {
       setGroup(data.group.id);
       setName(data.name);
       setCities(data.city.id);
+      setCity(data.city.id);
       setAddress(data.address);
       setLatitude(data.latitude);
       setLongitude(data.longitude);
+      setType(data.type);
       // setListPhone(data.phones);
       for(var i=0 ; i < data.phones.length-1 ; i++){
         boxarray.push(data.phones[i]);
@@ -196,17 +226,18 @@ const EditAddress = () => {
   console.log(center,"center");
   /* ==============================type-select===================== */
   const typeOptions = [
-    { value: "Pick up", label: "Pick up" },
-    { value: "Drop off", label: "Drop off" },
+    { value: "pickup", label: "Pick up" },
+    { value: "dropoff", label: "Drop off" },
   ];
 // ============================================edit-Address============================
   const edit = () => {
     const urlencoded = new URLSearchParams();
+    urlencoded.append("_method", 'put');
     urlencoded.append("addressable_type", "group");
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
     urlencoded.append("name", name);
-    urlencoded.append("type", type);
+    urlencoded.append("type", type.toString());
     urlencoded.append("address", Address);
     urlencoded.append("latitude", latitude);
     urlencoded.append("longitude", longitude);
@@ -218,12 +249,13 @@ const EditAddress = () => {
       urlencoded.append(`phones[${indexdetails}][name]`, optionList[indexdetails].nameoption);
     });
 
+    console.log('urlencoded =>', urlencoded);
+
     dispatch(
-      // EditDriverFunction
       EditAddressFunction({
         token: cookie.eload_token,
         id,
-        urlencoded,
+        formdata: urlencoded,
       })
     )
       .then((res) => {
@@ -240,7 +272,7 @@ const EditAddress = () => {
     const Grouplist = async (id) => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? idshipper : user_type_data.id}`,
 
           {
             headers: {
@@ -282,7 +314,7 @@ const EditAddress = () => {
                   <div className="input-select col-6">
                     <div className="input-select-info">
                       <p className="head-text">Choose Group</p>
-                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
+                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
                         <button>
                           <a href="/#">View All</a>
                         </button>
@@ -290,7 +322,7 @@ const EditAddress = () => {
                     </div>
                     {/* choose-group */}
                     {
-                     GroupsCountryOptions.length > 0 &&
+                     GroupsCountryOptions.length > 0 && group &&
                     <Select
                       classNamePrefix="select"
                       className="basic-multi-select"
@@ -311,7 +343,7 @@ const EditAddress = () => {
                     }   
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
+                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
                       <button className="btn btn-adress">
                         + Add new group
                       </button>
@@ -340,7 +372,7 @@ const EditAddress = () => {
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">Type</p>
               {
-              typeOptions.length > 0 &&
+              typeOptions.length > 0 && type &&
               <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
@@ -348,7 +380,7 @@ const EditAddress = () => {
                 isDisabled={isDisabled}
                 isLoading={isLoading}
                 isClearable={isClearable}
-                defaultValue={typeOptions.find(({ value }) => value === type)}
+                defaultValue={handleSelectedOptionsTypes()}
                 isRtl={isRtl}
                 required
                 isSearchable={isSearchable}
@@ -366,7 +398,7 @@ const EditAddress = () => {
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">City</p>
               {
-                cities.length > 0 &&
+                cities.length > 0 && city &&
               <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
@@ -376,7 +408,7 @@ const EditAddress = () => {
                 isClearable={isClearable}
                 required
                 isRtl={isRtl}
-                defaultValue={cities.find(({ value }) => value === city)}
+                defaultValue={handleSelectedOptionsCities()}
                 isSearchable={isSearchable}
                 name="color"
                 options={cities}
@@ -396,7 +428,7 @@ const EditAddress = () => {
                   {
                       isLoaded  ? 
                         <div>
-                          <h2>Click on the map to get the latitude and longitude</h2>
+                          <h2>Click on the map to add your address</h2>
                           <GoogleMap
                             mapContainerStyle={mapContainerStyle}
                             center={center}
@@ -407,8 +439,8 @@ const EditAddress = () => {
                               <MarkerF position={{ lat: latitude, lng: longitude }} />
                             )}
                           </GoogleMap>
-                          {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
-                          {longitude && <p>Longitude: {longitude} center: {center.lng}</p>}
+                          {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
+                          {longitude && <p>Longitude: {longitude} center: {center.lng}</p>} */}
                         </div>
                        : 
                         <div>Loading...</div>
@@ -546,7 +578,7 @@ const EditAddress = () => {
             </div>
           </div>
           <div className="footer-address text-center">
-            <button className="btn btn-adress" type="button">
+            <button className="btn btn-adress" type="button" onClick={edit}>
               Save
             </button>
           </div>

@@ -108,7 +108,7 @@ const AddAddress = () => {
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
     urlencoded.append("name", name);
-    urlencoded.append("type", type);
+    urlencoded.append("type", type.toString());
     urlencoded.append("address", Address);
     urlencoded.append("latitude", latitude);
     urlencoded.append("longitude", longitude);
@@ -229,8 +229,8 @@ const AddAddress = () => {
   console.log(center,"center");
   /* type-select */
   const typeOptions = [
-    { value: "Pick up", label: "Pick up" },
-    { value: "Drop off", label: "Drop off" },
+    { value: "pickup", label: "Pick up" },
+    { value: "dropoff", label: "Drop off" },
   ];
 
   // ==========================testMap=====================
@@ -368,7 +368,7 @@ const AddAddress = () => {
                   {
                       isLoaded  ? 
                         <div>
-                          <h2>Click on the map to get the latitude and longitude</h2>
+                          <h2>Click on the map to add your address</h2>
                           <GoogleMap
                             mapContainerStyle={mapContainerStyle}
                             center={center}
@@ -379,8 +379,8 @@ const AddAddress = () => {
                               <MarkerF position={{ lat: latitude, lng: longitude }} />
                             )}
                           </GoogleMap>
-                          {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
-                          {longitude && <p>Longitude: {longitude} center: {center.lng}</p>}
+                          {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
+                          {longitude && <p>Longitude: {longitude} center: {center.lng}</p>} */}
                         </div>
                        : 
                         <div>Loading...</div>
