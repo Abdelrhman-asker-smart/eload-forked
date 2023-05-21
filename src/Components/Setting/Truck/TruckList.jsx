@@ -169,7 +169,7 @@ const Truck = () => {
   const dispatch = useDispatch();
  
   const data = TruckList.map((item, index) => {
-    // console.log(item,"kareem")
+
     return {
       id: item.id,
       name: item.name,
@@ -187,31 +187,7 @@ const Truck = () => {
     .catch((e) => {
       console.log(e);
     });
-    // const allCity = async () => {
-    //   try {
-    //     const response = await axios.get(
 
-    //       "https://dev.eload.smart.sa/api/v1/truck_types",
-    //       {
-    //         headers: {
-    //           Accept: "application/json",
-    //           Authorization: `Bearer ${cookie.eload_token}`,
-    //           "api-key":
-    //             "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-    //         },
-    //       }
-    //     );
-
-    //     const data = response.data.data;
-    //     // console.log(data);
-    //     setTruckList(data);
-    //     return data;
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // };
-
-    // allCity();
   }, [reload]);
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));

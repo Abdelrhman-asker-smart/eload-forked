@@ -30,15 +30,6 @@ import { ReactComponent as AddIcon } from '../../icons/add-Icon.svg';
 import { ReactComponent as Settings } from '../../icons/icon-settings.svg';
 
 
-
-
-
-
-
-
-
-
-
 // Allpartners
 
 
