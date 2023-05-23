@@ -1,7 +1,14 @@
 // import { initializeApp } from 'firebase/app';
 // import 'firebase/messaging';
 // import * as firebase from 'firebase/app';
-import firebase from 'firebase';
+// import firebase from 'firebase';
+
+// Import the Firebase app module
+import firebase from "firebase/app";
+
+// Import the Firebase messaging module
+import "firebase/messaging";
+
 // import '@firebase/messaging';
 // import {fcm} from '@google-cloud/firebase/fcm';
 
