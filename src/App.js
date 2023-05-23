@@ -39,6 +39,27 @@ function App() {
       console.log("token",data)
     })
   },[]); 
+  // useEffect(() => {
+  //   const messaging = firebase.messaging();
+  //   messaging
+  //     .requestPermission()
+  //     .then(() => messaging.getToken())
+  //     .then((token) => {
+  //       console.log("FCM token:", token);
+  //       // Create message payload
+  //       const payload = {
+  //         notification: {
+  //           title: "New message",
+  //           body: "You have a new message from ChatGPT",
+  //         },
+  //         token: token,
+  //       };
+  //       // Send message to the user's device
+  //       return firebase.messaging().send(payload);
+  //     })
+  //     .then(() => console.log("Notification sent successfully"))
+  //     .catch((error) => console.error("Error sending notification:", error));
+  // }, []);
 
 console.log(login,'login')
   return (

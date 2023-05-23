@@ -2,31 +2,14 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
 
-
-
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('../firebase-messaging-sw.js')
-//       .then(function(registration) {
-//         console.log('Registration successful, scope is:', registration.scope);
-//       }).catch(function(err) {
-//        console.log('Service worker registration failed, error:', err);
-//       });
-//    }
-
-// firebase.initializeApp({
-//     messagingSenderId: "322380703973",
-//   })
-
-// const initMessaging = firebase.messaging()
-
-// Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: "AIzaSyAjWIJe9AaL6fDZVn9tRajF-BUexEPFZyA",
-  authDomain: "react-notif-40228.firebaseapp.com",
-  projectId: "react-notif-40228",
-  storageBucket: "react-notif-40228.appspot.com",
-  messagingSenderId: "790644971731",
-  appId: "1:790644971731:web:dc0c5d007d2b961af3dc26"
+ apiKey: "AIzaSyBSe6e2HvBNFK0Qx-xlc488LcpsSvfaxhI",
+ authDomain: "e-load-driver.firebaseapp.com",
+ projectId: "e-load-driver",
+ storageBucket: "e-load-driver.appspot.com",
+ messagingSenderId: "322380703973",
+ appId: "1:322380703973:web:34cd3c435e4cc1b1120c0c",
+ measurementId: "G-N52M7ZNJGY"
 };
 
 firebase.initializeApp(firebaseConfig);
