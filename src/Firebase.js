@@ -16,7 +16,8 @@ import "firebase/messaging";
 // import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 var firebaseConfig = {
-    apiKey: "AIzaSyBSe6e2HvBNFK0Qx-xlc488LcpsSvfaxhI",
+    // apiKey: "AIzaSyBSe6e2HvBNFK0Qx-xlc488LcpsSvfaxhI",
+    apiKey: "AAAALoSLcS8:APA91bGnAdSSW7tjURZvPAqXa9hGghqW7m0sNBgq_nSEsvohDjFd_G_ISqAM6p2TIjo-7rpLJqkffwYeJtlv1FL78REA9t9yRHEQikGygWkTnlWT9ApmVZiBEKp5BBs1JtW2QgkB1dYn",
     authDomain: "e-load-driver.firebaseapp.com",
     projectId: "e-load-driver",
     storageBucket: "e-load-driver.appspot.com",
