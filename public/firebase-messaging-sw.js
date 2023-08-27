@@ -3,13 +3,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compa
 
 
 const firebaseConfig = {
- apiKey: "AIzaSyBSe6e2HvBNFK0Qx-xlc488LcpsSvfaxhI",
- authDomain: "e-load-driver.firebaseapp.com",
- projectId: "e-load-driver",
- storageBucket: "e-load-driver.appspot.com",
- messagingSenderId: "322380703973",
- appId: "1:322380703973:web:34cd3c435e4cc1b1120c0c",
- measurementId: "G-N52M7ZNJGY"
+ apiKey: "AAIzaSyA4AZnOZg3uW4wEV51O3XXCvQgUxRJyIDg",
+ authDomain: "e-load-ebb26.firebaseapp.com",
+ projectId: "e-load-ebb26",
+ storageBucket: "e-load-ebb26.appspot.com",
+ messagingSenderId: "199792226607",
+ appId: "1:199792226607:web:6cfb087cbe257cf091f1da",
+ measurementId: "G-H6ZXWJH1NF"
 };
 
 firebase.initializeApp(firebaseConfig);
