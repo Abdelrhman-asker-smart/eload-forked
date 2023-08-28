@@ -7,6 +7,8 @@ import axios from "axios";
 
 const AddShipment = () => {
   const [name, setName] = useState("");
+  const [emptyInput, setEmptyInput] = useState(false);
+
   const [cookie] = useCookies(["eload_token"]);
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
@@ -71,7 +73,24 @@ const AddShipment = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-          <button
+        {
+            
+            name ==="" ? 
+            <>
+                <button
+                type="button"
+                className="btn save-btn"
+                onClick={() => {
+                  setEmptyInput(true)
+                }}
+
+              >
+                Save
+              </button>
+            </>
+            :
+            <button
+            type="submit"
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
@@ -79,6 +98,24 @@ const AddShipment = () => {
           >
             Save
           </button>
+          }
+          {
+              emptyInput === false ? 
+              <><lable style={{color:"red"}}></lable></>
+              :
+              <>
+              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
+              </>
+              
+            }
+          {/* <button
+            className="btn save-btn"
+            data-bs-toggle="modal"
+            href="#exampleModalToggle"
+            onClick={recordShippment}
+          >
+            Save
+          </button> */}
         </div>
 
         {/* modal */}

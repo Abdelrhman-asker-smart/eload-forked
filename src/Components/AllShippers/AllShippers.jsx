@@ -100,7 +100,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       }}
     >
       <View className="mx-1" />
-      View
+      View 
     </button>
     </NavLink>
     <NavLink to={`/allshippers/editshipper/${id}`}>

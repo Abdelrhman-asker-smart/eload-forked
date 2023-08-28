@@ -202,7 +202,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                         <path d="M10 21.25H20" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
 
-                        <NavLink to={`/allitems/${id}`} className="btn-data-card">
+                        <NavLink to={`/allitems/${allshipper?.contract?.id}`} className="btn-data-card">
                             View contract details
                         </NavLink>
                         </div>

@@ -1,11 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {  useState } from "react";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 import "./Addcommodities.css";
 
 const Addcommodities = () => {
   const [name, setName] = useState("");
+  const [emptyInput, setEmptyInput] = useState(false);
+
+  const [cookie] = useCookies(["eload_token"]);
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
@@ -19,7 +23,7 @@ const Addcommodities = () => {
         {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2RkZjQwNWEwMDM0M2NlODA2NjQwYjk1YjJkNTg0MzdkYjkwZDUxYTdkYmFlYWYyNDg0NzNlZmRmYTI5NWZlMzI0MTNiNmUxYmU2NTY0MmMiLCJpYXQiOjE2Nzc1MDEzNzMuMTgxNDgzOTgzOTkzNTMwMjczNDM3NSwibmJmIjoxNjc3NTAxMzczLjE4MTQ4ODAzNzEwOTM3NSwiZXhwIjoxNzA5MDM3MzczLjE3ODEzNzA2Mzk4MDEwMjUzOTA2MjUsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.bjUOUcbVBUorkgeouaGdikpUKUmyvJaKDdnBdfi3iO_WUUZZXBweaKGca2pYHvoZtmETpVT1qlPRnQksGkTVx1M9KpOycBPCq-H2IovJtxoVCSUZxWO9P9IJVMwui6fe4aghRaSuRbmkzs0vCdvclOnkUU0myCqUWuimrQPPG0QDuyBrQCwopMaVyWI9_gQC-WVZvU4XbduN2WUZZgPE2zUZW0GKvEE7B9Go_5GNtk7FRsuuDwkkLJTzawXumpyZGKKkwGJifbp2SSd4bKfjHoVmaCLQBJRS_qZkhKuX1NdYtX92ZbBQqhpFzl3SGgw8M-t6IJcvkWJ1AjMmxs109pEbF6LlGgy7Mb5dnaslAKKxmKlLPHjP6fH-3tlRlL72RCTZoO5eaiTPgRMEC9wbPMxg6rEjWDkYw1Jo2B3tTiNEnVXxi0QPaAH9SKVqIG8FiTyeWKSV2Br3Rlf8VrWQSet_nQ9F5qNbQfRMbCZ7wig2gWQnbwhB_oor8hTGZ76xQsRFgzye-IFupzRngEFeQrlSQuTusoigk74p96vhdYfK2HS6DKWO2cAQEQ3Oz8Ttb0GW-15jvsZKUap9BgYH-RgVXUmhwyB6zIrqWUWwTQ7L0IrBoxzmIJRV92H4xiiLZkSMi0eTVBMW-L9-CVbUe73XHhnuPyj3O6x4vktX2oU`,
+            Authorization: `Bearer ${cookie.eload_token}`,
             "api-key":
               "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
           },
@@ -35,6 +39,9 @@ const Addcommodities = () => {
       console.log(e);
     }
   };
+  // const emptyInputs =()=>{
+  //   setEmptyInput("false");
+  // }
   return (
     <div className="addcommodities container my-4">
       <div className="head container-fluid mb-4 d-flex">
@@ -57,6 +64,7 @@ const Addcommodities = () => {
             <label className="mx-3 my-3">Name</label>
             <input
               type="text"
+              required
               placeholder="name"
               value={name}
               onChange={(e) => {
@@ -67,13 +75,48 @@ const Addcommodities = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-          <button
+          {
+            
+            name ==="" ? 
+            <>
+                <button
+                type="button"
+                className="btn save-btn"
+                onClick={() => {
+                  setEmptyInput(true)
+                }}
+
+              >
+                Save
+              </button>
+            </>
+            :
+            <button
+            type="submit"
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
           >
             Save
           </button>
+          }
+          {
+              emptyInput === false ? 
+              <><lable style={{color:"red"}}></lable></>
+              :
+              <>
+              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
+              </>
+              
+            }
+          {/* <button
+            type="submit"
+            className="btn save-btn"
+            data-bs-toggle="modal"
+            href="#exampleModalToggle"
+          >
+            Save
+          </button> */}
         </div>
 
         {/* modal */}

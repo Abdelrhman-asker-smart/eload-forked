@@ -11,6 +11,8 @@ const CategortAdd = () => {
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
+  const [emptyInput, setEmptyInput] = useState(false);
+  
 
   const recordCategory = async () => {
     console.log("save triggered");
@@ -67,7 +69,24 @@ const CategortAdd = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-          <button
+        {
+            
+            name =="" ? 
+            <>
+                <button
+                type="button"
+                className="btn save-btn"
+                onClick={() => {
+                  setEmptyInput(true)
+                }}
+
+              >
+                Save
+              </button>
+            </>
+            :
+            <button
+            type="submit"
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
@@ -75,6 +94,24 @@ const CategortAdd = () => {
           >
             Save
           </button>
+          }
+          {
+              emptyInput == false ? 
+              <><lable style={{color:"red"}}></lable></>
+              :
+              <>
+              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
+              </>
+              
+            }
+          {/* <button
+            className="btn save-btn"
+            data-bs-toggle="modal"
+            href="#exampleModalToggle"
+            onClick={recordCategory}
+          >
+            Save
+          </button> */}
         </div>
 
         {/* modal */}

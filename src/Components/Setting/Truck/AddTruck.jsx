@@ -8,6 +8,7 @@ import "./AddTruck.css";
 const AddTruck = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [emptyInput, setEmptyInput] = useState(false);
 
   const [cookie] = useCookies(["eload_token"]);
 
@@ -89,7 +90,24 @@ const AddTruck = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-          <button
+        {
+            
+            name ==="" ? 
+            <>
+                <button
+                type="button"
+                className="btn save-btn"
+                onClick={() => {
+                  setEmptyInput(true)
+                }}
+
+              >
+                Save
+              </button>
+            </>
+            :
+            <button
+            type="submit"
             className="btn save-btn"
             data-bs-toggle="modal"
             href="#exampleModalToggle"
@@ -97,6 +115,24 @@ const AddTruck = () => {
           >
             Save
           </button>
+          }
+          {
+              emptyInput === false ? 
+              <><lable style={{color:"red"}}></lable></>
+              :
+              <>
+              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
+              </>
+              
+            }
+          {/* <button
+            className="btn save-btn"
+            data-bs-toggle="modal"
+            href="#exampleModalToggle"
+            onClick={recordTruck}
+          >
+            Save
+          </button> */}
         </div>
 
         {/* modal */}
