@@ -12,6 +12,8 @@ import {Box, Button} from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
+// import { MRT_PaginationState} from 'material-react-table';
+
 import "./Allshipments.css";
 
 const AllShipments = () => {
@@ -348,10 +350,19 @@ const AllShipments = () => {
       status: item.status_i18n,
     };
   });
+  const [rowCount, setRowCount] = useState(0);
+  const [ReadyrowCount, setReadyRowCount] = useState(0);
+
   const [pagination, setPagination] = useState({
-    pageIndex: 1,
-    pageSize: 5, //customize the default page size
+    pageIndex: 0,
+    pageSize: 10, 
   });
+
+  const [readyPagination, setreadyPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10, 
+  });
+
 
   useEffect(() => {
     const allShipment = async () => {
@@ -369,48 +380,60 @@ const AllShipments = () => {
         );
 
         const data = response.data.data;
-        console.log(response);
+        console.log(data,"data");
         setshipmentList(data);
+        console.log(response?.data?.meta?.total, "total");
+        setRowCount(response?.data?.meta?.total);
+        // setPagination( {pageIndex: pagination.pageIndex, pageSize: response?.data?.meta?.per_page });
+
         return data;
       } catch (e) {
         console.log(e);
       }
     };
 
-    const readyShipment = async () => {
-      try {
-        const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/shipments?status=READY`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-
-        const dataReady = response.data.data;
-        // console.log(response);
-        setshipmentListready(dataReady);
-        return dataReady;
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    if (user_type != 'shipper') {
-      readyShipment();
-    }
 
     allShipment();
-  }, [pagination]);
+
+  }, [pagination.pageIndex , pagination.pageSize]);
+// ready
+useEffect(()=>{
+  const readyShipment = async () => {
+    try {
+      const response = await axios.get(
+        `https://dev.eload.smart.sa/api/v1/shipments?status=READY?paginate=${readyPagination.pageSize}&page=${readyPagination.pageIndex}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const dataReady = response.data.data;
+      console.log(response ,"ready respons");
+      setshipmentListready(dataReady);
+      setReadyRowCount(response?.data?.meta?.total);
+      return dataReady;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  if (user_type != 'shipper') {
+    readyShipment();
+  }
+
+},[readyPagination.pageIndex , readyPagination.pageSize])
+
+
   // // ++++++++++++++++++ and ----------------- pagination
   // const handlePageChange = (event, newPage) => {
-  //   setController({
-  //     ...controller,
-  //     page: newPage
+  //   setPagination({
+  //     ...pagination,
+  //     page: 
   //   });
   // };
 
@@ -421,6 +444,7 @@ const AllShipments = () => {
   //     page: 0
   //   });
   // };
+
 
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
@@ -459,6 +483,10 @@ const AllShipments = () => {
             <MaterialReactTable
               columns={columnsReady}
               data={dataReady}
+              onPaginationChange={setreadyPagination} 
+              state={{ readyPagination }}
+              manualPagination
+              rowCount={ReadyrowCount}
               // onPaginationChange={setPagination} 
               // state={{ pagination }}
               // manualPagination
@@ -547,10 +575,10 @@ const AllShipments = () => {
             data={data}
             onPaginationChange={setPagination} 
             state={{ pagination }}
-            // manualPagination
-            // rowCount={data.meta?.total}
+            manualPagination
+            rowCount={rowCount}
             // muiTablePaginationProps={{
-            //   rowsPerPageOptions: [data.meta?.total],
+            //   rowsPerPageOptions: [rowCount],
             //   showFirstButton: false,
             //   showLastButton: false,
             // }}
