@@ -348,12 +348,16 @@ const AllShipments = () => {
       status: item.status_i18n,
     };
   });
+  const [pagination, setPagination] = useState({
+    pageIndex: 1,
+    pageSize: 5, //customize the default page size
+  });
 
   useEffect(() => {
     const allShipment = async () => {
       try {
         const response = await axios.get(
-          "https://dev.eload.smart.sa/api/v1/shipments",
+          `https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex}`,
           {
             headers: {
               Accept: "application/json",
@@ -376,7 +380,7 @@ const AllShipments = () => {
     const readyShipment = async () => {
       try {
         const response = await axios.get(
-          "https://dev.eload.smart.sa/api/v1/shipments?status=READY",
+          `https://dev.eload.smart.sa/api/v1/shipments?status=READY`,
           {
             headers: {
               Accept: "application/json",
@@ -401,7 +405,22 @@ const AllShipments = () => {
     }
 
     allShipment();
-  }, []);
+  }, [pagination]);
+  // // ++++++++++++++++++ and ----------------- pagination
+  // const handlePageChange = (event, newPage) => {
+  //   setController({
+  //     ...controller,
+  //     page: newPage
+  //   });
+  // };
+
+  // const handleChangeRowsPerPage = (event) => {
+  //   setController({
+  //     ...controller,
+  //     rowsPerPage: parseInt(event.target.value, 10),
+  //     page: 0
+  //   });
+  // };
 
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
@@ -440,6 +459,15 @@ const AllShipments = () => {
             <MaterialReactTable
               columns={columnsReady}
               data={dataReady}
+              // onPaginationChange={setPagination} 
+              // state={{ pagination }}
+              // manualPagination
+              // rowCount={dataReady.meta?.total}
+              // muiTablePaginationProps={{
+              //   rowsPerPageOptions: [dataReady.meta?.total],
+              //   showFirstButton: false,
+              //   showLastButton: false,
+              // }}
               initialState={{ columnVisibility: user_type == 'provider' ? { shippingcost: false } : {} }}
               enableRowSelection
               positionToolbarAlertBanner="bottom"
@@ -517,6 +545,17 @@ const AllShipments = () => {
           <MaterialReactTable
             columns={columnsAll}
             data={data}
+            onPaginationChange={setPagination} 
+            state={{ pagination }}
+            // manualPagination
+            // rowCount={data.meta?.total}
+            // muiTablePaginationProps={{
+            //   rowsPerPageOptions: [data.meta?.total],
+            //   showFirstButton: false,
+            //   showLastButton: false,
+            // }}
+            // initialState={{ pagination: { pageSize: data.meta?.per_page, pageIndex: data.meta?.current_page } }}
+
             enableRowSelection
             positionToolbarAlertBanner="bottom"
             renderTopToolbarCustomActions={({ table }) => (
