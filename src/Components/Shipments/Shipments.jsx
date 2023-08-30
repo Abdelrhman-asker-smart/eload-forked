@@ -1265,7 +1265,18 @@ const Shipments = () => {
                             }}
                           />
                         </div>
-                        <div className="add-btn">
+                        {
+                          shipperValue==="" ? 
+                          <div className="add-btn">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button disabled>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address ss
+                            </button>
+                          </NavLink>
+                        </div>
+                          :
+                          <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
@@ -1273,6 +1284,15 @@ const Shipments = () => {
                             </button>
                           </NavLink>
                         </div>
+                        }
+                        {/* <div className="add-btn">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+                        </div> */}
                       </div>
                       <hr />
                     </div>
@@ -1340,7 +1360,18 @@ const Shipments = () => {
                             }}
                           />
                         </div>
-                        <div className="add-btn">
+                        {
+                          shipperValue==="" ? 
+                          <div className="add-btn">
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button disabled>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address ss
+                            </button>
+                          </NavLink>
+                        </div>
+                          :
+                          <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
                               <i className="fa-solid fa-plus"></i> Add New
@@ -1348,6 +1379,8 @@ const Shipments = () => {
                             </button>
                           </NavLink>
                         </div>
+                        }
+
                       </div>
                       <hr />
                     </div>

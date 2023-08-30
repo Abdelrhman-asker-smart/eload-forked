@@ -355,12 +355,12 @@ const AllShipments = () => {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10, 
+    pageSize: 5, 
   });
 
   const [readyPagination, setreadyPagination] = useState({
     pageIndex: 0,
-    pageSize: 10, 
+    pageSize: 5, 
   });
 
 
@@ -381,6 +381,8 @@ const AllShipments = () => {
 
         const data = response.data.data;
         console.log(data,"data");
+        console.log(response,"rrrr");
+
         setshipmentList(data);
         console.log(response?.data?.meta?.total, "total");
         setRowCount(response?.data?.meta?.total);
@@ -392,6 +394,9 @@ const AllShipments = () => {
       }
     };
 
+    // =ready
+
+
 
     allShipment();
 
@@ -401,7 +406,7 @@ useEffect(()=>{
   const readyShipment = async () => {
     try {
       const response = await axios.get(
-        `https://dev.eload.smart.sa/api/v1/shipments?status=READY?paginate=${readyPagination.pageSize}&page=${readyPagination.pageIndex}`,
+        `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSize}&page=${readyPagination.pageIndex}`,
         {
           headers: {
             Accept: "application/json",
