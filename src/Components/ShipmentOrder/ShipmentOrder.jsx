@@ -2041,7 +2041,7 @@ const ShipmentOrder = () => {
           <div className="mapbox">
             {/* =============================== */}
 
-            <LoadScript googleMapsApiKey="AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4">
+            <LoadScript googleMapsApiKey="AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ">
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}

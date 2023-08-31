@@ -1267,18 +1267,19 @@ const Shipments = () => {
                         </div>
                         {
                           shipperValue==="" ? 
-                          <div className="add-btn">
-                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                            <button disabled>
+                          <div className="add-btn" >
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}  >
+                            <button type="button" disabled style={{backgroundColor:"gray"}} >
                               <i className="fa-solid fa-plus"></i> Add New
-                              Address ss
+                              Address
                             </button>
                           </NavLink>
+
                         </div>
                           :
                           <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                            <button>
+                            <button >
                               <i className="fa-solid fa-plus"></i> Add New
                               Address
                             </button>
@@ -1364,7 +1365,7 @@ const Shipments = () => {
                           shipperValue==="" ? 
                           <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                            <button disabled>
+                            <button disabled style={{backgroundColor:"gray"}}>
                               <i className="fa-solid fa-plus"></i> Add New
                               Address ss
                             </button>

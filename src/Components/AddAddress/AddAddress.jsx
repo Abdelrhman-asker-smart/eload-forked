@@ -76,7 +76,9 @@ const AddAddress = () => {
   
     const { isLoaded } = useJsApiLoader({
       id: "google-map-script",
-      googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
+      // googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
+      googleMapsApiKey: "AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ",
+
     });
   
     const mapContainerStyle = {
