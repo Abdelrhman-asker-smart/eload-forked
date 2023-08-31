@@ -359,8 +359,8 @@ const AllShipments = () => {
   });
 
   const [readyPagination, setreadyPagination] = useState({
-    pageIndex: 0,
-    pageSize: 5, 
+    pageIndexReady: 0,
+    pageSizeReady: 5, 
   });
 
 
@@ -393,9 +393,7 @@ const AllShipments = () => {
         console.log(e);
       }
     };
-
-    // =ready
-
+    // ready===========================
 
 
     allShipment();
@@ -403,10 +401,11 @@ const AllShipments = () => {
   }, [pagination.pageIndex , pagination.pageSize]);
 // ready
 useEffect(()=>{
+
   const readyShipment = async () => {
     try {
       const response = await axios.get(
-        `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSize}&page=${readyPagination.pageIndex}`,
+        `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady}`,
         {
           headers: {
             Accept: "application/json",
@@ -431,24 +430,9 @@ useEffect(()=>{
     readyShipment();
   }
 
-},[readyPagination.pageIndex , readyPagination.pageSize])
 
+},[readyPagination.pageIndexReady , readyPagination.pageSizeReady])
 
-  // // ++++++++++++++++++ and ----------------- pagination
-  // const handlePageChange = (event, newPage) => {
-  //   setPagination({
-  //     ...pagination,
-  //     page: 
-  //   });
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setController({
-  //     ...controller,
-  //     rowsPerPage: parseInt(event.target.value, 10),
-  //     page: 0
-  //   });
-  // };
 
 
   const handleExportRows = (rows) => {
@@ -492,6 +476,8 @@ useEffect(()=>{
               state={{ readyPagination }}
               manualPagination
               rowCount={ReadyrowCount}
+              // autoResetPage= {false}
+              positionPagination="top"
               // onPaginationChange={setPagination} 
               // state={{ pagination }}
               // manualPagination
@@ -578,10 +564,16 @@ useEffect(()=>{
           <MaterialReactTable
             columns={columnsAll}
             data={data}
+            // initialState={{ pagination: { pageSize: 10, pageIndex: 0 } }}
             onPaginationChange={setPagination} 
             state={{ pagination }}
             manualPagination
             rowCount={rowCount}
+            positionPagination="top"
+
+            // autoResetPage
+            // paginateExpandedRows
+
             // muiTablePaginationProps={{
             //   rowsPerPageOptions: [rowCount],
             //   showFirstButton: false,
