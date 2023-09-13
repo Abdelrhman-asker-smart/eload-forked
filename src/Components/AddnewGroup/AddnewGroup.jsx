@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Swal from 'sweetalert2'
 
 import { NavLink } from "react-router-dom";
 
@@ -61,6 +62,16 @@ const AddnewGroup = () => {
       console.log(reponse);
       showNotification();
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };

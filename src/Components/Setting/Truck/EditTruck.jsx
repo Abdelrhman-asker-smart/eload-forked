@@ -4,6 +4,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   categoryEditReducer,
@@ -51,6 +53,16 @@ const EditTruck = () => {
         console.log(res);
       })
       .catch((e) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${e.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
         console.log(e);
       });
   };

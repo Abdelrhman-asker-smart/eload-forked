@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {  useState } from "react";
 import { useCookies } from "react-cookie";
+import Swal from 'sweetalert2'
+
 import axios from "axios";
 import "./Category-Add.css";
 
@@ -33,6 +35,16 @@ const CategortAdd = () => {
       setName("");
       //   console.log(reponse);
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };

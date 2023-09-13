@@ -5,6 +5,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 // import Select from "react-select";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
@@ -117,6 +118,16 @@ const Adddriver = () => {
       console.log("DoneAdddddddddddd");
       showNotification();
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };
@@ -145,6 +156,16 @@ const Adddriver = () => {
         // console.log(data, "datacountry");
         return data;
       } catch (e) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${e.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
         console.log(e);
       }
     };

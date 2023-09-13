@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
@@ -160,6 +162,16 @@ const EditAddress = () => {
         return data;
       } catch (e) {
         console.log(e);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${e.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
       }
     };
 
@@ -193,6 +205,16 @@ const EditAddress = () => {
         console.log(data, "datacountry");
         return data;
       } catch (e) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${e.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
         console.log(e);
       }
     };

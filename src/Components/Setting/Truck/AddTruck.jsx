@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import Swal from 'sweetalert2'
+
 import "./AddTruck.css";
 
 const AddTruck = () => {
@@ -37,6 +39,16 @@ const AddTruck = () => {
       setName("");
       console.log(reponse);
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
       console.log(e?.response?.data?.message);
       setFlagError(e?.response?.data?.is_success);

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
 // import  $  from 'jquery';
@@ -195,6 +197,16 @@ const Shipments = () => {
       // console.log(pickupList, "pickup list hereeee");
       return data;
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };
@@ -224,6 +236,16 @@ const Shipments = () => {
       setDropofList(data);
       return data;
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };
@@ -255,6 +277,16 @@ const Shipments = () => {
       setDetailsList(data);
       return data;
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };

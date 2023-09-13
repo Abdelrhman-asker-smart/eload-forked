@@ -7,6 +7,7 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
 // import { useDispatch, useSelector } from "react-redux";
+import Swal from 'sweetalert2'
 
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -138,6 +139,16 @@ const AddAddress = () => {
       console.log("DoneAdddddddddddd");
       showNotification();
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };
@@ -165,6 +176,16 @@ const AddAddress = () => {
         console.log(data, "datagroup");
         return data;
       } catch (e) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${e.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
         console.log(e);
       }
     };

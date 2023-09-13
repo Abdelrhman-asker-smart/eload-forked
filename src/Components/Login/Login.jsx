@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Joi from "joi";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 import { useCookies } from "react-cookie";
 import "./Login.css";
 import Img from "./Eloadlogo.png";
@@ -17,6 +18,9 @@ export default function Login({ decodeData }) {
   const [emailExist, setEmailExist] = useState("");
   const [loginFlag, setLoginFlag] = useState(false);
   const [cookie, setCookie] = useCookies(["eload_token"]);
+
+  // const [errormessage, setErrorMessage] = useState("");
+
   //Functions
   function getUser(e) {
     let inputValue = e.target.value;
@@ -57,7 +61,7 @@ export default function Login({ decodeData }) {
             },
           }
         );
-        // console.log(request.data,'this is the damn request')
+        console.log(request.data,'this is the damn request')
         const data = request.data;
         // setLoginFlag(false);
         localStorage.setItem("email", data.data.user.email);
@@ -87,7 +91,19 @@ export default function Login({ decodeData }) {
         return data;
         // return request
       } catch (err) {
-        console.log(err);
+        // setErrorMessage(err.response.data.message);
+
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: `${err.response.data.message}`,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
+        console.log(err.response.data.message);
       }
 
       // fetch("https://dev.eload.smart.sa/api/v1/auth/login", requestOptions)

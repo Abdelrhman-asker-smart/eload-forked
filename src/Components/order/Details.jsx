@@ -7,6 +7,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Select from 'react-select';
 
+
 import { useMemo } from "react";
 
 import MaterialReactTable from "material-react-table";
@@ -84,7 +85,7 @@ const Details = () => {
     var urlencoded = new URLSearchParams();
     urlencoded.append('modification_type', type);
 
-    if (type == 'OTHER') {
+    if (type === 'OTHER') {
       urlencoded.append('modification_reason', reason);
     }
 

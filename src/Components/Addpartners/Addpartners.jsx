@@ -8,6 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 // import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
 // import { ReactComponent as Vector } from "../../../icons/Vector.svg";
 import { NavLink } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 import { ToastContainer, toast } from "react-toastify";
 import CompanyForm from '../Common/CompanyForm';
 import AccountForm from '../Common/AccountForm';
@@ -95,6 +97,16 @@ const Addpartners = () => {
       console.log("DoneAdddddddddddd");
       showNotification();
     } catch (e) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: `${e.response.data.message}`,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
       console.log(e);
     }
   };
