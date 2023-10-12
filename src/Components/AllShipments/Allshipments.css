@@ -190,7 +190,7 @@ background-color:  #31A02F !important;
 }
 .table-resbon {
   min-width: 50rem;
-  max-width: 80rem;
+  /* max-width: 80rem; */
 }
 
 @media screen and (max-width: 1440px) {
