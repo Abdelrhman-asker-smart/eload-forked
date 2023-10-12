@@ -95,6 +95,7 @@ const AccountForm = ({
                 <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
+                style={{width:"90%"}}
                 // isMulti
                 isDisabled={isDisabled}
                 isLoading={isLoading}
@@ -154,6 +155,8 @@ const AccountForm = ({
                 <Select
                 classNamePrefix="select"
                 className="basic-multi-select"
+                style={{width:"90%"}}
+
                 // isMulti
                 isDisabled={isDisabled}
                 isLoading={isLoading}

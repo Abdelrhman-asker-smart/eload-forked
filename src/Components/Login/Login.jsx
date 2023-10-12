@@ -66,6 +66,9 @@ export default function Login({ decodeData }) {
         // setLoginFlag(false);
         localStorage.setItem("email", data.data.user.email);
         localStorage.setItem("name", data.data.user.name);
+        // ===============id users
+        localStorage.setItem("id", data.data.user.id);
+
 
         let user_type = 'admin';
         if (data.data.user.hasOwnProperty('type')) {

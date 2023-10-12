@@ -159,6 +159,7 @@ const Addpartners = () => {
             <label className="my-2 d-block">Profile picture</label>
             <input
               type="file"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               name="imgpartner"
               className="input-box"
               // id="inputGroupFile03"

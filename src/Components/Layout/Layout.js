@@ -6,6 +6,11 @@ import { Routes, Route} from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 // import { useState, useEffect } from "react";
 // import { useCookies } from "react-cookie";
+// =====admins
+import AllAdmins from "../Admins/allAdmin/allAdmins.jsx";
+import AddAdmins from "../Admins/addUser/addadmin.jsx";
+
+//==============
 import Dashbord from "../Dashboard/Dashbord";
 import User from "../User/User"
 import Sidebar from "../Sidebar/Sidebar";
@@ -138,6 +143,11 @@ const Layout = ({ setLogin }) => {
             
             <Route path="/login" element={<Login />} />
             } */}
+            {/* user-All Admins */}
+            <Route path="/all-admins" element={<AllAdmins />} />
+            {/* AddAdmins */}
+            <Route path="/add-admins" element={<AddAdmins />} />
+
             {/* profile-route */}
             <Route path="/profilepage" element={<Profile />} />
             <Route path="/editprofile" element={<EditProfile />} />

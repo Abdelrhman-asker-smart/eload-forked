@@ -42,7 +42,7 @@ const CompanyForm = ({
           <div className="col-md-4">
             <label className="my-2 d-block">Logo</label>
             <input
-              className=""
+              className="input-box"
               type="file"
               accept="image/*"
               onChange={(e) => setCompany({...company, logo: e.target.files[0]})}
@@ -52,6 +52,7 @@ const CompanyForm = ({
             <label className="my-2 d-block">CR No.</label>
             <input
               className="input-box px-3"
+
               required
               placeholder="CR No."
               value={company.cr_no}
@@ -71,7 +72,8 @@ const CompanyForm = ({
           <div className="col-md-4">
             <label className="my-2 d-block">CR Copy</label>
             <input
-              className=""
+              className="input-box"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               type="file"
               onChange={(e) => setCompany({...company, cr_copy: e.target.files[0]})}
             />
@@ -79,7 +81,8 @@ const CompanyForm = ({
           <div className="col-md-4">
             <label className="my-2 d-block">VAT Certificate Copy</label>
             <input
-              className=""
+              className="input-box"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               type="file"
               onChange={(e) => setCompany({...company, vat_certificate_copy: e.target.files[0]})}
             />
