@@ -292,13 +292,38 @@ const Adddriver = () => {
               placeholder="Confirm password"
             />
           </div>
+          <div className="col-md-4 my-2">
+            <label className="my-2 d-block">Phone </label>
+            <input
+              className="input-box px-3"
+              name="phoneowner"
+              type="tele"
+              required
+              placeholder="Phone "
+              onChange={(e) => {
+                setOwnerPhone(e.target.value);
+              }}
+            />
+          </div>
+          <div className="col-md-4 my-2">
+            <label className="my-2 d-block">National ID</label>
+            <input
+              className="input-box px-3"
+              name="idowner"
+              type="tele"
+              placeholder="National ID"
+              onChange={(e) => {
+                setOwnerNID(e.target.value);
+              }}
+            />
+          </div>
         </div>
         {/* line-1 */}
-        <hr className="my-5" />
+        {/* <hr className="my-5" /> */}
         {/* section-owner-information */}
-        <h3>OWNER INFORMATION</h3>
-        {/* name+PHONE+id */}
-        <div className="row my-4">
+        {/* <h3>OWNER INFORMATION</h3> */}
+
+        {/* <div className="row my-4">
           <div className="col-md-4">
             <label className="my-2 d-block">Owner name</label>
             <input
@@ -307,7 +332,6 @@ const Adddriver = () => {
               type="text"
               required
               placeholder="Owner name"
-              // setOwnerName
               onChange={(e) => {
                 setOwnerName(e.target.value);
               }}
@@ -338,7 +362,7 @@ const Adddriver = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* line-2 */}
         <hr className="my-5" />
         {/* section-ID-information */}
