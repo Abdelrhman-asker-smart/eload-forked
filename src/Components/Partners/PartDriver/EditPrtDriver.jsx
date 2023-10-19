@@ -98,7 +98,7 @@ const EditPrtDriver = () => {
 
         setName(data.user.name);
         setEmail(data.user.email);
-        setOwnerName(data.user.name);
+        // setOwnerName(data.user.name);
         setOwnerPhone(data.user.phone);
         setOwnerNID(data.user.national_id);
         setIdCope(data.id_copy);
@@ -130,7 +130,7 @@ const EditPrtDriver = () => {
     formdata.append("avatar", profileimg);
     formdata.append("password", password);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("driver[id_copy]", idCope);
     formdata.append("driver[driving_license_number]", drivingLincese);
@@ -241,27 +241,6 @@ const EditPrtDriver = () => {
               placeholder="Confirm password"
             />
           </div>
-        </div>
-        {/* line-1 */}
-        <hr className="my-5" />
-        {/* section-owner-information */}
-        <h3>OWNER INFORMATION</h3>
-        {/* name+PHONE+id */}
-        <div className="row my-4">
-          <div className="col-md-4">
-            <label className="my-2 d-block">Owner name</label>
-            <input
-              className="input-box px-3"
-              name="nameowner"
-              type="text"
-              required
-              placeholder="Owner name"
-              value={ownerName}
-              onChange={(e) => {
-                setOwnerName(e.target.value);
-              }}
-            />
-          </div>
           <div className="col-md-4">
             <label className="my-2 d-block">Owner Phone </label>
             <input
@@ -290,6 +269,28 @@ const EditPrtDriver = () => {
             />
           </div>
         </div>
+        {/* line-1 */}
+        {/* <hr className="my-5" /> */}
+        {/* section-owner-information */}
+        {/* <h3>OWNER INFORMATION</h3> */}
+        {/* name+PHONE+id */}
+        {/* <div className="row my-4">
+          <div className="col-md-4">
+            <label className="my-2 d-block">Owner name</label>
+            <input
+              className="input-box px-3"
+              name="nameowner"
+              type="text"
+              required
+              placeholder="Owner name"
+              value={ownerName}
+              onChange={(e) => {
+                setOwnerName(e.target.value);
+              }}
+            />
+          </div>
+
+        </div> */}
         {/* line-2 */}
         <hr className="my-5" />
         {/* section-ID-information */}
@@ -301,12 +302,14 @@ const EditPrtDriver = () => {
 
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="idcope"
               required
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
-              value={idCope}
+              // value={idCope}
               onChange={(e) => {
                 setIdCope(e.target.files[0]);
               }}
@@ -330,10 +333,12 @@ const EditPrtDriver = () => {
             <label className="my-2 d-block">Driving License Copy</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="driverlicensecope"
               required
-              value={drivingLincese_Cope}
+              // value={drivingLincese_Cope}
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
               onChange={(e) => {
@@ -348,9 +353,11 @@ const EditPrtDriver = () => {
             <label className="my-2 d-block">License Id</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               required
-              value={LinceseId}
+              // value={LinceseId}
               name="licensecopeid"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"

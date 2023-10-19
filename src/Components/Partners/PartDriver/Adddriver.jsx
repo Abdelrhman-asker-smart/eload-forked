@@ -86,7 +86,7 @@ const Adddriver = () => {
     formdata.append("avatar", profileimg);
     formdata.append("password", password);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", name);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
     // id info

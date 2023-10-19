@@ -91,7 +91,7 @@ const AddDriver = () => {
     formdata.append("avatar", profileimg);
     formdata.append("password", password);
     // owner
-    formdata.append("name", ownerName);
+    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("national_id", ownerNID);
     // id info
@@ -391,6 +391,8 @@ const AddDriver = () => {
 
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="idcope"
               required
@@ -418,6 +420,8 @@ const AddDriver = () => {
             <label className="my-2 d-block">Driving License Copy</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="driverlicensecope"
               required
