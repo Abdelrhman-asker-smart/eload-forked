@@ -260,6 +260,8 @@ const Adddriver = () => {
             <label className="my-2 d-block">Profile picture</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               name="imgdriver"
               required
               className="input-box"
@@ -374,6 +376,8 @@ const Adddriver = () => {
 
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="idcope"
               required
@@ -401,6 +405,8 @@ const Adddriver = () => {
             <label className="my-2 d-block">Driving License Copy</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               name="driverlicensecope"
               required
@@ -418,6 +424,8 @@ const Adddriver = () => {
             <label className="my-2 d-block">License Id</label>
             <input
               type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-box"
               required
               name="licensecopeid"
