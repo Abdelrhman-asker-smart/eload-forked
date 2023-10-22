@@ -242,8 +242,10 @@ const AddAddress = () => {
         console.log(e);
       });
   }, []);
-  const [selectLat, setSelectLat] = useState("");
-  const [selectLong, setSelectLong] = useState("");
+  const [selectLat, setSelectLat] = useState(latitude);
+  const [selectLong, setSelectLong] = useState(longitude);
+  // const [selectLat, setSelectLat] = useState("");
+  // const [selectLong, setSelectLong] = useState("");
   
   const center = {
     lat: Number(selectLat) ,
