@@ -86,11 +86,22 @@ const AddAddress = () => {
       height: "500px",
       width: "100%",
     };
+
+    const [selectLat, setSelectLat] = useState();
+    const [selectLong, setSelectLong] = useState();
+  
+    
+    const center = {
+      lat: Number(selectLat) ,
+      lng: Number(selectLong) ,
+    };
   
 
     const handleClick=(event)=>{
       setLatitude(event.latLng.lat()); // set the latitude state variable
       setLongitude(event.latLng.lng()); // set the longitude state variable
+      setSelectLat(event.latLng.lat());
+      setSelectLong(event.latLng.lng());
     }
 
   // selct_list
@@ -242,15 +253,7 @@ const AddAddress = () => {
         console.log(e);
       });
   }, []);
-  const [selectLat, setSelectLat] = useState(latitude);
-  const [selectLong, setSelectLong] = useState(longitude);
-  // const [selectLat, setSelectLat] = useState("");
-  // const [selectLong, setSelectLong] = useState("");
-  
-  const center = {
-    lat: Number(selectLat) ,
-    lng: Number(selectLong) ,
-  };
+
   console.log(center,"center");
   /* type-select */
   const typeOptions = [
