@@ -139,7 +139,7 @@ const AddDriver = () => {
         position: 'top-end',
         icon: 'error',
         color: '#0e4579',
-        title: `${e.response.data.message}`,
+        title: `${e.response.data.errors[0].message}`,
         showConfirmButton: false,
         showCancelButton:true,
         cancelButtonText: "ok",
@@ -327,7 +327,8 @@ const AddDriver = () => {
             <input
               className="input-box px-3"
               name="idowner"
-              type="tele"
+              required
+              type="number"
               placeholder="Owner National ID"
               onChange={(e) => {
                 setOwnerNID(e.target.value);
@@ -621,7 +622,7 @@ const AddDriver = () => {
         <hr className="my-5" />
         <AccountForm account={account} setAccount={setAccount} />
         {/* <NavLink to="/Serviceproviders/driver"> */}
-        <button type="submit" className="btn-save my-3"
+        <button type="submit" className="btn-save my-3" style={{width:"10rem"}}
           // onClick={showNotification}
         >
           SAVE

@@ -175,7 +175,7 @@ console.log(driverList,"prvidersList");
                 </svg>
                   {/* take contract-id */}
                   {/* ${allprov?.contract.id} */}
-                  <NavLink to={`/allitems/${id}`} className="btn-data-card">
+                  <NavLink to={`/allitems/${allprov?.contract.id}`} className="btn-data-card">
                     View contract details
                   </NavLink>
                 </div>
