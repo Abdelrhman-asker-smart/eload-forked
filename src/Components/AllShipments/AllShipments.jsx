@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 import { useMemo } from "react";
 
 import MaterialReactTable from "material-react-table";
-import {Box, Button} from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
@@ -16,9 +16,12 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 
 import "./Allshipments.css";
 
-const AllShipments = () => {
 
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
+    // search---handel
+
+
+const AllShipments = () => {
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
 
   const columnsReady = useMemo(
     () => [
@@ -39,9 +42,10 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-
-            <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}>
-
+            <NavLink
+              style={{ color: "#0085FF" }}
+              to={`/allshipments/shipmentorder/${row.original.id}`}
+            >
               <span>{renderedCellValue}</span>
             </NavLink>
             {/* <span>{console.log(row.original)}</span> */}
@@ -49,10 +53,10 @@ const AllShipments = () => {
         ),
       },
       {
-          accessorKey: "picup",
-          header: "Pick Up",
-          size: 30,
-        },
+        accessorKey: "picup",
+        header: "Pick Up",
+        size: 30,
+      },
       {
         accessorKey: "dropoff",
         header: "Drop Off",
@@ -69,9 +73,10 @@ const AllShipments = () => {
         size: 30,
       },
       {
-        accessorFn: (row) => `${ user_type == 'provider' ? row.provider_price : row.shippingcost }`,
+        accessorFn: (row) =>
+          `${user_type == "provider" ? row.provider_price : row.shippingcost}`,
         accessorKey: "shippingcost",
-        header: `${ user_type == 'provider' ? 'Price' : 'Shipping Cost'}`,
+        header: `${user_type == "provider" ? "Price" : "Shipping Cost"}`,
         size: 30,
       },
       // {
@@ -175,8 +180,10 @@ const AllShipments = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to={`/allshipments/shipmentorder/${row.original.id}`}>
-              
+            <NavLink
+              style={{ color: "#0085FF" }}
+              to={`/allshipments/shipmentorder/${row.original.id}`}
+            >
               <span>{renderedCellValue}</span>
             </NavLink>
           </Box>
@@ -203,9 +210,10 @@ const AllShipments = () => {
         size: 30,
       },
       {
-        accessorFn: (row) => `${ user_type == 'provider' ? row.provider_price : row.shippingcost }`,
+        accessorFn: (row) =>
+          `${user_type == "provider" ? row.provider_price : row.shippingcost}`,
         accessorKey: "shippingcost",
-        header: `${ user_type == 'provider' ? 'Price' : 'Shipping Cost'}`,
+        header: `${user_type == "provider" ? "Price" : "Shipping Cost"}`,
         size: 30,
       },
       {
@@ -313,29 +321,7 @@ const AllShipments = () => {
   const [shipmentListready, setshipmentListready] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
 
-  
-
-
   const data = shipmentList.map((item, index) => {
-    
-    return {
-      id:  item.id,
-      code: item.code,
-      picup: item.from_city.name,
-      dropoff: item.to_city.name,
-      shipmenttype: item.shipment_type.name,
-      trucktype: item.truck_type.name,
-      shippingcost: item.cost,
-      provider_price: item.provider_price,
-      urgent_action_needed: item.urgent_action_needed,
-      pickupdate: item.order.pickup_date,
-      status: item.status_i18n,
-    };
-  });
-  // console.log(shipmentList,"shipmentList");
-
-  const dataReady = shipmentListready.map((item, index) => {
-   
     return {
       id: item.id,
       code: item.code,
@@ -350,25 +336,95 @@ const AllShipments = () => {
       status: item.status_i18n,
     };
   });
-  const [rowCount, setRowCount] = useState(0);
-  const [ReadyrowCount, setReadyRowCount] = useState(0);
+  const dataReady = shipmentListready.map((item, index) => {
+    return {
+      id: item.id,
+      code: item.code,
+      picup: item.from_city.name,
+      dropoff: item.to_city.name,
+      shipmenttype: item.shipment_type.name,
+      trucktype: item.truck_type.name,
+      shippingcost: item.cost,
+      provider_price: item.provider_price,
+      urgent_action_needed: item.urgent_action_needed,
+      pickupdate: item.order.pickup_date,
+      status: item.status_i18n,
+    };
+  });
 
+  const [ReadyrowCount, setReadyRowCount] = useState(0);
+  // const [searchQuery, setSearchQuery] = useState("");
+  const [rowCount, setRowCount] = useState(0);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5, 
+    pageSize: 5,
   });
-
+  // ready
   const [readyPagination, setreadyPagination] = useState({
     pageIndexReady: 0,
-    pageSizeReady: 5, 
+    pageSizeReady: 5,
   });
-
+  // const handleSearchInputChange = async(event) => {
+  //   const query = event.target.value;
+  //   setSearchQuery(query);
+  //   setPagination((prevPagination) => ({
+  //     ...prevPagination,
+  //     pageIndex: 1, 
+  //   }));
+  // };
 
   useEffect(() => {
     const allShipment = async () => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex}`,
+          // `https://dev.eload.smart.sa/api/v1/shipments?search=${searchQuery}&paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
+          // 
+          `https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        const data = response.data.data;
+        console.log(data, "data");
+        console.log(response, "rrrr");
+        setshipmentList(data);
+        console.log(response?.data?.meta?.total, "total");
+        setRowCount(response?.data?.meta?.total);
+
+
+          // for(const i=0 ; i<=data.length ; i++){
+          //   console.log(searchQuery,"searchQuery");
+          //   const foundIndex = data.findIndex((item) => item[i]?.id === searchQuery);
+          //   console.log(foundIndex,"foundIndex");
+          //   if(data[i] === searchQuery){
+          //     const newPageIndex = Math.floor(foundIndex / pagination.pageSize);
+          //     setPagination((prevPagination) => ({
+          //       ...prevPagination,
+          //       pageIndex: ++pagination.pageIndex,
+          //     }));
+          //   }
+          // }
+   
+
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    allShipment();
+  }, [pagination.pageIndex, pagination.pageSize]);
+  // ready
+  useEffect(() => {
+    const readyShipment = async () => {
+      try {
+        const response = await axios.get(
+          // https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
+          `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady+1}`,
           {
             headers: {
               Accept: "application/json",
@@ -379,61 +435,20 @@ const AllShipments = () => {
           }
         );
 
-        const data = response.data.data;
-        console.log(data,"data");
-        console.log(response,"rrrr");
-
-        setshipmentList(data);
-        console.log(response?.data?.meta?.total, "total");
-        setRowCount(response?.data?.meta?.total);
-        // setPagination( {pageIndex: pagination.pageIndex, pageSize: response?.data?.meta?.per_page });
-
-        return data;
+        const dataReady = response.data.data;
+        console.log(response, "ready respons");
+        setshipmentListready(dataReady);
+        setReadyRowCount(response?.data?.meta?.total);
+        return dataReady;
       } catch (e) {
         console.log(e);
       }
     };
-    // ready===========================
 
-
-    allShipment();
-
-  }, [pagination.pageIndex , pagination.pageSize]);
-// ready
-useEffect(()=>{
-
-  const readyShipment = async () => {
-    try {
-      const response = await axios.get(
-        `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${cookie.eload_token}`,
-            "api-key":
-              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-          },
-        }
-      );
-
-      const dataReady = response.data.data;
-      console.log(response ,"ready respons");
-      setshipmentListready(dataReady);
-      setReadyRowCount(response?.data?.meta?.total);
-      return dataReady;
-    } catch (e) {
-      console.log(e);
+    if (user_type != "shipper") {
+      readyShipment();
     }
-  };
-
-  if (user_type != 'shipper') {
-    readyShipment();
-  }
-
-
-},[readyPagination.pageIndexReady , readyPagination.pageSizeReady])
-
-
+  }, [readyPagination.pageIndexReady, readyPagination.pageSizeReady]);
 
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
@@ -442,7 +457,6 @@ useEffect(()=>{
   const handleExportRowsready = (rows) => {
     csvExporterready.generateCsv(rows.map((row) => row.original));
   };
-
   const handleExportData = () => {
     csvExporter.generateCsv(data);
   };
@@ -455,8 +469,7 @@ useEffect(()=>{
     <div>
       <div className="container-fluid Allshipment  py-3 px-0">
         {/* ready-shipment */}
-        {
-          user_type != 'shipper' &&
+        {user_type != "shipper" && (
           <div className=" p-3 tableshipment tableready table-resbon">
             {/* <div className="w-75"> */}
             {/* table */}
@@ -472,22 +485,16 @@ useEffect(()=>{
             <MaterialReactTable
               columns={columnsReady}
               data={dataReady}
-              onPaginationChange={setreadyPagination} 
+
+              onPaginationChange={setreadyPagination}
               state={{ readyPagination }}
               manualPagination
               rowCount={ReadyrowCount}
-              // autoResetPage= {false}
               positionPagination="top"
-              // onPaginationChange={setPagination} 
-              // state={{ pagination }}
-              // manualPagination
-              // rowCount={dataReady.meta?.total}
-              // muiTablePaginationProps={{
-              //   rowsPerPageOptions: [dataReady.meta?.total],
-              //   showFirstButton: false,
-              //   showLastButton: false,
-              // }}
-              initialState={{ columnVisibility: user_type == 'provider' ? { shippingcost: false } : {} }}
+              initialState={{
+                columnVisibility:
+                  user_type == "provider" ? { shippingcost: false } : {},
+              }}
               enableRowSelection
               positionToolbarAlertBanner="bottom"
               renderTopToolbarCustomActions={({ table }) => (
@@ -509,10 +516,14 @@ useEffect(()=>{
                     Export All Data
                   </Button>
                   <Button
-                    disabled={table.getPrePaginationRowModel().rows.length === 0}
+                    disabled={
+                      table.getPrePaginationRowModel().rows.length === 0
+                    }
                     //export all rows, including from the next page, (still respects filtering and sorting)
                     onClick={() =>
-                      handleExportRowsready(table.getPrePaginationRowModel().rows)
+                      handleExportRowsready(
+                        table.getPrePaginationRowModel().rows
+                      )
                     }
                     startIcon={<FileDownloadIcon />}
                     variant="contained"
@@ -549,7 +560,9 @@ useEffect(()=>{
             />
             {/* </div> */}
           </div>
-        }
+        )}
+
+
 
         {/* table-data */}
         <div className=" p-3 tableshipment table-resbon">
@@ -561,26 +574,22 @@ useEffect(()=>{
           >
             All Shipments
           </h3>
+          {/* <input
+            type="text"
+            // value={searchQuery}
+            onChange={(e) => handleSearchInputChange(e)}
+            placeholder="Search..."
+          /> */}
+
           <MaterialReactTable
             columns={columnsAll}
-            data={data}
-            // initialState={{ pagination: { pageSize: 10, pageIndex: 0 } }}
-            onPaginationChange={setPagination} 
+            data={data} 
             state={{ pagination }}
+            onPaginationChange={setPagination}
             manualPagination
             rowCount={rowCount}
             positionPagination="top"
-
-            // autoResetPage
-            // paginateExpandedRows
-
-            // muiTablePaginationProps={{
-            //   rowsPerPageOptions: [rowCount],
-            //   showFirstButton: false,
-            //   showLastButton: false,
-            // }}
-            // initialState={{ pagination: { pageSize: data.meta?.per_page, pageIndex: data.meta?.current_page } }}
-
+            
             enableRowSelection
             positionToolbarAlertBanner="bottom"
             renderTopToolbarCustomActions={({ table }) => (
@@ -594,7 +603,6 @@ useEffect(()=>{
               >
                 <Button
                   color="primary"
-                  //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                   onClick={handleExportData}
                   startIcon={<FileDownloadIcon />}
                   variant="contained"
@@ -603,7 +611,6 @@ useEffect(()=>{
                 </Button>
                 <Button
                   disabled={table.getPrePaginationRowModel().rows.length === 0}
-                  //export all rows, including from the next page, (still respects filtering and sorting)
                   onClick={() =>
                     handleExportRows(table.getPrePaginationRowModel().rows)
                   }
@@ -614,7 +621,6 @@ useEffect(()=>{
                 </Button>
                 <Button
                   disabled={table.getRowModel().rows.length === 0}
-                  //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                   onClick={() => handleExportRows(table.getRowModel().rows)}
                   startIcon={<FileDownloadIcon />}
                   variant="contained"
@@ -626,7 +632,6 @@ useEffect(()=>{
                     !table.getIsSomeRowsSelected() &&
                     !table.getIsAllRowsSelected()
                   }
-                  //only export selected rows
                   onClick={() =>
                     handleExportRows(table.getSelectedRowModel().rows)
                   }
