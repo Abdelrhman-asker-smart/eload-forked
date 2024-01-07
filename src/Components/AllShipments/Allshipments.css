@@ -192,6 +192,11 @@ background-color:  #31A02F !important;
   min-width: 50rem;
   /* max-width: 80rem; */
 }
+.Allshipment .searchtable{
+  border-radius: 50px;
+  border: 1px solid #0e324a;
+
+}
 
 @media screen and (max-width: 1440px) {
   .table-resbon {

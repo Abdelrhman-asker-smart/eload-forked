@@ -12,13 +12,8 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-// import { MRT_PaginationState} from 'material-react-table';
 
 import "./Allshipments.css";
-
-
-    // search---handel
-
 
 const AllShipments = () => {
   const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
@@ -160,7 +155,6 @@ const AllShipments = () => {
     ],
     []
   );
-
   // all-date
   const columnsAll = useMemo(
     () => [
@@ -352,34 +346,42 @@ const AllShipments = () => {
     };
   });
 
-  const [ReadyrowCount, setReadyRowCount] = useState(0);
-  // const [searchQuery, setSearchQuery] = useState("");
   const [rowCount, setRowCount] = useState(0);
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 5,
-  });
-  // ready
-  const [readyPagination, setreadyPagination] = useState({
-    pageIndexReady: 0,
-    pageSizeReady: 5,
-  });
-  // const handleSearchInputChange = async(event) => {
-  //   const query = event.target.value;
-  //   setSearchQuery(query);
-  //   setPagination((prevPagination) => ({
-  //     ...prevPagination,
-  //     pageIndex: 1, 
-  //   }));
-  // };
+  const [ReadyrowCount, setReadyRowCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchreadyQuery, setSearchreadyQuery] = useState("");
 
+      // All
+      const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+      });
+
+
+  // search All
+  const handleSearchInputChange = async(event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+  };
+  // search ready
+  const handleSearchInputreadyChange = async(event) => {
+    const query = event.target.value;
+    setSearchreadyQuery(query);
+  };
+            // readypagination
+            const [readyeee, setreadyeee] = useState({
+              pIndexrrrr: 0,
+              pSizerrrr: 5,
+      });
+  // All--ready
   useEffect(() => {
     const allShipment = async () => {
       try {
         const response = await axios.get(
           // `https://dev.eload.smart.sa/api/v1/shipments?search=${searchQuery}&paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
-          // 
-          `https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
+          // /shipmentsSearch?term=11&per_page=5&page=2&select=id&sort=desc&status=READY
+          // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
+          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
           {
             headers: {
               Accept: "application/json",
@@ -391,24 +393,9 @@ const AllShipments = () => {
         );
         const data = response.data.data;
         console.log(data, "data");
-        console.log(response, "rrrr");
         setshipmentList(data);
         console.log(response?.data?.meta?.total, "total");
         setRowCount(response?.data?.meta?.total);
-
-
-          // for(const i=0 ; i<=data.length ; i++){
-          //   console.log(searchQuery,"searchQuery");
-          //   const foundIndex = data.findIndex((item) => item[i]?.id === searchQuery);
-          //   console.log(foundIndex,"foundIndex");
-          //   if(data[i] === searchQuery){
-          //     const newPageIndex = Math.floor(foundIndex / pagination.pageSize);
-          //     setPagination((prevPagination) => ({
-          //       ...prevPagination,
-          //       pageIndex: ++pagination.pageIndex,
-          //     }));
-          //   }
-          // }
    
 
         return data;
@@ -416,15 +403,13 @@ const AllShipments = () => {
         console.log(e);
       }
     };
-    allShipment();
-  }, [pagination.pageIndex, pagination.pageSize]);
-  // ready
-  useEffect(() => {
+    // ---------ready
     const readyShipment = async () => {
       try {
-        const response = await axios.get(
-          // https://dev.eload.smart.sa/api/v1/shipments?paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
-          `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady+1}`,
+        const responseready = await axios.get(
+          // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
+          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${readyeee.pSizerrrr}&page=${readyeee.pIndexrrrr+1}&sort=asc&status=READY`,
+          // `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady+1}`,
           {
             headers: {
               Accept: "application/json",
@@ -435,21 +420,24 @@ const AllShipments = () => {
           }
         );
 
-        const dataReady = response.data.data;
-        console.log(response, "ready respons");
+        const dataReady = responseready.data.data;
+        console.log(dataReady, "ready respons");
         setshipmentListready(dataReady);
-        setReadyRowCount(response?.data?.meta?.total);
+        setReadyRowCount(responseready?.data?.meta?.total);
+
         return dataReady;
       } catch (e) {
         console.log(e);
       }
     };
-
+    allShipment();
     if (user_type != "shipper") {
       readyShipment();
     }
-  }, [readyPagination.pageIndexReady, readyPagination.pageSizeReady]);
+  }, [pagination.pageIndex, pagination.pageSize , searchQuery , readyeee.pIndexrrrr , readyeee.pSizerrrr ,  searchreadyQuery]);
 
+
+  console.log(readyeee.pSizerrrr,"pSizerrrr");
   const handleExportRows = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row.original));
   };
@@ -468,118 +456,25 @@ const AllShipments = () => {
   return (
     <div>
       <div className="container-fluid Allshipment  py-3 px-0">
-        {/* ready-shipment */}
-        {user_type != "shipper" && (
-          <div className=" p-3 tableshipment tableready table-resbon">
-            {/* <div className="w-75"> */}
-            {/* table */}
-            <h3
-              style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
-              className="my-3 mx-3"
-            >
-              Shipments:
-              <span style={{ color: "#31A02F" }} className="mx-2">
-                Ready
-              </span>
-            </h3>
-            <MaterialReactTable
-              columns={columnsReady}
-              data={dataReady}
 
-              onPaginationChange={setreadyPagination}
-              state={{ readyPagination }}
-              manualPagination
-              rowCount={ReadyrowCount}
-              positionPagination="top"
-              initialState={{
-                columnVisibility:
-                  user_type == "provider" ? { shippingcost: false } : {},
-              }}
-              enableRowSelection
-              positionToolbarAlertBanner="bottom"
-              renderTopToolbarCustomActions={({ table }) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: "1rem",
-                    p: "0.5rem",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <Button
-                    color="primary"
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                    onClick={handleExportDataready}
-                    startIcon={<FileDownloadIcon />}
-                    variant="contained"
-                  >
-                    Export All Data
-                  </Button>
-                  <Button
-                    disabled={
-                      table.getPrePaginationRowModel().rows.length === 0
-                    }
-                    //export all rows, including from the next page, (still respects filtering and sorting)
-                    onClick={() =>
-                      handleExportRowsready(
-                        table.getPrePaginationRowModel().rows
-                      )
-                    }
-                    startIcon={<FileDownloadIcon />}
-                    variant="contained"
-                  >
-                    Export All Rows
-                  </Button>
-                  <Button
-                    disabled={table.getRowModel().rows.length === 0}
-                    //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                    onClick={() =>
-                      handleExportRowsready(table.getRowModel().rows)
-                    }
-                    startIcon={<FileDownloadIcon />}
-                    variant="contained"
-                  >
-                    Export Page Rows
-                  </Button>
-                  <Button
-                    disabled={
-                      !table.getIsSomeRowsSelected() &&
-                      !table.getIsAllRowsSelected()
-                    }
-                    //only export selected rows
-                    onClick={() =>
-                      handleExportRowsready(table.getSelectedRowModel().rows)
-                    }
-                    startIcon={<FileDownloadIcon />}
-                    variant="contained"
-                  >
-                    Export Selected Rows
-                  </Button>
-                </Box>
-              )}
-            />
-            {/* </div> */}
-          </div>
-        )}
-
-
-
-        {/* table-data */}
+        {/* table-data ---All */}
         <div className=" p-3 tableshipment table-resbon">
-          {/* <div className="w-75"> */}
-          {/* table */}
+
+          <div className="d-flex justify-content-between align-items-center">
           <h3
             style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
             className="my-3 mx-3"
           >
             All Shipments
           </h3>
-          {/* <input
+           <input
+           className="searchtable py-2 px-4 w-25"
             type="text"
-            // value={searchQuery}
             onChange={(e) => handleSearchInputChange(e)}
             placeholder="Search..."
-          /> */}
+          />
+
+          </div>
 
           <MaterialReactTable
             columns={columnsAll}
@@ -589,7 +484,7 @@ const AllShipments = () => {
             manualPagination
             rowCount={rowCount}
             positionPagination="top"
-            
+            enableGlobalFilter={false}
             enableRowSelection
             positionToolbarAlertBanner="bottom"
             renderTopToolbarCustomActions={({ table }) => (
@@ -643,9 +538,116 @@ const AllShipments = () => {
               </Box>
             )}
           />
-          {/* </div> */}
+    
         </div>
-        {/* </div> */}
+
+        {/* ready-shipment */}
+        {user_type != "shipper" && (
+          <div className=" p-3 tableshipment tableready table-resbon">
+
+            <div className="d-flex justify-content-between align-items-center">
+            <h3
+              style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
+              className="my-3 mx-3"
+            >
+              Shipments:
+              <span style={{ color: "#31A02F" }} className="mx-2">
+                Ready 
+              </span>
+            </h3>
+           <input
+           className="searchtable py-2 px-4 w-25"
+            type="text"
+            onChange={(e) => handleSearchInputreadyChange(e)}
+            placeholder="Search..."
+          />
+
+          </div>
+
+            <MaterialReactTable
+
+                        columns={columnsReady}
+                        data={dataReady} 
+          
+                        onPaginationChange={setreadyeee}
+                        state={{ readyeee }}
+                        manualPagination
+                        rowCount={ReadyrowCount}
+                        positionPagination="top"
+                        enableGlobalFilter={false}
+                        enableRowSelection
+                        positionToolbarAlertBanner="bottom"
+
+
+                        initialState={{
+                        columnVisibility:
+                          user_type == "provider" ? { shippingcost: false } : {},
+                      }}
+                  renderTopToolbarCustomActions={({ table }) => (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "1rem",
+                        p: "0.5rem",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <Button
+                        color="primary"
+                        
+                        onClick={handleExportDataready}
+                        startIcon={<FileDownloadIcon />}
+                        variant="contained"
+                      >
+                        Export All Data
+                      </Button>
+                      <Button
+                        disabled={
+                          table.getPrePaginationRowModel().rows.length === 0
+                        }
+                        
+                        onClick={() =>
+                          handleExportRowsready(
+                            table.getPrePaginationRowModel().rows
+                          )
+                        }
+                        startIcon={<FileDownloadIcon />}
+                        variant="contained"
+                      >
+                        Export All Rows
+                      </Button>
+                      <Button
+                        disabled={table.getRowModel().rows.length === 0}
+                      
+                        onClick={() =>
+                          handleExportRowsready(table.getRowModel().rows)
+                        }
+                        startIcon={<FileDownloadIcon />}
+                        variant="contained"
+                      >
+                        Export Page Rows
+                      </Button>
+                      <Button
+                        disabled={
+                          !table.getIsSomeRowsSelected() &&
+                          !table.getIsAllRowsSelected()
+                        }
+                        //only export selected rows
+                        onClick={() =>
+                          handleExportRowsready(table.getSelectedRowModel().rows)
+                        }
+                        startIcon={<FileDownloadIcon />}
+                        variant="contained"
+                      >
+                        Export Selected Rows
+                      </Button>
+                    </Box>
+                  )}
+            />
+            {/* </div> */}
+          </div>
+        )}
+
       </div>
     </div>
   );
