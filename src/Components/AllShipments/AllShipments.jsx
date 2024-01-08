@@ -330,7 +330,7 @@ const AllShipments = () => {
       status: item.status_i18n,
     };
   });
-  const dataReady = shipmentListready.map((item, index) => {
+  const dataReadyth = shipmentListready.map((item, index) => {
     return {
       id: item.id,
       code: item.code,
@@ -351,10 +351,32 @@ const AllShipments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchreadyQuery, setSearchreadyQuery] = useState("");
 
+  // checked
+  const [isChecked, setIsChecked] = useState(false);
+  const handleCheckboxChange = (event) => {
+    if(isChecked == false){
+      setIsChecked(true);
+
+    }else{
+      setIsChecked(false);
+
+    }
+  };
+  // sort
+  const [selectedOption, setSelectedOption] = useState('asc');
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
       // All
       const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
+      });
+      // readypagination
+      const [readyeee, setreadyeee] = useState({
+        pIndexrrrr: 0,
+        pSizerrrr: 5,
       });
 
 
@@ -368,11 +390,7 @@ const AllShipments = () => {
     const query = event.target.value;
     setSearchreadyQuery(query);
   };
-            // readypagination
-            const [readyeee, setreadyeee] = useState({
-              pIndexrrrr: 0,
-              pSizerrrr: 5,
-      });
+  console.log(selectedOption ,"selectedOption");
   // All--ready
   useEffect(() => {
     const allShipment = async () => {
@@ -381,7 +399,11 @@ const AllShipments = () => {
           // `https://dev.eload.smart.sa/api/v1/shipments?search=${searchQuery}&paginate=${pagination.pageSize}&page=${pagination.pageIndex+1}`,
           // /shipmentsSearch?term=11&per_page=5&page=2&select=id&sort=desc&status=READY
           // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
-          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
+
+          isChecked === false
+          ? `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=${selectedOption}`
+          : `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=${selectedOption}&status=READY`,
+          
           {
             headers: {
               Accept: "application/json",
@@ -408,7 +430,8 @@ const AllShipments = () => {
       try {
         const responseready = await axios.get(
           // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
-          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${readyeee.pSizerrrr}&page=${readyeee.pIndexrrrr+1}&sort=asc&status=READY`,
+          // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
+          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${readyeee.pSizerrrr}&page=${readyeee.pIndexrrrr+1}&sort=asc?&status=?READY`,
           // `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady+1}`,
           {
             headers: {
@@ -431,10 +454,10 @@ const AllShipments = () => {
       }
     };
     allShipment();
-    if (user_type != "shipper") {
-      readyShipment();
-    }
-  }, [pagination.pageIndex, pagination.pageSize , searchQuery , readyeee.pIndexrrrr , readyeee.pSizerrrr ,  searchreadyQuery]);
+    // if (user_type != "shipper") {
+    //   readyShipment();
+    // }
+  }, [pagination.pageIndex, pagination.pageSize , searchQuery , isChecked , selectedOption , readyeee.pIndexrrrr , readyeee.pSizerrrr ,  searchreadyQuery]);
 
 
   console.log(readyeee.pSizerrrr,"pSizerrrr");
@@ -450,7 +473,7 @@ const AllShipments = () => {
   };
   // ready
   const handleExportDataready = () => {
-    csvExporterready.generateCsv(dataReady);
+    csvExporterready.generateCsv(dataReadyth);
   };
 
   return (
@@ -460,19 +483,34 @@ const AllShipments = () => {
         {/* table-data ---All */}
         <div className=" p-3 tableshipment table-resbon">
 
-          <div className="d-flex justify-content-between align-items-center">
-          <h3
-            style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
-            className="my-3 mx-3"
-          >
-            All Shipments
-          </h3>
-           <input
-           className="searchtable py-2 px-4 w-25"
-            type="text"
-            onChange={(e) => handleSearchInputChange(e)}
-            placeholder="Search..."
-          />
+          <div className="d-flex justify-content-start align-items-center">
+            <h3
+              style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
+              className="my-3 "
+            >
+              All Shipments
+            </h3>
+          <div class="form-check d-flex justify-content-between align-items-center mx-3">
+              <input class="form-check-input mx-3" type="checkbox" value=""  checked={isChecked}
+                onChange={handleCheckboxChange} id="flexCheckChecked" />
+              <label class="form-check-label status_check" for="flexCheckChecked">
+                Ready status
+              </label>
+          </div>
+          <div className="d-flex justify-content-end align-items-center">
+              {/* ----sort--- */}
+              <select class="form-select sortinput mx-2" aria-label="Default select example" value={selectedOption}
+              onChange={handleSelectChange}>
+                <option value="asc">asc</option>
+                <option value="desc">desc</option>
+              </select>
+              <input
+              className="searchtable py-2 px-4 w-100 "
+                type="text"
+                onChange={(e) => handleSearchInputChange(e)}
+                placeholder="Search..."
+              />
+          </div>
 
           </div>
 
@@ -542,7 +580,7 @@ const AllShipments = () => {
         </div>
 
         {/* ready-shipment */}
-        {user_type != "shipper" && (
+        {/* {user_type != "shipper" && (
           <div className=" p-3 tableshipment tableready table-resbon">
 
             <div className="d-flex justify-content-between align-items-center">
@@ -565,10 +603,9 @@ const AllShipments = () => {
           </div>
 
             <MaterialReactTable
+              columns={columnsReady}
+                        data={dataReadyth} 
 
-                        columns={columnsReady}
-                        data={dataReady} 
-          
                         onPaginationChange={setreadyeee}
                         state={{ readyeee }}
                         manualPagination
@@ -579,10 +616,10 @@ const AllShipments = () => {
                         positionToolbarAlertBanner="bottom"
 
 
-                        initialState={{
-                        columnVisibility:
-                          user_type == "provider" ? { shippingcost: false } : {},
-                      }}
+                      //   initialState={{
+                      //   columnVisibility:
+                      //     user_type == "provider" ? { shippingcost: false } : {},
+                      // }}
                   renderTopToolbarCustomActions={({ table }) => (
                     <Box
                       sx={{
@@ -642,11 +679,11 @@ const AllShipments = () => {
                         Export Selected Rows
                       </Button>
                     </Box>
-                  )}
+              )}
             />
-            {/* </div> */}
+          
           </div>
-        )}
+        )} */}
 
       </div>
     </div>

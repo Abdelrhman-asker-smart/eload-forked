@@ -192,10 +192,18 @@ background-color:  #31A02F !important;
   min-width: 50rem;
   /* max-width: 80rem; */
 }
+.Allshipment .status_check{
+  color: #31a02f ;
+  font-weight: 500 !important;
+  font-size: 1.2rem;
+}
+.Allshipment .sortinput{
+  width: 100px;
+  padding: 2px 5px;
+}
 .Allshipment .searchtable{
   border-radius: 50px;
   border: 1px solid #0e324a;
-
 }
 
 @media screen and (max-width: 1440px) {
