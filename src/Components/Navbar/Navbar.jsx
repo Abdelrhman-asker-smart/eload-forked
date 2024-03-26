@@ -24,7 +24,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
 
   // endpoint is the API endpoint, url is the frontend page url
   const entity_mappings = {
-    shipment: { endpoint: 'shipments', url: 'allshipments/shipmentorder' },
+    shipment: { endpoint: 'shipments', url: 'invoices' },
     invoice: { endpoint: 'invoices', url: 'invoices' }
   }
 
@@ -41,7 +41,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      // console.log(response.data.data);
+      console.log(response.data.data,"nottt");
       let data = response.data.data;
       setNotifications(data);
       setNotificationsCount(data.length);
@@ -284,7 +284,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
   useEffect(() => {
     getNotifications();
   }, []);
-
+  // console.log(entity_mappings[notification.notificationable_type].url,"eeee");
   return (
     <>
     <ToastContainer
@@ -332,11 +332,15 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                         <div className="dropdown-divider"></div>
                         <a 
                           onClick={(e) => showNotification(e, notification)}
-                          href={`/${entity_mappings[notification.notificationable_type].url}/${notification.payload.id}`} 
+                          href={`/${notification.notificationable_type}/${notification.payload.id}`} 
                           className="dropdown-item not d-block">
                           <p>{notification.title}</p>
                           <label className="time">{notification.body}</label>
                         </a>
+
+                        {/* {
+                          console.log(notification, "url")
+                        } */}
                         </>
                       ))}
 
@@ -441,6 +445,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                         <button className="mx-3 btn-profile">
                           View Profile
                         </button>
+
                         </NavLink>
                       </a>
                       {/* <div className="dropdown-divider"></div> */}
@@ -467,7 +472,9 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
               </div>
               <span style={{ fontWeight: "500", fontSize: "16px" }}>
                 Hi, {user.name}
+
               </span>
+
             </div>
           </div>
         </div>
