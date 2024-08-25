@@ -399,7 +399,8 @@ const Shipments = () => {
       console.log(e);
     }
   };
-
+  const [choise , setchoise] = useState("");
+  // console.log(choise ,"ccccc");
   // shipperoptions
   const shipperOptions = shipperList.map((item, index) => {
     return {
@@ -796,7 +797,7 @@ const Shipments = () => {
                           pickupListApi(choice.value);
                           setShipperUserChoice(choice.value);
                           setShipperValue(choice.label);
-                          // setShipperLabel(choice.value);
+                          setchoise(choice);
                           shipperPlanned_handleInputChange(
                             indexshipment,
                             choice.value
@@ -804,7 +805,8 @@ const Shipments = () => {
                         }}
                       />
                       <span>
-                        {shipperOptions[plannedList[0].shipperPlanned].label}
+                        {/* {shipperOptions[plannedList[0]].shipperPlanned.label} */}
+                        {choise}
                       </span>
                     </div>
                     }
@@ -1198,6 +1200,7 @@ const Shipments = () => {
                           pickupListApi(choice.value);
                           setShipperUserChoice(choice.value);
                           setShipperValue(choice.value);
+                          setchoise(choice.label);
                           shipperPlanned_handleInputChange(
                             indexshipment,
                             choice.value
@@ -1399,7 +1402,7 @@ const Shipments = () => {
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button disabled style={{backgroundColor:"gray"}}>
                               <i className="fa-solid fa-plus"></i> Add New
-                              Address ss
+                              Address 
                             </button>
                           </NavLink>
                         </div>
@@ -1557,7 +1560,7 @@ const Shipments = () => {
                                 ) : (
                                   <button
                                     className="btn-save"
-                                    type="submit"
+                                    type="btn"
                                     onClick={() => {
                                       addNewListOfShipment();
                                       setStartDate(null);
@@ -1608,9 +1611,7 @@ const Shipments = () => {
                   </form>
                 )}
               </>
-              // if(indexshipment<0){
 
-              // }
             )}
           </>
         );

@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 // import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,6 +21,7 @@ import { GoogleMap, useJsApiLoader,  MarkerF } from "@react-google-maps/api";
 import "../AddAddress/addAddress.css";
 
 const AddAddress = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
@@ -34,16 +36,16 @@ const AddAddress = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to={`/Shipments/grouplist/${id}`}>
+        <h4>Added successfully</h4>
+        {/* <NavLink to={`/Shipments/grouplist/${id}`}>
           <button className="btn btndetails">Back to Drivers</button>
-        </NavLink>
+        </NavLink> */}
 
         {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
       </div>
     );
 
-    toast(<Msg />);
+    toast(<Msg /> ,{autoClose: 3000});
     // readNotification(notification.id);
   };
 
@@ -70,7 +72,7 @@ const AddAddress = () => {
   const [Address, setAddress] = useState("");
   const [optionList, setOptionList] = useState([intialList]);
 
-  console.log(optionList, "listobject");
+  // console.log(optionList, "listobject");
     // ==================================map==========================
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
@@ -111,7 +113,7 @@ const AddAddress = () => {
   const newElement = "newvalue";
   const newArray = [...addOptionList];
 
-  console.log(addOptionList, "addOptionList");
+  // console.log(addOptionList, "addOptionList");
 
 
   // Api-post==========================
@@ -147,8 +149,9 @@ const AddAddress = () => {
           },
         }
       );
-      console.log("DoneAdddddddddddd");
+      // console.log("DoneAdddddddddddd");
       showNotification();
+      navigate(`/Shipments/grouplist/${id}`);
     } catch (e) {
       Swal.fire({
         position: 'top-end',
@@ -184,7 +187,7 @@ const AddAddress = () => {
         const data = response.data.data;
 
         setGrouopList(data);
-        console.log(data, "datagroup");
+        // console.log(data, "datagroup");
         return data;
       } catch (e) {
         Swal.fire({
@@ -228,7 +231,7 @@ const AddAddress = () => {
         const data = response.data.data.data.states;
 
         setCountryList(data);
-        console.log(data, "datacountry");
+        // console.log(data, "datacountry");
         return data;
       } catch (e) {
         console.log(e);
@@ -254,7 +257,7 @@ const AddAddress = () => {
       });
   }, []);
 
-  console.log(center,"center");
+  // console.log(center,"center");
   /* type-select */
   const typeOptions = [
     { value: "pickup", label: "Pick up" },
@@ -380,7 +383,7 @@ const AddAddress = () => {
                 options={cities}
                 onChange={(choice) => {
                   setCity(choice.value);
-                  console.log(choice.lat,"lat");
+                  // console.log(choice.lat,"lat");
                   setSelectLat(choice.lat);
                   setSelectLong(choice.long);
                 }}

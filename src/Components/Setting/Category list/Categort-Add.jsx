@@ -17,7 +17,7 @@ const CategortAdd = () => {
   
 
   const recordCategory = async () => {
-    console.log("save triggered");
+    // console.log("save triggered");
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/categories",

@@ -142,7 +142,7 @@ const AddDriver = () => {
         title: `${e.response.data.errors[0].message}`,
         showConfirmButton: false,
         showCancelButton:true,
-        cancelButtonText: "ok",
+        cancelButtonText: "ok", 
         timer: 8000,
       })
       console.log(e);
