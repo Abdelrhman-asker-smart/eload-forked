@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import { useNavigate } from 'react-router-dom';
+
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 // import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
@@ -17,6 +19,8 @@ import AccountForm from '../Common/AccountForm';
 import "./AddShippers.css";
 
 const EditShipper = () => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const [cookie] = useCookies(["eload_token"]);
@@ -25,16 +29,12 @@ const EditShipper = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/Serviceproviders/Partners">
-          <button className="btn btndetails">Back to Drivers</button>
-        </NavLink>
-
-        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+        <h4>Success</h4>
       </div>
     );
 
-    toast(<Msg />);
+    toast(<Msg /> ,{autoClose: 3000});
+
     // readNotification(notification.id);
   };
 
@@ -127,8 +127,10 @@ const EditShipper = () => {
       })
     )
       .then((res) => {
-        console.log(res);
-        alert("Successfully Saved!");
+        showNotification();
+        navigate(`/Serviceproviders/Partners`);
+        // console.log(res);
+        // alert("Successfully Saved!");
       })
       .catch((e) => {
         console.log(e);
@@ -180,7 +182,6 @@ const EditShipper = () => {
               className="input-box"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
-              value={password}
               onChange={(e) => {
                 setProfileimg(e.target.files[0]);
               }}
@@ -193,6 +194,7 @@ const EditShipper = () => {
               type="password"
               required
               name="passdriver"
+              value={password}
               placeholder="Password"
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -205,6 +207,7 @@ const EditShipper = () => {
               className="input-box px-3"
               type="password"
               name="passdriver"
+              value={password}
               placeholder="Confirm password"
             />
           </div>
@@ -275,10 +278,10 @@ const EditShipper = () => {
               }}
             />
           </div>
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <label className="my-2 d-block">Contacted ?</label>
             <div className="d-flex">
-              {/* {contacted == "true" ? (
+              {contacted == "true" ? (
                 <>
                   <label>
                     <input
@@ -335,10 +338,10 @@ const EditShipper = () => {
                     No
                   </label>
                 </>
-              )} */}
+              )}
               
             </div>
-          </div>
+          </div> */}
         </div>
         <hr className="my-5" />
         <CompanyForm company={company} setCompany={setCompany} />

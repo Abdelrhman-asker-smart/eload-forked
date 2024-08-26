@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import Swal from 'sweetalert2'
@@ -18,6 +19,7 @@ import './AddShippers.css';
 
 
 const AddShippers = () => {
+  const navigate = useNavigate();
 
   const [cookie] = useCookies(["eload_token"]);
   const showNotification = () => {
@@ -25,17 +27,12 @@ const AddShippers = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/allshippers">
-        <button 
-          className="btn btndetails">
-          Back to Drivers
-        </button>
-        </NavLink>
+        <h4>Success</h4>
       </div>
     )
 
-    toast(<Msg />)
+    toast(<Msg /> ,{autoClose: 3000});
+
     // readNotification(notification.id);
   };
 
@@ -106,12 +103,19 @@ const AddShippers = () => {
       // setName("");
       console.log("DoneAdddddddddddd");
       showNotification();
+      navigate(`/allshippers`);
+
     } catch (e) {
+      let errorMessages = "An error occurred";
+
+      if (e.response && e.response.data && e.response.data.errors) {
+        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+      }
       Swal.fire({
         position: 'top-end',
         icon: 'error',
         color: '#0e4579',
-        title: `${e.response.data.message}`,
+        title: errorMessages,
         showConfirmButton: false,
         showCancelButton:true,
         cancelButtonText: "ok",

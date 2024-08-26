@@ -2,6 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,6 +18,8 @@ import AccountForm from '../Common/AccountForm';
 import "./Addpartners.css";
 
 const Addpartners = () => {
+  const navigate = useNavigate();
+
   const [startDate, setStartDate] = useState();
 
   const [cookie] = useCookies(["eload_token"]);
@@ -24,16 +28,12 @@ const Addpartners = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/Serviceproviders/Partners">
-          <button className="btn btndetails">Back to Drivers</button>
-        </NavLink>
-
-        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+        <h4>Success</h4>
       </div>
     );
 
-    toast(<Msg />);
+    toast(<Msg /> ,{autoClose: 3000});
+
     // readNotification(notification.id);
   };
 
@@ -96,6 +96,8 @@ const Addpartners = () => {
       // setName("");
       console.log("DoneAdddddddddddd");
       showNotification();
+      navigate(`/Serviceproviders/Partners`);
+
     } catch (e) {
       Swal.fire({
         position: 'top-end',

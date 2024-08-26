@@ -1,5 +1,7 @@
 import React from "react";
 import "./AddDriver.css";
+import { useNavigate } from 'react-router-dom';
+
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
@@ -15,6 +17,8 @@ import { ToastContainer, toast } from "react-toastify";
 import AccountForm from '../../Common/AccountForm';
 
 const AddDriver = () => {
+  const navigate = useNavigate();
+
   // const [input, setInputs] = useState([])
   // const date  = new Date()
   const [startDate, setStartDate] = useState();
@@ -25,19 +29,12 @@ const AddDriver = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/Serviceproviders/driver">
-        <button 
-          className="btn btndetails">
-          Back to Drivers
-        </button>
-        </NavLink>
-
-        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+        <h4>Success</h4>
       </div>
     )
 
-    toast(<Msg />)
+    toast(<Msg /> ,{autoClose: 3000});
+
     // readNotification(notification.id);
   };
 
@@ -132,8 +129,8 @@ const AddDriver = () => {
       );
 
       // setName("");
-      console.log("DoneAdddddddddddd");
       showNotification();
+      navigate(`/Serviceproviders/driver`);
     } catch (e) {
       Swal.fire({
         position: 'top-end',

@@ -36,7 +36,7 @@ const AddAddress = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Added successfully</h4>
+        <h4>Success</h4>
         {/* <NavLink to={`/Shipments/grouplist/${id}`}>
           <button className="btn btndetails">Back to Drivers</button>
         </NavLink> */}
@@ -153,11 +153,16 @@ const AddAddress = () => {
       showNotification();
       navigate(`/Shipments/grouplist/${id}`);
     } catch (e) {
+      let errorMessages = "An error occurred";
+
+      if (e.response && e.response.data && e.response.data.errors) {
+        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+      }
       Swal.fire({
         position: 'top-end',
         icon: 'error',
         color: '#0e4579',
-        title: `${e.response.data.message}`,
+        title: errorMessages,
         showConfirmButton: false,
         showCancelButton:true,
         cancelButtonText: "ok",

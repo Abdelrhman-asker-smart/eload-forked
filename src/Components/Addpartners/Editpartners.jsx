@@ -2,6 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,6 +19,7 @@ import AccountForm from '../Common/AccountForm';
 import "./Addpartners.css";
 
 const Editpartners = () => {
+    const navigate = useNavigate();
     const { partner, setPartner } = useState({});
     const dispatch = useDispatch();
     const { id } = useParams();
@@ -26,16 +29,11 @@ const Editpartners = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to="/Serviceproviders/Partners">
-          <button className="btn btndetails">Back to Drivers</button>
-        </NavLink>
-
-        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+        <h4>Success</h4>
       </div>
     );
 
-    toast(<Msg />);
+    toast(<Msg /> ,{autoClose: 3000});
     // readNotification(notification.id);
   };
 
@@ -117,7 +115,7 @@ const Editpartners = () => {
       formdata.append(`account[${key}]`, account[key]);
     }
 
-    console.log("editDone");
+    // console.log("editDone");
     dispatch(
         EditpartnerFunction({
         token: cookie.eload_token,
@@ -126,8 +124,10 @@ const Editpartners = () => {
       })
     )
       .then((res) => {
-        console.log(res);
-        alert('Successfully Saved!');
+        showNotification();
+        navigate(`/Serviceproviders/Partners`);
+        // console.log(res);
+        // alert('Successfully Saved!');
       })
       .catch((e) => {
         console.log(e);

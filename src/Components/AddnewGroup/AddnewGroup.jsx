@@ -2,6 +2,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from 'sweetalert2'
@@ -11,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import "../AddnewGroup/addnewgroup.css";
 
 const AddnewGroup = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   const { id } = useParams();
@@ -22,18 +24,19 @@ const AddnewGroup = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4>Done</h4>
-        <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
+         <h4>Success</h4>
+        {/* <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
           <button className="btn btndetails">Back to Drivers</button>
-        </NavLink>
+        </NavLink> */}
 
         {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
       </div>
     );
 
-    toast(<Msg />);
+    toast(<Msg /> ,{autoClose: 3000});
     // readNotification(notification.id);
   };
+
 
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
@@ -61,6 +64,8 @@ const AddnewGroup = () => {
       // setName("");
       console.log(reponse);
       showNotification();
+      navigate(`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`);
+
     } catch (e) {
       Swal.fire({
         position: 'top-end',

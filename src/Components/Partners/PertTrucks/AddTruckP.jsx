@@ -2,6 +2,8 @@ import React from 'react'
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +17,7 @@ import { useParams } from "react-router-dom";
 import './AddTruckP.css';
 
 const AddTruckP = () => {
+    const navigate = useNavigate();
     const [startDate, setStartDate] = useState();
     const { id } = useParams();
     const [cookie] = useCookies(["eload_token"]);
@@ -25,19 +28,12 @@ const AddTruckP = () => {
   
       let Msg = ({ closeToast, toastProps }) => (
         <div>
-          <h4>Done</h4>
-          <NavLink to={`/Serviceproviders/Partners/part-trucklist/${user_type == 'admin' ? id : user_type_data.id}`}>
-          <button 
-            className="btn btndetails">
-            Back to Drivers
-          </button>
-          </NavLink>
-  
-          {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+          <h4>Success</h4>
         </div>
       )
   
-      toast(<Msg />)
+      toast(<Msg /> ,{autoClose: 3000});
+
       // readNotification(notification.id);
     };
   
@@ -92,8 +88,10 @@ const AddTruckP = () => {
           );
     
           // setName("");
-          console.log("DoneAdddddddddddd");
+          // console.log("DoneAdddddddddddd");
           showNotification();
+          navigate(`/Serviceproviders/Partners/part-trucklist/${user_type == 'admin' ? id : user_type_data.id}`);
+
         } catch (e) {
           console.log(e);
         }

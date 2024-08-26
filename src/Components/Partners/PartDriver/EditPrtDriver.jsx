@@ -2,9 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 import DatePicker from "react-datepicker";
 // import Select from "react-select";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
@@ -18,6 +21,8 @@ import "./PartDriverList";
 // import EditPrtDriver from './EditPrtDriver';
 
 const EditPrtDriver = () => {
+  const navigate = useNavigate();
+
     const [startDate, setStartDate] = useState();
     const { id } = useParams();
   const dispatch = useDispatch();
@@ -28,21 +33,12 @@ const EditPrtDriver = () => {
   
       let Msg = ({ closeToast, toastProps }) => (
         <div>
-          <h4>Done</h4>
-          <NavLink to={`/Serviceproviders/Partners/part-driverlist/${id}`}>
-            {/* /Serviceproviders/Partners/part-driverlist/ */}
-            {/* {`/Serviceproviders/Partners/viewpartner/${id}`} */}
-          <button 
-            className="btn btndetails">
-            Back to Drivers
-          </button>
-          </NavLink>
-  
-          {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+          <h4>Success</h4>
         </div>
       )
   
-      toast(<Msg />)
+      toast(<Msg /> ,{autoClose: 3000});
+
       // readNotification(notification.id);
     };
   
@@ -150,10 +146,27 @@ const EditPrtDriver = () => {
       })
     )
       .then((res) => {
-        console.log(res);
-        alert('Successfully Saved!');
+        showNotification();
+        navigate(`/Serviceproviders/Partners/part-driverlist/${id}`);
+        // console.log(res);
+        // alert('Successfully Saved!');
       })
       .catch((e) => {
+        let errorMessages = "An error occurred";
+
+        if (e.response && e.response.data && e.response.data.errors) {
+          errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+        }
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          color: '#0e4579',
+          title: errorMessages,
+          showConfirmButton: false,
+          showCancelButton:true,
+          cancelButtonText: "ok",
+          timer: 8000,
+        })
         console.log(e);
       });
   };
