@@ -41,7 +41,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      console.log(response.data.data,"nottt");
+      // console.log(response.data.data,"nottt");
       let data = response.data.data;
       setNotifications(data);
       setNotificationsCount(data.length);
@@ -304,9 +304,11 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
             <div className="path">
               <p>
                 <Link to="/">Dashboard </Link>
-                {pathanme.pathname === "/"
+                 {pathanme.pathname === "/"
                   ? null
-                  : "> " + pathanme.pathname.slice(1, pathanme.length)}
+                  : "> " + 
+                 pathanme.pathname.slice(1, pathanme.length)
+                  }
               </p>
             </div>
             <div className="user-side d-flex justify-content-between align-items-center">
