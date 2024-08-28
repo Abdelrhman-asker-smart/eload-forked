@@ -46,11 +46,12 @@ const rootReducer = combineReducers({
   stateList: stateGetReducer,
   PromotionList: PromotionGetReducer,
   // partners
-  PartnersList:partnerGetReducer,
+  PartnersList: partnerGetReducer,
   // driver
-  DriverList:DriverGetReducer,
-  ItemsList:ItemsGetReducer,
+  DriverList: DriverGetReducer,
+  ItemsList: ItemsGetReducer,
 });
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

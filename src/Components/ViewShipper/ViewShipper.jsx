@@ -12,10 +12,10 @@ import MaterialReactTable from "material-react-table";
 import {
   Box,
   Button,
-  ListItemIcon,
-  MenuItem,
-  Typography,
-  TextField,
+  // ListItemIcon,
+  // MenuItem,
+  // Typography,
+  // TextField,
 } from "@mui/material";
 
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -61,7 +61,7 @@ const ViewShipper = () => {
          }
        };
        viewShippers();
-     }, []);
+     }, [cookie.eload_token , id]);
    
      console.log(shipperorderList,"listorder");
     //  console.log(allshipper,"listAll");
@@ -177,12 +177,12 @@ const csvExporter = new ExportToCsv(csvOptions);
             <div className="header-card">
                 <div className="container-fluid">
                 <div className="row">
-                    <div className="information-user col-3 card-header br-right">
+                    <div className="information-user col-3 card-header text-center br-right">
                     <Dr2 className="mx-5 my-3" style={{ borderRadius: "70px" }} />
 
                     <div className="name-user">{allshipper?.name}</div>
                     </div>
-                    <div className="phone-place-data col-3 card-header  br-right py-5">
+                    <div className="phone-place-data col-3 card-header   br-right py-5">
                     <div className="card-box">
                         <div className="data-card">
                         <svg className="mx-3" width="25" height="33" viewBox="0 0 25 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -208,7 +208,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                         </div>
                     </div>
                     </div>
-                    <div className="transactions-data col-3 card-header  py-5">
+                    <div className="transactions-data col-3 card-header   py-5">
                     <div className="card-box">
                         <div className="data-card">
                         <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -226,7 +226,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                         </div>
                     </div>
                     </div>
-                    <div className="shipments-data col-3 card-header py-5">
+                    <div className="shipments-data col-3 card-header  py-5">
                     <div className="card-box">
                         <div className="data-card p-0 d- mb-3">
                             <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

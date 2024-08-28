@@ -146,7 +146,7 @@ console.log(prvidersList,"prvidersList");
       <div className="header-card">
         <div className="container-fluid">
           <div className="row">
-            <div className="information-user col-3 card-header br-right">
+            <div className="information-user col-3 card-header text-center br-right">
               <Dr2 className="mx-5 my-3" style={{ borderRadius: "70px" }} />
 
               {/* <div className="name-user">Test freelancer Driver</div> */}
@@ -214,7 +214,7 @@ console.log(prvidersList,"prvidersList");
                 </div>
               </div>
             </div>
-            <div className="shipments-data col-3 card-header py-5">
+            <div className="shipments-data col-3 card-header  py-5">
               <div className="card-box">
                 <div className="data-card my-2">
                 <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

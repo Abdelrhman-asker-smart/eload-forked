@@ -322,7 +322,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                       data-bs-toggle="dropdown"
                     >
                       <i className="fa-solid fa-bell"></i>
-                      <span className="position-absolute">{notifications_count > 0 ? notifications_count : ''}</span>
+                      {/* <span className="position-absolute">{notifications_count > 0 ? notifications_count : ''}</span> */}
                     </a>
                     <div className="dropdown-menu dropdown-menu-end" style={{height: "288px", overflowY: "scroll"}}>
                       <a href="#" className="dropdown-item header-noti">
@@ -339,10 +339,6 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
                           <p>{notification.title}</p>
                           <label className="time">{notification.body}</label>
                         </a>
-
-                        {/* {
-                          console.log(notification, "url")
-                        } */}
                         </>
                       ))}
 

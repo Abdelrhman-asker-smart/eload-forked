@@ -11,50 +11,50 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../icons/date-icon.svg";
 import Select from "react-select";
-import moment from "moment";
+// import moment from "moment";
 import "./Shipments.css";
 import { useContext } from "react";
 import { ContextStore } from "../contaxt";
-import Joi, { array, required } from "joi";
+import  required  from "joi";
 // import {yepResolver} from '@hookform/resolvers/yup';
 // import {object , number, string} from "yup";
 // import {useFormik} from "formik";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+// import Stack from "@mui/material/Stack";
+// import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { Check } from "@mui/icons-material";
+// import { Check } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Btnadd = () => {
-  return (
-    <NavLink to="/addshippers">
-      <button
-        className="p-2"
-        style={{
-          border: "0",
-          borderRadius: "20px",
-          backgroundColor: "#0B2339",
-          color: "#fff",
-          marginLeft: "35%",
-        }}
-      >
-        Add New Shipper
-      </button>
-    </NavLink>
-  );
-};
+// const Btnadd = () => {
+//   return (
+//     <NavLink to="/addshippers">
+//       <button
+//         className="p-2"
+//         style={{
+//           border: "0",
+//           borderRadius: "20px",
+//           backgroundColor: "#0B2339",
+//           color: "#fff",
+//           marginLeft: "35%",
+//         }}
+//       >
+//         Add New Shipper
+//       </button>
+//     </NavLink>
+//   );
+// };
 
-const initialValues = {};
+// const initialValues = {};
 
 const Shipments = () => {
   const navigate = useNavigate();
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type] = useState(localStorage.getItem('user_type'));
+  const [user_type_data] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   // Alart-Snackbar
   const [state, setState] = React.useState({
@@ -103,11 +103,11 @@ const Shipments = () => {
   };
 
   // select-field
-  const [isClearable, setIsClearable] = useState(true);
-  const [isSearchable, setIsSearchable] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRtl, setIsRtl] = useState(false);
+  const [isClearable] = useState(true);
+  const [isSearchable] = useState(true);
+  const [isDisabled] = useState(false);
+  const [isLoading] = useState(false);
+  const [isRtl] = useState(false);
 
   // const date = new Date();
   const [startDate, setStartDate] = useState(null);

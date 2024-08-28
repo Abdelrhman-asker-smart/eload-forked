@@ -146,7 +146,7 @@ console.log(driverList,"prvidersList");
       <div className="header-card">
         <div className="container-fluid">
           <div className="row">
-            <div className="information-user col-3 card-header br-right">
+            <div className="information-user col-3 card-header text-center text-center br-right">
               <Dr2 className="mx-5 my-3" style={{ borderRadius: "70px" }} />
 
               {/* <div className="name-user">Test freelancer Driver</div> */}
@@ -154,7 +154,7 @@ console.log(driverList,"prvidersList");
 
               {/* {prvidersList?.user?.name} */}
             </div>
-            <div className="phone-place-data col-3 card-header  br-right py-5">
+            <div className="phone-place-data col-3 card-header   br-right py-5">
               <div className="card-box">
                 <div className="data-card">
                 <svg className="mx-3" width="25" height="33" viewBox="0 0 25 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -181,7 +181,7 @@ console.log(driverList,"prvidersList");
                 </div>
               </div>
             </div>
-            <div className="transactions-data col-3 card-header  br-right py-5">
+            <div className="transactions-data col-3 card-header   br-right py-5">
               <div className="card-box">
                 <div className="data-card">
                 <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -199,7 +199,7 @@ console.log(driverList,"prvidersList");
                 </div>
               </div>
             </div>
-            <div className="shipments-data col-3 card-header py-5">
+            <div className="shipments-data col-3 card-header  py-5">
               <div className="card-box">
                 <div className="data-card">
                 <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

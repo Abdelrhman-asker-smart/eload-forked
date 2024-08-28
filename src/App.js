@@ -31,6 +31,25 @@ function App() {
     }
   },[]);
 
+  // useEffect(() => {
+  //   const msg = firebase.messaging();
+  //   msg.getToken().then((currentToken) => {
+  //     if (currentToken) {
+  //       console.log("token", currentToken);
+  //     } else {
+  //       firebase.messaging.Messaging.requestPermission().then(() => {
+  //         return msg.getToken();
+  //       }).then((newToken) => {
+  //         console.log("token", newToken);
+  //       }).catch((err) => {
+  //         console.log("An error occurred while retrieving token.", err);
+  //       });
+  //     }
+  //   }).catch((err) => {
+  //     console.log("An error occurred while retrieving token.", err);
+  //   });
+  // }, []);
+
   useEffect(()=>{
     const msg=firebase.messaging();
     msg.requestPermission().then(()=>{
