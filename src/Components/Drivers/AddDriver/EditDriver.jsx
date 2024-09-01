@@ -9,6 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import  {ReactComponent as Dateicon} from '../../../icons/date-icon.svg';
 import  {ReactComponent as Vector} from '../../../icons/Vector.svg';
 import AccountForm from '../../Common/AccountForm';
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +23,7 @@ import './AddDriver.css';
 
 const EditDriver = () => {
   // const { list, status } = useSelector((state) => state.DriverList);
+  const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState();
 
@@ -70,6 +73,18 @@ const EditDriver = () => {
   // country_list
   const [countryList, setCountryList] = useState([]);
   const [truckList, setTruckList] = useState([]);
+
+  const showNotification = () => {
+    // e.preventDefault();
+
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+
+    toast(<Msg /> ,{autoClose: 3000});
+  };
 
   useEffect(() => {
     console.log(id,"id-----");
@@ -267,8 +282,11 @@ const EditDriver = () => {
       })
     )
       .then((res) => {
-        console.log(res);
-        alert('Successfully Saved!');
+        // console.log(res);
+        showNotification();
+      navigate(`/Serviceproviders/driver`);
+
+        // alert('Successfully Saved!');
       })
       .catch((e) => {
         console.log(e);

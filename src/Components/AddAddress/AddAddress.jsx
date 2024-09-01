@@ -422,8 +422,8 @@ const AddAddress = () => {
                         <div>Loading...</div>
                       
                   }
-                  <lable>latitude : {latitude}</lable><br/>
-                  <lable>longitude :{longitude}</lable>
+                  <span>latitude : {latitude}</span><br/>
+                  <span>longitude :{longitude}</span>
 
               </div>
               :

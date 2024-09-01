@@ -15,6 +15,7 @@ import { fetchitemsList } from "../../redux/Items/ItemsList";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
 import { fetchPromotionList } from "../../redux/listPromotion";
 import { fetchTruckList } from "../../redux/listTruck";
+import { useNavigate } from 'react-router-dom';
 
 import { useParams } from "react-router-dom";
 
@@ -22,6 +23,8 @@ import { useParams } from "react-router-dom";
 import "./Iteminfo.css";
 
 const Iteminfo = () => {
+  const navigate = useNavigate();
+
   const [cookie] = useCookies(["eload_token"]);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -34,21 +37,13 @@ const Iteminfo = () => {
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-        <h4 style={{color:"#289b0c"}}>Done</h4>
-        <NavLink to={`/allitems/${id}`}>
-        <button 
-          className="btn btndetails">
-          Back to Items
-        </button>
-        </NavLink>
-
-        {/* <button className="btn btn-danger" onClick={closeToast}>Close</button> */}
+        <h4>Success</h4>
       </div>
-    )
+    );
 
-    toast(<Msg />)
-    // readNotification(notification.id);
+    toast(<Msg /> ,{autoClose: 3000});
   };
+  // /allitems/${id}
 
   // select-options
   const [isClearable, setIsClearable] = useState(true);
@@ -98,8 +93,10 @@ const Iteminfo = () => {
         );
   
         // setName("");
-        console.log("DoneAdddddddddddd");
+        // console.log("DoneAdddddddddddd");
+
         showNotification();
+        navigate(`/allitems/${id}`);
       } catch (e) {
         console.log(e);
       }

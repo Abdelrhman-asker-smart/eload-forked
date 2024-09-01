@@ -183,7 +183,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
               </div>
               
               {
-                notification.payload.provider_price && (user_type == 'admin' || user_type == 'provider') && (
+                notification.payload.provider_price && (user_type === 'admin' || user_type === 'provider') && (
                   <>
                   <div className="col-md-8 d-flex align-items-center my-2">
                   <svg className="mx-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -268,7 +268,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           View Details
         </a>
         {
-          notification.payload.status == 'READY' && user_type == 'provider' &&
+          notification.payload.status === 'READY' && user_type === 'provider' &&
           <button className="btn btn-success" onClick={(e) => sendInterest(e, notification.payload.id)}>I'm Interested!</button>
         }
 
@@ -302,14 +302,17 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
         <div className="container-fluid section-nav">
           <div className="content d-flex justify-content-between align-items-center">
             <div className="path">
+              <Link to={`${pathanme.pathname.slice(1, pathanme.length)}`}>
               <p>
                 <Link to="/">Dashboard </Link>
                  {pathanme.pathname === "/"
                   ? null
-                  : "> " + 
-                 pathanme.pathname.slice(1, pathanme.length)
-                  }
+                  : "> "
+                 }
+                {pathanme.pathname.slice(1, pathanme.length)}
+                  
               </p>
+              </Link>
             </div>
             <div className="user-side d-flex justify-content-between align-items-center">
               <div className="notification mx-2">

@@ -1127,7 +1127,7 @@ const Shipments = () => {
                                 ) : (
                                   <button
                                     className="btn-save"
-                                    type="submit"
+                                    type="btn"
                                     onClick={() => {
                                       addNewListOfShipment();
                                       setStartDate(null);
