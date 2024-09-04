@@ -10,7 +10,24 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Navbar({ setLogin, clrUserData, searchMovie }) {
-  const pathanme = useLocation();
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(segment => segment !== '');
+
+  const breadcrumbs = pathSegments.map((segment, index) => {
+    const url = `/${pathSegments.slice(0, index + 1).join('/')}`;
+    const isLast = index === pathSegments.length - 1;
+
+    return (
+      <React.Fragment key={url}>
+        {index > 0 && <span> &gt; </span>}
+        {isLast ? (
+          <span>{segment}</span>
+        ) : (
+          <Link to={url}>{segment}</Link>
+        )}
+      </React.Fragment>
+    );
+  });
   // console.log(pathanme);
   const [user, setUser] = useState({
     name: localStorage.getItem("name"),
@@ -302,17 +319,11 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
         <div className="container-fluid section-nav">
           <div className="content d-flex justify-content-between align-items-center">
             <div className="path">
-              <Link to={`${pathanme.pathname.slice(1, pathanme.length)}`}>
-              <p>
-                <Link to="/">Dashboard </Link>
-                 {pathanme.pathname === "/"
-                  ? null
-                  : "> "
-                 }
-                {pathanme.pathname.slice(1, pathanme.length)}
-                  
-              </p>
-              </Link>
+            <p>
+              <Link to="/">Dashboard</Link>
+              {location.pathname !== "/" && <span> &gt; </span>}
+              {breadcrumbs}
+            </p>
             </div>
             <div className="user-side d-flex justify-content-between align-items-center">
               <div className="notification mx-2">
