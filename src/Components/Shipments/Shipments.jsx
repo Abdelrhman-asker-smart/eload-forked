@@ -25,6 +25,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 // import { Check } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -53,6 +54,15 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Shipments = () => {
   const navigate = useNavigate();
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+  
+    toast(<Msg />, { autoClose: 3000 });
+  };
   const [user_type] = useState(localStorage.getItem('user_type'));
   const [user_type_data] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
@@ -411,13 +421,26 @@ const Shipments = () => {
 
   const handelSubmit = (e) => {
     e.preventDefault();
-
+    try {
+      // Your existing submission logic here
+      // ...
+  
+      // If submission is successful
+      showNotification();
     setList(true);
-    handleClick({
-      vertical: "bottom",
-      horizontal: "center",
-      Transition: "SlideTransition",
-    });
+    navigate('/allshipments'); // Navigate after 3 seconds (matching the toast duration)
+    } catch (error) {
+      // Handle any errors
+      console.error('Submission error:', error);
+      // Optionally show an error toast
+      toast.error('An error occurred during submission');
+    }
+
+    // handleClick({
+    //   vertical: "bottom",
+    //   horizontal: "center",
+    //   Transition: "SlideTransition",
+    // });
     // console.log("ddddddddddddddddddddddddone");
   };
   // ======================================================planned-shipment==================
@@ -507,8 +530,7 @@ const Shipments = () => {
   // addnew_listof_object
   const addNewListOfShipment = () => {
     // setPlannedList([...plannedList, plannedAllShipments]);
-
-    setPlannedList([...plannedList, plannedAllShipmentswithshipper]);
+    setPlannedList(prevList => [...prevList, { ...plannedAllShipmentswithshipper }]);
   };
   // array_ofinnerDetails
   const [PlannedInnerDetails, setPlannedInerDetails] = useState([
@@ -617,9 +639,8 @@ const Shipments = () => {
                 onChange={() => {
                   setIsChecked(false);
                   // setShipperUserChoice();
-                  setPlannedList([plannedAllShipments]);
+                  // setPlannedList([plannedAllShipments]);
                   setCounter(0);
-                  console.log(counter, "conteeeeeeer");
                 }}
               />
             ) : (
@@ -631,7 +652,7 @@ const Shipments = () => {
                 href="#exampleModalToggle"
                 id="flexSwitchCheckDefault"
                 onChange={() => {
-                  setPlannedList([plannedAllShipments]);
+                  // setPlannedList([plannedAllShipments]);
                   setCounter(0);
                   setStartDate(null);
                   console.log(counter, "conteeeeeeer");
@@ -785,10 +806,11 @@ const Shipments = () => {
                         classNamePrefix="select"
                         className="basic-multi-select"
                         // isMulti
+                        // defaultValue={shipperValue}
                         isDisabled={!isDisabled}
                         required={required}
                         isLoading={isLoading}
-                        isClearable={isClearable}
+                        isClearable={true}
                         isRtl={isRtl}
                         isSearchable={isSearchable}
                         name="shipper"
@@ -827,7 +849,8 @@ const Shipments = () => {
                             required={required}
                             isRtl={isRtl}
                             isSearchable={isSearchable}
-                            name="color"
+                            name="pickapaddres"
+                            // value={pickupuserChoice}
                             options={GroupspickupOptions}
                             onChange={(choice) => {
                               setpickupUserChoice(choice.value);
@@ -1115,7 +1138,7 @@ const Shipments = () => {
 
                                     <button
                                       className="btn-save"
-                                      // type="submit"
+                                      type="btn"
                                       // onClick={() => {
                                       //     addNewListOfShipment();
                                       //     counterchange(indexshipment);
@@ -1129,9 +1152,18 @@ const Shipments = () => {
                                     className="btn-save"
                                     type="btn"
                                     onClick={() => {
-                                      addNewListOfShipment();
-                                      setStartDate(null);
-                                      counterchange(indexshipment);
+                                      
+                                      // addNewListOfShipment();
+                                      // setStartDate(null);
+                                      // counterchange(indexshipment);
+                                      if (counter < numShipment - 1) {
+                                        if (counter === plannedList.length - 1) {
+                                          // Add a new shipment only if we're at the end of the current list
+                                          addNewListOfShipment();
+                                        }
+                                        setCounter(counter + 1);
+                                        setStartDate(null);
+                                      }
                                     }}
                                   >
                                     Next Shipment
@@ -1548,7 +1580,7 @@ const Shipments = () => {
 
                                     <button
                                       className="btn-save"
-                                      // type="submit"
+                                      type="btn"
                                       // onClick={() => {
                                       //     addNewListOfShipment();
                                       //     counterchange(indexshipment);
@@ -1562,9 +1594,18 @@ const Shipments = () => {
                                     className="btn-save"
                                     type="btn"
                                     onClick={() => {
-                                      addNewListOfShipment();
-                                      setStartDate(null);
-                                      counterchange(indexshipment);
+                                      // addNewListOfShipment();
+                                      // setStartDate(null);
+                                      // counterchange(indexshipment);
+                                      if (counter < numShipment - 1) {
+                                        if (counter === plannedList.length - 1) {
+                                          // Add a new shipment only if we're at the end of the current list
+                                          addNewListOfShipment();
+                                        }
+                                        setCounter(counter + 1);
+                                        setStartDate(null);
+                                      }
+                                    
                                     }}
                                   >
                                     Next Shipment
@@ -1667,7 +1708,17 @@ const Shipments = () => {
                 aria-label="Close"
                 onClick={() => {
                   setIsChecked(!ischeck);
-                  setPlannedList([plannedAllShipments]);
+                  // if (plannedList.length < numShipment) {
+                  //   // Add new empty shipments to match the requested number
+                  //   const newShipments = Array(numShipment - plannedList.length).fill(plannedAllShipments);
+                  //   setPlannedList([...plannedList, ...newShipments]);
+                  // } else if (plannedList.length > numShipment) {
+                  //   // Remove excess shipments if the new number is smaller
+                  //   setPlannedList(plannedList.slice(0, numShipment));
+                  // }
+                  setNumShipment(parseInt(numShipment)); // Ensure numShipment is a number
+               
+                  // setPlannedList([plannedAllShipments]);
                   setCounter(0);
                 }}
               >
