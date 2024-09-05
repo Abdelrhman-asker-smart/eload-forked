@@ -243,7 +243,7 @@ console.log(prvidersList,"prvidersList");
 
                 <div className="d-flex">
                 <span className="mx-2"> Drivers</span>
-                  <NavLink to={`/Serviceproviders/Partners/part-driverlist/${id}`}  className="mx-3">View All</NavLink>
+                  <NavLink to={`/Partners/part-driverlist/${id}`}  className="mx-3">View All</NavLink>
                 </div>
 
                 </div>
@@ -259,7 +259,7 @@ console.log(prvidersList,"prvidersList");
 
                 <div className="d-flex">
                   <span > Trucks</span>
-                  <NavLink to={`/Serviceproviders/Partners/part-trucklist/${id}`}  className="mx-3">View All</NavLink>
+                  <NavLink to={`/Partners/part-trucklist/${id}`}  className="mx-3">View All</NavLink>
                   </div>
                 </div>
               </div>

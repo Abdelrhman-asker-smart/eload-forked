@@ -284,7 +284,7 @@ const EditDriver = () => {
       .then((res) => {
         // console.log(res);
         showNotification();
-      navigate(`/Serviceproviders/driver`);
+      navigate(`/driver`);
 
         // alert('Successfully Saved!');
       })
@@ -750,7 +750,7 @@ const EditDriver = () => {
           Object.keys(account).length > 0 &&
           <AccountForm account={account} setAccount={setAccount} />
         }
-        {/* <NavLink to="/Serviceproviders/driver"> */}
+        {/* <NavLink to="/driver"> */}
         <button type="button" className="btn-save my-3"
           onClick={edit}
         >

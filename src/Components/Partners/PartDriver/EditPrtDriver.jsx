@@ -147,7 +147,7 @@ const EditPrtDriver = () => {
     )
       .then((res) => {
         showNotification();
-        navigate(`/Serviceproviders/Partners/part-driverlist/${id}`);
+        navigate(`/Partners/part-driverlist/${id}`);
         // console.log(res);
         // alert('Successfully Saved!');
       })
@@ -433,7 +433,7 @@ const EditPrtDriver = () => {
             />
           </div>
         </div>
-        {/* <NavLink to="/Serviceproviders/driver"> */}
+        {/* <NavLink to="/driver"> */}
         <button type="submit" className="btn-save my-3"
           onClick={edit}
         >

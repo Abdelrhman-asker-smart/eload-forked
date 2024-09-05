@@ -128,7 +128,7 @@ const EditShipper = () => {
     )
       .then((res) => {
         showNotification();
-        navigate(`/Serviceproviders/Partners`);
+        navigate(`/Partners`);
         // console.log(res);
         // alert("Successfully Saved!");
       })

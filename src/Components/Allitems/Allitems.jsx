@@ -101,7 +101,7 @@ const Allitems = () => {
   const ButtonEdit = ({ id, setRemoveableId }) => (
     <div className="w-100">
   
-      <NavLink to={`/allitems/edititem/${id}`}>
+      <NavLink to={`/edititem/${id}`}>
         <button
           className="btn-table active"
           style={{
@@ -291,7 +291,7 @@ const Allitems = () => {
             user_type == 'admin' &&
             <div className="box-right">
               {/* item[0]contract_id */}
-              <NavLink to={`/allitems/iteminfo/${id}`}>
+              <NavLink to={`/iteminfo/${id}`}>
                 <button className="btn-Items">
                   <i className="fa-solid fa-plus me-3"></i>Add New Items
                 </button>

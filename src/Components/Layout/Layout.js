@@ -121,7 +121,7 @@ const Layout = ({ setLogin }) => {
 //   name:'/allshipments',component:<AllShipments />,
 //   name:'/allorders',component:<Allorders />,
 //   name:'/personinfo',component:<Personinformation />,
-//   name:'/Serviceproviders/driver',component:<Driver />,
+//   name:'/driver',component:<Driver />,
 //   name:'/Serviceproviders/Partners',component:<Partners />,
 //   name:'/iteminfo',component:<ItemInfo />,
 
@@ -160,19 +160,19 @@ const Layout = ({ setLogin }) => {
             <Route path="/Shipments" element={<Shipments />} />
 
             {/* service--partner */}
-            <Route path="/Serviceproviders/Partners" element={<Partners/>}/>
-            <Route path="/addpartners" element={<Addpartners />} />
-            <Route path="/Serviceproviders/Partners/editpartner/:id" element={<EditPartners/>}/>
-            <Route path="/Serviceproviders/Partners/viewpartner/:id" element={<ViewPartner/>}/>
+            <Route path="/Partners" element={<Partners/>}/>
+            <Route path="/Partners/addpartners" element={<Addpartners />} />
+            <Route path="/Partners/editpartner/:id" element={<EditPartners/>}/>
+            <Route path="/Partners/viewpartner/:id" element={<ViewPartner/>}/>
             {/* drivers */}
-            <Route path="/Serviceproviders/Partners/part-driverlist/:id" element={<PartDriverList/>}/>
-            <Route path="/Serviceproviders/Partners/part-adddriver/:id" element={<AddDriverPart/>}/>
-            <Route path="/Serviceproviders/Partners/part-editdriver/:id" element={<EditPrtDriver/>}/>
-            <Route path="/Serviceproviders/Partners/viewdriver-partner/:id" element={<ViewDriverP/>}/>
+            <Route path="/Partners/part-driverlist/:id" element={<PartDriverList/>}/>
+            <Route path="/Partners/part-adddriver/:id" element={<AddDriverPart/>}/>
+            <Route path="/Partners/part-editdriver/:id" element={<EditPrtDriver/>}/>
+            <Route path="/Partners/viewdriver-partner/:id" element={<ViewDriverP/>}/>
             {/* truck-partner */}
-            <Route path="/Serviceproviders/Partners/part-trucklist/:id" element={<TruclListPartner/>}/>
-            <Route path="/Serviceproviders/Partners/part-AddTruck/:id" element={<AddTruckP/>}/>
-            <Route path="/Serviceproviders/Partners/part-EditTruck/:id/provider/:id_p" element={<EditTruckP/>}/>
+            <Route path="/Partners/part-trucklist/:id" element={<TruclListPartner/>}/>
+            <Route path="/Partners/part-AddTruck/:id" element={<AddTruckP/>}/>
+            <Route path="/Partners/part-EditTruck/:id/provider/:id_p" element={<EditTruckP/>}/>
 
 
 
@@ -215,16 +215,16 @@ const Layout = ({ setLogin }) => {
             <Route path="/Serviceproviders/personinfo" element={<Personinformation />} />
             
 
-            <Route path="/Serviceproviders/driver" element={<Driver />} />
-            <Route path="/Serviceproviders/adddriver" element={<AddDriver />} />
-            <Route path="/Serviceproviders/editdriver/:id" element={<EditDriver />} />
-            <Route path="/Serviceproviders/viewdriver/:id" element={<ViewDriver />} />
+            <Route path="/driver" element={<Driver />} />
+            <Route path="/driver/adddriver" element={<AddDriver />} />
+            <Route path="/driver/editdriver/:id" element={<EditDriver />} />
+            <Route path="/driver/viewdriver/:id" element={<ViewDriver />} />
 
             {/* items */}
             <Route path="/allitems/:id" element={<Allitems />} />
             {/* add-item */}
-            <Route path="/allitems/iteminfo/:id" element={<ItemInfo />} />
-            <Route path="/allitems/edititem/:id" element={<EditItem />} />
+            <Route path="/iteminfo/:id" element={<ItemInfo />} />
+            <Route path="/edititem/:id" element={<EditItem />} />
 
             
             

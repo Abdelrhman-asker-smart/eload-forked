@@ -96,7 +96,7 @@ const Addpartners = () => {
       // setName("");
       console.log("DoneAdddddddddddd");
       showNotification();
-      navigate(`/Serviceproviders/Partners`);
+      navigate(`/Partners`);
 
     } catch (e) {
       Swal.fire({

@@ -86,7 +86,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 
 const ButtonEdit = ({ id, setRemoveableId ,idprov }) => (
   <div className="w-100">
-    <NavLink to={`/Serviceproviders/Partners/part-EditTruck/${id}/provider/${idprov}`}>
+    <NavLink to={`/Partners/part-EditTruck/${id}/provider/${idprov}`}>
     <button
         className="btn-table active mx-1"
         style={{
@@ -277,7 +277,7 @@ const handleExportData = () => {
 
         </div>
         <div className="box-right">
-          <NavLink to={`/Serviceproviders/Partners/part-AddTruck/${user_type == 'admin' ? id : user_type_data.id}`}>
+          <NavLink to={`/Partners/part-AddTruck/${user_type == 'admin' ? id : user_type_data.id}`}>
             <button className="btn-partner">
               <i className="fa-solid fa-plus me-2"></i>Add Truck
             </button>

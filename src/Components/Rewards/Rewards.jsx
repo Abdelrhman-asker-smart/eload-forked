@@ -313,7 +313,7 @@ const Rewards = () => {
 
 
   return (
-    <div className="container rewards px-4">
+    <div className="container my-rewards px-4">
       {/* header */}
       <div className="row p-4">
         <div className="col-md-4">

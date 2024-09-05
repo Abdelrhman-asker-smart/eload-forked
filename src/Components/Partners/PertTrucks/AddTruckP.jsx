@@ -90,7 +90,7 @@ const AddTruckP = () => {
           // setName("");
           // console.log("DoneAdddddddddddd");
           showNotification();
-          navigate(`/Serviceproviders/Partners/part-trucklist/${user_type == 'admin' ? id : user_type_data.id}`);
+          navigate(`/Partners/part-trucklist/${user_type == 'admin' ? id : user_type_data.id}`);
 
         } catch (e) {
           console.log(e);
@@ -292,7 +292,7 @@ useEffect(() => {
             />
           </div>
         </div>
-        {/* <NavLink to="/Serviceproviders/driver"> */}
+        {/* <NavLink to="/driver"> */}
         <button type="submit" className="btn-save my-3"
           // onClick={showNotification}
         >

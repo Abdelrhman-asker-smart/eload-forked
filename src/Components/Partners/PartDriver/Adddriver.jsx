@@ -111,7 +111,7 @@ const Adddriver = () => {
       // setName("");
       // console.log("DoneAdddddddddddd");
       showNotification();
-      navigate(`/Serviceproviders/Partners/part-driverlist/${user_type == 'admin' ? id : user_type_data.id}`);
+      navigate(`/Partners/part-driverlist/${user_type == 'admin' ? id : user_type_data.id}`);
     } catch (e) {
       let errorMessages = "An error occurred";
 
@@ -487,7 +487,7 @@ const Adddriver = () => {
             />
           </div>
         </div>
-        {/* <NavLink to="/Serviceproviders/driver"> */}
+        {/* <NavLink to="/driver"> */}
         <button type="submit" className="btn-save my-3"
           // onClick={showNotification}
         >

@@ -13,14 +13,16 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter(segment => segment !== '');
 
-  const breadcrumbs = pathSegments.map((segment, index) => {
+  const breadcrumbs = pathSegments.map((segment, index, array) => {
     const url = `/${pathSegments.slice(0, index + 1).join('/')}`;
-    const isLast = index === pathSegments.length - 1;
+    const isLast = index === array.length - 1;
+    const nextSegmentIsId = index < array.length - 1 && !isNaN(array[index + 1]);
+    const isId = !isNaN(segment);
 
     return (
       <React.Fragment key={url}>
-        {index > 0 && <span> &gt; </span>}
-        {isLast ? (
+        {index > 0 && <span>{isId ? ' / ' : ' > '}</span>}
+        {isLast || isId || nextSegmentIsId ? (
           <span>{segment}</span>
         ) : (
           <Link to={url}>{segment}</Link>

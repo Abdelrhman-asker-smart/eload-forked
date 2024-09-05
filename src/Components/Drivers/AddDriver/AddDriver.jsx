@@ -130,7 +130,7 @@ const AddDriver = () => {
 
       // setName("");
       showNotification();
-      navigate(`/Serviceproviders/driver`);
+      navigate(`/driver`);
     } catch (e) {
       Swal.fire({
         position: 'top-end',
@@ -618,7 +618,7 @@ const AddDriver = () => {
         </div>
         <hr className="my-5" />
         <AccountForm account={account} setAccount={setAccount} />
-        {/* <NavLink to="/Serviceproviders/driver"> */}
+        {/* <NavLink to="/driver"> */}
         <button type="submit" className="btn-save my-3" style={{width:"10rem"}}
           // onClick={showNotification}
         >

@@ -620,7 +620,7 @@ const Sidebar = () => {
                                       : "d-flex justify-content-start align-items-center"
                                   }
                                   style={{ marginLeft: "20px" }}
-                                  to="/Serviceproviders/driver"
+                                  to="/driver"
                                 >
                                   <Alldrivers />
                                   <p>All drivers</p>
@@ -632,7 +632,7 @@ const Sidebar = () => {
                                       : "d-flex justify-content-start align-items-center"
                                   }
                                   style={{ marginLeft: "20px" }}
-                                  to="/Serviceproviders/adddriver"
+                                  to="/driver/adddriver"
                                 >
                                   <Adddrivers />
                                   <p>Add drivers</p>
@@ -676,7 +676,7 @@ const Sidebar = () => {
                                       : "d-flex justify-content-start align-items-center"
                                   }
                                   style={{ marginLeft: "20px" }}
-                                  to="/Serviceproviders/partners"
+                                  to="/partners"
                                 >
                                   <Allpartners />
                                   <p>All Partners</p>
@@ -1405,7 +1405,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{ marginLeft: "20px" }}
-                            to={`/Serviceproviders/Partners/part-driverlist/${user_type_data.id}`}
+                            to={`/Partners/part-driverlist/${user_type_data.id}`}
                           >
                             <svg
                               className="mx-2"
@@ -1442,7 +1442,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{ marginLeft: "20px" }}
-                            to={`/Serviceproviders/Partners/part-adddriver/${user_type_data.id}`}
+                            to={`/Partners/part-adddriver/${user_type_data.id}`}
                           >
                             <Addshipper className="mx-2" />
 
@@ -1483,7 +1483,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{ marginLeft: "20px" }}
-                            to={`/Serviceproviders/Partners/part-trucklist/${user_type_data.id}`}
+                            to={`/Partners/part-trucklist/${user_type_data.id}`}
                           >
                             <svg
                               className="mx-2"
@@ -1520,7 +1520,7 @@ const Sidebar = () => {
                                 : "d-flex justify-content-start align-items-center"
                             }
                             style={{ marginLeft: "20px" }}
-                            to={`/Serviceproviders/Partners/part-AddTruck/${user_type_data.id}`}
+                            to={`/Partners/part-AddTruck/${user_type_data.id}`}
                           >
                             <Addshipper className="mx-2" />
 

@@ -92,7 +92,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
 
-    <NavLink to={`/Serviceproviders/viewdriver/${id}`}>
+    <NavLink to={`/driver/viewdriver/${id}`}>
       <button
       className="btn-table"
       style={{
@@ -109,7 +109,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       View
     </button>
     </NavLink>
-    <NavLink to={`/Serviceproviders/editdriver/${id}`}>
+    <NavLink to={`/driver/editdriver/${id}`}>
       <button
         className="btn-table active"
         style={{
@@ -255,7 +255,7 @@ const handelItemRemove = async (id) => {
 
             </div>
           <div className="box-right">
-            <NavLink to="/Serviceproviders/adddriver">
+            <NavLink to="/driver/adddriver">
               <button className="btn-driver">
                 <i className="fa-solid fa-plus me-3"></i> Add Driver
               </button>

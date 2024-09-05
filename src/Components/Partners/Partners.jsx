@@ -85,7 +85,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-      <NavLink to={`/Serviceproviders/Partners/viewpartner/${id}`}>
+      <NavLink to={`/Partners/viewpartner/${id}`}>
       <button
       className="btn-table"
       // data-bs-toggle="modal"
@@ -105,7 +105,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
       View
     </button>
     </NavLink>
-    <NavLink to={`/Serviceproviders/Partners/editpartner/${id}`}>
+    <NavLink to={`/Partners/editpartner/${id}`}>
     <button
         className="btn-table active"
         style={{
@@ -259,7 +259,7 @@ const Partners = () => {
 
           </div>
           <div className="box-right">
-            <NavLink to="/addpartners">
+            <NavLink to="/Partners/addpartners">
               <button className="btn-partner">
                 <i className="fa-solid fa-plus me-2"></i>Add Partner
               </button>
