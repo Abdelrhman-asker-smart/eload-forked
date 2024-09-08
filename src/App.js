@@ -50,14 +50,14 @@ function App() {
   //   });
   // }, []);
 
-  useEffect(()=>{
-    const msg=firebase.messaging();
-    msg.requestPermission().then(()=>{
-      return msg.getToken();
-    }).then((data)=>{
-      console.log("token",data)
-    })
-  },[]); 
+  // useEffect(()=>{
+  //   const msg=firebase.messaging();
+  //   msg.requestPermission().then(()=>{
+  //     return msg.getToken();
+  //   }).then((data)=>{
+  //     console.log("token",data)
+  //   })
+  // },[]); 
   // useEffect(() => {
   //   const messaging = firebase.messaging();
   //   messaging

@@ -51,6 +51,8 @@ const EditPrtDriver = () => {
   
   
     // States================================
+    const [Provider_ID, setProvider_ID] = useState();
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [profileimg, setProfileimg] = useState("");
@@ -91,6 +93,7 @@ const EditPrtDriver = () => {
         const data = response.data.data;
         console.log(data,"driverfromAPiiiiiiiiiiii");
         // setItem(data);
+        setProvider_ID(data.provider.id)
 
         setName(data.user.name);
         setEmail(data.user.email);
@@ -115,11 +118,14 @@ const EditPrtDriver = () => {
     DriverFetch(id);
 
   }, []);
+  console.log(name ,"nametst");
     
   const edit = () => {
 
     const formdata = new FormData();
-    formdata.append("provider_id",id)
+    console.log(name ,"nameedittt");
+
+    // formdata.append("provider_id",Provider_ID)
     formdata.append("name", name);
     formdata.append("type", "partner");
     formdata.append("email", email);
@@ -137,7 +143,8 @@ const EditPrtDriver = () => {
     formdata.append("driver[sponsor_establishment_name]", sponsorName);
     formdata.append("driver[sponsor_establishment_number]", sponsorNumber);
 
-    console.log("editDone");
+    // console.log("editDone");
+    
     dispatch(
         EditDriverFunction({
         token: cookie.eload_token,
@@ -146,8 +153,10 @@ const EditPrtDriver = () => {
       })
     )
       .then((res) => {
-        showNotification();
-        navigate(`/Partners/part-driverlist/${id}`);
+        console.log(res, "res");
+        // showNotification();
+        // navigate(`/Partners/part-driverlist/${id}`);
+        // navigate(`/Partners`);
         // console.log(res);
         // alert('Successfully Saved!');
       })
@@ -434,7 +443,7 @@ const EditPrtDriver = () => {
           </div>
         </div>
         {/* <NavLink to="/driver"> */}
-        <button type="submit" className="btn-save my-3"
+        <button type="button" className="btn-save my-3"
           onClick={edit}
         >
           SAVE

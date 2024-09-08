@@ -689,7 +689,7 @@ const Sidebar = () => {
                                       : "d-flex justify-content-start align-items-center"
                                   }
                                   style={{ marginLeft: "20px" }}
-                                  to="addpartners"
+                                  to="/Partners/addpartners"
                                 >
                                   <Addpartners />
                                   <p>Add Partners</p>

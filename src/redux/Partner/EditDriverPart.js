@@ -9,7 +9,7 @@ export const EditDriverFunction = createAsyncThunk(
     console.log(id, "id from reducer");
     console.log(formdata, "urlencoded from reducer");
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         `https://dev.eload.smart.sa/api/v1/drivers/${id}`,
         formdata,
         {

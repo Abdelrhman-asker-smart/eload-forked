@@ -487,7 +487,7 @@ const Shipments = () => {
         shipmentTypePlanned: "",
         shipmentvaluePlanned: "",
         weightPlanned: "",
-        numTrucksPlanned: "",
+        numTrucksPlanned: 1,
         descriptionPlanned: "",
         PickingListPlanned: [],
         documListPlanned: [],
@@ -512,7 +512,7 @@ const Shipments = () => {
         shipmentTypePlanned: "",
         shipmentvaluePlanned: "",
         weightPlanned: "",
-        numTrucksPlanned: "",
+        numTrucksPlanned: 1,
         descriptionPlanned: "",
         PickingListPlanned: [],
         documListPlanned: [],
@@ -898,6 +898,9 @@ const Shipments = () => {
                           <label htmlFor="address">
                             Pickup Time<span>*</span>
                           </label>
+                          <label>
+                            From
+                          </label>
                           <input
                             type="time"
                             required
@@ -912,6 +915,9 @@ const Shipments = () => {
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
+                        <label>
+                            To
+                          </label>
                           <input
                             type="time"
                             required
@@ -974,6 +980,9 @@ const Shipments = () => {
                           <label htmlFor="address">
                             Drop off Time<span>*</span>
                           </label>
+                          <label>
+                           From
+                          </label>
                           <input
                             type="time"
                             required
@@ -987,6 +996,9 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="input mx-3 mt-4">
+                        <label htmlFor="address">
+                           To
+                          </label>
                           <input
                             type="time"
                             required
@@ -1298,7 +1310,7 @@ const Shipments = () => {
 
                           <Dateicon
                             className="position-absolute"
-                            style={{ top: "36%", left: "53%" }}
+                            style={{ top: "33%", left: "52%" }}
                           />
                         </div>
                         {/* time-from */}
@@ -1306,6 +1318,10 @@ const Shipments = () => {
                           <label htmlFor="address">
                             Pickup Time<span>*</span>
                           </label>
+                         
+                          <span style={{fontWeight:"400"}} >
+                            From
+                          </span>
                           <input
                             type="time"
                             required
@@ -1317,9 +1333,13 @@ const Shipments = () => {
                               );
                             }}
                           />
+
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
+                        <span style={{fontWeight:"400"}} >
+                            To
+                          </span>
                           <input
                             type="time"
                             required
@@ -1403,8 +1423,13 @@ const Shipments = () => {
                           <label htmlFor="address">
                             Drop off Time<span>*</span>
                           </label>
+                          <div className="d-flex align-items-center">
+                          <span style={{fontWeight:"400"}}>
+                           From
+                          </span>
                           <input
                             type="time"
+                            className="mx-1"
                             required
                             onChange={(v) => {
                               setDrop_TimeFromValue(v.target.value);
@@ -1414,10 +1439,18 @@ const Shipments = () => {
                               );
                             }}
                           />
+
+                          </div>
+
                         </div>
                         <div className="input mx-3 mt-4">
+                        <div className="d-flex align-items-center">
+                        <span style={{fontWeight:"400"}} >
+                           To
+                          </span>
                           <input
                             type="time"
+                            className="mx-1"
                             required
                             onChange={(v) => {
                               setDrop_TimeToValue(v.target.value);
@@ -1427,6 +1460,7 @@ const Shipments = () => {
                               );
                             }}
                           />
+                        </div>
                         </div>
                         {
                           shipperValue==="" ? 
