@@ -249,7 +249,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                                 View All
                             </NavLink>
                         </div>
-                        <div className="data-card p-0 d-flex my-3">
+                        {/* <div className="data-card p-0 d-flex my-3">
                         <svg className="mx-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18.0001 7.16C17.9401 7.15 17.8701 7.15 17.8101 7.16C16.4301 7.11 15.3301 5.98 15.3301 4.58C15.3301 3.15 16.4801 2 17.9101 2C19.3401 2 20.4901 3.16 20.4901 4.58C20.4801 5.98 19.3801 7.11 18.0001 7.16Z" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M16.9699 14.4402C18.3399 14.6702 19.8499 14.4302 20.9099 13.7202C22.3199 12.7802 22.3199 11.2402 20.9099 10.3002C19.8399 9.59016 18.3099 9.35016 16.9399 9.59016" stroke="#244664" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -264,7 +264,7 @@ const csvExporter = new ExportToCsv(csvOptions);
                             <NavLink to="/allshippers/employes" className="btn-data-card mx-4">
                                 View All
                             </NavLink>
-                        </div>
+                        </div> */}
 
                     </div>
                     </div>
