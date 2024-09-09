@@ -662,7 +662,7 @@ const Inputs = ({
           {errList ? <span className="err_message mx-3"> required</span> : ""}
           {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
         </div>
-        <div className="input col-2">
+        {/* <div className="input col-2">
           <label htmlFor="address">
             Number of trucks<span>*</span>
           </label>
@@ -672,12 +672,10 @@ const Inputs = ({
             min="1"
             required
             onChange={(e) => {
-              // setNumber_TrucksValue(e.target.value);
-              // numberOfTruckshahndleInputChange(indexOfItem, e);
               numTruckPlannedChange(indexshipment, indexdetails, e);
             }}
           />
-        </div>
+        </div> */}
         <div className="input col-2">
           <label htmlFor="address">Description</label>
           <input

@@ -461,15 +461,30 @@ const AllShipments = () => {
 
 
   console.log(readyeee.pSizerrrr,"pSizerrrr");
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
   const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
+    const csvOptions = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
   // ready
   const handleExportRowsready = (rows) => {
     csvExporterready.generateCsv(rows.map((row) => row.original));
-  };
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
   };
   // ready
   const handleExportDataready = () => {
@@ -534,15 +549,15 @@ const AllShipments = () => {
                   flexWrap: "wrap",
                 }}
               >
-                <Button
+                {/* <Button
                   color="primary"
                   onClick={handleExportData}
                   startIcon={<FileDownloadIcon />}
                   variant="contained"
                 >
                   Export All Data
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                   disabled={table.getPrePaginationRowModel().rows.length === 0}
                   onClick={() =>
                     handleExportRows(table.getPrePaginationRowModel().rows)
@@ -551,16 +566,16 @@ const AllShipments = () => {
                   variant="contained"
                 >
                   Export All Rows
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                   disabled={table.getRowModel().rows.length === 0}
                   onClick={() => handleExportRows(table.getRowModel().rows)}
                   startIcon={<FileDownloadIcon />}
                   variant="contained"
                 >
                   Export Page Rows
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                   disabled={
                     !table.getIsSomeRowsSelected() &&
                     !table.getIsAllRowsSelected()
@@ -572,7 +587,17 @@ const AllShipments = () => {
                   variant="contained"
                 >
                   Export Selected Rows
-                </Button>
+                </Button> */}
+      {/* renderTopToolbarCustomActions={({ table }) => ( */}
+        <Button
+          style={{marginBottom:"-50px"}}
+            startIcon={<FileDownloadIcon />}
+                  variant="contained"
+          onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+        >
+          Export Selected Rows
+        </Button>
+      {/* )} */}
               </Box>
             )}
           />

@@ -28,18 +28,22 @@ const EditPrtDriver = () => {
   const dispatch = useDispatch();
 
     const [cookie] = useCookies(["eload_token"]);
+
+    const showNotificationUser = () => {
+      let Msg = ({ closeToast, toastProps }) => (
+        <div>
+          <h4>Success updating User Data</h4>
+        </div>
+      )
+      toast(<Msg /> ,{autoClose: 3000});
+    };
     const showNotification = () => {
-      // e.preventDefault();
-  
       let Msg = ({ closeToast, toastProps }) => (
         <div>
           <h4>Success</h4>
         </div>
       )
-  
       toast(<Msg /> ,{autoClose: 3000});
-
-      // readNotification(notification.id);
     };
   
     // select-options
@@ -119,6 +123,51 @@ const EditPrtDriver = () => {
 
   }, []);
   console.log(name ,"nametst");
+  // pass editing user data
+  const UserDtaedit =async () => {
+
+    const formdata = new FormData();
+    formdata.append("name", name);
+    formdata.append("type", "partner");
+    formdata.append("email", email);
+    formdata.append("avatar", profileimg);
+    formdata.append("password", password);
+    formdata.append("phone", ownerPhone);
+
+    try {
+      const response = await axios.put(
+        `https://dev.eload.smart.sa/api/v1/users/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      console.log(response,"testusee");
+      showNotificationUser();
+    } catch (e) {
+      let errorMessages = "An error occurred";
+
+      if (e.response && e.response.data && e.response.data.errors) {
+        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+      }
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
+        title: errorMessages,
+        showConfirmButton: false,
+        showCancelButton:true,
+        cancelButtonText: "ok",
+        timer: 8000,
+      })
+      console.log(e);
+    }
+  };
     
   const edit = () => {
 
@@ -289,7 +338,14 @@ const EditPrtDriver = () => {
                 setOwnerNID(e.target.value);
               }}
             />
+
           </div>
+          <button type="button" className="btn-save my-3"
+          onClick={UserDtaedit}
+        >
+          SAVE User Data
+        </button>
+
         </div>
         {/* line-1 */}
         {/* <hr className="my-5" /> */}
