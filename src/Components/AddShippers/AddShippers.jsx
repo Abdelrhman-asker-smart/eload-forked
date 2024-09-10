@@ -165,7 +165,6 @@ const AddShippers = () => {
             <input
               type="file"
               name="imgdriver"
-              required
               className="input-box"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"

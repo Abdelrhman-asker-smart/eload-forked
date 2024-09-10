@@ -56,6 +56,8 @@ const EditPrtDriver = () => {
   
     // States================================
     const [Provider_ID, setProvider_ID] = useState();
+    const [user_ID, setUser_ID] = useState();
+
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -97,7 +99,8 @@ const EditPrtDriver = () => {
         const data = response.data.data;
         console.log(data,"driverfromAPiiiiiiiiiiii");
         // setItem(data);
-        setProvider_ID(data.provider.id)
+        setProvider_ID(data.provider.id);
+        setUser_ID(data.user.id);
 
         setName(data.user.name);
         setEmail(data.user.email);
@@ -122,7 +125,9 @@ const EditPrtDriver = () => {
     DriverFetch(id);
 
   }, []);
-  console.log(name ,"nametst");
+  // console.log(name ,"nametst");
+  // console.log(user_ID,"user_ID");
+
   // pass editing user data
   const UserDtaedit =async () => {
 
@@ -136,13 +141,12 @@ const EditPrtDriver = () => {
 
     try {
       const response = await axios.put(
-        `https://dev.eload.smart.sa/api/v1/users/${id}`,
+        `https://dev.eload.smart.sa/api/v1/users/${user_ID}`,
         {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${cookie.eload_token}`,
-            "api-key":
-              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            'api-key':"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
           },
         }
       );
