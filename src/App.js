@@ -4,32 +4,26 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Layout from "./Components/Layout/Layout";
-import Login from "./Components/Login/Login";
-
+import LoginRoute from "./Components/LoginRoute/LoginRoute";
 
 import firebase from "./Firebase.js";
 // import * as firebase from 'firebase/app';
 // import '@firebase/messaging';
 
-
 function App() {
   const [login, setLogin] = useState(false);
   const [cookie] = useCookies([""]);
 
-  let navigate = useNavigate();
-  
   // console.log(cookie);
 
   useEffect(() => {
     if (!cookie.eload_token) {
       setLogin(false);
-      navigate('/login');
-
     } else {
       setLogin(true);
       // navigate('/dashboard');
     }
-  },[]);
+  }, []);
 
   // useEffect(() => {
   //   const msg = firebase.messaging();
@@ -50,14 +44,17 @@ function App() {
   //   });
   // }, []);
 
-  useEffect(()=>{
-    const msg=firebase.messaging();
-    msg.requestPermission().then(()=>{
-      return msg.getToken();
-    }).then((data)=>{
-      console.log("token",data)
-    })
-  },[]); 
+  useEffect(() => {
+    const msg = firebase.messaging();
+    msg
+      .requestPermission()
+      .then(() => {
+        return msg.getToken();
+      })
+      .then((data) => {
+        console.log("token", data);
+      });
+  }, []);
   // useEffect(() => {
   //   const messaging = firebase.messaging();
   //   messaging
@@ -80,11 +77,14 @@ function App() {
   //     .catch((error) => console.error("Error sending notification:", error));
   // }, []);
 
-console.log(login,'login')
+  console.log(login, "login");
   return (
     <>
-      {login ? <Layout setLogin={setLogin} /> : <Login setLogin={setLogin} /> }
-
+      {login ? (
+        <Layout setLogin={setLogin} />
+      ) : (
+        <LoginRoute setLogin={setLogin} />
+      )}
     </>
   );
 }

@@ -13,7 +13,6 @@ export default function Login({ decodeData }) {
   //Data
   const [user, setUser] = useState({
     email: "",
-    password: "",
   });
   const [errList, setErrList] = useState([]);
   const [emailExist, setEmailExist] = useState("");
@@ -38,7 +37,6 @@ export default function Login({ decodeData }) {
         .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
         .required(),
       // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-      password: Joi.string().required(),
     });
 
     let joiResponse = schema.validate(user, { abortEarly: false });
@@ -49,12 +47,12 @@ export default function Login({ decodeData }) {
       setLoginFlag(true);
       let formdata = new FormData();
       formdata.append("email", user.email);
-      formdata.append("password", user.password);
       formdata.append("fcm_token", "dummy-fcm-token");
 
       try {
         const request = await axios.post(
-          "https://dev.eload.smart.sa/api/v1/auth/login",
+            // change the Api to the new one
+        //   "https://dev.eload.smart.sa/api/v1/auth/login",
           formdata,
           {
             headers: {
@@ -91,7 +89,7 @@ export default function Login({ decodeData }) {
 
         setCookie("eload_token", data.data.token.access);
         window.location.replace(
-          `/${user_type == "admin" ? "dashboard" : "allshipments"}`
+          `/${user_type === "admin" ? "dashboard" : "allshipments"}`
         );
         // navigate('/dashboard');
         setLoginFlag(false);
@@ -141,50 +139,23 @@ export default function Login({ decodeData }) {
               </h2>
             </div>
             <form onSubmit={submitForm} className="my-5">
-              <h3 className="fs-3 my-2 fw-bold">Login</h3>
-              <label htmlFor="email"> Email: </label>
+              <h3 className="fs-3 my-2 mb-5 fw-bold">Forgot your password?</h3>
+              <label htmlFor="email"> Email </label>
               <input
                 onChange={getUser}
                 type="email"
                 id="email"
-                className="mt-3 form-control"
-                placeholder="email"
+                className="mt-3 mb-5 form-control"
+                placeholder="Enter your E-mail"
               />
               <p className="fs-6 text-danger mb-3">{getError("email")}</p>
 
-              <label htmlFor="password"> Password: </label>
-              <input
-                onChange={getUser}
-                type="password"
-                id="password"
-                className="mt-3 form-control"
-                placeholder="password"
-              />
-              <p className="fs-6 text-danger mb-3">{getError("password")}</p>
-              {/* remember me */}
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <div className="form-check d-flex justify-content-between align-items-center">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="rememberMe"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                  />
-                  <span className="form-check-label mx-2" htmlFor="rememberMe">
-                    Remember me
-                  </span>
-                </div>
-                <a href="/ForgetPass" className="text-info forget_text">
-                  Forgot password?
-                </a>
-              </div>
               {/* ============= */}
-              <div className=" text-center my-5">
+              <div className=" text-center my-5 mt-5">
                 <button
                   type="submit"
                   style={{ padding: "10px 80px" }}
-                  className="btn-submit my-2 btn btn-outline-info"
+                  className="btn-submit my-2 mt-5 btn btn-outline-info"
                 >
                   {" "}
                   {loginFlag ? (
@@ -198,15 +169,10 @@ export default function Login({ decodeData }) {
                       </div>{" "}
                     </>
                   ) : (
-                    <span>Login</span>
+                    <span>Submit</span>
                   )}
                 </button>
               </div>
-              {emailExist.length === 0 ? (
-                ""
-              ) : (
-                <p className="fs-6 text-danger">{emailExist}</p>
-              )}
             </form>
           </div>
           {/* img */}
