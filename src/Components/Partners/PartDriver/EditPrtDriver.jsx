@@ -64,7 +64,7 @@ const EditPrtDriver = () => {
     const [profileimg, setProfileimg] = useState("");
     const [password, setPassword] = useState("");
     // ==============
-    const [ownerName, setOwnerName] = useState("");
+    // const [ownerName, setOwnerName] = useState("");
     const [ownerPhone, setOwnerPhone] = useState("");
     const [ownerNID, setOwnerNID] = useState("");
     // =============
@@ -140,7 +140,7 @@ const EditPrtDriver = () => {
     formdata.append("phone", ownerPhone);
 
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `https://dev.eload.smart.sa/api/v1/users/${user_ID}`,
         {
           headers: {
@@ -176,7 +176,7 @@ const EditPrtDriver = () => {
   const edit = () => {
 
     const formdata = new FormData();
-    console.log(name ,"nameedittt");
+    // console.log(name ,"nameedittt");
 
     // formdata.append("provider_id",Provider_ID)
     formdata.append("name", name);
@@ -184,17 +184,21 @@ const EditPrtDriver = () => {
     formdata.append("email", email);
     formdata.append("avatar", profileimg);
     formdata.append("password", password);
+    formdata.append("password_confirmation", password);
+    formdata.append("national_id", ownerNID);
+
+
     // owner
     // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
-    formdata.append("driver[id_copy]", idCope);
-    formdata.append("driver[driving_license_number]", drivingLincese);
-    formdata.append("driver[driving_license_copy]", drivingLincese_Cope);
-    formdata.append("driver[license_id]", drivingLincese_Cope);
-    formdata.append("driver[driving_license_copy]", LinceseId);
-    formdata.append("driver[expiry_date]", expirydate);
-    formdata.append("driver[sponsor_establishment_name]", sponsorName);
-    formdata.append("driver[sponsor_establishment_number]", sponsorNumber);
+    formdata.append("id_copy", idCope);
+    formdata.append("driving_license_number", drivingLincese);
+    formdata.append("driving_license_copy", drivingLincese_Cope);
+    formdata.append("license_id", drivingLincese_Cope);
+    formdata.append("driving_license_copy", LinceseId);
+    formdata.append("expiry_date", expirydate);
+    formdata.append("sponsor_establishment_name", sponsorName);
+    formdata.append("sponsor_establishment_number", sponsorNumber);
 
     // console.log("editDone");
     
@@ -344,11 +348,11 @@ const EditPrtDriver = () => {
             />
 
           </div>
-          <button type="button" className="btn-save my-3"
+          {/* <button type="button" className="btn-save my-3"
           onClick={UserDtaedit}
         >
           SAVE User Data
-        </button>
+        </button> */}
 
         </div>
         {/* line-1 */}
