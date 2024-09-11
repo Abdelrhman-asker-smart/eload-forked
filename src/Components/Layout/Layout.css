@@ -35,6 +35,11 @@
     overflow: auto;
     /* letter-spacing: 0.02em; */
 }
+.main-containt-Login{
+    min-height: 100vh;
+    overflow: auto;
+    /* letter-spacing: 0.02em; */
+}
 /* dropdown-sidbar */
 /* .btn-sidbar-list:hover{
     background-color: transparent;

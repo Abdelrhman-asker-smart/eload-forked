@@ -12,8 +12,9 @@ export default function Login({ decodeData }) {
   // let navigate = useNavigate();
   //Data
   const [user, setUser] = useState({
-    email: "",
+    // email: "",
     password: "",
+    Confirm_password: "",
   });
   const [errList, setErrList] = useState([]);
   const [emailExist, setEmailExist] = useState("");
@@ -30,25 +31,29 @@ export default function Login({ decodeData }) {
     newUser[e.target.id] = inputValue;
     setUser(newUser);
   }
-
+  // console.log(user);
   async function submitForm(e) {
     e.preventDefault();
     const schema = Joi.object({
-      email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-        .required(),
       // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
       password: Joi.string().required(),
+      Confirm_password: Joi.string()
+        .required()
+        .valid(Joi.ref("password"))
+        .messages({
+          "any.only": "Confirm password must match the password",
+        }),
     });
 
     let joiResponse = schema.validate(user, { abortEarly: false });
-    if (joiResponse.error) {
+    if (joiResponse.error || user.password !== user.Confirm_password) {
       setErrList(joiResponse.error.details);
+      console.log("error stage", errList);
     } else {
       setErrList([]);
       setLoginFlag(true);
       let formdata = new FormData();
-      formdata.append("email", user.email);
+      // formdata.append("email", user.email);
       formdata.append("password", user.password);
       formdata.append("fcm_token", "dummy-fcm-token");
 
@@ -91,7 +96,7 @@ export default function Login({ decodeData }) {
 
         setCookie("eload_token", data.data.token.access);
         window.location.replace(
-          `/${user_type == "admin" ? "dashboard" : "allshipments"}`
+          `/${user_type === "admin" ? "dashboard" : "allshipments"}`
         );
         // navigate('/dashboard');
         setLoginFlag(false);
@@ -141,50 +146,37 @@ export default function Login({ decodeData }) {
               </h2>
             </div>
             <form onSubmit={submitForm} className="my-5">
-              <h3 className="fs-3 my-2 fw-bold">Login</h3>
-              <label htmlFor="email"> Email: </label>
-              <input
-                onChange={getUser}
-                type="email"
-                id="email"
-                className="mt-3 form-control"
-                placeholder="email"
-              />
-              <p className="fs-6 text-danger mb-3">{getError("email")}</p>
-
-              <label htmlFor="password"> Password: </label>
+              <h3 className="fs-3 my-2 mb-5 fw-bold">Set a password</h3>
+              <label htmlFor="password"> Create Password </label>
               <input
                 onChange={getUser}
                 type="password"
                 id="password"
                 className="mt-3 form-control"
-                placeholder="password"
+                placeholder="Enter yourPassword"
               />
               <p className="fs-6 text-danger mb-3">{getError("password")}</p>
-              {/* remember me */}
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <div className="form-check d-flex justify-content-between align-items-center">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="rememberMe"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                  />
-                  <span className="form-check-label mx-2" htmlFor="rememberMe">
-                    Remember me
-                  </span>
-                </div>
-                <a href="/ForgetPass" className="text-info forget_text">
-                  Forgot password?
-                </a>
-              </div>
+
+              <label className="mt-2" htmlFor="Confirm-password">
+                {" "}
+                Confirm Password{" "}
+              </label>
+              <input
+                onChange={getUser}
+                type="password"
+                id="Confirm_password"
+                className="mt-3 form-control"
+                placeholder="Enter yourPassword"
+              />
+              <p className="fs-6 text-danger mb-3">{getError("password")}</p>
+
               {/* ============= */}
               <div className=" text-center my-5">
                 <button
                   type="submit"
                   style={{ padding: "10px 80px" }}
                   className="btn-submit my-2 btn btn-outline-info"
+                  disabled={user.password !== user.Confirm_password}
                 >
                   {" "}
                   {loginFlag ? (
@@ -197,16 +189,13 @@ export default function Login({ decodeData }) {
                         <div className="rect5"></div>
                       </div>{" "}
                     </>
+                  ) : user.password !== user.Confirm_password ? (
+                    <span>Please Match your password</span>
                   ) : (
-                    <span>Login</span>
+                    <span>Set Password</span>
                   )}
                 </button>
               </div>
-              {emailExist.length === 0 ? (
-                ""
-              ) : (
-                <p className="fs-6 text-danger">{emailExist}</p>
-              )}
             </form>
           </div>
           {/* img */}
