@@ -282,3 +282,11 @@ input[type="file"]::-webkit-file-upload-button {
 .react-datepicker__navigation {
   top: 12px !important;
 }
+.disabled {
+  opacity: 0.5;
+}
+
+.hasError {
+  border: 2px solid red !important;
+  border-radius: 25px;
+}

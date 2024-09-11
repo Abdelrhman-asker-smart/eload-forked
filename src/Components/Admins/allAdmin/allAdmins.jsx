@@ -11,12 +11,10 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAdminList } from "../../../redux/AdminsList";
 
 import "./alladmin.css";
-
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
@@ -164,21 +162,19 @@ const AllAdmins = () => {
   });
   // console.log(process.env.REACT_BASE_URL);
   useEffect(() => {
-
     dispatch(fetchAdminList({ token: cookie.eload_token }))
       .then((res) => {
-        console.log(res, "response from api");
+        // console.log(res, "response from api");
         const data = res.payload.data;
         setAdminList(data);
       })
       .catch((e) => {
         console.log(e);
       });
-
   }, [reload]);
   //
 
-//   const { list, status } = useSelector((state) => state.adminList);
+  //   const { list, status } = useSelector((state) => state.adminList);
   // console.log(list, "state from reducer with useSelector");
 
   const handleExportRows = (rows) => {
@@ -302,4 +298,4 @@ const AllAdmins = () => {
   );
 };
 
-export default AllAdmins
+export default AllAdmins;

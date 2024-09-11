@@ -141,9 +141,7 @@ const Layout = ({ setLogin }) => {
             <Route path="/login" element={<Login />} />
             } */}
             {/* user-All Admins */}
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/SetPass" element={<SetPass />} />
-            <Route path="/ForgetPass" element={<ForgetPass />} />
+
             <Route path="/Login" element={<Login />} />
             <Route path="/all-admins" element={<AllAdmins />} />
             {/* AddAdmins */}
@@ -154,7 +152,7 @@ const Layout = ({ setLogin }) => {
             <Route path="/editprofile" element={<EditProfile />} />
 
             {/* dashboard */}
-            <Route path="/" element={<Dashbord />} />
+            <Route path="*" element={<Dashbord />} />
             <Route path="/dashboard" element={<Dashbord />} />
             <Route path="/Shipments" element={<Shipments />} />
 
