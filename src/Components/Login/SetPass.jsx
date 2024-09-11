@@ -31,11 +31,10 @@ export default function Login({ decodeData }) {
     newUser[e.target.id] = inputValue;
     setUser(newUser);
   }
-  // console.log(user);
   async function submitForm(e) {
     e.preventDefault();
+  
     const schema = Joi.object({
-      // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
       password: Joi.string().required(),
       Confirm_password: Joi.string()
         .required()
@@ -44,22 +43,23 @@ export default function Login({ decodeData }) {
           "any.only": "Confirm password must match the password",
         }),
     });
-
+  
     let joiResponse = schema.validate(user, { abortEarly: false });
     if (joiResponse.error || user.password !== user.Confirm_password) {
       setErrList(joiResponse.error.details);
-      console.log("error stage", errList);
     } else {
       setErrList([]);
       setLoginFlag(true);
       let formdata = new FormData();
-      // formdata.append("email", user.email);
+      // Add necessary form data fields
       formdata.append("password", user.password);
-      formdata.append("fcm_token", "dummy-fcm-token");
-
+      formdata.append("password_confirmation", user.Confirm_password);
+      formdata.append("email", localStorage.getItem("emailElood"));
+      formdata.append("token", "7bxkZj"); 
+      console.log(localStorage.getItem("emailElood"))
       try {
         const request = await axios.post(
-          "https://dev.eload.smart.sa/api/v1/auth/login",
+          `https://dev.eload.smart.sa/api/v1/password/reset`, 
           formdata,
           {
             headers: {
@@ -67,64 +67,34 @@ export default function Login({ decodeData }) {
               "api-key": `b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9`,
             },
           }
-        );
-        console.log(request.data, "this is the damn request");
-        const data = request.data;
-        // setLoginFlag(false);
-        localStorage.setItem("email", data.data.user.email);
-        localStorage.setItem("name", data.data.user.name);
-        // ===============id users
-        localStorage.setItem("id", data.data.user.id);
-
-        let user_type = "admin";
-        if (data.data.user.hasOwnProperty("type")) {
-          user_type = data.data.user.type;
-          let user_type_data = data.data.user[user_type];
-          localStorage.setItem(
-            "user_type_data",
-            JSON.stringify(user_type_data)
-          );
-
-          if (user_type_data.hasOwnProperty("contract")) {
-            localStorage.setItem("is_contracted", true);
-          } else {
-            localStorage.setItem("is_contracted", false);
-          }
-        }
-
-        localStorage.setItem("user_type", user_type);
-
-        setCookie("eload_token", data.data.token.access);
-        window.location.replace(
-          `/${user_type === "admin" ? "dashboard" : "allshipments"}`
-        );
-        // navigate('/dashboard');
+        );  
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          color: "#0e4579",
+          title: "Password has been reset successfully!",
+          showConfirmButton: false,
+          timer: 8000,
+        }).then(()=>{
+          window.location.replace("/login"); 
+        })
         setLoginFlag(false);
-
-        return data;
-        // return request
       } catch (err) {
-        // setErrorMessage(err.response.data.message);
-
         Swal.fire({
           position: "top-end",
           icon: "error",
           color: "#0e4579",
-          title: `${err.response.data.message}`,
+          title: `${err?.response?.data?.errors[0]?.message||err?.response?.data?.message||err?.message}`,
           showConfirmButton: false,
           showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
         });
-        console.log(err.response.data.message);
+        setLoginFlag(false);
       }
-
-      // fetch("https://dev.eload.smart.sa/api/v1/auth/login", requestOptions)
-      //   .then(response => response.text())
-      //   .then(result => console.log(result))
-      //   .catch(error => console.log('error', error));
     }
   }
+  
   function getError(key) {
     for (const error of errList) {
       if (error.context.key === key) {
@@ -133,7 +103,6 @@ export default function Login({ decodeData }) {
     }
     return "";
   }
-  // console.log(user, "user");
   return (
     <>
       <div className="login">
