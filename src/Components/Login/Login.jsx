@@ -157,7 +157,7 @@ export default function Login({ decodeData }) {
                 onChange={getUser}
                 type="password"
                 id="password"
-                className="mt-3 form-control"
+                className="mt-3 form-control "
                 placeholder="password"
               />
               <p className="fs-6 text-danger mb-3">{getError("password")}</p>

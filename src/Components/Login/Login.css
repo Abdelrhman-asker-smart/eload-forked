@@ -14,10 +14,12 @@
 .login input{
     border-radius: 20px;
     border: 1px solid white;
+    color: black;
     padding: 10px 15px;
     background-color: transparent;
 
 }
+
 .login .forget_text{
     text-decoration: none;
     color: #CBFF39 !important;

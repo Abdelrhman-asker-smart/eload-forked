@@ -129,56 +129,10 @@ const EditPrtDriver = () => {
   // console.log(user_ID,"user_ID");
 
   // pass editing user data
-  const UserDtaedit =async () => {
-
-    const formdata = new FormData();
-    formdata.append("name", name);
-    formdata.append("type", "partner");
-    formdata.append("email", email);
-    formdata.append("avatar", profileimg);
-    formdata.append("password", password);
-    formdata.append("phone", ownerPhone);
-
-    try {
-      const response = await axios.post(
-        `https://dev.eload.smart.sa/api/v1/users/${user_ID}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${cookie.eload_token}`,
-            'api-key':"b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-          },
-        }
-      );
-
-      console.log(response,"testusee");
-      showNotificationUser();
-    } catch (e) {
-      let errorMessages = "An error occurred";
-
-      if (e.response && e.response.data && e.response.data.errors) {
-        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
-      }
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
-        title: errorMessages,
-        showConfirmButton: false,
-        showCancelButton:true,
-        cancelButtonText: "ok",
-        timer: 8000,
-      })
-      console.log(e);
-    }
-  };
     
-  const edit = () => {
-
+  const edit = async() => {
     const formdata = new FormData();
-    // console.log(name ,"nameedittt");
-
-    // formdata.append("provider_id",Provider_ID)
+  
     formdata.append("name", name);
     formdata.append("type", "partner");
     formdata.append("email", email);
@@ -186,10 +140,6 @@ const EditPrtDriver = () => {
     formdata.append("password", password);
     formdata.append("password_confirmation", password);
     formdata.append("national_id", ownerNID);
-
-
-    // owner
-    // formdata.append("name", ownerName);
     formdata.append("phone", ownerPhone);
     formdata.append("id_copy", idCope);
     formdata.append("driving_license_number", drivingLincese);
@@ -199,42 +149,60 @@ const EditPrtDriver = () => {
     formdata.append("expiry_date", expirydate);
     formdata.append("sponsor_establishment_name", sponsorName);
     formdata.append("sponsor_establishment_number", sponsorNumber);
-
-    // console.log("editDone");
-    
-    dispatch(
-        EditDriverFunction({
-        token: cookie.eload_token,
-        id,
+    try {
+      const response = await axios.post(
+        `https://dev.eload.smart.sa/api/v1/updateDriver/${user_ID}`,
         formdata,
-      })
-    )
-      .then((res) => {
-        console.log(res, "res");
-        // showNotification();
-        // navigate(`/Partners/part-driverlist/${id}`);
-        // navigate(`/Partners`);
-        // console.log(res);
-        // alert('Successfully Saved!');
-      })
-      .catch((e) => {
-        let errorMessages = "An error occurred";
-
-        if (e.response && e.response.data && e.response.data.errors) {
-          errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
         }
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
-          title: errorMessages,
-          showConfirmButton: false,
-          showCancelButton:true,
-          cancelButtonText: "ok",
-          timer: 8000,
-        })
-        console.log(e);
+      );
+      const data = await response.data;
+      console.log(response, "response");
+      showNotification();
+      navigate(`/Partners`);
+      return data;
+    } catch (e) {
+      console.log("eee");
+      console.error("Full error object:", e);
+      console.error("Error response:", e.response);
+  
+      let errorMessage = "An error occurred";
+  
+      if (e.response && e.response.data) {
+        console.log("Error data:", e.response.data);
+  
+        if (e.response.data.message) {
+          errorMessage = e.response.data.message;
+        }
+  
+        if (e.response.data.errors && Array.isArray(e.response.data.errors)) {
+          errorMessage += "<br><br>";
+          errorMessage += "<ul>";
+          e.response.data.errors.forEach(error => {
+            errorMessage += `<span>${error.field}: ${error.message}</span>`;
+          });
+          errorMessage += "</ul>";
+        }
+      }
+  
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: errorMessage,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#0e4579',
       });
+  
+      console.log(e, "e");
+    }
+  
+
   };
   return (
     <div className="container-fluid adddriver p-5">
