@@ -29,7 +29,6 @@ import MuiAlert from "@mui/material/Alert";
 // }
 
 const Inputs = ({
-  // all values passed from inputs
   handleOrder,
   shipperuserChoice,
   pickupuserChoice,
@@ -52,10 +51,8 @@ const Inputs = ({
   arrListnumShipment,
   indexshipment,
   indexdetails,
-  shipperValue,
 }) => {
   const { list, setList } = useContext(ContextStore);
-  console.log(shipperValue, " adasdasd ");
   // const {errorlist , setErrorList}= useContext(ContextStore)
   // console.log(plannedList.length, "plannedList");
   useEffect(() => {
@@ -285,30 +282,30 @@ const Inputs = ({
         });
       });
       console.log("Addone----------Done");
-
+      
       // below is a temp fix to be able to send the order request only once
       handleOrder(formdata);
 
-      // try {
-      //   const reponse = await axios.post(
-      //     "https://dev.eload.smart.sa/api/v1/orders",
+      try {
+        const reponse = await axios.post(
+          "https://dev.eload.smart.sa/api/v1/orders",
 
-      //     formdata,
-      //     {
-      //       headers: {
-      //         Accept: "application/json",
-      //         Authorization: `Bearer ${cookie.eload_token}`,
-      //         "api-key":
-      //           "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-      //       },
-      //     }
-      //   );
-      //   // setName("");
-      //   //   console.log(reponse);
-      // } catch (e) {
-      //   // handleClick2();
-      //   console.log(e);
-      // }
+          formdata,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
+        // setName("");
+        //   console.log(reponse);
+      } catch (e) {
+        // handleClick2();
+        console.log(e);
+      }
 
       // Planned=============================
     } else {
@@ -369,7 +366,7 @@ const Inputs = ({
           // numTrucksPlanned
           formdata.append(
             `orders[${index}][shipments][${indexdetails}][truck_type_qty]`,
-            itemdetails.numTrucksPlanned
+            1
           );
           // descriptionPlanned
           formdata.append(
@@ -412,28 +409,28 @@ const Inputs = ({
       // below is a temp fix to be able to send the order request only once
       handleOrder(formdata);
 
-      // try {
-      //   const reponse = await axios.post(
-      //     "https://dev.eload.smart.sa/api/v1/scheduled_orders",
-      //     // }
+      try {
+        const reponse = await axios.post(
+          "https://dev.eload.smart.sa/api/v1/scheduled_orders",
+          // }
 
-      //     formdata,
-      //     {
-      //       headers: {
-      //         Accept: "application/json",
-      //         Authorization: `Bearer ${cookie.eload_token}`,
-      //         "api-key":
-      //           "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-      //       },
-      //     }
-      //   );
+          formdata,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
 
-      //   // setName("");
-      //   //   console.log(reponse);
-      // } catch (e) {
-      //   // handleClick2();
-      //   console.log(e);
-      // }
+        // setName("");
+        //   console.log(reponse);
+      } catch (e) {
+        // handleClick2();
+        console.log(e);
+      }
     }
 
     setList(false); // to allow sending the request again when clicking on the send btn
@@ -580,7 +577,7 @@ const Inputs = ({
             className="basic-multi-select"
             // isMulti
             isDisabled={isDisabled}
-            // required
+            required
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
@@ -608,7 +605,7 @@ const Inputs = ({
             isDisabled={isDisabled}
             isLoading={isLoading}
             isClearable={isClearable}
-            // required
+            required
             isRtl={isRtl}
             isSearchable={isSearchable}
             name="color"
@@ -636,7 +633,7 @@ const Inputs = ({
           </label>
           <input
             type="number"
-            // required
+            required
             placeholder="i,e, 10"
             // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
             // totaldetails
@@ -655,7 +652,7 @@ const Inputs = ({
             type="number"
             placeholder="i,e,2000  Kgs"
             min="1"
-            // required
+            required
             onChange={(e) => {
               // setWeightValue(e.target.value);
               // weighthandleInputChange(indexOfItem, e);
@@ -665,20 +662,24 @@ const Inputs = ({
           {errList ? <span className="err_message mx-3"> required</span> : ""}
           {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
         </div>
-        {/* <div className="input col-2">
+        <div className="input col-2">
           <label htmlFor="address">
             Number of trucks<span>*</span>
           </label>
           <input
             type="number"
             placeholder="i,e,2000"
+            disabled
+            value="1"
             min="1"
             required
             onChange={(e) => {
+              // setNumber_TrucksValue(e.target.value);
+              // numberOfTruckshahndleInputChange(indexOfItem, e);
               numTruckPlannedChange(indexshipment, indexdetails, e);
             }}
           />
-        </div> */}
+        </div>
         <div className="input col-2">
           <label htmlFor="address">Description</label>
           <input
@@ -696,7 +697,7 @@ const Inputs = ({
       <div className="inputs row">
         <div className="input col-3">
           <label htmlFor="address">
-            Packing List Attachments<span>*</span>
+            Packing List Attachments
           </label>
           <div className="input-group ">
             <input
@@ -704,7 +705,7 @@ const Inputs = ({
               multiple="multiple"
               accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-file form-control"
-              // required
+              
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -754,7 +755,7 @@ const Inputs = ({
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
-            // required
+            required
             isClearable={isClearable}
             isRtl={isRtl}
             isSearchable={isSearchable}
@@ -780,7 +781,7 @@ const Inputs = ({
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
-            // required
+            required
             isSearchable={isSearchable}
             name="color"
             options={UOMsOptions}
@@ -797,7 +798,7 @@ const Inputs = ({
           </label>
           <input
             type="number"
-            // required
+            required
             min="1"
             placeholder="i,e,02"
             onChange={(e) => {
