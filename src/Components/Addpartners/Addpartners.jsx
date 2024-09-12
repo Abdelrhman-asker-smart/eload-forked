@@ -160,7 +160,7 @@ const Addpartners = () => {
       }
     }
   };
-  const [targetElement, setTargetElement] = useState("name");
+  const [targetElement, setTargetElement] = useState("");
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -168,6 +168,11 @@ const Addpartners = () => {
       element.focus();
     }
   };
+  useEffect(() => {
+    if (targetElement) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement]);
   return (
     <div className="container-fluid addpartners p-5">
       <ToastContainer

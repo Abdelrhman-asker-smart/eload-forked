@@ -168,7 +168,7 @@ const AddShippers = () => {
       }
     }
   };
-  const [targetElement, setTargetElement] = useState("name");
+  const [targetElement, setTargetElement] = useState("");
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -176,6 +176,11 @@ const AddShippers = () => {
       element.focus();
     }
   };
+  useEffect(() => {
+    if (targetElement) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement]);
   return (
     <div className="container-fluid addshipper p-5">
       <h3>SHIPPER INFORMATION</h3>

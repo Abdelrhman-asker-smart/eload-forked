@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
@@ -102,7 +102,7 @@ const Addadmin = () => {
       }
     }
   };
-  const [targetElement, setTargetElement] = useState("name");
+  const [targetElement, setTargetElement] = useState("");
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -110,6 +110,11 @@ const Addadmin = () => {
       element.focus();
     }
   };
+  useEffect(() => {
+    if (targetElement) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement]);
   return (
     <div className="addadmins container my-4">
       <div className="head container-fluid mb-4 d-flex">

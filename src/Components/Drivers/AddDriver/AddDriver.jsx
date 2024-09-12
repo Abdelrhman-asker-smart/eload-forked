@@ -85,7 +85,7 @@ const AddDriver = () => {
   // console.log(TruckType);
   // Api-post==========================
   const Joi = require("joi");
-  const [targetElement, setTargetElement] = useState("name");
+  const [targetElement, setTargetElement] = useState("");
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     console.log(element);
@@ -94,6 +94,11 @@ const AddDriver = () => {
       element.focus();
     }
   };
+  useEffect(() => {
+    if (targetElement) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement]);
   const apiAddDriver = async (e) => {
     e.preventDefault();
     const schema = Joi.object({

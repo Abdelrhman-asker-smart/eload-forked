@@ -435,7 +435,11 @@ const Shipments = () => {
       focusing.focus();
     }
   };
-
+  useEffect(() => {
+    if (targetElement) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement]);
   const handelSubmit = (e) => {
     e.preventDefault();
     const schema = Joi.object({
