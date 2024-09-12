@@ -440,18 +440,35 @@ const Shipments = () => {
       scrollToElement(targetElement);
     }
   }, [targetElement]);
+  // console.log(shipperValue, " shipperValue ");
+  // console.log(pickupValue, " pickupValue ");
+
   const handelSubmit = (e) => {
     e.preventDefault();
     const schema = Joi.object({
-      shipper_Value: Joi.number().required(),
+      shipper_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
+      pickup_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
     });
     const formDataObject = {
       shipper_Value: shipperValue,
+      pickup_Value: pickupValue,
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
 
     if (error) {
-      console.log("errorrrr", error.details);
+      // console.log("errorrrr", error.details);
+      // console.log(
+      //   "errorrrrssss details ",
+      //   errors.pickup_Value,
+      //   " ",
+      //   targetElement
+      // );
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -879,7 +896,7 @@ const Shipments = () => {
                           }}
                         />
                         {errors.shipper_Value && (
-                          <h5 className="error">"please Select a value"</h5>
+                          <h5 className="error">{errors.shipper_Value}</h5>
                         )}
                         <span>
                           {/* {shipperOptions[plannedList[0]].shipperPlanned.label} */}
@@ -896,7 +913,12 @@ const Shipments = () => {
                           </label>
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
+                            id="pickup_Value"
+                            className={
+                              errors.shipper_Value
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
@@ -917,6 +939,9 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_Value && (
+                            <h5 className="error">{errors.pickup_Value}</h5>
+                          )}
                         </div>
                         <div className="input col-md-4">
                           <label htmlFor="address">
@@ -1317,7 +1342,7 @@ const Shipments = () => {
                           }}
                         />
                         {errors.shipper_Value && (
-                          <h5 className="error">"please Select a value"</h5>
+                          <h5 className="error">{errors.shipper_Value}</h5>
                         )}
                       </div>
                     )}
@@ -1330,7 +1355,12 @@ const Shipments = () => {
                           </label>
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
+                            className={
+                              errors.shipper_Value
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
+                            id="pickup_Value"
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
@@ -1350,6 +1380,9 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_Value && (
+                            <h5 className="error">{errors.pickup_Value}</h5>
+                          )}
                         </div>
                         <div className="input col-md-4">
                           <label htmlFor="address">

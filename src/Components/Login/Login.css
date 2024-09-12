@@ -1,46 +1,45 @@
-.login{
-    /* background-color: #0e4579 !important; */
-    color: #fff;
-    overflow: hidden;
-    height: 100vh;
+.login {
+  background-color: #0b2339 !important;
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
 }
-.login h2{
-    font-weight: 500;
+.login h2 {
+  font-weight: 500;
 }
-.login label{
-    font-weight: 400;
-    margin: 0 15px;
+.login label {
+  font-weight: 400;
+  margin: 0 15px;
 }
-.login input{
-    border-radius: 20px;
-    border: 1px solid white;
-    padding: 10px 15px;
-    background-color: transparent;
-
+.login input {
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 10px 15px;
+  background-color: transparent;
 }
-.login .forget_text{
-    text-decoration: none;
-    color: #CBFF39 !important;
-    font-weight: 400;
+.login .forget_text {
+  text-decoration: none;
+  color: #cbff39 !important;
+  font-weight: 400;
 }
-.login #rememberMe{
-    padding: 10px;
+.login #rememberMe {
+  padding: 10px;
 }
-.login .btn-submit{
-    background-color: #18AEC9 !important;
+.login .btn-submit {
+  background-color: #18aec9 !important;
 }
-.login .btn-submit:hover{
-    background-color: #93ba27 !important;
+.login .btn-submit:hover {
+  background-color: #93ba27 !important;
 }
-.login .btn-submit:focus{
-    background-color: #18AEC9 !important;
-    border-radius: 20px !important;
-    color: #fff !important;
+.login .btn-submit:focus {
+  background-color: #18aec9 !important;
+  border-radius: 20px !important;
+  color: #fff !important;
 }
-.login .btn-outline-info{
-    color: #fff !important;
-    font-weight: 600;
-    border: 0 !important;
-    border-radius: 20px !important;
-    /* width: 15%; */
+.login .btn-outline-info {
+  color: #fff !important;
+  font-weight: 600;
+  border: 0 !important;
+  border-radius: 20px !important;
+  /* width: 15%; */
 }

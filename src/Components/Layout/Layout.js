@@ -96,7 +96,7 @@ import SetPass from "../Login/SetPass.jsx";
 
 // import firebase from "../../Firebase";
 
-const Layout = ({ setLogin }) => {
+const Layout = ({ setLogin, login }) => {
   // useEffect(() => {
   //   const messaging = firebase.messaging()
   //   messaging.requestPermission().then(()=>{
@@ -130,11 +130,11 @@ const Layout = ({ setLogin }) => {
     <>
       <div className="d-flex">
         {/* <Router> */}
-        <Sidebar />
+        {login && <Sidebar />}
 
         {/* pages */}
         <div className="w-100 main-containt">
-          <Navbar setLogin={setLogin} />
+          {login && <Navbar setLogin={setLogin} />}(
           <Routes>
             {/* {!cookie.eload_token && 
             
@@ -142,20 +142,17 @@ const Layout = ({ setLogin }) => {
             } */}
             {/* user-All Admins */}
 
-            <Route path="/Login" element={<Login />} />
             <Route path="/all-admins" element={<AllAdmins />} />
             {/* AddAdmins */}
             <Route path="/add-admins" element={<AddAdmins />} />
-
             {/* profile-route */}
             <Route path="/profilepage" element={<Profile />} />
             <Route path="/editprofile" element={<EditProfile />} />
-
             {/* dashboard */}
             <Route path="*" element={<Dashbord />} />
+            <Route path="/" element={<Dashbord />} />
             <Route path="/dashboard" element={<Dashbord />} />
             <Route path="/Shipments" element={<Shipments />} />
-
             {/* service--partner */}
             <Route path="/Partners" element={<Partners />} />
             <Route path="/Partners/addpartners" element={<Addpartners />} />
@@ -191,14 +188,12 @@ const Layout = ({ setLogin }) => {
               path="/Partners/part-EditTruck/:id/provider/:id_p"
               element={<EditTruckP />}
             />
-
             {/* Address------------------------- */}
             <Route path="/Shipments/addAddress/:id" element={<AddAddress />} />
             <Route
               path="/Shipments/editAddress/:id/shipper/:idshipper"
               element={<EditAddress />}
             />
-
             <Route path="/Shipments/grouplist/:id" element={<GroupList />} />
             <Route
               path="/Shipments/addnewgroup/:id"
@@ -212,12 +207,10 @@ const Layout = ({ setLogin }) => {
               path="/Shipments/addresslist/:id/shipper/:idshipper"
               element={<AddressList />}
             />
-
             <Route
               path="/allshipments/shipmentorder/:id"
               element={<ShipmentOrder />}
             />
-
             {/* shippers */}
             <Route path="/allshippers" element={<AllShippers />} />
             <Route path="/addshippers" element={<AddShippers />} />
@@ -225,35 +218,29 @@ const Layout = ({ setLogin }) => {
               path="/allshippers/editshipper/:id"
               element={<EditShipper />}
             />
-
             <Route
               path="/allshippers/viewshipper/:id"
               element={<ViewShipper />}
             />
             <Route path="/allshippers/employes" element={<Employes />} />
             <Route path="/allshippers/addemployes" element={<AddEmployees />} />
-
             <Route path="/user" element={<User />} />
             {/* <Route path="/reports" element={<Reports />} /> */}
-
             <Route path="/allshipments" element={<AllShipments />} />
             <Route path="/allorders" element={<Allorders />} />
             <Route
               path="/Serviceproviders/personinfo"
               element={<Personinformation />}
             />
-
             <Route path="/driver" element={<Driver />} />
             <Route path="/driver/adddriver" element={<AddDriver />} />
             <Route path="/driver/editdriver/:id" element={<EditDriver />} />
             <Route path="/driver/viewdriver/:id" element={<ViewDriver />} />
-
             {/* items */}
             <Route path="/allitems/:id" element={<Allitems />} />
             {/* add-item */}
             <Route path="/iteminfo/:id" element={<ItemInfo />} />
             <Route path="/edititem/:id" element={<EditItem />} />
-
             {/* OverallReport */}
             {/* <Route path="/overallreport" element={<OverallReport />} />
             <Route path="/financialrequests" element={<Financialrequests />} /> */}
@@ -261,35 +248,30 @@ const Layout = ({ setLogin }) => {
             <Route path="/my-rewards" element={<MyRewards />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/invoices/:id" element={<Invoice />} />
-
             {/* setting */}
             <Route path="/categorylist" element={<CategoryList />} />
             <Route path="/catogry-add" element={<CategortAdd />} />
             <Route path="/catogry-edit/:id" element={<EditCategory />} />
-
             <Route path="/trucklist" element={<TruckList />} />
             <Route path="/addtruck" element={<AddTruck />} />
             <Route path="/edittruck/:id" element={<EditTruck />} />
-
             <Route path="/shipmentlist" element={<ShipmentTypes />} />
             <Route path="/addshipment" element={<AddShipment />} />
             <Route path="/editshipment/:id" element={<Editshipment />} />
             <Route path="/orders/:id" element={<Details />} />
-
             <Route path="/measurements" element={<Measurements />} />
             <Route path="/addmeasurements" element={<AddMeasurements />} />
             <Route
               path="/editmeasurements/:id"
               element={<EditMeasurements />}
             />
-
             <Route path="/commodities" element={<Commodities />} />
             <Route path="/addcommodities" element={<Addcommodities />} />
             <Route path="/editcommodities/:id" element={<Editcommodities />} />
-
             <Route path="/countrieslist" element={<CountriesList />} />
             <Route path="/stateslist" element={<StatesList />} />
             <Route path="/citieslist" element={<CitiesList />} />
+            
           </Routes>
         </div>
         {/* </Router> */}

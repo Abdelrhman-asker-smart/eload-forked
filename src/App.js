@@ -81,7 +81,7 @@ function App() {
   return (
     <>
       {login ? (
-        <Layout setLogin={setLogin} />
+        <Layout login={login} setLogin={setLogin} />
       ) : (
         <LoginRoute setLogin={setLogin} />
       )}

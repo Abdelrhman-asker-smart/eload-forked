@@ -55,7 +55,7 @@ const Inputs = ({
   shipperValue,
 }) => {
   const { list, setList } = useContext(ContextStore);
-  console.log(shipperValue, " adasdasd ");
+  // console.log(shipperValue, " adasdasd ");
   // const {errorlist , setErrorList}= useContext(ContextStore)
   // console.log(plannedList.length, "plannedList");
   useEffect(() => {

@@ -13,8 +13,9 @@ const LoginRoute = ({ setLogin }) => {
         {/* pages */}
         <div className="w-100 main-containt-Login">
           <Routes>
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Login setLogin={setLogin} />} />
             <Route path="/" element={<Login setLogin={setLogin} />} />
+            <Route path="/login" element={<Login setLogin={setLogin} />} />
             <Route
               path="/ForgetPass"
               element={<ForgetPass setLogin={setLogin} />}
