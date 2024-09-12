@@ -134,7 +134,7 @@ const Layout = ({ setLogin, login }) => {
 
         {/* pages */}
         <div className="w-100 main-containt">
-          {login && <Navbar setLogin={setLogin} />}(
+          {login && <Navbar setLogin={setLogin} />}
           <Routes>
             {/* {!cookie.eload_token && 
             
@@ -271,7 +271,6 @@ const Layout = ({ setLogin, login }) => {
             <Route path="/countrieslist" element={<CountriesList />} />
             <Route path="/stateslist" element={<StatesList />} />
             <Route path="/citieslist" element={<CitiesList />} />
-            
           </Routes>
         </div>
         {/* </Router> */}

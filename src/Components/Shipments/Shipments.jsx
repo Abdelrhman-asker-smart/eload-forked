@@ -122,8 +122,8 @@ const Shipments = () => {
   const [isRtl] = useState(false);
 
   // const date = new Date();
-  const [startDate, setStartDate] = useState(null);
-
+  const [startDate, setStartDate] = useState("");
+  console.log("startDate type", typeof startDate);
   // datepacker_from tomorrow
   const today = new Date();
   let tomorrow = new Date();
@@ -151,7 +151,7 @@ const Shipments = () => {
   const [pickup_TimeToValue, setPickup_TimeToValue] = useState("");
   // dropoff-chooses
   const [dropoffValue, setDropoffValue] = useState("");
-  // console.log(dropoffValue, " dosadas");
+
   const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
@@ -361,7 +361,7 @@ const Shipments = () => {
       allshipper();
     }
 
-    if (user_type === "shipper") {
+    if (user_type == "shipper") {
       pickupListApi(user_type_data.id);
       setShipperUserChoice(user_type_data.id);
       setShipperValue(user_type_data.name);
@@ -372,12 +372,12 @@ const Shipments = () => {
     // droppofflist();
   }, []);
 
-  useEffect(() => {
-    if (order instanceof FormData) {
-      sendOrder(order, plannedList.length == 1 ? "orders" : "scheduled_orders");
-      setOrder({}); // to reset the order value and thus we can resend the request when clicking on submit btn
-    }
-  }, [order]);
+  // useEffect(() => {
+  //   if (order instanceof FormData) {
+  //     sendOrder(order, plannedList.length == 1 ? "orders" : "scheduled_orders");
+  //     setOrder({});
+  //   }
+  // }, [order]);
 
   const sendOrder = async (formdata, endpoint) => {
     try {
@@ -416,20 +416,19 @@ const Shipments = () => {
       label: item.name,
     };
   });
-  // comeback
   // Error List
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
-  // console.log(errors, " errors");
+  console.log(errors, " errorsssssssss");
   // console.log(errors.shipper_Value, " shipperValueError");
   // Api-post==========================
   const Joi = require("joi");
-  const [targetElement, setTargetElement] = useState("");
+  const [targetElement, setTargetElement] = useState(null);
 
   const scrollToElement = (targetElement) => {
     const element = document.getElementById(targetElement);
     const focusing = element.querySelector("input");
-    console.log(element, focusing, "element id in function");
+    // console.log(element, focusing, "element id in function");
     if (element) {
       focusing.scrollIntoView({ behavior: "smooth", block: "start" });
       focusing.focus();
@@ -440,9 +439,6 @@ const Shipments = () => {
       scrollToElement(targetElement);
     }
   }, [targetElement]);
-  // console.log(shipperValue, " shipperValue ");
-  // console.log(pickupValue, " pickupValue ");
-
   const handelSubmit = (e) => {
     e.preventDefault();
     const schema = Joi.object({
@@ -454,21 +450,22 @@ const Shipments = () => {
         "number.base": "Please Select a Value",
         "any.required": "Shipper value is required",
       }),
+      pickup_Date: Joi.object().required(),
     });
     const formDataObject = {
       shipper_Value: shipperValue,
       pickup_Value: pickupValue,
+      pickup_Date: startDate,
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
-
     if (error) {
-      // console.log("errorrrr", error.details);
-      // console.log(
-      //   "errorrrrssss details ",
-      //   errors.pickup_Value,
-      //   " ",
-      //   targetElement
-      // );
+      console.log("errorrrr", error.details);
+      console.log(
+        "errorrrrssss details ",
+        errors.pickup_Value,
+        " ",
+        targetElement
+      );
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -481,15 +478,14 @@ const Shipments = () => {
       console.log("Validation succeeded");
       setLoading(true);
       setErrors({});
-
       try {
         // Your existing submission logic here
         // ...
 
         // If submission is successful
-        showNotification();
+        // showNotification();
         setList(true);
-        navigate("/allshipments"); // Navigate after 3 seconds (matching the toast duration)
+        // navigate("/allshipments");
       } catch (error) {
         // Handle any errors
         console.error("Submission error:", error);
@@ -574,7 +570,7 @@ const Shipments = () => {
         shipmentTypePlanned: "",
         shipmentvaluePlanned: "",
         weightPlanned: "",
-        numTrucksPlanned: 1,
+        numTrucksPlanned: "",
         descriptionPlanned: "",
         PickingListPlanned: [],
         documListPlanned: [],
@@ -730,11 +726,11 @@ const Shipments = () => {
               htmlFor="flexSwitchCheckDefault"
               style={{ fontWeight: "500" }}
             >
-              Switch to planned shipments{" "}
+              Switch to planned shipments
               <span style={{ color: "red", fontWeight: "500" }}>?</span>
             </label>
             <p className="position-absolute notegray">
-              * you can choose many shipments{" "}
+              * you can choose many shipments
             </p>
           </div>
         </div>
@@ -860,7 +856,7 @@ const Shipments = () => {
               <>
                 {indexshipment > 0 ? (
                   <form onSubmit={handelSubmit}>
-                    {user_type === "admin" && (
+                    {user_type == "admin" && (
                       <div className="input-shipper " style={{ width: "49%" }}>
                         <p>
                           Shipper<span>*</span>
@@ -875,7 +871,7 @@ const Shipments = () => {
                           }
                           id="shipper_Value"
                           // isMulti
-                          // defaultValue={shipperValue}
+                          defaultValue={shipperValue}
                           isDisabled={!isDisabled}
                           // required={required}
                           isLoading={isLoading}
@@ -915,7 +911,7 @@ const Shipments = () => {
                             classNamePrefix="select"
                             id="pickup_Value"
                             className={
-                              errors.shipper_Value
+                              errors.pickup_Value
                                 ? "hasError basic-multi-select"
                                 : "basic-multi-select"
                             }
@@ -923,7 +919,7 @@ const Shipments = () => {
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             isClearable={isClearable}
-                            // required={required}
+                            required={required}
                             isRtl={isRtl}
                             isSearchable={isSearchable}
                             name="pickapaddres"
@@ -938,7 +934,7 @@ const Shipments = () => {
                                 choice.value
                               );
                             }}
-                          />
+                          />{" "}
                           {errors.pickup_Value && (
                             <h5 className="error">{errors.pickup_Value}</h5>
                           )}
@@ -949,9 +945,14 @@ const Shipments = () => {
                           </label>
 
                           <DatePicker
-                            className="date-input position-relative px-5"
+                            className={
+                              errors.pickup_Date
+                                ? "hasError date-input position-relative px-5"
+                                : "date-input position-relative px-5"
+                            }
+                            id="pickup_Date"
                             selected={startDate}
-                            required={true}
+                            // required={true}
                             onChange={(date) => {
                               setStartDate(date);
                               // setPickup_DateValue(date);
@@ -967,7 +968,9 @@ const Shipments = () => {
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
                           />
-
+                          {errors.pickup_Date && (
+                            <h5 className="error">{errors.pickup_Date}</h5>
+                          )}
                           <Dateicon
                             className="position-absolute"
                             style={{ top: "36%", left: "53%" }}
@@ -975,13 +978,10 @@ const Shipments = () => {
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">
-                            Pickup Time<span>*</span>
-                          </label>
-                          <label>From</label>
+                          <label htmlFor="address">Pickup Time</label>
                           <input
                             type="time"
-                            required
+                            // required
                             onChange={(v) => {
                               setPickup_TimeFromValue(v.target.value);
                               pickupTimeFromPlanned_handleInputChange(
@@ -993,10 +993,9 @@ const Shipments = () => {
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
-                          <label>To</label>
                           <input
                             type="time"
-                            required
+                            // required
                             onChange={(v) => {
                               setPickup_TimeToValue(v.target.value);
                               pickupTimeToPlanned_handleInputChange(
@@ -1027,11 +1026,10 @@ const Shipments = () => {
                           {/* dropoff-select */}
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
-                            required
+                            // required
                             isClearable={isClearable}
                             isRtl={isRtl}
                             isSearchable={isSearchable}
@@ -1053,13 +1051,10 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">
-                            Drop off Time<span>*</span>
-                          </label>
-                          <label>From</label>
+                          <label htmlFor="address">Drop off Time</label>
                           <input
                             type="time"
-                            required
+                            // required
                             onChange={(v) => {
                               setDrop_TimeFromValue(v.target.value);
                               dropTimeFromPlanned_handleInputChange(
@@ -1070,10 +1065,9 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="input mx-3 mt-4">
-                          <label htmlFor="address">To</label>
                           <input
                             type="time"
-                            required
+                            // required
                             onChange={(v) => {
                               setDrop_TimeToValue(v.target.value);
                               dropTimeToPlanned_handleInputChange(
@@ -1129,7 +1123,6 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
-                                // shipperValue={shipperValue}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1320,9 +1313,9 @@ const Shipments = () => {
                               ? "hasError basic-multi-select"
                               : "basic-multi-select"
                           }
-                          id="shipper_Value"
-                          // isMulti
+                          id="shipper_Value" // isMulti
                           isDisabled={isDisabled}
+                          defaultValue={shipperValue}
                           // required={required}
                           isLoading={isLoading}
                           isClearable={isClearable}
@@ -1340,7 +1333,7 @@ const Shipments = () => {
                               choice.value
                             );
                           }}
-                        />
+                        />{" "}
                         {errors.shipper_Value && (
                           <h5 className="error">{errors.shipper_Value}</h5>
                         )}
@@ -1356,7 +1349,7 @@ const Shipments = () => {
                           <Select
                             classNamePrefix="select"
                             className={
-                              errors.shipper_Value
+                              errors.pickup_Value
                                 ? "hasError basic-multi-select"
                                 : "basic-multi-select"
                             }
@@ -1390,7 +1383,12 @@ const Shipments = () => {
                           </label>
 
                           <DatePicker
-                            className="date-input position-relative px-5"
+                            className={
+                              errors.pickup_Date
+                                ? "hasError  position-relative px-5"
+                                : " position-relative px-5"
+                            }
+                            id="pickup_Date"
                             selected={startDate}
                             // required={true}
                             onChange={(date) => {
@@ -1408,19 +1406,17 @@ const Shipments = () => {
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
                           />
-
+                          {errors.pickup_Date && (
+                            <h5 className="error">{errors.pickup_Date}</h5>
+                          )}
                           <Dateicon
                             className="position-absolute"
-                            style={{ top: "33%", left: "52%" }}
+                            style={{ top: "36%", left: "53%" }}
                           />
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">
-                            Pickup Time<span>*</span>
-                          </label>
-
-                          <span style={{ fontWeight: "400" }}>From</span>
+                          <label htmlFor="address">Pickup Time</label>
                           <input
                             type="time"
                             // required
@@ -1435,7 +1431,6 @@ const Shipments = () => {
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
-                          <span style={{ fontWeight: "400" }}>To</span>
                           <input
                             type="time"
                             // required
@@ -1518,41 +1513,31 @@ const Shipments = () => {
                           />
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">
-                            Drop off Time<span>*</span>
-                          </label>
-                          <div className="d-flex align-items-center">
-                            <span style={{ fontWeight: "400" }}>From</span>
-                            <input
-                              type="time"
-                              className="mx-1"
-                              // required
-                              onChange={(v) => {
-                                setDrop_TimeFromValue(v.target.value);
-                                dropTimeFromPlanned_handleInputChange(
-                                  indexshipment,
-                                  v.target.value
-                                );
-                              }}
-                            />
-                          </div>
+                          <label htmlFor="address">Drop off Time</label>
+                          <input
+                            type="time"
+                            // required
+                            onChange={(v) => {
+                              setDrop_TimeFromValue(v.target.value);
+                              dropTimeFromPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
                         </div>
                         <div className="input mx-3 mt-4">
-                          <div className="d-flex align-items-center">
-                            <span style={{ fontWeight: "400" }}>To</span>
-                            <input
-                              type="time"
-                              className="mx-1"
-                              // required
-                              onChange={(v) => {
-                                setDrop_TimeToValue(v.target.value);
-                                dropTimeToPlanned_handleInputChange(
-                                  indexshipment,
-                                  v.target.value
-                                );
-                              }}
-                            />
-                          </div>
+                          <input
+                            type="time"
+                            // required
+                            onChange={(v) => {
+                              setDrop_TimeToValue(v.target.value);
+                              dropTimeToPlanned_handleInputChange(
+                                indexshipment,
+                                v.target.value
+                              );
+                            }}
+                          />
                         </div>
                         {shipperValue === "" ? (
                           <div className="add-btn">
@@ -1614,7 +1599,6 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
-                                shipperValue={shipperValue}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1672,15 +1656,7 @@ const Shipments = () => {
                                 {plannedList[counter].shipperPlanned === "" ||
                                 plannedList[counter].pickupAddressPlanned ===
                                   "" ||
-                                plannedList[counter].pickupDatePlanned === "" ||
-                                plannedList[counter].pickupTimeFromPlanned ===
-                                  "" ||
-                                plannedList[counter].pickupTimeToPlanned ===
-                                  "" ||
                                 plannedList[counter].dropOffPlanned === "" ||
-                                plannedList[counter].dropTimeFromPlanned ===
-                                  "" ||
-                                plannedList[counter].dropTimeToPlanned === "" ||
                                 plannedList[counter].detailsTruck[0]
                                   .truckTypePlanned === "" ||
                                 plannedList[counter].detailsTruck[0]
@@ -1693,10 +1669,6 @@ const Shipments = () => {
                                   .shipmentvaluePlanned === "" ||
                                 plannedList[counter].detailsTruck[0]
                                   .weightPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .numTrucksPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .PickingListPlanned === "" ||
                                 plannedList[counter].detailsTruck[0]
                                   .commidityPlanned === "" ||
                                 plannedList[counter].detailsTruck[0]
@@ -1846,7 +1818,6 @@ const Shipments = () => {
                 className="btnSave my-4"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                disabled={isLoading}
                 onClick={() => {
                   console.log("hiiiiii");
                   scrollToElement(targetElement);
