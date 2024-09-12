@@ -1,39 +1,47 @@
 /* personinfo */
-.adddriver h3{
-    color: #0E324A;
-    font-size: 18px;
-    font-weight: 700;
+.adddriver h3 {
+  color: #0e324a;
+  font-size: 18px;
+  font-weight: 700;
 }
-.adddriver label{
-    color: #0E324A;
-    font-weight: 600;
-    font-size: 18px;
+.adddriver label {
+  color: #0e324a;
+  font-weight: 600;
+  font-size: 18px;
 }
-.adddriver .input-box{
-    border: 1px solid #B2B2B2;
-    border-radius: 20px;
-    color: #000;
-    Width: 90%;
-    height: 48px;
+.adddriver .input-box {
+  border: 1px solid #b2b2b2;
+  border-radius: 20px;
+  color: #000;
+  width: 90%;
+  height: 48px;
 }
-.adddriver .input-box::placeholder{
-    color: #B2B2B2;
+.adddriver .input-box::placeholder {
+  color: #b2b2b2;
 }
-.adddriver input[type="file"]::-webkit-file-upload-button{
-    height: 100%;
-    width: 30%;
-    padding: 10px;
-    border: 0;
-    border-radius: 20px;
+.adddriver input[type="file"]::-webkit-file-upload-button {
+  height: 100%;
+  width: 30%;
+  padding: 10px;
+  border: 0;
+  border-radius: 20px;
 }
-.adddriver .btn-save{
-    background: #0E324A;
-    border-radius: 42px;
-    color: #fff;
-    font-weight: 700;
-    width: 12%;
-    border: 0;
-    padding: 6px 0px;
-    margin-left: 40%;
-    font-size: 16px;
+.adddriver .btn-save {
+  background: #0e324a;
+  border-radius: 42px;
+  color: #fff;
+  font-weight: 700;
+  width: 12%;
+  border: 0;
+  padding: 6px 0px;
+  margin-left: 40%;
+  font-size: 16px;
+}
+.disabled {
+  opacity: 0.5;
+}
+
+.hasError {
+  border: 2px solid red !important;
+  border-radius: 25px;
 }
