@@ -3,7 +3,7 @@ import Select from "react-select";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import "./Shipments.css";
 
@@ -51,8 +51,11 @@ const Inputs = ({
   arrListnumShipment,
   indexshipment,
   indexdetails,
+  okay,
 }) => {
   const { list, setList } = useContext(ContextStore);
+  const navigate = useNavigate();
+
   // const {errorlist , setErrorList}= useContext(ContextStore)
   // console.log(plannedList.length, "plannedList");
   useEffect(() => {
@@ -72,9 +75,15 @@ const Inputs = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
 
-  // shipmentOptionList
+  // shipmentOptionList Used for Joi
   const [shipmentOptionListList, setShipmentOptionListList] = useState();
   const [truckuserChoice, setTruckuserChoice] = useState();
+  const [shipmentType, setShipmentType] = useState();
+  const [shipmentValue, setShipmentValue] = useState();
+  const [weigth, setWeight] = useState();
+  const [commodity, setCommodity] = useState();
+  const [unitMeasure, setUnitMeasure] = useState();
+  const [quantityValue, setQuantityValue] = useState();
 
   // truck-type
   const truckTypehandleInputChange = (index, event) => {
@@ -193,16 +202,99 @@ const Inputs = ({
 
     setOpenerror(false);
   };
+  // Error List
+  const [errors, setErrors] = useState([]);
+  console.log(errors, " errorsssssssss");
+  const Joi = require("joi");
+  const [targetElement, setTargetElement] = useState(null);
 
+  const scrollToElement = (targetElement) => {
+    const element = document.getElementById(targetElement);
+    const focusing = element.querySelector("input");
+    if (focusing) {
+      focusing.scrollIntoView({ behavior: "smooth", block: "start" });
+      focusing.focus();
+      console.log(focusing, "focusing id in function");
+    } else if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.focus();
+      console.log(element, "element id in function");
+    }
+  };
+  useEffect(() => {
+    if (targetElement && errors && okay) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement, errors, okay]);
   // Api-shipment
   const AddShipments_Api = async (plannedList) => {
+    const formdata = new FormData();
+
     console.log(plannedList, "plannedList--------");
     // e.preventDefault();
+    const schema = Joi.object({
+      trackUser_Choice: Joi.number().required().messages({
+        "number.base": "Please Select a Truck type",
+        "any.required": "Truck type is required",
+      }),
+      shipment_type: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment type is required",
+      }),
+      // // ComeBAck
+      shipment_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment Value is required",
+      }),
+      shipment_Weight: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment Weight is required",
+      }),
+      commodity_Value: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "Commodity type is required",
+      }),
+      unit_Measurement: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "unit of measurement is required",
+      }),
+      quantity_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Quantity is required",
+      }),
+    });
+    const formDataObject = {
+      trackUser_Choice: truckuserChoice,
+      shipment_type: shipmentType,
+      shipment_Value: shipmentValue,
+      shipment_Weight: weigth,
+      commodity_Value: commodity,
+      unit_Measurement: unitMeasure,
+      quantity_Value: quantityValue,
+    };
+    const { error } = schema.validate(formDataObject, { abortEarly: false });
+    if (error) {
+      console.log("errorrrr", error.details);
+      console.log(
+        "errorrrrssss details ",
+        errors.pickup_Value,
+        " ",
+        targetElement
+      );
+      const newErrors = error.details.reduce((acc, detail) => {
+        acc[detail.path[0]] = detail.message;
+        return acc;
+      }, {});
+      setErrors(newErrors);
 
-    const formdata = new FormData();
+      setTargetElement(error.details[0].context.label);
+      console.log(error.details, " allErrors");
+    }
     // Without-Planned=============================
-    if (plannedList.length === 1) {
+    else if (plannedList.length === 1) {
       plannedList.map((item, index) => {
+        setIsLoading(true);
+        setErrors([]);
         // formdata.append(`orders[${index}][shipper_id]`,item.shipperPlanned);
         formdata.append(`shipper_id`, item.shipperPlanned);
 
@@ -285,6 +377,7 @@ const Inputs = ({
 
       // below is a temp fix to be able to send the order request only once
       handleOrder(formdata);
+      navigate("/allshipments");
 
       try {
         const reponse = await axios.post(
@@ -574,8 +667,13 @@ const Inputs = ({
           {/* trucktype */}
           <Select
             classNamePrefix="select"
-            className="basic-multi-select"
             // isMulti
+            className={
+              errors.trackUser_Choice
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="trackUser_Choice"
             isDisabled={isDisabled}
             // required
             isLoading={isLoading}
@@ -592,6 +690,9 @@ const Inputs = ({
               TruckPlannedChange(indexshipment, indexdetails, choice.value);
             }}
           />
+          {errors.trackUser_Choice && (
+            <h5 className="error">{errors.trackUser_Choice}</h5>
+          )}
         </div>
         <div className="input col-2">
           <label htmlFor="address">
@@ -600,7 +701,12 @@ const Inputs = ({
           {/* shipment-type */}
           <Select
             classNamePrefix="select"
-            className="basic-multi-select"
+            className={
+              errors.shipment_type
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_type"
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
@@ -622,9 +728,12 @@ const Inputs = ({
                 indexdetails,
                 choice.value
               );
+              setShipmentType(choice.value);
             }}
           />
-
+          {errors.shipment_type && (
+            <h5 className="error">{errors.shipment_type}</h5>
+          )}
           {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
         </div>
         <div className="input col-2">
@@ -635,13 +744,23 @@ const Inputs = ({
             type="number"
             // required
             placeholder="i,e, 10"
+            className={
+              errors.shipment_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Value"
             // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
             // totaldetails
             onChange={(e) => {
               // valueOfhandleInputChange(indexOfItem, e)
               shipmentValuePlannedChange(indexshipment, indexdetails, e);
+              setShipmentValue(e.target.value);
             }}
           />
+          {errors.shipment_Value && (
+            <h5 className="error">{errors.shipment_Value}</h5>
+          )}
           {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
         </div>
         <div className="input col-2">
@@ -652,14 +771,24 @@ const Inputs = ({
             type="number"
             placeholder="i,e,2000  Kgs"
             min="1"
+            className={
+              errors.shipment_Weight
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Weight"
             // required
             onChange={(e) => {
               // setWeightValue(e.target.value);
               // weighthandleInputChange(indexOfItem, e);
               shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
+              setWeight(e.target.value);
             }}
           />
-          {errList ? <span className="err_message mx-3"> required</span> : ""}
+          {errors.shipment_Weight && (
+            <h5 className="error">{errors.shipment_Weight}</h5>
+          )}
+          {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
           {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
         </div>
         <div className="input col-2">
@@ -748,7 +877,12 @@ const Inputs = ({
           </label>
           <Select
             classNamePrefix="select"
-            className="basic-multi-select"
+            className={
+              errors.commodity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="commodity_Value"
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
@@ -763,8 +897,12 @@ const Inputs = ({
               // setCommodityTypeValue(choice.value);
               // commiditieshandleInputChange(indexOfItem, choice.value);
               commidityPlannedChange(indexshipment, indexdetails, choice.value);
+              setCommodity(choice.value);
             }}
           />
+          {errors.commodity_Value && (
+            <h5 className="error">{errors.commodity_Value}</h5>
+          )}
         </div>
         <div className="input col-2">
           <label htmlFor="address">
@@ -772,7 +910,12 @@ const Inputs = ({
           </label>
           <Select
             classNamePrefix="select"
-            className="basic-multi-select"
+            className={
+              errors.unit_Measurement
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="unit_Measurement"
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
@@ -786,8 +929,12 @@ const Inputs = ({
               // setUomValue(choice.value);
               // uom_handleInputChange(indexOfItem, choice.value);
               uomPlannedChange(indexshipment, indexdetails, choice.value);
+              setUnitMeasure(choice.value);
             }}
-          />
+          />{" "}
+          {errors.unit_Measurement && (
+            <h5 className="error">{errors.unit_Measurement}</h5>
+          )}
         </div>
         <div className="input col-2">
           <label htmlFor="address">
@@ -795,15 +942,24 @@ const Inputs = ({
           </label>
           <input
             type="number"
+            className={
+              errors.quantity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="quantity_Value"
             // required
             min="1"
             placeholder="i,e,02"
             onChange={(e) => {
-              // setQuantityValue(e.target.value);
+              setQuantityValue(e.target.value);
               // quantityValue_handleInputChange(indexOfItem, e);
               quantityPlannedChange(indexshipment, indexdetails, e);
             }}
           />
+          {errors.quantity_Value && (
+            <h5 className="error">{errors.quantity_Value}</h5>
+          )}
         </div>
       </div>
     </>

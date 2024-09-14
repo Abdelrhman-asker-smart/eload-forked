@@ -123,7 +123,7 @@ const Shipments = () => {
 
   // const date = new Date();
   const [startDate, setStartDate] = useState("");
-  console.log("startDate type", typeof startDate);
+  // console.log("startDate type", typeof startDate);
   // datepacker_from tomorrow
   const today = new Date();
   let tomorrow = new Date();
@@ -151,7 +151,7 @@ const Shipments = () => {
   const [pickup_TimeToValue, setPickup_TimeToValue] = useState("");
   // dropoff-chooses
   const [dropoffValue, setDropoffValue] = useState("");
-
+  // console.log("dropOfValue ", typeof dropoffValue);
   const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
@@ -296,7 +296,7 @@ const Shipments = () => {
         cancelButtonText: "ok",
         timer: 8000,
       });
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -404,7 +404,7 @@ const Shipments = () => {
       navigate(`/${redirect_to}`, { replace: true });
     } catch (e) {
       // handleClick2();
-      console.log(e);
+      // console.log(e);
     }
   };
   const [choise, setchoise] = useState("");
@@ -420,6 +420,9 @@ const Shipments = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
   console.log(errors, " errorsssssssss");
+
+  // to ckeck if the inputs here are okay or not and pass it to inputs component
+  const [okay, setOkay] = useState(true);
   // console.log(errors.shipper_Value, " shipperValueError");
   // Api-post==========================
   const Joi = require("joi");
@@ -429,18 +432,22 @@ const Shipments = () => {
     const element = document.getElementById(targetElement);
     const focusing = element.querySelector("input");
     // console.log(element, focusing, "element id in function");
-    if (element) {
+    if (focusing) {
       focusing.scrollIntoView({ behavior: "smooth", block: "start" });
       focusing.focus();
+    } else if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.focus();
     }
   };
   useEffect(() => {
-    if (targetElement) {
+    if (targetElement && !okay) {
       scrollToElement(targetElement);
     }
-  }, [targetElement]);
+  }, [targetElement, okay]);
   const handelSubmit = (e) => {
     e.preventDefault();
+    console.log("we r on handling nooow");
     const schema = Joi.object({
       shipper_Value: Joi.number().required().messages({
         "number.base": "Please Select a Value",
@@ -450,22 +457,30 @@ const Shipments = () => {
         "number.base": "Please Select a Value",
         "any.required": "Shipper value is required",
       }),
-      pickup_Date: Joi.object().required(),
+      // ComeBAck
+      pickup_Date: Joi.date().required().messages({
+        "date.base": "Please Pickup a Valid Date",
+      }),
+      dropOf_Address: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "Address value is required",
+      }),
     });
     const formDataObject = {
       shipper_Value: shipperValue,
       pickup_Value: pickupValue,
       pickup_Date: startDate,
+      dropOf_Address: dropoffValue,
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-      console.log("errorrrr", error.details);
-      console.log(
-        "errorrrrssss details ",
-        errors.pickup_Value,
-        " ",
-        targetElement
-      );
+      // console.log("errorrrr", error.details);
+      // console.log(
+      //   "errorrrrssss details ",
+      //   errors.pickup_Value,
+      //   " ",
+      //   targetElement
+      // );
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -474,10 +489,16 @@ const Shipments = () => {
 
       setTargetElement(error.details[0].context.label);
       // console.log(error.details, " allErrors");
+
+      setOkay(false);
+      //  to pass to input page to check its errors (but data wont send before all required inputs are Okay)
+      setList(true);
+      if (!errors) setOkay(true);
     } else {
       console.log("Validation succeeded");
-      setLoading(true);
+      // setLoading(true);
       setErrors({});
+      setOkay(true);
       try {
         // Your existing submission logic here
         // ...
@@ -855,7 +876,10 @@ const Shipments = () => {
             {indexshipment === counter && (
               <>
                 {indexshipment > 0 ? (
-                  <form onSubmit={handelSubmit}>
+                  <form
+                    onSubmit={handelSubmit}
+                    className={loading ? "disabled" : ""}
+                  >
                     {user_type == "admin" && (
                       <div className="input-shipper " style={{ width: "49%" }}>
                         <p>
@@ -909,17 +933,17 @@ const Shipments = () => {
                           </label>
                           <Select
                             classNamePrefix="select"
-                            id="pickup_Value"
                             className={
                               errors.pickup_Value
                                 ? "hasError basic-multi-select"
                                 : "basic-multi-select"
                             }
+                            id="pickup_Value"
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             isClearable={isClearable}
-                            required={required}
+                            // required={required}
                             isRtl={isRtl}
                             isSearchable={isSearchable}
                             name="pickapaddres"
@@ -1027,6 +1051,12 @@ const Shipments = () => {
                           <Select
                             classNamePrefix="select"
                             // isMulti
+                            id="dropOf_Address"
+                            className={
+                              errors.dropOf_Address
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             // required
@@ -1049,6 +1079,9 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.dropOf_Address && (
+                            <h5 className="error">{errors.dropOf_Address}</h5>
+                          )}
                         </div>
                         <div className="input mx-3">
                           <label htmlFor="address">Drop off Time</label>
@@ -1123,6 +1156,7 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+                                okay={okay}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1299,7 +1333,10 @@ const Shipments = () => {
                     </div>
                   </form>
                 ) : (
-                  <form onSubmit={handelSubmit}>
+                  <form
+                    onSubmit={handelSubmit}
+                    className={loading ? "disabled" : ""}
+                  >
                     {user_type === "admin" && (
                       <div className="input-shipper " style={{ width: "49%" }}>
                         <p>
@@ -1487,8 +1524,13 @@ const Shipments = () => {
                           {/* dropoff-select */}
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
                             // isMulti
+                            id="dropOf_Address"
+                            className={
+                              errors.dropOf_Address
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             // required
@@ -1511,6 +1553,9 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.dropOf_Address && (
+                            <h5 className="error">{errors.dropOf_Address}</h5>
+                          )}
                         </div>
                         <div className="input mx-3">
                           <label htmlFor="address">Drop off Time</label>
@@ -1599,6 +1644,8 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+                                okay={okay}
+                                setLoading={setLoading}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1641,7 +1688,7 @@ const Shipments = () => {
                         {ischeck ? (
                           <div className="right-btn">
                             {/* <NavLink to="/allshipments"> */}
-                            {console.log(counter, "counter inside JSX")}
+                            {/* {console.log(counter, "counter inside JSX")} */}
                             {counter === numShipment - 1 ? (
                               <button
                                 className="btn-save"
@@ -1815,13 +1862,12 @@ const Shipments = () => {
               </div>
               <button
                 type="sumbit"
-                className="btnSave my-4"
+                className="btnSave my-4 adwadawdasd"
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
-                  console.log("hiiiiii");
-                  scrollToElement(targetElement);
                   setIsChecked(!ischeck);
+                  scrollToElement(targetElement);
                   // if (plannedList.length < numShipment) {
                   //   // Add new empty shipments to match the requested number
                   //   const newShipments = Array(numShipment - plannedList.length).fill(plannedAllShipments);
