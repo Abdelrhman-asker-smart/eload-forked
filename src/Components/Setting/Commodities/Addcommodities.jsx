@@ -2,14 +2,26 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {  useState } from "react";
 import { useCookies } from "react-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 import axios from "axios";
 import "./Addcommodities.css";
 
 const Addcommodities = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [emptyInput, setEmptyInput] = useState(false);
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   const [cookie] = useCookies(["eload_token"]);
   console.log(name, "name");
@@ -35,8 +47,10 @@ const Addcommodities = () => {
       //     setName("")
       //     console.log('logged in')
       //   }
-      setName("");
-        console.log(reponse);
+      // setName("");
+        // console.log(reponse)
+        showNotification();
+        navigate(`/commodities`);
     } catch (e) {
       Swal.fire({
         position: 'top-end',
@@ -106,8 +120,8 @@ const Addcommodities = () => {
             <button
             type="submit"
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
           >
             Save
           </button>

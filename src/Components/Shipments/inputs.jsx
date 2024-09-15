@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import { NavLink, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import "./Shipments.css";
+import { ToastContainer, toast } from "react-toastify";
 
 // trucks
 import { ReactComponent as Truck1 } from "../../icons/Vector.svg";
@@ -56,6 +57,14 @@ const Inputs = ({
 }) => {
   const { list, setList } = useContext(ContextStore);
   const navigate = useNavigate();
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   // const {errorlist , setErrorList}= useContext(ContextStore)
   // console.log(plannedList.length, "plannedList");
@@ -228,6 +237,10 @@ const Inputs = ({
     }
   }, [targetElement, errors, okay]);
   // Api-shipment
+  console.log(plannedList.length ,"checklenghttttt");
+  console.log(plannedList[0].detailsTruck?.length ,"checklenghttttt");
+
+
 
   const AddShipments_Api = async (plannedList) => {
     const formdata = new FormData();
@@ -395,17 +408,16 @@ const Inputs = ({
         );
 
         handleOrder(formdata);
+      showNotification();
         navigate("/allshipments");
 
-        // setName("");
-        //   console.log(reponse);
       } catch (e) {
-        // handleClick2();
         console.log(e);
       }
 
       // Planned=============================
-    } else if (plannedList.length > 1) {
+    } 
+    else if (plannedList.length > 1) {
       plannedList.map((item, index) => {
         formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
         // formdata.append(`shipper_id`,item.shipperPlanned);
@@ -503,7 +515,7 @@ const Inputs = ({
       });
       console.log("Addplanned----------Done");
 
-      // below is a temp fix to be able to send the order request only once
+
       handleOrder(formdata);
 
       try {
@@ -523,12 +535,11 @@ const Inputs = ({
         );
 
         handleOrder(formdata);
+      showNotification();
         navigate("/allshipments");
 
-        // setName("");
-        //   console.log(reponse);
       } catch (e) {
-        // handleClick2();
+
         console.log(e);
       }
     }
@@ -730,11 +741,11 @@ const Inputs = ({
                 choice.value
               );
               // shipmentTypehandleInputChange(indexOfItem, choice.value);
-              shipmenttypePlannedChange(
-                indexshipment,
-                indexdetails,
-                choice.value
-              );
+              // shipmenttypePlannedChange(
+              //   indexshipment,
+              //   indexdetails,
+              //   choice.value
+              // );
               setShipmentType(choice.value);
             }}
           />

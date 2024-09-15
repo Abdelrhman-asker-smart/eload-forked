@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+// import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import "./addUser.css";
@@ -25,6 +27,16 @@ const Addadmin = () => {
   // Error List
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
+  
 
   // Api-post==========================
   const Joi = require("joi");
@@ -81,9 +93,11 @@ const Addadmin = () => {
           }
         );
 
-        setName("");
-        setEmail("");
-        setPass("");
+        // setName("");
+        // setEmail("");
+        // setPass("");
+        // navigate(`/all-admins`);
+        showNotification();
         navigate(`/all-admins`);
 
         //   console.log(reponse);

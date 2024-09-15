@@ -6,8 +6,12 @@ import Swal from 'sweetalert2'
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddShipment = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [emptyInput, setEmptyInput] = useState(false);
 
@@ -15,6 +19,15 @@ const AddShipment = () => {
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   const recordShippment = async () => {
     console.log("save triggered");
@@ -35,7 +48,9 @@ const AddShipment = () => {
       //     setName("")
       //     console.log('logged in')
       //   }
-      setName("");
+      // setName("");
+      showNotification();
+      navigate(`/shipmentlist`);
       //   console.log(reponse);
     } catch (e) {
       Swal.fire({
@@ -104,8 +119,8 @@ const AddShipment = () => {
             <button
             type="submit"
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={recordShippment}
           >
             Save

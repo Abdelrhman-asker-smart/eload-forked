@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import "./AddTruck.css";
 
 const AddTruck = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [emptyInput, setEmptyInput] = useState(false);
@@ -15,6 +19,15 @@ const AddTruck = () => {
   const [flagError, setFlagError] = useState();
 
   const [cookie] = useCookies(["eload_token"]);
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   const recordTruck = async () => {
     const formdata = new FormData();
@@ -36,8 +49,10 @@ const AddTruck = () => {
         }
       );
 
-      setName("");
-      console.log(reponse);
+      // setName("");
+      showNotification();
+      navigate(`/trucklist`);
+      // console.log(reponse);
     } catch (e) {
       Swal.fire({
         position: 'top-end',
@@ -126,8 +141,8 @@ const AddTruck = () => {
               type="button"
               onClick={recordTruck}
               className="btn save-btn"
-              data-bs-toggle="modal"
-              href="#exampleModalToggle"
+              // data-bs-toggle="modal"
+              // href="#exampleModalToggle"
             >
               Save
             </button>

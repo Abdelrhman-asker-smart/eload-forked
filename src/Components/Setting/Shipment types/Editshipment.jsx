@@ -12,14 +12,26 @@ import {
   categoryEditReducer,
   editShipment,
 } from "../../../redux/editShipment";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Editshipment = () => {
+  const navigate = useNavigate();
+
   const { list, status } = useSelector((state) => state.ShipmentList);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   // console.log(id, "id");
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   useEffect(() => {
     const findName = () => {
@@ -45,7 +57,9 @@ const Editshipment = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
+        showNotification();
+        navigate(`/shipmentlist`);
       })
       .catch((e) => {
         Swal.fire({
@@ -96,8 +110,8 @@ const Editshipment = () => {
         <div className="btn-side text-center my-5">
           <button
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={() => edit()}
           >
             Save

@@ -3,17 +3,28 @@ import { NavLink } from "react-router-dom";
 import {  useState } from "react";
 import { useCookies } from "react-cookie";
 import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import "./Category-Add.css";
 
 const CategortAdd = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
   const [emptyInput, setEmptyInput] = useState(false);
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
   
 
   const recordCategory = async () => {
@@ -32,7 +43,10 @@ const CategortAdd = () => {
         }
       );
 
-      setName("");
+      // setName("");
+      showNotification();
+      navigate(`/categorylist`);
+
       //   console.log(reponse);
     } catch (e) {
       Swal.fire({
@@ -100,8 +114,8 @@ const CategortAdd = () => {
             <button
             type="submit"
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={recordCategory}
           >
             Save

@@ -4,10 +4,14 @@ import { useCookies } from "react-cookie";
 import { useState } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import "./AddMeasurements.css";
 
 const AddMeasurements = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [emptyInput, setEmptyInput] = useState(false);
 
@@ -15,6 +19,15 @@ const AddMeasurements = () => {
   console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   const recordCategory = async () => {
     console.log("save triggered");
@@ -35,7 +48,9 @@ const AddMeasurements = () => {
       //     setName("")
       //     console.log('logged in')
       //   }
-      setName("");
+      // setName("");
+      showNotification();
+      navigate(`/measurements`);
       //   console.log(reponse);
     } catch (e) {
       Swal.fire({
@@ -102,8 +117,10 @@ const AddMeasurements = () => {
             <button
             type="submit"
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            onClick={recordCategory}
+
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
           >
             Save
           </button>

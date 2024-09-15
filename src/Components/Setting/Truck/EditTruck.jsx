@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,6 +17,8 @@ import {
 import "./EditTruck.css";
 
 const EditTruck = () => {
+  const navigate = useNavigate();
+
   const { list, status } = useSelector((state) => state.TruckList);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -22,6 +26,15 @@ const EditTruck = () => {
   const [image, setImage] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   console.log(image, "image");
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   useEffect(() => {
     const findName = () => {
@@ -50,7 +63,9 @@ const EditTruck = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        showNotification();
+        navigate(`/trucklist`);
+        // console.log(res);
       })
       .catch((e) => {
         Swal.fire({
@@ -125,8 +140,8 @@ const EditTruck = () => {
 
           <button
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={() => edit()}
           >
             Save

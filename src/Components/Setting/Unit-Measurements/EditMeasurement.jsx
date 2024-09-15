@@ -13,14 +13,27 @@ import {
   editUOM,
 } from "../../../redux//EditUOMslice";
 import "./EditMeasurement.css";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const EditMeasurements = () => {
+  const navigate = useNavigate();
+
   const { list, status } = useSelector((state) => state.UOMList);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   // console.log(id, "id");
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   useEffect(() => {
     const findName = () => {
@@ -47,7 +60,9 @@ const EditMeasurements = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
+        showNotification();
+        navigate(`/measurements`);
       })
       .catch((e) => {
         Swal.fire({
@@ -97,8 +112,8 @@ const EditMeasurements = () => {
         <div className="btn-side text-center my-5">
           <button
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={() => edit()}
           >
             Save

@@ -299,8 +299,9 @@ const Shipments = () => {
 
       // console.log(e);
 
-    }
-  };
+    });
+  }
+}
 
   // picklist-group
   const GroupspickupOptions = pickupList.map((item, index) => ({

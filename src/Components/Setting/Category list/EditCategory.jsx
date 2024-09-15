@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import "./EditCategory.css";
 import Swal from 'sweetalert2'
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
 // import { Provider, useSelector } from "react-redux";
@@ -15,12 +17,22 @@ import {
 } from "../../../redux/editCategorySlice";
 
 const EditCategory = () => {
+  const navigate = useNavigate();
   const { list, status } = useSelector((state) => state.categoryList);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   // console.log(id, "id");
+
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   useEffect(() => {
     const findName = () => {
@@ -48,6 +60,8 @@ const EditCategory = () => {
     )
       .then((res) => {
         console.log(res);
+        showNotification();
+        navigate(`/categorylist`);
       })
       .catch((e) => {
         Swal.fire({
@@ -120,8 +134,8 @@ const EditCategory = () => {
         <div className="btn-side text-center my-5">
           <button
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={() => edit()}
           >
             Save

@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import {
   categoryEditReducer,
   editcommodities,
@@ -12,12 +14,22 @@ import {
 import "./EditCommodities.css";
 
 const Editcommodities = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const { list, status } = useSelector((state) => state.commoditiesList);
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   // console.log(id, "id");
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
   useEffect(() => {
     const findName = () => {
@@ -43,7 +55,10 @@ const Editcommodities = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        showNotification();
+        navigate(`/commodities`);
+
+        // console.log(res);
       })
       .catch((e) => {
         console.log(e);
@@ -81,8 +96,8 @@ const Editcommodities = () => {
         <div className="btn-side text-center my-5">
           <button
             className="btn save-btn"
-            data-bs-toggle="modal"
-            href="#exampleModalToggle"
+            // data-bs-toggle="modal"
+            // href="#exampleModalToggle"
             onClick={() => edit()}
           >
             Save
