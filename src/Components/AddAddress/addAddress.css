@@ -1,76 +1,77 @@
-.addaddressstyel .head-text
-{
-    font-weight: 600;
-    font-size: 18px;
-    color: #0E324A;
+.addaddressstyel .head-text {
+  font-weight: 600;
+  font-size: 18px;
+  color: #0e324a;
 }
-.addaddressstyel .input
-{
-    padding: .6rem;
-    padding-left: .7rem;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    color: #262626;
-    width: 100%;
+.addaddressstyel .input {
+  padding: 0.6rem;
+  padding-left: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  color: #262626;
+  width: 100%;
 }
-.addaddressstyel .btn-adress
-{
-    padding: .5rem 2.5rem;
-    background: #0E324A;
-    border-radius: 42px;
-    color: #fff;
+.addaddressstyel .btn-adress {
+  padding: 0.5rem 2.5rem;
+  background: #0e324a;
+  border-radius: 42px;
+  color: #fff;
 }
 /* global style */
-.addaddressstyel .text-head
-{
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    font-weight: 700;
-    font-size: 24px;
-    color: #0E324A;
+.addaddressstyel .text-head {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 24px;
+  color: #0e324a;
 }
-.addaddressstyel .input-select-info
-{
-    display: flex;
-    flex-direction: row;
+.addaddressstyel .input-select-info {
+  display: flex;
+  flex-direction: row;
 }
-.addaddressstyel .input-select-info button
-{
-    margin-left: auto;
-    background-color: transparent;
-    border: none;
+.addaddressstyel .input-select-info button {
+  margin-left: auto;
+  background-color: transparent;
+  border: none;
 }
-.addaddressstyel .input-select-info button a
-{
-    font-weight: 700;
-    font-size: 16px;
-    color: #18AEC9 !important;
+.addaddressstyel .input-select-info button a {
+  font-weight: 700;
+  font-size: 16px;
+  color: #18aec9 !important;
 }
-.addaddressstyel .input-select .input
-{
-    margin-top: .5rem;
+.addaddressstyel .input-select .input {
+  margin-top: 0.5rem;
 }
-.addaddressstyel .input-add
-{
-    border: 2px solid #B2B2B2;
-    border-radius: 10px;
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
+.addaddressstyel .input-add {
+  border: 2px solid #b2b2b2;
+  border-radius: 10px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
-.addaddressstyel .input-text-area
-{
-    padding-bottom: 7rem;
-    text-align: start;
+.addaddressstyel .input-text-area {
+  padding-bottom: 7rem;
+  text-align: start;
 }
-.addaddressstyel .footer-address
-{
-    margin-top: 6rem;
+.addaddressstyel .footer-address {
+  margin-top: 6rem;
+}
+.hasError {
+  border: 2px solid red !important;
+  border-radius: 25px;
+}
+.hasError div {
+  border-radius: 25px;
+}
+.form-address .head-text span {
+  font-size: 14px;
+  position: absolute;
+  color: red;
 }

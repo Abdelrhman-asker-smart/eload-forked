@@ -441,13 +441,22 @@ const Shipments = () => {
     }
   };
   useEffect(() => {
+    console.log(targetElement && !okay, " in the Effect");
     if (targetElement && !okay) {
       scrollToElement(targetElement);
     }
   }, [targetElement, okay]);
+
+  console.log(
+    shipperValue,
+    pickupValue,
+    startDate,
+    dropoffValue,
+    "     values"
+  );
+
   const handelSubmit = (e) => {
     e.preventDefault();
-    console.log("we r on handling nooow");
     const schema = Joi.object({
       shipper_Value: Joi.number().required().messages({
         "number.base": "Please Select a Value",
@@ -493,15 +502,16 @@ const Shipments = () => {
       setOkay(false);
       //  to pass to input page to check its errors (but data wont send before all required inputs are Okay)
       setList(true);
-      if (!errors) setOkay(true);
+      // if (!errors) setOkay(true);
     } else {
       console.log("Validation succeeded");
       // setLoading(true);
-      setErrors({});
+      setErrors([]);
       setOkay(true);
       try {
         // Your existing submission logic here
         // ...
+        setErrors([]);
 
         // If submission is successful
         // showNotification();
@@ -613,6 +623,9 @@ const Shipments = () => {
       ...prevList,
       { ...plannedAllShipmentswithshipper },
     ]);
+    setPickupValue();
+    setStartDate();
+    setDropoffValue();
   };
   // array_ofinnerDetails
   const [PlannedInnerDetails, setPlannedInerDetails] = useState([
@@ -928,7 +941,7 @@ const Shipments = () => {
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
                         <div className="input input-select col-md-6">
-                          <label htmlFor="address">
+                          <label htmlFor="address" className="sadas">
                             Pickup Address<span>*</span>
                           </label>
                           <Select
@@ -964,7 +977,7 @@ const Shipments = () => {
                           )}
                         </div>
                         <div className="input col-md-4">
-                          <label htmlFor="address">
+                          <label htmlFor="address" className="asdawd">
                             Pickup Date<span>*</span>
                           </label>
 
@@ -992,13 +1005,17 @@ const Shipments = () => {
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
                           />
+                          <Dateicon
+                            className="position-absolute"
+                            style={
+                              errors.pickup_Date
+                                ? { top: "33%", left: "53%" }
+                                : { top: "36%", left: "53%" }
+                            }
+                          />
                           {errors.pickup_Date && (
                             <h5 className="error">{errors.pickup_Date}</h5>
                           )}
-                          <Dateicon
-                            className="position-absolute"
-                            style={{ top: "36%", left: "53%" }}
-                          />
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
@@ -1157,6 +1174,7 @@ const Shipments = () => {
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
                                 okay={okay}
+                                showNotification={showNotification}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1185,7 +1203,7 @@ const Shipments = () => {
                           <button
                             className="btn-add "
                             id="add"
-                            type="btn"
+                            type="button"
                             onClick={() => {
                               // setInputs([...input, ""]);
                               addPlannedinerDetails(indexshipment);
@@ -1255,7 +1273,11 @@ const Shipments = () => {
 
                                     <button
                                       className="btn-save"
-                                      type="btn"
+                                      type="button"
+                                      onClick={() =>
+                                        scrollToElement(targetElement)
+                                      }
+
                                       // onClick={() => {
                                       //     addNewListOfShipment();
                                       //     counterchange(indexshipment);
@@ -1442,14 +1464,18 @@ const Shipments = () => {
                             minDate={tomorrow}
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
+                          ></DatePicker>
+                          <Dateicon
+                            className="position-absolute"
+                            style={
+                              errors.pickup_Date
+                                ? { top: "33%", left: "53%" }
+                                : { top: "36%", left: "53%" }
+                            }
                           />
                           {errors.pickup_Date && (
                             <h5 className="error">{errors.pickup_Date}</h5>
                           )}
-                          <Dateicon
-                            className="position-absolute"
-                            style={{ top: "36%", left: "53%" }}
-                          />
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
@@ -1646,6 +1672,7 @@ const Shipments = () => {
                                 indexdetails={indexdetails}
                                 okay={okay}
                                 setLoading={setLoading}
+                                showNotification={showNotification}
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1674,7 +1701,7 @@ const Shipments = () => {
                           <button
                             className="btn-add "
                             id="add"
-                            type="btn"
+                            type="button"
                             onClick={() => {
                               // setInputs([...input, ""]);
                               addPlannedinerDetails(indexshipment);
@@ -1700,28 +1727,7 @@ const Shipments = () => {
                               </button>
                             ) : (
                               <>
-                                {plannedList[counter].shipperPlanned === "" ||
-                                plannedList[counter].pickupAddressPlanned ===
-                                  "" ||
-                                plannedList[counter].dropOffPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .shipmentTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .shipmentvaluePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .weightPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .commidityPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .uomPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .quantityPlanned === "" ? (
+                                {errors && (
                                   <>
                                     <span
                                       className="mx-2"
@@ -1733,37 +1739,52 @@ const Shipments = () => {
                                     <button
                                       className="btn-save"
                                       type="btn"
-                                      // onClick={() => {
-                                      //     addNewListOfShipment();
-                                      //     counterchange(indexshipment);
-                                      // }}
+                                      onClick={() => {
+                                        if (
+                                          plannedList[counter]
+                                            .shipperPlanned === "" ||
+                                          plannedList[counter]
+                                            .pickupAddressPlanned === "" ||
+                                          plannedList[counter]
+                                            .dropOffPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .shipmentTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .shipmentvaluePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .weightPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .commidityPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .uomPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .quantityPlanned === ""
+                                        ) {
+                                          scrollToElement(targetElement);
+                                        } else if (counter < numShipment - 1) {
+                                          if (
+                                            counter ===
+                                            plannedList.length - 1
+                                          ) {
+                                            // Add a new shipment only if we're at the end of the current list
+                                            addNewListOfShipment();
+                                            console.log("here");
+                                          }
+                                          setCounter(counter + 1);
+                                          setStartDate(null);
+                                          console.log("there");
+                                        }
+                                      }}
                                     >
                                       Next Shipment
                                     </button>
                                   </>
-                                ) : (
-                                  <button
-                                    className="btn-save"
-                                    type="btn"
-                                    onClick={() => {
-                                      // addNewListOfShipment();
-                                      // setStartDate(null);
-                                      // counterchange(indexshipment);
-                                      if (counter < numShipment - 1) {
-                                        if (
-                                          counter ===
-                                          plannedList.length - 1
-                                        ) {
-                                          // Add a new shipment only if we're at the end of the current list
-                                          addNewListOfShipment();
-                                        }
-                                        setCounter(counter + 1);
-                                        setStartDate(null);
-                                      }
-                                    }}
-                                  >
-                                    Next Shipment
-                                  </button>
                                 )}
 
                                 {/* <button

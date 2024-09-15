@@ -2,21 +2,20 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 // import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
 // import { useDispatch, useSelector } from "react-redux";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 // import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { GoogleMap, useJsApiLoader,  MarkerF } from "@react-google-maps/api";
-
+import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
 
 import "../AddAddress/addAddress.css";
 
@@ -28,8 +27,10 @@ const AddAddress = () => {
   const [countryList, setCountryList] = useState([]);
 
   const [cookie] = useCookies(["eload_token"]);
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
   const showNotification = () => {
     // e.preventDefault();
@@ -45,10 +46,9 @@ const AddAddress = () => {
       </div>
     );
 
-    toast(<Msg /> ,{autoClose: 3000});
+    toast(<Msg />, { autoClose: 3000 });
     // readNotification(notification.id);
   };
-
 
   // select-options
   const [isClearable, setIsClearable] = useState(true);
@@ -73,38 +73,35 @@ const AddAddress = () => {
   const [optionList, setOptionList] = useState([intialList]);
 
   // console.log(optionList, "listobject");
-    // ==================================map==========================
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
-  
-    const { isLoaded } = useJsApiLoader({
-      id: "google-map-script",
-      // googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
-      googleMapsApiKey: "AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ",
+  // ==================================map==========================
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
-    });
-  
-    const mapContainerStyle = {
-      height: "500px",
-      width: "100%",
-    };
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    // googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
+    googleMapsApiKey: "AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ",
+  });
 
-    const [selectLat, setSelectLat] = useState();
-    const [selectLong, setSelectLong] = useState();
-  
-    
-    const center = {
-      lat: Number(selectLat) ,
-      lng: Number(selectLong) ,
-    };
-  
+  const mapContainerStyle = {
+    height: "500px",
+    width: "100%",
+  };
 
-    const handleClick=(event)=>{
-      setLatitude(event.latLng.lat()); // set the latitude state variable
-      setLongitude(event.latLng.lng()); // set the longitude state variable
-      setSelectLat(event.latLng.lat());
-      setSelectLong(event.latLng.lng());
-    }
+  const [selectLat, setSelectLat] = useState();
+  const [selectLong, setSelectLong] = useState();
+
+  const center = {
+    lat: Number(selectLat),
+    lng: Number(selectLong),
+  };
+
+  const handleClick = (event) => {
+    setLatitude(event.latLng.lat()); // set the latitude state variable
+    setLongitude(event.latLng.lng()); // set the longitude state variable
+    setSelectLat(event.latLng.lat());
+    setSelectLong(event.latLng.lng());
+  };
 
   // selct_list
   const [groupList, setGrouopList] = useState([]);
@@ -114,12 +111,93 @@ const AddAddress = () => {
   const newArray = [...addOptionList];
 
   // console.log(addOptionList, "addOptionList");
+  // Error List
+  const [errors, setErrors] = useState([]);
+  console.log(errors, " errorsssssssss");
+  const Joi = require("joi");
+  const [targetElement, setTargetElement] = useState(null);
 
-
+  const scrollToElement = (targetElement) => {
+    const element = document.getElementById(targetElement);
+    const focusing = element.querySelector("input");
+    if (focusing) {
+      focusing.scrollIntoView({ behavior: "smooth", block: "start" });
+      focusing.focus();
+      console.log(focusing, "focusing id in function");
+    } else if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.focus();
+      console.log(element, "element id in function");
+    }
+  };
+  useEffect(() => {
+    if (targetElement && errors) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement, errors]);
   // Api-post==========================
   const apiAddAddress = async (e) => {
     e.preventDefault();
     const urlencoded = new URLSearchParams();
+
+    const schema = Joi.object({
+      user_group: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Type is required",
+      }),
+      // user_name: Joi.string().required().messages({
+      //   "string.base": "Please Provide your name",
+      //   "any.required": "your name is required",
+      // }),
+      // user_type: Joi.number().required().messages({
+      //   "number.base": "Please Select a Value",
+      //   "any.required": "Type is required",
+      // }),
+      // // ComeBAck
+      user_city: Joi.number().required().messages({
+        "number.base": "Please Provide your City",
+        "any.required": "City is required",
+      }),
+      city_latitude: Joi.number().required().messages({
+        "number.base": "Please Provide your Latitude",
+        "any.required": "the Latitude is required",
+      }),
+      city_longitude: Joi.number().required().messages({
+        "number.base": "Please Provide your Langitude",
+        "any.required": "the Langitude is required",
+      }),
+      user_phoneNumber: Joi.number().required().messages({
+        "number.base": "Please Provide your Phone Number",
+        "any.required": "Phone Number is required",
+      }),
+    });
+    const formDataObject = {
+      user_group: group,
+      // user_name: name,
+      // user_type: type,
+      user_city: city,
+      city_latitude: latitude,
+      city_longitude: longitude,
+      user_phoneNumber: phoneNumber,
+    };
+    const { error } = schema.validate(formDataObject, { abortEarly: false });
+    if (error) {
+      console.log("errorrrr", error.details);
+      console.log(
+        "errorrrrssss details ",
+        errors.pickup_Value,
+        " ",
+        targetElement
+      );
+      const newErrors = error.details.reduce((acc, detail) => {
+        acc[detail.path[0]] = detail.message;
+        return acc;
+      }, {});
+      setErrors(newErrors);
+
+      setTargetElement(error.details[0].context.label);
+      console.log(error.details, " allErrors");
+    }
     urlencoded.append("addressable_type", "group");
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
@@ -132,8 +210,14 @@ const AddAddress = () => {
     // urlencoded.append("phones[0][name]", nameoption);
 
     optionList.map((itemdetails, indexdetails) => {
-      urlencoded.append(`phones[${indexdetails}][phone]`, optionList[indexdetails].phoneNumber);
-      urlencoded.append(`phones[${indexdetails}][name]`, optionList[indexdetails].nameoption);
+      urlencoded.append(
+        `phones[${indexdetails}][phone]`,
+        optionList[indexdetails].phoneNumber
+      );
+      urlencoded.append(
+        `phones[${indexdetails}][name]`,
+        optionList[indexdetails].nameoption
+      );
     });
 
     try {
@@ -156,18 +240,20 @@ const AddAddress = () => {
       let errorMessages = "An error occurred";
 
       if (e.response && e.response.data && e.response.data.errors) {
-        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+        errorMessages = e.response.data.errors
+          .map((error) => error.message)
+          .join(", ");
       }
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
+        position: "top-end",
+        icon: "error",
+        color: "#0e4579",
         title: errorMessages,
         showConfirmButton: false,
-        showCancelButton:true,
+        showCancelButton: true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
+      });
       console.log(e);
     }
   };
@@ -176,7 +262,9 @@ const AddAddress = () => {
     const Grouplist = async (id) => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${
+            user_type == "admin" ? id : user_type_data.id
+          }`,
 
           {
             headers: {
@@ -196,15 +284,15 @@ const AddAddress = () => {
         return data;
       } catch (e) {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
+        });
         console.log(e);
       }
     };
@@ -284,7 +372,6 @@ const AddAddress = () => {
   //   }
   // }, [isLoaded]);
 
-
   return (
     <div>
       <form onSubmit={apiAddAddress}>
@@ -297,7 +384,11 @@ const AddAddress = () => {
                   <div className="input-select col-6">
                     <div className="input-select-info">
                       <p className="head-text">Choose Group</p>
-                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
+                      <NavLink
+                        to={`/Shipments/grouplist/${
+                          user_type === "admin" ? id : user_type_data.id
+                        }`}
+                      >
                         <button>
                           <a href="/#">View All</a>
                         </button>
@@ -306,13 +397,16 @@ const AddAddress = () => {
                     {/* choose-group */}
                     <Select
                       classNamePrefix="select"
-                      className="basic-multi-select"
-                      // isMulti
+                      className={
+                        errors.user_group
+                          ? "hasError basic-multi-select"
+                          : "basic-multi-select"
+                      }
+                      id="user_group" // isMulti
                       isDisabled={isDisabled}
                       isLoading={isLoading}
                       isClearable={isClearable}
                       isRtl={isRtl}
-                      required
                       isSearchable={isSearchable}
                       name="color"
                       options={GroupsCountryOptions}
@@ -320,9 +414,16 @@ const AddAddress = () => {
                         setGroup(choice.value);
                       }}
                     />
+                    {errors.user_group && (
+                      <h5 className="error">{errors.user_group}</h5>
+                    )}
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
+                    <NavLink
+                      to={`/Shipments/addnewgroup/${
+                        user_type == "admin" ? id : user_type_data.id
+                      }`}
+                    >
                       <button className="btn btn-adress">
                         + Add new group
                       </button>
@@ -338,26 +439,33 @@ const AddAddress = () => {
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">Name</p>
               <input
+                id="user_name"
+                className={errors.user_name ? "hasError input" : "input"}
                 type="text"
-                className="input"
                 placeholder="Name"
-                required
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
               />
+              {errors.user_name && (
+                <h5 className="error">{errors.user_name}</h5>
+              )}
             </div>
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">Type</p>
               <Select
                 classNamePrefix="select"
-                className="basic-multi-select"
+                className={
+                  errors.user_type
+                    ? "hasError basic-multi-select"
+                    : "basic-multi-select"
+                }
+                id="user_type"
                 isMulti
                 isDisabled={isDisabled}
                 isLoading={isLoading}
                 isClearable={isClearable}
                 isRtl={isRtl}
-                required
                 isSearchable={isSearchable}
                 name="color"
                 options={typeOptions}
@@ -371,17 +479,27 @@ const AddAddress = () => {
                   setType(selectedValues);
                 }}
               />
+              {errors.user_type && (
+                <h5 className="error">{errors.user_type}</h5>
+              )}
             </div>
             <div className="address-input w-100 mb-5">
-              <p className="head-text mb-2">City</p>
+              <p className="head-text mb-2">
+                City<span>*</span>
+              </p>
               <Select
                 classNamePrefix="select"
-                className="basic-multi-select"
-                // isMulti
+                className={
+                  errors.user_city ||
+                  errors.city_latitude ||
+                  errors.city_longitude
+                    ? "hasError basic-multi-select"
+                    : "basic-multi-select"
+                }
+                id="user_city" // isMulti
                 isDisabled={isDisabled}
                 isLoading={isLoading}
                 isClearable={isClearable}
-                required
                 isRtl={isRtl}
                 isSearchable={isSearchable}
                 name="color"
@@ -393,42 +511,48 @@ const AddAddress = () => {
                   setSelectLong(choice.long);
                 }}
               />
+              {errors.user_city && (
+                <h5 className="error">{errors.user_city}</h5>
+              )}
               {/* 
                 const [selectLat, setSelectLat] = useState("");
   const [selectLong, setSelectLong] = useState("");
               */}
             </div>
-            {
-              center.lat && center.lng !=="" ?
+            {center.lat && center.lng !== "" ? (
               <div className="address-input w-100 mb-5">
-                  {
-                      isLoaded  ? 
-                        <div>
-                          <h2>Click on the map to add your address</h2>
-                          <GoogleMap
-                            mapContainerStyle={mapContainerStyle}
-                            center={center}
-                            zoom={10}
-                            onClick={handleClick}
-                          >
-                            {latitude && longitude && (
-                              <MarkerF position={{ lat: latitude, lng: longitude }} />
-                            )}
-                          </GoogleMap>
-                          {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
+                {isLoaded ? (
+                  <div>
+                    <h2>Click on the map to add your address</h2>
+                    <GoogleMap
+                      mapContainerStyle={mapContainerStyle}
+                      center={center}
+                      zoom={10}
+                      onClick={handleClick}
+                    >
+                      {latitude && longitude && (
+                        <MarkerF position={{ lat: latitude, lng: longitude }} />
+                      )}
+                    </GoogleMap>
+                    {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
                           {longitude && <p>Longitude: {longitude} center: {center.lng}</p>} */}
-                        </div>
-                       : 
-                        <div>Loading...</div>
-                      
-                  }
-                  <span>latitude : {latitude}</span><br/>
-                  <span>longitude :{longitude}</span>
-
+                  </div>
+                ) : (
+                  <div>Loading...</div>
+                )}
+                {errors.city_latitude && (
+                  <h5 className="error">{errors.city_latitude}</h5>
+                )}
+                {errors.city_longitude && (
+                  <h5 className="error">{errors.city_longitude}</h5>
+                )}
+                <span>latitude : {latitude}</span>
+                <br />
+                <span>longitude :{longitude}</span>
               </div>
-              :
+            ) : (
               <></>
-            }
+            )}
             <div className="address-input w-100 mb-5">
               {/*=========================== row addition =====================*/}
               <div className="row optionbox">
@@ -436,9 +560,11 @@ const AddAddress = () => {
                   <p className="head-text mb-2">Phone number</p>
                   <input
                     type="tel"
-                    className="input"
+                    className={
+                      errors.user_phoneNumber ? "hasError input" : "input"
+                    }
+                    id="user_phoneNumber"
                     placeholder="Phone number"
-                    required
                     onChange={(e) => {
                       setPhoneNumber(e.target.value);
                       const newList = [...optionList]; // create a copy of the array
@@ -446,6 +572,9 @@ const AddAddress = () => {
                       setOptionList(newList);
                     }}
                   />
+                  {errors.user_phoneNumber && (
+                    <h5 className="error">{errors.user_phoneNumber}</h5>
+                  )}
                 </div>
                 {/* 
                     const intialList = {
@@ -493,7 +622,6 @@ const AddAddress = () => {
                           type="tel"
                           className="input"
                           placeholder="Phone number"
-                          required
                           onChange={(e) => {
                             setPhoneNumber(e.target.value);
                             const newList = [...optionList]; // create a copy of the array
@@ -552,7 +680,6 @@ const AddAddress = () => {
                 type="text"
                 className="input input-text-area"
                 placeholder="Address"
-                required
                 onChange={(e) => {
                   setAddress(e.target.value);
                 }}

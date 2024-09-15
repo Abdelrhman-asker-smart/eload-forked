@@ -88,6 +88,8 @@ const Addadmin = () => {
 
         //   console.log(reponse);
       } catch (e) {
+        setLoading(false);
+
         Swal.fire({
           position: "top-end",
           icon: "error",

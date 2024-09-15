@@ -227,6 +227,7 @@ const Inputs = ({
     }
   }, [targetElement, errors, okay]);
   // Api-shipment
+
   const AddShipments_Api = async (plannedList) => {
     const formdata = new FormData();
 
@@ -274,13 +275,13 @@ const Inputs = ({
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-      console.log("errorrrr", error.details);
-      console.log(
-        "errorrrrssss details ",
-        errors.pickup_Value,
-        " ",
-        targetElement
-      );
+      // console.log("errorrrr", error.details);
+      // console.log(
+      //   "errorrrrssss details ",
+      //   errors.pickup_Value,
+      //   " ",
+      //   targetElement
+      // );
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -288,7 +289,7 @@ const Inputs = ({
       setErrors(newErrors);
 
       setTargetElement(error.details[0].context.label);
-      console.log(error.details, " allErrors");
+      // console.log(error.details, " allErrors");
     }
     // Without-Planned=============================
     else if (plannedList.length === 1) {
@@ -309,8 +310,10 @@ const Inputs = ({
         formdata.append("pickup_to_time", item.pickupTimeToPlanned);
         formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
         formdata.append("dropoff_to_time", item.dropTimeToPlanned);
-
+        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+        console.log(item, "item.detailsTruckkkkkkkk");
         item.detailsTruck.map((itemdetails, indexdetails) => {
+          // console.log(itemdetails, indexdetails, "map details");
           // truck
           formdata.append(
             // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
@@ -333,10 +336,7 @@ const Inputs = ({
             itemdetails.weightPlanned
           );
           // numTrucksPlanned
-          formdata.append(
-            `shipments[${indexdetails}][truck_type_qty]`,
-            itemdetails.numTrucksPlanned
-          );
+          formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
           // descriptionPlanned
           formdata.append(
             `shipments[${indexdetails}][description]`,
@@ -377,7 +377,6 @@ const Inputs = ({
 
       // below is a temp fix to be able to send the order request only once
       handleOrder(formdata);
-      navigate("/allshipments");
 
       try {
         const reponse = await axios.post(
@@ -393,6 +392,8 @@ const Inputs = ({
             },
           }
         );
+        handleOrder(formdata);
+        navigate("/allshipments");
         // setName("");
         //   console.log(reponse);
       } catch (e) {
@@ -401,7 +402,7 @@ const Inputs = ({
       }
 
       // Planned=============================
-    } else {
+    } else if (plannedList.length > 1) {
       plannedList.map((item, index) => {
         formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
         // formdata.append(`shipper_id`,item.shipperPlanned);
@@ -517,7 +518,8 @@ const Inputs = ({
             },
           }
         );
-
+        handleOrder(formdata);
+        navigate("/allshipments");
         // setName("");
         //   console.log(reponse);
       } catch (e) {
@@ -798,9 +800,9 @@ const Inputs = ({
           <input
             type="number"
             placeholder="i,e,2000"
+            value={1}
+            min={1}
             disabled
-            value="1"
-            min="1"
             // required
             onChange={(e) => {
               // setNumber_TrucksValue(e.target.value);
