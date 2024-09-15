@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
@@ -15,7 +15,7 @@ import Select from "react-select";
 import "./Shipments.css";
 import { useContext } from "react";
 import { ContextStore } from "../contaxt";
-import required from "joi";
+import  required  from "joi";
 // import {yepResolver} from '@hookform/resolvers/yup';
 // import {object , number, string} from "yup";
 // import {useFormik} from "formik";
@@ -25,7 +25,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 // import { Check } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -60,13 +60,11 @@ const Shipments = () => {
         <h4>Success</h4>
       </div>
     );
-
+  
     toast(<Msg />, { autoClose: 3000 });
   };
-  const [user_type] = useState(localStorage.getItem("user_type"));
-  const [user_type_data] = useState(
-    JSON.parse(localStorage.getItem("user_type_data"))
-  );
+  const [user_type] = useState(localStorage.getItem('user_type'));
+  const [user_type_data] = useState(JSON.parse(localStorage.getItem('user_type_data')));
 
   // Alart-Snackbar
   const [state, setState] = React.useState({
@@ -151,7 +149,7 @@ const Shipments = () => {
   const [pickup_TimeToValue, setPickup_TimeToValue] = useState("");
   // dropoff-chooses
   const [dropoffValue, setDropoffValue] = useState("");
-  // console.log("dropOfValue ", typeof dropoffValue);
+
   const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
@@ -186,6 +184,7 @@ const Shipments = () => {
     }
   };
 
+
   // pickup-Api
   const pickupListApi = async (shipper_id) => {
     // console.log(shipper_id, "triggered");
@@ -209,20 +208,22 @@ const Shipments = () => {
       return data;
     } catch (e) {
       Swal.fire({
-        position: "top-end",
-        icon: "error",
-        color: "#0e4579",
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton: true,
+        showCancelButton:true,
         cancelButtonText: "ok",
         timer: 8000,
-      });
+      })
       console.log(e);
     }
   };
   //dropoff_Api
   const droppofflist = async (shipper_id, id_pickup) => {
+
+
     try {
       const response = await axios.get(
         `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}`,
@@ -246,15 +247,15 @@ const Shipments = () => {
       return data;
     } catch (e) {
       Swal.fire({
-        position: "top-end",
-        icon: "error",
-        color: "#0e4579",
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton: true,
+        showCancelButton:true,
         cancelButtonText: "ok",
         timer: 8000,
-      });
+      })
       console.log(e);
     }
   };
@@ -287,16 +288,17 @@ const Shipments = () => {
       return data;
     } catch (e) {
       Swal.fire({
-        position: "top-end",
-        icon: "error",
-        color: "#0e4579",
+        position: 'top-end',
+        icon: 'error',
+        color: '#0e4579',
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton: true,
+        showCancelButton:true,
         cancelButtonText: "ok",
         timer: 8000,
-      });
+
       // console.log(e);
+
     }
   };
 
@@ -351,17 +353,20 @@ const Shipments = () => {
         // console.log(data);
         setShipperList(data);
 
+
         return data;
       } catch (e) {
         console.log(e);
       }
     };
 
-    if (user_type == "admin") {
+    if (user_type == 'admin') {
       allshipper();
     }
 
+
     if (user_type == "shipper") {
+
       pickupListApi(user_type_data.id);
       setShipperUserChoice(user_type_data.id);
       setShipperValue(user_type_data.name);
@@ -375,9 +380,11 @@ const Shipments = () => {
   // useEffect(() => {
   //   if (order instanceof FormData) {
   //     sendOrder(order, plannedList.length == 1 ? "orders" : "scheduled_orders");
+
   //     setOrder({});
   //   }
   // }, [order]);
+
 
   const sendOrder = async (formdata, endpoint) => {
     try {
@@ -407,7 +414,7 @@ const Shipments = () => {
       // console.log(e);
     }
   };
-  const [choise, setchoise] = useState("");
+  const [choise , setchoise] = useState("");
   // console.log(choise ,"ccccc");
   // shipperoptions
   const shipperOptions = shipperList.map((item, index) => {
@@ -416,6 +423,7 @@ const Shipments = () => {
       label: item.name,
     };
   });
+
   // Error List
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -530,7 +538,15 @@ const Shipments = () => {
       //   Transition: "SlideTransition",
       // });
       // console.log("ddddddddddddddddddddddddone");
+
     }
+
+    // handleClick({
+    //   vertical: "bottom",
+    //   horizontal: "center",
+    //   Transition: "SlideTransition",
+    // });
+    // console.log("ddddddddddddddddddddddddone");
   };
   // ======================================================planned-shipment==================
   const [numShipment, setNumShipment] = useState(0);
@@ -619,6 +635,7 @@ const Shipments = () => {
   // addnew_listof_object
   const addNewListOfShipment = () => {
     // setPlannedList([...plannedList, plannedAllShipments]);
+
     setPlannedList((prevList) => [
       ...prevList,
       { ...plannedAllShipmentswithshipper },
@@ -626,6 +643,7 @@ const Shipments = () => {
     setPickupValue();
     setStartDate();
     setDropoffValue();
+
   };
   // array_ofinnerDetails
   const [PlannedInnerDetails, setPlannedInerDetails] = useState([
@@ -843,6 +861,7 @@ const Shipments = () => {
                   );
                 })}
               </div>
+
             </div>
           </div>
         </>
@@ -889,6 +908,7 @@ const Shipments = () => {
             {indexshipment === counter && (
               <>
                 {indexshipment > 0 ? (
+
                   <form
                     onSubmit={handelSubmit}
                     className={loading ? "disabled" : ""}
@@ -937,6 +957,7 @@ const Shipments = () => {
                         </span>
                       </div>
                     )}
+
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
@@ -956,7 +977,7 @@ const Shipments = () => {
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             isClearable={isClearable}
-                            // required={required}
+                            required={required}
                             isRtl={isRtl}
                             isSearchable={isSearchable}
                             name="pickapaddres"
@@ -1019,7 +1040,9 @@ const Shipments = () => {
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
+
                           <label htmlFor="address">Pickup Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1101,7 +1124,9 @@ const Shipments = () => {
                           )}
                         </div>
                         <div className="input mx-3">
+
                           <label htmlFor="address">Drop off Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1173,8 +1198,10 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+
                                 okay={okay}
                                 showNotification={showNotification}
+
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1219,12 +1246,7 @@ const Shipments = () => {
                             {/* <NavLink to="/allshipments"> */}
                             {console.log(counter, "counter inside JSX")}
                             {counter === numShipment - 1 ? (
-                              <button
-                                className="btn-save"
-                                type="submit"
-                                disabled={isLoading}
-                                onClick={() => scrollToElement(targetElement)}
-                              >
+                              <button className="btn-save" type="submit">
                                 Save
                               </button>
                             ) : (
@@ -1291,14 +1313,12 @@ const Shipments = () => {
                                     className="btn-save"
                                     type="btn"
                                     onClick={() => {
+                                      
                                       // addNewListOfShipment();
                                       // setStartDate(null);
                                       // counterchange(indexshipment);
                                       if (counter < numShipment - 1) {
-                                        if (
-                                          counter ===
-                                          plannedList.length - 1
-                                        ) {
+                                        if (counter === plannedList.length - 1) {
                                           // Add a new shipment only if we're at the end of the current list
                                           addNewListOfShipment();
                                         }
@@ -1327,12 +1347,7 @@ const Shipments = () => {
                           </div>
                         ) : (
                           <div className="right-btn">
-                            <button
-                              className="btn-save"
-                              type="submit"
-                              disabled={isLoading}
-                              onClick={() => scrollToElement(targetElement)}
-                            >
+                            <button className="btn-save" type="submit">
                               Save
                             </button>
                           </div>
@@ -1355,6 +1370,7 @@ const Shipments = () => {
                     </div>
                   </form>
                 ) : (
+
                   <form
                     onSubmit={handelSubmit}
                     className={loading ? "disabled" : ""}
@@ -1398,6 +1414,7 @@ const Shipments = () => {
                         )}
                       </div>
                     )}
+
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
@@ -1438,7 +1455,7 @@ const Shipments = () => {
                         </div>
                         <div className="input col-md-4">
                           <label htmlFor="address">
-                            Pickup Date<span>*</span>
+                            Pickup Date
                           </label>
 
                           <DatePicker
@@ -1467,11 +1484,13 @@ const Shipments = () => {
                           ></DatePicker>
                           <Dateicon
                             className="position-absolute"
+
                             style={
                               errors.pickup_Date
                                 ? { top: "33%", left: "53%" }
                                 : { top: "36%", left: "53%" }
                             }
+
                           />
                           {errors.pickup_Date && (
                             <h5 className="error">{errors.pickup_Date}</h5>
@@ -1479,7 +1498,9 @@ const Shipments = () => {
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
+
                           <label htmlFor="address">Pickup Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1506,29 +1527,27 @@ const Shipments = () => {
                             }}
                           />
                         </div>
-                        {shipperValue === "" ? (
+                        {
+                          shipperValue==="" ? 
+                          <div className="add-btn" >
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}  >
+                            <button type="button" disabled style={{backgroundColor:"gray"}} >
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+
+                        </div>
+                          :
                           <div className="add-btn">
-                            <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                              <button
-                                type="button"
-                                disabled
-                                style={{ backgroundColor: "gray" }}
-                              >
-                                <i className="fa-solid fa-plus"></i> Add New
-                                Address
-                              </button>
-                            </NavLink>
-                          </div>
-                        ) : (
-                          <div className="add-btn">
-                            <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                              <button>
-                                <i className="fa-solid fa-plus"></i> Add New
-                                Address
-                              </button>
-                            </NavLink>
-                          </div>
-                        )}
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button >
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+                        </div>
+                        }
                         {/* <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
                             <button>
@@ -1584,7 +1603,9 @@ const Shipments = () => {
                           )}
                         </div>
                         <div className="input mx-3">
+
                           <label htmlFor="address">Drop off Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1610,28 +1631,27 @@ const Shipments = () => {
                             }}
                           />
                         </div>
-                        {shipperValue === "" ? (
+                        {
+                          shipperValue==="" ? 
                           <div className="add-btn">
-                            <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                              <button
-                                disabled
-                                style={{ backgroundColor: "gray" }}
-                              >
-                                <i className="fa-solid fa-plus"></i> Add New
-                                Address
-                              </button>
-                            </NavLink>
-                          </div>
-                        ) : (
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button disabled style={{backgroundColor:"gray"}}>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address 
+                            </button>
+                          </NavLink>
+                        </div>
+                          :
                           <div className="add-btn">
-                            <NavLink to={`/Shipments/addAddress/${shipperid}`}>
-                              <button>
-                                <i className="fa-solid fa-plus"></i> Add New
-                                Address
-                              </button>
-                            </NavLink>
-                          </div>
-                        )}
+                          <NavLink to={`/Shipments/addAddress/${shipperid}`}>
+                            <button>
+                              <i className="fa-solid fa-plus"></i> Add New
+                              Address
+                            </button>
+                          </NavLink>
+                        </div>
+                        }
+
                       </div>
                       <hr />
                     </div>
@@ -1670,9 +1690,11 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+
                                 okay={okay}
                                 setLoading={setLoading}
                                 showNotification={showNotification}
+
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1717,17 +1739,14 @@ const Shipments = () => {
                             {/* <NavLink to="/allshipments"> */}
                             {/* {console.log(counter, "counter inside JSX")} */}
                             {counter === numShipment - 1 ? (
-                              <button
-                                className="btn-save"
-                                type="submit"
-                                disabled={isLoading}
-                                onClick={() => scrollToElement(targetElement)}
-                              >
+                              <button className="btn-save" type="submit">
                                 Save
                               </button>
                             ) : (
                               <>
+
                                 {errors && (
+
                                   <>
                                     <span
                                       className="mx-2"
@@ -1785,6 +1804,7 @@ const Shipments = () => {
                                       Next Shipment
                                     </button>
                                   </>
+
                                 )}
 
                                 {/* <button
@@ -1803,12 +1823,7 @@ const Shipments = () => {
                           </div>
                         ) : (
                           <div className="right-btn">
-                            <button
-                              className="btn-save"
-                              type="submit"
-                              disabled={isLoading}
-                              onClick={() => scrollToElement(targetElement)}
-                            >
+                            <button className="btn-save" type="submit">
                               Save
                             </button>
                           </div>
@@ -1832,6 +1847,7 @@ const Shipments = () => {
                   </form>
                 )}
               </>
+
             )}
           </>
         );
@@ -1882,8 +1898,10 @@ const Shipments = () => {
                 />
               </div>
               <button
+
                 type="sumbit"
                 className="btnSave my-4 adwadawdasd"
+
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
@@ -1898,7 +1916,7 @@ const Shipments = () => {
                   //   setPlannedList(plannedList.slice(0, numShipment));
                   // }
                   setNumShipment(parseInt(numShipment)); // Ensure numShipment is a number
-
+               
                   // setPlannedList([plannedAllShipments]);
                   setCounter(0);
                 }}

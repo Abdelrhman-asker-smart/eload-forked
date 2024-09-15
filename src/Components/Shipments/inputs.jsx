@@ -51,6 +51,7 @@ const Inputs = ({
   arrListnumShipment,
   indexshipment,
   indexdetails,
+
   okay,
 }) => {
   const { list, setList } = useContext(ContextStore);
@@ -374,7 +375,7 @@ const Inputs = ({
         });
       });
       console.log("Addone----------Done");
-
+      
       // below is a temp fix to be able to send the order request only once
       handleOrder(formdata);
 
@@ -392,8 +393,10 @@ const Inputs = ({
             },
           }
         );
+
         handleOrder(formdata);
         navigate("/allshipments");
+
         // setName("");
         //   console.log(reponse);
       } catch (e) {
@@ -518,8 +521,10 @@ const Inputs = ({
             },
           }
         );
+
         handleOrder(formdata);
         navigate("/allshipments");
+
         // setName("");
         //   console.log(reponse);
       } catch (e) {
@@ -677,7 +682,7 @@ const Inputs = ({
             }
             id="trackUser_Choice"
             isDisabled={isDisabled}
-            // required
+            required
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
@@ -713,7 +718,7 @@ const Inputs = ({
             isDisabled={isDisabled}
             isLoading={isLoading}
             isClearable={isClearable}
-            // required
+            required
             isRtl={isRtl}
             isSearchable={isSearchable}
             name="color"
@@ -744,7 +749,7 @@ const Inputs = ({
           </label>
           <input
             type="number"
-            // required
+            required
             placeholder="i,e, 10"
             className={
               errors.shipment_Value
@@ -773,6 +778,7 @@ const Inputs = ({
             type="number"
             placeholder="i,e,2000  Kgs"
             min="1"
+
             className={
               errors.shipment_Weight
                 ? "hasError basic-multi-select"
@@ -780,6 +786,7 @@ const Inputs = ({
             }
             id="shipment_Weight"
             // required
+
             onChange={(e) => {
               // setWeightValue(e.target.value);
               // weighthandleInputChange(indexOfItem, e);
@@ -804,6 +811,7 @@ const Inputs = ({
             min={1}
             disabled
             // required
+
             onChange={(e) => {
               // setNumber_TrucksValue(e.target.value);
               // numberOfTruckshahndleInputChange(indexOfItem, e);
@@ -827,13 +835,16 @@ const Inputs = ({
 
       <div className="inputs row">
         <div className="input col-3">
+
           <label htmlFor="address">Packing List Attachments</label>
+
           <div className="input-group ">
             <input
               type="file"
               multiple="multiple"
               accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-file form-control"
+
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -888,7 +899,7 @@ const Inputs = ({
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
-            // required
+            required
             isClearable={isClearable}
             isRtl={isRtl}
             isSearchable={isSearchable}
@@ -923,7 +934,7 @@ const Inputs = ({
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
-            // required
+            required
             isSearchable={isSearchable}
             name="color"
             options={UOMsOptions}
@@ -944,6 +955,7 @@ const Inputs = ({
           </label>
           <input
             type="number"
+
             className={
               errors.quantity_Value
                 ? "hasError basic-multi-select"
@@ -951,6 +963,7 @@ const Inputs = ({
             }
             id="quantity_Value"
             // required
+
             min="1"
             placeholder="i,e,02"
             onChange={(e) => {

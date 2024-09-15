@@ -33,18 +33,18 @@ export default function Login({ decodeData }) {
 
   async function submitForm(e) {
     e.preventDefault();
-    const schema = Joi.object({
-      email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-        .required(),
-      // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
-      password: Joi.string().required(),
-    });
+    // const schema = Joi.object({
+    //   email: Joi.string()
+    //     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    //     .required(),
+    //   // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+    //   password: Joi.string().required(),
+    // });
 
-    let joiResponse = schema.validate(user, { abortEarly: false });
-    if (joiResponse.error) {
-      setErrList(joiResponse.error.details);
-    } else {
+    // let joiResponse = schema.validate(user, { abortEarly: false });
+    // if (joiResponse.error) {
+    //   setErrList(joiResponse.error.details);
+    // } else {
       setErrList([]);
       setLoginFlag(true);
       let formdata = new FormData();
@@ -110,6 +110,8 @@ export default function Login({ decodeData }) {
           showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
+        }).then(()=>{
+          setLoginFlag(false)
         });
         console.log(err.response.data.message);
       }
@@ -118,7 +120,7 @@ export default function Login({ decodeData }) {
       //   .then(response => response.text())
       //   .then(result => console.log(result))
       //   .catch(error => console.log('error', error));
-    }
+  //  }
   }
   function getError(key) {
     for (const error of errList) {
@@ -157,7 +159,7 @@ export default function Login({ decodeData }) {
                 onChange={getUser}
                 type="password"
                 id="password"
-                className="mt-3 form-control"
+                className="mt-3 form-control "
                 placeholder="password"
               />
               <p className="fs-6 text-danger mb-3">{getError("password")}</p>
