@@ -147,6 +147,7 @@ const AddShippers = () => {
         showNotification();
         navigate(`/allshippers`);
       } catch (e) {
+        setLoading(false);
         let errorMessages = "An error occurred";
 
         if (e.response && e.response.data && e.response.data.errors) {

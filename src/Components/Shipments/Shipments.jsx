@@ -120,8 +120,8 @@ const Shipments = () => {
   const [isRtl] = useState(false);
 
   // const date = new Date();
-  const [startDate, setStartDate] = useState(null);
-
+  const [startDate, setStartDate] = useState("");
+  // console.log("startDate type", typeof startDate);
   // datepacker_from tomorrow
   const today = new Date();
   let tomorrow = new Date();
@@ -296,8 +296,9 @@ const Shipments = () => {
         showCancelButton:true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
-      console.log(e);
+
+      // console.log(e);
+
     }
   };
 
@@ -363,7 +364,9 @@ const Shipments = () => {
       allshipper();
     }
 
-    if (user_type == 'shipper') {
+
+    if (user_type == "shipper") {
+
       pickupListApi(user_type_data.id);
       setShipperUserChoice(user_type_data.id);
       setShipperValue(user_type_data.name);
@@ -377,7 +380,8 @@ const Shipments = () => {
   // useEffect(() => {
   //   if (order instanceof FormData) {
   //     sendOrder(order, plannedList.length == 1 ? "orders" : "scheduled_orders");
-  //     setOrder({}); 
+
+  //     setOrder({});
   //   }
   // }, [order]);
 
@@ -407,7 +411,7 @@ const Shipments = () => {
       navigate(`/${redirect_to}`, { replace: true });
     } catch (e) {
       // handleClick2();
-      console.log(e);
+      // console.log(e);
     }
   };
   const [choise , setchoise] = useState("");
@@ -420,21 +424,121 @@ const Shipments = () => {
     };
   });
 
+  // Error List
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  console.log(errors, " errorsssssssss");
+
+  // to ckeck if the inputs here are okay or not and pass it to inputs component
+  const [okay, setOkay] = useState(true);
+  // console.log(errors.shipper_Value, " shipperValueError");
+  // Api-post==========================
+  const Joi = require("joi");
+  const [targetElement, setTargetElement] = useState(null);
+
+  const scrollToElement = (targetElement) => {
+    const element = document.getElementById(targetElement);
+    const focusing = element.querySelector("input");
+    // console.log(element, focusing, "element id in function");
+    if (focusing) {
+      focusing.scrollIntoView({ behavior: "smooth", block: "start" });
+      focusing.focus();
+    } else if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.focus();
+    }
+  };
+  useEffect(() => {
+    console.log(targetElement && !okay, " in the Effect");
+    if (targetElement && !okay) {
+      scrollToElement(targetElement);
+    }
+  }, [targetElement, okay]);
+
+  console.log(
+    shipperValue,
+    pickupValue,
+    startDate,
+    dropoffValue,
+    "     values"
+  );
+
   const handelSubmit = (e) => {
     e.preventDefault();
-    try {
-      // Your existing submission logic here
-      // ...
-  
-      // If submission is successful
-    // showNotification();
-    setList(true);
-    // navigate('/allshipments'); 
-    } catch (error) {
-      // Handle any errors
-      console.error('Submission error:', error);
-      // Optionally show an error toast
-      toast.error('An error occurred during submission');
+    const schema = Joi.object({
+      shipper_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
+      pickup_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
+      // ComeBAck
+      pickup_Date: Joi.date().required().messages({
+        "date.base": "Please Pickup a Valid Date",
+      }),
+      dropOf_Address: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "Address value is required",
+      }),
+    });
+    const formDataObject = {
+      shipper_Value: shipperValue,
+      pickup_Value: pickupValue,
+      pickup_Date: startDate,
+      dropOf_Address: dropoffValue,
+    };
+    const { error } = schema.validate(formDataObject, { abortEarly: false });
+    if (error) {
+      // console.log("errorrrr", error.details);
+      // console.log(
+      //   "errorrrrssss details ",
+      //   errors.pickup_Value,
+      //   " ",
+      //   targetElement
+      // );
+      const newErrors = error.details.reduce((acc, detail) => {
+        acc[detail.path[0]] = detail.message;
+        return acc;
+      }, {});
+      setErrors(newErrors);
+
+      setTargetElement(error.details[0].context.label);
+      // console.log(error.details, " allErrors");
+
+      setOkay(false);
+      //  to pass to input page to check its errors (but data wont send before all required inputs are Okay)
+      setList(true);
+      // if (!errors) setOkay(true);
+    } else {
+      console.log("Validation succeeded");
+      // setLoading(true);
+      setErrors([]);
+      setOkay(true);
+      try {
+        // Your existing submission logic here
+        // ...
+        setErrors([]);
+
+        // If submission is successful
+        // showNotification();
+        setList(true);
+        // navigate("/allshipments");
+      } catch (error) {
+        // Handle any errors
+        console.error("Submission error:", error);
+        // Optionally show an error toast
+        toast.error("An error occurred during submission");
+      }
+
+      // handleClick({
+      //   vertical: "bottom",
+      //   horizontal: "center",
+      //   Transition: "SlideTransition",
+      // });
+      // console.log("ddddddddddddddddddddddddone");
+
     }
 
     // handleClick({
@@ -531,7 +635,15 @@ const Shipments = () => {
   // addnew_listof_object
   const addNewListOfShipment = () => {
     // setPlannedList([...plannedList, plannedAllShipments]);
-    setPlannedList(prevList => [...prevList, { ...plannedAllShipmentswithshipper }]);
+
+    setPlannedList((prevList) => [
+      ...prevList,
+      { ...plannedAllShipmentswithshipper },
+    ]);
+    setPickupValue();
+    setStartDate();
+    setDropoffValue();
+
   };
   // array_ofinnerDetails
   const [PlannedInnerDetails, setPlannedInerDetails] = useState([
@@ -666,11 +778,11 @@ const Shipments = () => {
               htmlFor="flexSwitchCheckDefault"
               style={{ fontWeight: "500" }}
             >
-              Switch to planned shipments{" "}
+              Switch to planned shipments
               <span style={{ color: "red", fontWeight: "500" }}>?</span>
             </label>
             <p className="position-absolute notegray">
-              * you can choose many shipments{" "}
+              * you can choose many shipments
             </p>
           </div>
         </div>
@@ -796,53 +908,71 @@ const Shipments = () => {
             {indexshipment === counter && (
               <>
                 {indexshipment > 0 ? (
-                  <form onSubmit={handelSubmit}>
-                    { user_type == 'admin' &&
-                    <div className="input-shipper " style={{ width: "49%" }}>
-                      <p>
-                        Shipper<span>*</span>
-                      </p>
-                      {/* shipper-select */}
-                      <Select
-                        classNamePrefix="select"
-                        className="basic-multi-select"
-                        // isMulti
-                        defaultValue={shipperValue}
-                        isDisabled={!isDisabled}
-                        required={required}
-                        isLoading={isLoading}
-                        isClearable={true}
-                        isRtl={isRtl}
-                        isSearchable={isSearchable}
-                        name="shipper"
-                        options={shipperOptions}
-                        onChange={(choice) => {
-                          pickupListApi(choice.value);
-                          setShipperUserChoice(choice.value);
-                          setShipperValue(choice.label);
-                          setchoise(choice);
-                          shipperPlanned_handleInputChange(
-                            indexshipment,
-                            choice.value
-                          );
-                        }}
-                      />
-                      <span>
-                        {/* {shipperOptions[plannedList[0]].shipperPlanned.label} */}
-                        {choise}
-                      </span>
-                    </div>
-                    }
+
+                  <form
+                    onSubmit={handelSubmit}
+                    className={loading ? "disabled" : ""}
+                  >
+                    {user_type == "admin" && (
+                      <div className="input-shipper " style={{ width: "49%" }}>
+                        <p>
+                          Shipper<span>*</span>
+                        </p>
+                        {/* shipper-select */}
+                        <Select
+                          classNamePrefix="select"
+                          className={
+                            errors.shipper_Value
+                              ? "hasError basic-multi-select"
+                              : "basic-multi-select"
+                          }
+                          id="shipper_Value"
+                          // isMulti
+                          defaultValue={shipperValue}
+                          isDisabled={!isDisabled}
+                          // required={required}
+                          isLoading={isLoading}
+                          isClearable={true}
+                          isRtl={isRtl}
+                          isSearchable={isSearchable}
+                          name="shipper"
+                          options={shipperOptions}
+                          onChange={(choice) => {
+                            pickupListApi(choice.value);
+                            setShipperUserChoice(choice.value);
+                            setShipperValue(choice.label);
+                            setchoise(choice);
+                            shipperPlanned_handleInputChange(
+                              indexshipment,
+                              choice.value
+                            );
+                          }}
+                        />
+                        {errors.shipper_Value && (
+                          <h5 className="error">{errors.shipper_Value}</h5>
+                        )}
+                        <span>
+                          {/* {shipperOptions[plannedList[0]].shipperPlanned.label} */}
+                          {choise}
+                        </span>
+                      </div>
+                    )}
+
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
                         <div className="input input-select col-md-6">
-                          <label htmlFor="address">
+                          <label htmlFor="address" className="sadas">
                             Pickup Address<span>*</span>
                           </label>
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
+                            className={
+                              errors.pickup_Value
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
+                            id="pickup_Value"
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
@@ -862,15 +992,23 @@ const Shipments = () => {
                                 choice.value
                               );
                             }}
-                          />
+                          />{" "}
+                          {errors.pickup_Value && (
+                            <h5 className="error">{errors.pickup_Value}</h5>
+                          )}
                         </div>
                         <div className="input col-md-4">
-                          <label htmlFor="address">
+                          <label htmlFor="address" className="asdawd">
                             Pickup Date<span>*</span>
                           </label>
 
                           <DatePicker
-                            className="date-input position-relative px-5"
+                            className={
+                              errors.pickup_Date
+                                ? "hasError date-input position-relative px-5"
+                                : "date-input position-relative px-5"
+                            }
+                            id="pickup_Date"
                             selected={startDate}
                             // required={true}
                             onChange={(date) => {
@@ -888,17 +1026,23 @@ const Shipments = () => {
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
                           />
-
                           <Dateicon
                             className="position-absolute"
-                            style={{ top: "36%", left: "53%" }}
+                            style={
+                              errors.pickup_Date
+                                ? { top: "33%", left: "53%" }
+                                : { top: "36%", left: "53%" }
+                            }
                           />
+                          {errors.pickup_Date && (
+                            <h5 className="error">{errors.pickup_Date}</h5>
+                          )}
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">
-                            Pickup Time
-                          </label>
+
+                          <label htmlFor="address">Pickup Time</label>
+
                           <input
                             type="time"
                             // required
@@ -946,8 +1090,13 @@ const Shipments = () => {
                           {/* dropoff-select */}
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
                             // isMulti
+                            id="dropOf_Address"
+                            className={
+                              errors.dropOf_Address
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             // required
@@ -970,11 +1119,14 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.dropOf_Address && (
+                            <h5 className="error">{errors.dropOf_Address}</h5>
+                          )}
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">
-                            Drop off Time
-                          </label>
+
+                          <label htmlFor="address">Drop off Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1046,6 +1198,10 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+
+                                okay={okay}
+                                showNotification={showNotification}
+
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1074,7 +1230,7 @@ const Shipments = () => {
                           <button
                             className="btn-add "
                             id="add"
-                            type="btn"
+                            type="button"
                             onClick={() => {
                               // setInputs([...input, ""]);
                               addPlannedinerDetails(indexshipment);
@@ -1139,7 +1295,11 @@ const Shipments = () => {
 
                                     <button
                                       className="btn-save"
-                                      type="btn"
+                                      type="button"
+                                      onClick={() =>
+                                        scrollToElement(targetElement)
+                                      }
+
                                       // onClick={() => {
                                       //     addNewListOfShipment();
                                       //     counterchange(indexshipment);
@@ -1210,40 +1370,51 @@ const Shipments = () => {
                     </div>
                   </form>
                 ) : (
-                  <form onSubmit={handelSubmit}>
-                    { user_type == 'admin' &&
-                    <div className="input-shipper " style={{ width: "49%" }}>
-                      <p>
-                        Shipper<span>*</span>
-                      </p>
-                      {/* shipper-select */}
-                      <Select
-                        classNamePrefix="select"
-                        className="basic-multi-select"
-                        // isMulti
-                        isDisabled={isDisabled}
-                        defaultValue={shipperValue}
-                        
-                        // required={required}
-                        isLoading={isLoading}
-                        isClearable={isClearable}
-                        isRtl={isRtl}
-                        isSearchable={isSearchable}
-                        name="shipper"
-                        options={shipperOptions}
-                        onChange={(choice) => {
-                          pickupListApi(choice.value);
-                          setShipperUserChoice(choice.value);
-                          setShipperValue(choice.value);
-                          setchoise(choice.label);
-                          shipperPlanned_handleInputChange(
-                            indexshipment,
-                            choice.value
-                          );
-                        }}
-                      />
-                    </div>
-                    }
+
+                  <form
+                    onSubmit={handelSubmit}
+                    className={loading ? "disabled" : ""}
+                  >
+                    {user_type === "admin" && (
+                      <div className="input-shipper " style={{ width: "49%" }}>
+                        <p>
+                          Shipper<span>*</span>
+                        </p>
+                        {/* shipper-select */}
+                        <Select
+                          classNamePrefix="select"
+                          className={
+                            errors.shipper_Value
+                              ? "hasError basic-multi-select"
+                              : "basic-multi-select"
+                          }
+                          id="shipper_Value" // isMulti
+                          isDisabled={isDisabled}
+                          defaultValue={shipperValue}
+                          // required={required}
+                          isLoading={isLoading}
+                          isClearable={isClearable}
+                          isRtl={isRtl}
+                          isSearchable={isSearchable}
+                          name="shipper"
+                          options={shipperOptions}
+                          onChange={(choice) => {
+                            pickupListApi(choice.value);
+                            setShipperUserChoice(choice.value);
+                            setShipperValue(choice.value);
+                            setchoise(choice.label);
+                            shipperPlanned_handleInputChange(
+                              indexshipment,
+                              choice.value
+                            );
+                          }}
+                        />{" "}
+                        {errors.shipper_Value && (
+                          <h5 className="error">{errors.shipper_Value}</h5>
+                        )}
+                      </div>
+                    )}
+
                     <div className="pick-up box-inputs" onClick={tabPickup}>
                       <div className="box-inputs-head">Pick up</div>
                       <div className="inputs row">
@@ -1253,7 +1424,12 @@ const Shipments = () => {
                           </label>
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
+                            className={
+                              errors.pickup_Value
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
+                            id="pickup_Value"
                             // isMulti
                             isDisabled={isDisabled}
                             isLoading={isLoading}
@@ -1273,6 +1449,9 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_Value && (
+                            <h5 className="error">{errors.pickup_Value}</h5>
+                          )}
                         </div>
                         <div className="input col-md-4">
                           <label htmlFor="address">
@@ -1280,7 +1459,12 @@ const Shipments = () => {
                           </label>
 
                           <DatePicker
-                            className="date-input position-relative px-5"
+                            className={
+                              errors.pickup_Date
+                                ? "hasError  position-relative px-5"
+                                : " position-relative px-5"
+                            }
+                            id="pickup_Date"
                             selected={startDate}
                             // required={true}
                             onChange={(date) => {
@@ -1297,18 +1481,26 @@ const Shipments = () => {
                             minDate={tomorrow}
                             showYearDropdown // year show and scrolldown alos
                             scrollableYearDropdown
-                          />
-
+                          ></DatePicker>
                           <Dateicon
                             className="position-absolute"
-                            style={{ top: "36%", left: "53%" }}
+
+                            style={
+                              errors.pickup_Date
+                                ? { top: "33%", left: "53%" }
+                                : { top: "36%", left: "53%" }
+                            }
+
                           />
+                          {errors.pickup_Date && (
+                            <h5 className="error">{errors.pickup_Date}</h5>
+                          )}
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">
-                            Pickup Time
-                          </label>
+
+                          <label htmlFor="address">Pickup Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1377,8 +1569,13 @@ const Shipments = () => {
                           {/* dropoff-select */}
                           <Select
                             classNamePrefix="select"
-                            className="basic-multi-select"
                             // isMulti
+                            id="dropOf_Address"
+                            className={
+                              errors.dropOf_Address
+                                ? "hasError basic-multi-select"
+                                : "basic-multi-select"
+                            }
                             isDisabled={isDisabled}
                             isLoading={isLoading}
                             // required
@@ -1401,11 +1598,14 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.dropOf_Address && (
+                            <h5 className="error">{errors.dropOf_Address}</h5>
+                          )}
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">
-                            Drop off Time
-                          </label>
+
+                          <label htmlFor="address">Drop off Time</label>
+
                           <input
                             type="time"
                             // required
@@ -1490,6 +1690,11 @@ const Shipments = () => {
                                 // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
+
+                                okay={okay}
+                                setLoading={setLoading}
+                                showNotification={showNotification}
+
                               />
                               {indexdetails > 0 && (
                                 <button
@@ -1518,7 +1723,7 @@ const Shipments = () => {
                           <button
                             className="btn-add "
                             id="add"
-                            type="btn"
+                            type="button"
                             onClick={() => {
                               // setInputs([...input, ""]);
                               addPlannedinerDetails(indexshipment);
@@ -1532,36 +1737,16 @@ const Shipments = () => {
                         {ischeck ? (
                           <div className="right-btn">
                             {/* <NavLink to="/allshipments"> */}
-                            {console.log(counter, "counter inside JSX")}
+                            {/* {console.log(counter, "counter inside JSX")} */}
                             {counter === numShipment - 1 ? (
                               <button className="btn-save" type="submit">
                                 Save
                               </button>
                             ) : (
                               <>
-                                {plannedList[counter].shipperPlanned === "" ||
-                                plannedList[counter].pickupAddressPlanned ===
-                                  "" ||
-                                plannedList[counter].dropOffPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .shipmentTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .truckTypePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .shipmentvaluePlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .weightPlanned === "" ||
 
-                                plannedList[counter].detailsTruck[0]
-                                  .commidityPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .uomPlanned === "" ||
-                                plannedList[counter].detailsTruck[0]
-                                  .quantityPlanned === "" ? (
+                                {errors && (
+
                                   <>
                                     <span
                                       className="mx-2"
@@ -1573,35 +1758,53 @@ const Shipments = () => {
                                     <button
                                       className="btn-save"
                                       type="btn"
-                                      // onClick={() => {
-                                      //     addNewListOfShipment();
-                                      //     counterchange(indexshipment);
-                                      // }}
+                                      onClick={() => {
+                                        if (
+                                          plannedList[counter]
+                                            .shipperPlanned === "" ||
+                                          plannedList[counter]
+                                            .pickupAddressPlanned === "" ||
+                                          plannedList[counter]
+                                            .dropOffPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .shipmentTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .truckTypePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .shipmentvaluePlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .weightPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .commidityPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .uomPlanned === "" ||
+                                          plannedList[counter].detailsTruck[0]
+                                            .quantityPlanned === ""
+                                        ) {
+                                          scrollToElement(targetElement);
+                                        } else if (counter < numShipment - 1) {
+                                          if (
+                                            counter ===
+                                            plannedList.length - 1
+                                          ) {
+                                            // Add a new shipment only if we're at the end of the current list
+                                            addNewListOfShipment();
+                                            console.log("here");
+                                          }
+                                          setCounter(counter + 1);
+                                          setStartDate(null);
+                                          console.log("there");
+                                        }
+                                      }}
                                     >
                                       Next Shipment
                                     </button>
                                   </>
-                                ) : (
-                                  <button
-                                    className="btn-save"
-                                    type="btn"
-                                    onClick={() => {
-                                      // addNewListOfShipment();
-                                      // setStartDate(null);
-                                      // counterchange(indexshipment);
-                                      if (counter < numShipment - 1) {
-                                        if (counter === plannedList.length - 1) {
-                                          // Add a new shipment only if we're at the end of the current list
-                                          addNewListOfShipment();
-                                        }
-                                        setCounter(counter + 1);
-                                        setStartDate(null);
-                                      }
-                                    
-                                    }}
-                                  >
-                                    Next Shipment
-                                  </button>
+
                                 )}
 
                                 {/* <button
@@ -1695,11 +1898,15 @@ const Shipments = () => {
                 />
               </div>
               <button
-                className="btnSave my-4"
+
+                type="sumbit"
+                className="btnSave my-4 adwadawdasd"
+
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
                   setIsChecked(!ischeck);
+                  scrollToElement(targetElement);
                   // if (plannedList.length < numShipment) {
                   //   // Add new empty shipments to match the requested number
                   //   const newShipments = Array(numShipment - plannedList.length).fill(plannedAllShipments);

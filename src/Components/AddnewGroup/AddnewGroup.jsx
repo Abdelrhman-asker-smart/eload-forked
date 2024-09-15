@@ -2,10 +2,10 @@ import React from "react";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import { NavLink } from "react-router-dom";
 
@@ -16,15 +16,17 @@ const AddnewGroup = () => {
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
   const { id } = useParams();
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
-  
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
+
   const showNotification = () => {
     // e.preventDefault();
 
     let Msg = ({ closeToast, toastProps }) => (
       <div>
-         <h4>Success</h4>
+        <h4>Success</h4>
         {/* <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
           <button className="btn btndetails">Back to Drivers</button>
         </NavLink> */}
@@ -33,18 +35,19 @@ const AddnewGroup = () => {
       </div>
     );
 
-    toast(<Msg /> ,{autoClose: 3000});
+    toast(<Msg />, { autoClose: 3000 });
     // readNotification(notification.id);
   };
-
 
   // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
-  urlencoded.append("shipper_id", user_type == 'admin' ? id : user_type_data.id);
+  urlencoded.append(
+    "shipper_id",
+    user_type == "admin" ? id : user_type_data.id
+  );
 
   const recordgroup = async (e) => {
-
     e.preventDefault();
     console.log("save triggered");
     try {
@@ -64,19 +67,20 @@ const AddnewGroup = () => {
       // setName("");
       console.log(reponse);
       showNotification();
-      navigate(`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`);
-
+      navigate(
+        `/Shipments/grouplist/${user_type == "admin" ? id : user_type_data.id}`
+      );
     } catch (e) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
+        position: "top-end",
+        icon: "error",
+        color: "#0e4579",
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton:true,
+        showCancelButton: true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
+      });
       console.log(e);
     }
   };
@@ -98,7 +102,11 @@ const AddnewGroup = () => {
           <h2>Add new group</h2>
 
           <button>
-            <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? id : user_type_data.id}`}>
+            <NavLink
+              to={`/Shipments/grouplist/${
+                user_type == "admin" ? id : user_type_data.id
+              }`}
+            >
               <p className="linkview">View All</p>
             </NavLink>
           </button>
@@ -116,6 +124,9 @@ const AddnewGroup = () => {
                 setName(e.target.value);
               }}
             />
+            {name.length < 1 && (
+              <h5 className="error">please type your name</h5>
+            )}
           </div>
           <div className="footer-newgroup text-center">
             <button

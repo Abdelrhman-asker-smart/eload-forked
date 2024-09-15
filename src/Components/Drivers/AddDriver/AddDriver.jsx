@@ -125,7 +125,7 @@ const AddDriver = () => {
       driving_license_copy: Joi.required().messages({
         "any.required": "Driving License is required",
       }),
-      truck_type_id: Joi.string().required(),
+      truck_type_id: Joi.number().required(),
     });
     const formDataObject = {
       name: name,
