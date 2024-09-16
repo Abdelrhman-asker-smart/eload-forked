@@ -579,8 +579,10 @@ const Details = () => {
           <MaterialReactTable
             columns={columns}
             data={data}
+            positionPagination="top"
+
             enableRowSelection
-            positionToolbarAlertBanner="bottom"
+            positionToolbarAlertBanner="top"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
                 sx={{

@@ -219,7 +219,9 @@ const ViewDriverP = () => {
           columns={columns}
           data={data}
           enableRowSelection
-          positionToolbarAlertBanner="bottom"
+          positionPagination="top"
+
+          positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
               sx={{

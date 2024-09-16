@@ -215,9 +215,11 @@ const Invoice = () => {
       <MaterialReactTable
         columns={columns}
         data={items}
+        positionPagination="top"
+
         enableRowSelection
         enableBottomToolbar={false}
-        positionToolbarAlertBanner="bottom"
+        positionToolbarAlertBanner="top"
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{

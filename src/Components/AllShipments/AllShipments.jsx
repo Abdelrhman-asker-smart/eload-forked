@@ -324,7 +324,7 @@ const AllShipments = () => {
       shipmenttype: item.shipment_type.name,
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
-      provider_price: item.provider_price,
+      // provider_price: item.provider_price,
       urgent_action_needed: item.urgent_action_needed,
       pickupdate: item.order.pickup_date,
       status: item.status_i18n,
@@ -339,7 +339,7 @@ const AllShipments = () => {
       shipmenttype: item.shipment_type.name,
       trucktype: item.truck_type.name,
       shippingcost: item.cost,
-      provider_price: item.provider_price,
+      // provider_price: item.provider_price,
       urgent_action_needed: item.urgent_action_needed,
       pickupdate: item.order.pickup_date,
       status: item.status_i18n,
@@ -539,7 +539,7 @@ const AllShipments = () => {
             positionPagination="top"
             enableGlobalFilter={false}
             enableRowSelection
-            positionToolbarAlertBanner="bottom"
+            positionToolbarAlertBanner="top"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
                 sx={{

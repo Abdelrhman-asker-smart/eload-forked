@@ -273,9 +273,11 @@ const Partners = () => {
    
         <MaterialReactTable
           columns={columns}
+          positionPagination="top"
+
           data={data}
           enableRowSelection
-          positionToolbarAlertBanner="bottom"
+          positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
               sx={{

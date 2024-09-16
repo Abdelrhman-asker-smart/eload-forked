@@ -2136,8 +2136,10 @@ const ShipmentOrder = () => {
       <MaterialReactTable
         columns={columnsServiceProvide}
         data={dataservices}
+        positionPagination="top"
+
         enableRowSelection
-        positionToolbarAlertBanner="bottom"
+        positionToolbarAlertBanner="top"
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{
@@ -2164,8 +2166,10 @@ const ShipmentOrder = () => {
         // data={dataservices2}
         data={dataservicesnoaction}
         // dataservices2
+        positionPagination="top"
+
         enableRowSelection
-        positionToolbarAlertBanner="bottom"
+        positionToolbarAlertBanner="top"
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{
@@ -2191,7 +2195,9 @@ const ShipmentOrder = () => {
             columns={drivers_columns}
             data={drivers_data}
             enableRowSelection
-            positionToolbarAlertBanner="bottom"
+            positionPagination="top"
+
+            positionToolbarAlertBanner="top"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
                 sx={{
@@ -2219,11 +2225,12 @@ const ShipmentOrder = () => {
           <MaterialReactTable
             columns={columnsEligible}
             // data={dataEligible}
+            positionPagination="top"
             data={dataFinancial}
 
             // dataFinancial
             enableRowSelection
-            positionToolbarAlertBanner="bottom"
+            positionToolbarAlertBanner="top"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
                 sx={{

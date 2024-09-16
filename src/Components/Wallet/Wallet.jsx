@@ -130,8 +130,10 @@ const Wallet = () => {
       <MaterialReactTable
         columns={columns}
         data={transactions}
+        positionPagination="top"
+
         enableRowSelection
-        positionToolbarAlertBanner="bottom"
+        positionToolbarAlertBanner="top"
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{

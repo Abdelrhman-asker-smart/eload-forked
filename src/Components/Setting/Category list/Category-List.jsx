@@ -161,6 +161,7 @@ const csvOptions = {
 
 const csvExporter = new ExportToCsv(csvOptions);
 
+
 const CategoryList = () => {
   // const pathanme = useLocation();
   const dispatch = useDispatch();
@@ -252,8 +253,10 @@ const CategoryList = () => {
         <MaterialReactTable
           columns={columns}
           data={data}
+          positionPagination="top"
+
           enableRowSelection
-          positionToolbarAlertBanner="bottom"
+          positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
               sx={{
