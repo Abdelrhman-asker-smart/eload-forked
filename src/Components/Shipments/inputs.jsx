@@ -237,13 +237,10 @@ const Inputs = ({
     }
   }, [targetElement, errors, okay]);
   // Api-shipment
-  console.log(plannedList.length ,"checklenghttttt");
-  console.log(plannedList[0].detailsTruck?.length ,"checklenghttttt");
-
-
+  console.log(plannedList.length, "checklenghttttt");
+  console.log(plannedList[0].detailsTruck?.length, "checklenghttttt");
 
   const AddShipments_Api = async (plannedList) => {
-
     console.log(plannedList, "plannedList--------");
     // e.preventDefault();
     const schema = Joi.object({
@@ -305,120 +302,148 @@ const Inputs = ({
       // console.log(error.details, " allErrors");
     }
     // Without-Planned=============================
-    const formdata = new FormData();
-
-    if (plannedList.length === 1) {
-    const item = plannedList[0];
-    console.log('Preparing formdata for item:', item);
-
+    else if (plannedList.length === 1) {
+      const formdata = new FormData();
+      const item = plannedList[0];
+      console.log("Preparing formdata for item:", item);
 
       // plannedList.map((item, index) => {
-        setIsLoading(true);
-        setErrors([]);
-        // formdata.append(`orders[${index}][shipper_id]`,item.shipperPlanned);
-        formdata.append(`shipper_id`, item.shipperPlanned);
+      setIsLoading(true);
+      setErrors([]);
+      // formdata.append(`orders[${index}][shipper_id]`,item.shipperPlanned);
+      formdata.append(`shipper_id`, item.shipperPlanned);
 
-        formdata.append("from_address_id", item.pickupAddressPlanned);
-        formdata.append("to_address_id", item.dropOffPlanned);
+      formdata.append("from_address_id", item.pickupAddressPlanned);
+      formdata.append("to_address_id", item.dropOffPlanned);
+      formdata.append(
+        "pickup_date",
+        moment(item.pickupDatePlanned).format("YYYY-MM-DD")
+      );
+      // pickup_DateValue
+      formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
+      formdata.append("pickup_to_time", item.pickupTimeToPlanned);
+      formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
+      formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+      formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+      // console.log(item, "item.detailsTruckkkkkkkk");
+      // item.detailsTruck.map((itemdetails, indexdetails) => {
+      //   // console.log(itemdetails, indexdetails, "map details");
+      //   // truck
+      //   formdata.append(
+      //     // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
+      //     `shipments[${indexdetails}][truck_type_id]`,
+      //     itemdetails.truckTypePlanned
+      //   );
+      //   // shipment
+      //   formdata.append(
+      //     `shipments[${indexdetails}][shipment_type_id]`,
+      //     itemdetails.shipmentTypePlanned
+      //   );
+      //   // shipment_value
+      //   formdata.append(
+      //     `shipments[${indexdetails}][value]`,
+      //     itemdetails.shipmentvaluePlanned
+      //   );
+      //   // weightPlanned
+      //   formdata.append(
+      //     `shipments[${indexdetails}][weight]`,
+      //     itemdetails.weightPlanned
+      //   );
+      //   // numTrucksPlanned
+      //   formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
+      //   // descriptionPlanned
+      //   formdata.append(
+      //     `shipments[${indexdetails}][description]`,
+      //     itemdetails.descriptionPlanned
+      //   );
+      //   // PickingListPlanned
+      //   itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
+      //     formdata.append(
+      //       `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
+      //       fileitem
+      //     );
+      //   });
+      //   // documListPlanned
+      //   itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
+      //     formdata.append(
+      //       `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
+      //       fileitemdoc
+      //     );
+      //   });
+      //   // commidityPlanned
+      //   formdata.append(
+      //     `shipments[${indexdetails}][commodity_id]`,
+      //     itemdetails.commidityPlanned
+      //   );
+      //   // uomPlanned
+      //   formdata.append(
+      //     `shipments[${indexdetails}][uom_id]`,
+      //     itemdetails.uomPlanned
+      //   );
+      //   // quantityPlanned
+      //   formdata.append(
+      //     `shipments[${indexdetails}][quantity]`,
+      //     itemdetails.quantityPlanned
+      //   );
+      // });
+      // ==================================test=========
+      // Append all detailsTruck items
+      item.detailsTruck.forEach((itemdetails, indexdetails) => {
         formdata.append(
-          "pickup_date",
-          moment(item.pickupDatePlanned).format("YYYY-MM-DD")
+          `shipments[${indexdetails}][truck_type_id]`,
+          itemdetails.truckTypePlanned
         );
-        // pickup_DateValue
-        formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
-        formdata.append("pickup_to_time", item.pickupTimeToPlanned);
-        formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
-        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
-        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
-        // console.log(item, "item.detailsTruckkkkkkkk");
-        // item.detailsTruck.map((itemdetails, indexdetails) => {
-        //   // console.log(itemdetails, indexdetails, "map details");
-        //   // truck
-        //   formdata.append(
-        //     // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
-        //     `shipments[${indexdetails}][truck_type_id]`,
-        //     itemdetails.truckTypePlanned
-        //   );
-        //   // shipment
-        //   formdata.append(
-        //     `shipments[${indexdetails}][shipment_type_id]`,
-        //     itemdetails.shipmentTypePlanned
-        //   );
-        //   // shipment_value
-        //   formdata.append(
-        //     `shipments[${indexdetails}][value]`,
-        //     itemdetails.shipmentvaluePlanned
-        //   );
-        //   // weightPlanned
-        //   formdata.append(
-        //     `shipments[${indexdetails}][weight]`,
-        //     itemdetails.weightPlanned
-        //   );
-        //   // numTrucksPlanned
-        //   formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
-        //   // descriptionPlanned
-        //   formdata.append(
-        //     `shipments[${indexdetails}][description]`,
-        //     itemdetails.descriptionPlanned
-        //   );
-        //   // PickingListPlanned
-        //   itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
-        //     formdata.append(
-        //       `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
-        //       fileitem
-        //     );
-        //   });
-        //   // documListPlanned
-        //   itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
-        //     formdata.append(
-        //       `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
-        //       fileitemdoc
-        //     );
-        //   });
-        //   // commidityPlanned
-        //   formdata.append(
-        //     `shipments[${indexdetails}][commodity_id]`,
-        //     itemdetails.commidityPlanned
-        //   );
-        //   // uomPlanned
-        //   formdata.append(
-        //     `shipments[${indexdetails}][uom_id]`,
-        //     itemdetails.uomPlanned
-        //   );
-        //   // quantityPlanned
-        //   formdata.append(
-        //     `shipments[${indexdetails}][quantity]`,
-        //     itemdetails.quantityPlanned
-        //   );
-        // });
-        // ==================================test=========
-            // Append all detailsTruck items
-    item.detailsTruck.forEach((itemdetails, indexdetails) => {
-      formdata.append(`shipments[${indexdetails}][truck_type_id]`, itemdetails.truckTypePlanned);
-      formdata.append(`shipments[${indexdetails}][shipment_type_id]`, itemdetails.shipmentTypePlanned);
-      formdata.append(`shipments[${indexdetails}][value]`, itemdetails.shipmentvaluePlanned);
-      formdata.append(`shipments[${indexdetails}][weight]`, itemdetails.weightPlanned);
-      formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
-      formdata.append(`shipments[${indexdetails}][description]`, itemdetails.descriptionPlanned);
+        formdata.append(
+          `shipments[${indexdetails}][shipment_type_id]`,
+          itemdetails.shipmentTypePlanned
+        );
+        formdata.append(
+          `shipments[${indexdetails}][value]`,
+          itemdetails.shipmentvaluePlanned
+        );
+        formdata.append(
+          `shipments[${indexdetails}][weight]`,
+          itemdetails.weightPlanned
+        );
+        formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
+        formdata.append(
+          `shipments[${indexdetails}][description]`,
+          itemdetails.descriptionPlanned
+        );
 
-      itemdetails.PickingListPlanned.forEach((fileitem, fileindexpick) => {
-        formdata.append(`shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`, fileitem);
+        itemdetails.PickingListPlanned.forEach((fileitem, fileindexpick) => {
+          formdata.append(
+            `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
+            fileitem
+          );
+        });
+
+        itemdetails.documListPlanned.forEach((fileitemdoc, fileindexdoc) => {
+          formdata.append(
+            `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
+            fileitemdoc
+          );
+        });
+
+        formdata.append(
+          `shipments[${indexdetails}][commodity_id]`,
+          itemdetails.commidityPlanned
+        );
+        formdata.append(
+          `shipments[${indexdetails}][uom_id]`,
+          itemdetails.uomPlanned
+        );
+        formdata.append(
+          `shipments[${indexdetails}][quantity]`,
+          itemdetails.quantityPlanned
+        );
       });
 
-      itemdetails.documListPlanned.forEach((fileitemdoc, fileindexdoc) => {
-        formdata.append(`shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`, fileitemdoc);
-      });
-
-      formdata.append(`shipments[${indexdetails}][commodity_id]`, itemdetails.commidityPlanned);
-      formdata.append(`shipments[${indexdetails}][uom_id]`, itemdetails.uomPlanned);
-      formdata.append(`shipments[${indexdetails}][quantity]`, itemdetails.quantityPlanned);
-    });
-
-    console.log('Formdata prepared:', Object.fromEntries(formdata));
-        // ===================test
+      console.log("Formdata prepared:", Object.fromEntries(formdata));
+      // ===================test
       // });
       console.log("Addone----------Done");
-      
+
       // below is a temp fix to be able to send the order request only once
       // handleOrder(formdata);
 
@@ -438,16 +463,15 @@ const Inputs = ({
         );
 
         // handleOrder(formdata);
-      showNotification();
+        showNotification();
         navigate("/allshipments");
-
       } catch (e) {
         console.log(e);
       }
 
       // Planned=============================
-    } 
-    else if (plannedList.length > 1) {
+    } else if (plannedList.length > 1) {
+      const formdata = new FormData();
       plannedList.map((item, index) => {
         formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
         // formdata.append(`shipper_id`,item.shipperPlanned);
@@ -545,7 +569,6 @@ const Inputs = ({
       });
       console.log("Addplanned----------Done");
 
-
       handleOrder(formdata);
 
       try {
@@ -567,9 +590,7 @@ const Inputs = ({
         handleOrder(formdata);
         showNotification();
         navigate("/allshipments");
-
       } catch (e) {
-
         console.log(e);
       }
     }
@@ -723,7 +744,7 @@ const Inputs = ({
             }
             id="trackUser_Choice"
             isDisabled={isDisabled}
-            required
+            // required
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
@@ -759,7 +780,7 @@ const Inputs = ({
             isDisabled={isDisabled}
             isLoading={isLoading}
             isClearable={isClearable}
-            required
+            // required
             isRtl={isRtl}
             isSearchable={isSearchable}
             name="color"
@@ -790,7 +811,7 @@ const Inputs = ({
           </label>
           <input
             type="number"
-            required
+            // required
             placeholder="i,e, 10"
             className={
               errors.shipment_Value
@@ -819,7 +840,6 @@ const Inputs = ({
             type="number"
             placeholder="i,e,2000  Kgs"
             min="1"
-
             className={
               errors.shipment_Weight
                 ? "hasError basic-multi-select"
@@ -876,7 +896,6 @@ const Inputs = ({
 
       <div className="inputs row">
         <div className="input col-3">
-
           <label htmlFor="address">Packing List Attachments</label>
 
           <div className="input-group ">
@@ -885,7 +904,6 @@ const Inputs = ({
               multiple="multiple"
               accept="audio/*,video/*,image/*,.pdf,.doc"
               className="input-file form-control"
-
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               aria-label="Upload"
@@ -940,7 +958,7 @@ const Inputs = ({
             // isMulti
             isDisabled={isDisabled}
             isLoading={isLoading}
-            required
+            // required
             isClearable={isClearable}
             isRtl={isRtl}
             isSearchable={isSearchable}
@@ -975,7 +993,7 @@ const Inputs = ({
             isLoading={isLoading}
             isClearable={isClearable}
             isRtl={isRtl}
-            required
+            // required
             isSearchable={isSearchable}
             name="color"
             options={UOMsOptions}
@@ -996,7 +1014,6 @@ const Inputs = ({
           </label>
           <input
             type="number"
-
             className={
               errors.quantity_Value
                 ? "hasError basic-multi-select"
