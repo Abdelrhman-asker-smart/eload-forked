@@ -32,7 +32,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
 const Shipments = () => {
   const navigate = useNavigate();
 
@@ -112,9 +111,6 @@ const Shipments = () => {
   tomorrow.setDate(today.getDate() + 1);
 
   // ====================================shipments-states============================================
-
-
-
 
   const [shipperList, setShipperList] = useState([]);
   const [pickupList, setPickupList] = useState([]);
@@ -258,7 +254,6 @@ const Shipments = () => {
 
   // details
   const detailsApi = async (shipper_id, id_pickup, id_dropoff) => {
-
     try {
       const response = await axios.get(
         `https://dev.eload.smart.sa/api/v1/orders/request/prepare?shipper_id=${shipper_id}&from_address_id=${id_pickup}&to_address_id=${id_dropoff}`,
@@ -312,8 +307,8 @@ const Shipments = () => {
     })),
   }));
   // ================================
-    //====================details_options================
-      // commidities_options
+  //====================details_options================
+  // commidities_options
   const commidtiesOptions = detailsList.commodities?.map((item, index) => {
     return {
       value: item.id,
@@ -415,12 +410,10 @@ const Shipments = () => {
     newInputs[indexshipment].detailsTruck[indexdetails].quantityPlanned =
       event.target.value;
   };
-    // ===================================
+  // ===================================
 
   const shipmentOptionList = (truckuserChoice) => {
-
     detailsList.truck_types?.map((item, index) => {
-
       console.log(item.shipment_types, " item.shipment_types");
 
       if (item.id === truckuserChoice) {
@@ -543,28 +536,24 @@ const Shipments = () => {
   console.log(errors, " errorsssssssss");
   const [okay, setOkay] = useState(true);
   const Joi = require("joi");
-  const [targetElement, setTargetElement] = useState(null);
 
+  const [targetElement, setTargetElement] = useState("");
 
   const scrollToElement = (targetElement) => {
     const element = document.getElementById(targetElement);
     const focusing = element.querySelector("input");
     // console.log(element, focusing, "element id in function");
     if (focusing) {
-      focusing.scrollIntoView({ behavior: "smooth", block: "start" });
       focusing.focus();
     } else if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
       element.focus();
     }
   };
   useEffect(() => {
-    console.log(targetElement && !okay, " in the Effect");
-    if (targetElement && !okay) {
+    if (targetElement) {
       scrollToElement(targetElement);
     }
-  }, [targetElement, okay]);
-
+  }, [targetElement]);
 
   // ======================================================planned-shipment==================
   const [numShipment, setNumShipment] = useState(0);
@@ -772,6 +761,20 @@ const Shipments = () => {
         "number.base": "Please Pickup a Valid Address",
         "any.required": "Address value is required",
       }),
+      pickup_TimeFromValue: Joi.string().required().messages({
+        "string.empty": "Please Pickup a Valid Date",
+      }),
+      pickup_TimeToValue: Joi.string().required().messages({
+        "string.empty": "Please Pickup a Valid Date",
+      }),
+      dropoff_TimeFromValue: Joi.string().required().messages({
+        "string.empty": "Please Pickup a Valid Date",
+      }),
+      dropoff_TimeToValue: Joi.string().required().messages({
+        "string.empty": "Please Pickup a Valid Date",
+      }),
+
+      // ============//Details Inputs =========
       trackUser_Choice: Joi.number().required().messages({
         "number.base": "Please Select a Truck type",
         "any.required": "Truck type is required",
@@ -814,10 +817,13 @@ const Shipments = () => {
       commodity_Value: commodity,
       unit_Measurement: unitMeasure,
       quantity_Value: quantityValue,
+      pickup_TimeFromValue: pickup_TimeFromValue,
+      pickup_TimeToValue: pickup_TimeToValue,
+      dropoff_TimeFromValue: dropoff_TimeFromValue,
+      dropoff_TimeToValue: dropoff_TimeToValue,
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -836,22 +842,22 @@ const Shipments = () => {
         console.log("Preparing formdata for item:", item);
         setIsLoading(true);
         setErrors([]);
-        
+
         formdata.append(`shipper_id`, item.shipperPlanned);
-  
+
         formdata.append("from_address_id", item.pickupAddressPlanned);
         formdata.append("to_address_id", item.dropOffPlanned);
         formdata.append(
           "pickup_date",
           moment(item.pickupDatePlanned).format("YYYY-MM-DD")
         );
-       
+
         formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
         formdata.append("pickup_to_time", item.pickupTimeToPlanned);
         formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
         formdata.append("dropoff_to_time", item.dropTimeToPlanned);
         formdata.append("dropoff_to_time", item.dropTimeToPlanned);
-  
+
         // Append all detailsTruck items
         item.detailsTruck.forEach((itemdetails, indexdetails) => {
           formdata.append(
@@ -875,21 +881,21 @@ const Shipments = () => {
             `shipments[${indexdetails}][description]`,
             itemdetails.descriptionPlanned
           );
-  
+
           itemdetails.PickingListPlanned.forEach((fileitem, fileindexpick) => {
             formdata.append(
               `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
               fileitem
             );
           });
-  
+
           itemdetails.documListPlanned.forEach((fileitemdoc, fileindexdoc) => {
             formdata.append(
               `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
               fileitemdoc
             );
           });
-  
+
           formdata.append(
             `shipments[${indexdetails}][commodity_id]`,
             itemdetails.commidityPlanned
@@ -903,15 +909,15 @@ const Shipments = () => {
             itemdetails.quantityPlanned
           );
         });
-  
+
         console.log("Formdata prepared:", Object.fromEntries(formdata));
         // ===================test
         console.log("Addone----------Done");
-  
+
         try {
           const reponse = await axios.post(
             "https://dev.eload.smart.sa/api/v1/orders",
-  
+
             formdata,
             {
               headers: {
@@ -922,27 +928,30 @@ const Shipments = () => {
               },
             }
           );
-  
+
           // handleOrder(formdata);
           showNotification();
           navigate("/allshipments");
         } catch (e) {
           console.log(e);
         }
-  
+
         // Planned=============================
       } else if (plannedList.length > 1) {
         const formdata = new FormData();
         plannedList.map((item, index) => {
           formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
           // formdata.append(`shipper_id`,item.shipperPlanned);
-  
+
           formdata.append(
             `orders[${index}][from_address_id]`,
             item.pickupAddressPlanned
           );
-          formdata.append(`orders[${index}][to_address_id]`, item.dropOffPlanned);
-  
+          formdata.append(
+            `orders[${index}][to_address_id]`,
+            item.dropOffPlanned
+          );
+
           formdata.append(
             `orders[${index}][pickup_date]`,
             moment(item.pickupDatePlanned).format("YYYY-MM-DD")
@@ -964,7 +973,7 @@ const Shipments = () => {
             `orders[${index}][dropoff_to_time]`,
             item.dropTimeToPlanned
           );
-  
+
           item.detailsTruck.map((itemdetails, indexdetails) => {
             // truck
             formdata.append(
@@ -1029,14 +1038,14 @@ const Shipments = () => {
           });
         });
         console.log("Addplanned----------Done");
-  
+
         handleOrder(formdata);
-  
+
         try {
           const reponse = await axios.post(
             "https://dev.eload.smart.sa/api/v1/scheduled_orders",
             // }
-  
+
             formdata,
             {
               headers: {
@@ -1047,7 +1056,7 @@ const Shipments = () => {
               },
             }
           );
-  
+
           // handleOrder(formdata);
           showNotification();
           navigate("/allshipments");
@@ -1361,11 +1370,17 @@ const Shipments = () => {
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">Pickup Time</label>
+                          <label htmlFor="address">
+                            Pickup Time <span>*</span>
+                          </label>
                           <span style={{ fontWeight: "bold" }}>From</span>
 
                           <input
                             type="time"
+                            className={
+                              errors.pickup_TimeFromValue ? "hasError" : ""
+                            }
+                            id="pickup_TimeFromValue"
                             // required
                             onChange={(v) => {
                               setPickup_TimeFromValue(v.target.value);
@@ -1375,6 +1390,11 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_TimeFromValue && (
+                            <h5 className="error">
+                              {errors.pickup_TimeFromValue}
+                            </h5>
+                          )}
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
@@ -1383,6 +1403,10 @@ const Shipments = () => {
                           <input
                             type="time"
                             // required
+                            className={
+                              errors.pickup_TimeToValue ? "hasError" : ""
+                            }
+                            id="pickup_TimeToValue"
                             onChange={(v) => {
                               setPickup_TimeToValue(v.target.value);
                               pickupTimeToPlanned_handleInputChange(
@@ -1391,6 +1415,11 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_TimeToValue && (
+                            <h5 className="error">
+                              {errors.pickup_TimeToValue}
+                            </h5>
+                          )}
                         </div>
                         <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
@@ -1447,13 +1476,19 @@ const Shipments = () => {
                           )}
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">Drop off Time</label>
+                          <label htmlFor="address">
+                            Drop off Time<span>*</span>
+                          </label>
                           <div className="d-flex">
                             <span style={{ fontWeight: "bold" }}>From</span>
 
                             <input
                               type="time"
                               // required
+                              className={
+                                errors.dropoff_TimeFromValue ? "hasError" : ""
+                              }
+                              id="dropoff_TimeFromValue"
                               onChange={(v) => {
                                 setDrop_TimeFromValue(v.target.value);
                                 dropTimeFromPlanned_handleInputChange(
@@ -1463,6 +1498,11 @@ const Shipments = () => {
                               }}
                             />
                           </div>
+                          {errors.dropoff_TimeFromValue && (
+                            <h5 className="error">
+                              {errors.dropoff_TimeFromValue}
+                            </h5>
+                          )}
                         </div>
                         <div className="input mx-3 mt-4">
                           <div className="d-flex align-items-center">
@@ -1476,6 +1516,10 @@ const Shipments = () => {
                             <input
                               type="time"
                               // required
+                              className={
+                                errors.dropoff_TimeToValue ? "hasError" : ""
+                              }
+                              id="dropoff_TimeToValue"
                               onChange={(v) => {
                                 setDrop_TimeToValue(v.target.value);
                                 dropTimeToPlanned_handleInputChange(
@@ -1485,6 +1529,11 @@ const Shipments = () => {
                               }}
                             />
                           </div>
+                          {errors.dropoff_TimeToValue && (
+                            <h5 className="error">
+                              {errors.dropoff_TimeToValue}
+                            </h5>
+                          )}
                         </div>
                         <div className="add-btn">
                           <NavLink to={`/Shipments/addAddress/${shipperid}`}>
@@ -1507,312 +1556,362 @@ const Shipments = () => {
                         (item, indexdetails) => {
                           return (
                             <>
-                            <div className="inputs row">
-        <div className="input col-2">
-          <label htmlFor="address">
-            Truck Type<span>*</span>
-          </label>
-          {/* trucktype */}
-          <Select
-            classNamePrefix="select"
-            // isMulti
-            className={
-              errors.trackUser_Choice
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="trackUser_Choice"
-            isDisabled={isDisabled}
-            // required
-            isLoading={isLoading}
-            isClearable={isClearable}
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            // value={setTruckTypeValue}
-            options={truckOptions}
-            onChange={(choice) => {
-              setTruckuserChoice(choice.value);
-              shipmentOptionList(choice.value);
-              // truckTypehandleInputChange(indexOfItem, choice.value);
-              TruckPlannedChange(indexshipment, indexdetails, choice.value);
-            }}
-          />
-          {errors.trackUser_Choice && (
-            <h5 className="error">{errors.trackUser_Choice}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Shipment type<span>*</span>
-          </label>
-          {/* shipment-type */}
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.shipment_type
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_type"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isClearable={isClearable}
-            // required
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            options={shipmentOptionListList}
-            onChange={(choice) => {
-              shipmenttypePlannedChange(
-                indexshipment,
-                indexdetails,
-                choice.value
-              );
-              // shipmentTypehandleInputChange(indexOfItem, choice.value);
-              // shipmenttypePlannedChange(
-              //   indexshipment,
-              //   indexdetails,
-              //   choice.value
-              // );
-              setShipmentType(choice.value);
-            }}
-          />
-          {errors.shipment_type && (
-            <h5 className="error">{errors.shipment_type}</h5>
-          )}
-          {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Shipment value<span>*</span>
-          </label>
-          <input
-            type="number"
-            // required
-            placeholder="i,e, 10"
-            className={
-              errors.shipment_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_Value"
-            // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
-            // totaldetails
-            onChange={(e) => {
-              // valueOfhandleInputChange(indexOfItem, e)
-              shipmentValuePlannedChange(indexshipment, indexdetails, e);
-              setShipmentValue(e.target.value);
-            }}
-          />
-          {errors.shipment_Value && (
-            <h5 className="error">{errors.shipment_Value}</h5>
-          )}
-          {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Weight<span>*</span>
-          </label>
-          <input
-            type="number"
-            placeholder="i,e,2000  Kgs"
-            min="1"
-            className={
-              errors.shipment_Weight
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_Weight"
-            // required
+                              <div className="inputs row">
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Truck Type<span>*</span>
+                                  </label>
+                                  {/* trucktype */}
+                                  <Select
+                                    classNamePrefix="select"
+                                    // isMulti
+                                    className={
+                                      errors.trackUser_Choice
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="trackUser_Choice"
+                                    isDisabled={isDisabled}
+                                    // required
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    // value={setTruckTypeValue}
+                                    options={truckOptions}
+                                    onChange={(choice) => {
+                                      setTruckuserChoice(choice.value);
+                                      shipmentOptionList(choice.value);
+                                      // truckTypehandleInputChange(indexOfItem, choice.value);
+                                      TruckPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                    }}
+                                  />
+                                  {errors.trackUser_Choice && (
+                                    <h5 className="error">
+                                      {errors.trackUser_Choice}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Shipment type<span>*</span>
+                                  </label>
+                                  {/* shipment-type */}
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.shipment_type
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_type"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    // required
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={shipmentOptionListList}
+                                    onChange={(choice) => {
+                                      shipmenttypePlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      // shipmentTypehandleInputChange(indexOfItem, choice.value);
+                                      // shipmenttypePlannedChange(
+                                      //   indexshipment,
+                                      //   indexdetails,
+                                      //   choice.value
+                                      // );
+                                      setShipmentType(choice.value);
+                                    }}
+                                  />
+                                  {errors.shipment_type && (
+                                    <h5 className="error">
+                                      {errors.shipment_type}
+                                    </h5>
+                                  )}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Shipment value<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    // required
+                                    placeholder="i,e, 10"
+                                    className={
+                                      errors.shipment_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_Value"
+                                    // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
+                                    // totaldetails
+                                    onChange={(e) => {
+                                      // valueOfhandleInputChange(indexOfItem, e)
+                                      shipmentValuePlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                      setShipmentValue(e.target.value);
+                                    }}
+                                  />
+                                  {errors.shipment_Value && (
+                                    <h5 className="error">
+                                      {errors.shipment_Value}
+                                    </h5>
+                                  )}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Weight<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    placeholder="i,e,2000  Kgs"
+                                    min="1"
+                                    className={
+                                      errors.shipment_Weight
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_Weight"
+                                    // required
 
-            onChange={(e) => {
-              // setWeightValue(e.target.value);
-              // weighthandleInputChange(indexOfItem, e);
-              shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
-              setWeight(e.target.value);
-            }}
-          />
-          {errors.shipment_Weight && (
-            <h5 className="error">{errors.shipment_Weight}</h5>
-          )}
-          {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
-          {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Number of trucks<span>*</span>
-          </label>
-          <input
-            type="number"
-            placeholder="i,e,2000"
-            value={1}
-            min={1}
-            disabled
-            // required
+                                    onChange={(e) => {
+                                      // setWeightValue(e.target.value);
+                                      // weighthandleInputChange(indexOfItem, e);
+                                      shipmentwieghtPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                      setWeight(e.target.value);
+                                    }}
+                                  />
+                                  {errors.shipment_Weight && (
+                                    <h5 className="error">
+                                      {errors.shipment_Weight}
+                                    </h5>
+                                  )}
+                                  {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Number of trucks<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    placeholder="i,e,2000"
+                                    value={1}
+                                    min={1}
+                                    disabled
+                                    // required
 
-            onChange={(e) => {
-              // setNumber_TrucksValue(e.target.value);
-              // numberOfTruckshahndleInputChange(indexOfItem, e);
-              numTruckPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">Description</label>
-          <input
-            type="text"
-            placeholder="text here"
-            min="1"
-            onChange={(e) => {
-              // descriptionhahndleInputChange(indexOfItem,e);
-              descriptionPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-        </div>
-                            </div>
+                                    onChange={(e) => {
+                                      // setNumber_TrucksValue(e.target.value);
+                                      // numberOfTruckshahndleInputChange(indexOfItem, e);
+                                      numTruckPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">Description</label>
+                                  <input
+                                    type="text"
+                                    placeholder="text here"
+                                    min="1"
+                                    onChange={(e) => {
+                                      // descriptionhahndleInputChange(indexOfItem,e);
+                                      descriptionPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              </div>
 
-                            <div className="inputs row">
-        <div className="input col-3">
-          <label htmlFor="address">Packing List Attachments</label>
+                              <div className="inputs row">
+                                <div className="input col-3">
+                                  <label htmlFor="address">
+                                    Packing List Attachments
+                                  </label>
 
-          <div className="input-group ">
-            <input
-              type="file"
-              multiple="multiple"
-              accept="audio/*,video/*,image/*,.pdf,.doc"
-              className="input-file form-control"
-              id="inputGroupFile03"
-              aria-describedby="inputGroupFileAddon03"
-              aria-label="Upload"
-              onChange={(e) => {
-                // pickinghandleInputChange(indexOfItem, e.target.files);
-                pickingListPlannedChange(
-                  indexshipment,
-                  indexdetails,
-                  e.target.files
-                );
-                // console.log(picking_ListValue, "files");
-                // setPicking_ListValue(e.target.files[0]);
-              }}
-            />
-          </div>
-        </div>
-        <div className="input col-3">
-          <label htmlFor="address">Other Documentation</label>
-          <div className="input-group ">
-            <input
-              type="file"
-              multiple="multiple"
-              accept="audio/*,video/*,image/*,.pdf,.doc"
-              // required
-              className="input-file form-control"
-              id="inputGroupFile03"
-              aria-describedby="inputGroupFileAddon03"
-              aria-label="Upload"
-              onChange={(e) => {
-                // docListhahndleInputChange(indexOfItem, e.target.files);
-                docListPlannedChange(
-                  indexshipment,
-                  indexdetails,
-                  e.target.files
-                );
-              }}
-            />
-          </div>
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Commodity type<span>*</span>
-          </label>
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.commodity_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="commodity_Value"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            // required
-            isClearable={isClearable}
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            options={commidtiesOptions}
-            // setCommodityTypeValue
-            onChange={(choice) => {
-              // setCommodityTypeValue(choice.value);
-              // commiditieshandleInputChange(indexOfItem, choice.value);
-              commidityPlannedChange(indexshipment, indexdetails, choice.value);
-              setCommodity(choice.value);
-            }}
-          />
-          {errors.commodity_Value && (
-            <h5 className="error">{errors.commodity_Value}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Unit of measurement<span>*</span>
-          </label>
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.unit_Measurement
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="unit_Measurement"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isClearable={isClearable}
-            isRtl={isRtl}
-            // required
-            isSearchable={isSearchable}
-            name="color"
-            options={UOMsOptions}
-            onChange={(choice) => {
-              // setUomValue(choice.value);
-              // uom_handleInputChange(indexOfItem, choice.value);
-              uomPlannedChange(indexshipment, indexdetails, choice.value);
-              setUnitMeasure(choice.value);
-            }}
-          />{" "}
-          {errors.unit_Measurement && (
-            <h5 className="error">{errors.unit_Measurement}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Quantity<span>*</span>
-          </label>
-          <input
-            type="number"
-            className={
-              errors.quantity_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="quantity_Value"
-            // required
+                                  <div className="input-group ">
+                                    <input
+                                      type="file"
+                                      multiple="multiple"
+                                      accept="audio/*,video/*,image/*,.pdf,.doc"
+                                      className="input-file form-control"
+                                      id="inputGroupFile03"
+                                      aria-describedby="inputGroupFileAddon03"
+                                      aria-label="Upload"
+                                      onChange={(e) => {
+                                        // pickinghandleInputChange(indexOfItem, e.target.files);
+                                        pickingListPlannedChange(
+                                          indexshipment,
+                                          indexdetails,
+                                          e.target.files
+                                        );
+                                        // console.log(picking_ListValue, "files");
+                                        // setPicking_ListValue(e.target.files[0]);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="input col-3">
+                                  <label htmlFor="address">
+                                    Other Documentation
+                                  </label>
+                                  <div className="input-group ">
+                                    <input
+                                      type="file"
+                                      multiple="multiple"
+                                      accept="audio/*,video/*,image/*,.pdf,.doc"
+                                      // required
+                                      className="input-file form-control"
+                                      id="inputGroupFile03"
+                                      aria-describedby="inputGroupFileAddon03"
+                                      aria-label="Upload"
+                                      onChange={(e) => {
+                                        // docListhahndleInputChange(indexOfItem, e.target.files);
+                                        docListPlannedChange(
+                                          indexshipment,
+                                          indexdetails,
+                                          e.target.files
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Commodity type<span>*</span>
+                                  </label>
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.commodity_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="commodity_Value"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    // required
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={commidtiesOptions}
+                                    // setCommodityTypeValue
+                                    onChange={(choice) => {
+                                      // setCommodityTypeValue(choice.value);
+                                      // commiditieshandleInputChange(indexOfItem, choice.value);
+                                      commidityPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      setCommodity(choice.value);
+                                    }}
+                                  />
+                                  {errors.commodity_Value && (
+                                    <h5 className="error">
+                                      {errors.commodity_Value}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Unit of measurement<span>*</span>
+                                  </label>
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.unit_Measurement
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="unit_Measurement"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    // required
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={UOMsOptions}
+                                    onChange={(choice) => {
+                                      // setUomValue(choice.value);
+                                      // uom_handleInputChange(indexOfItem, choice.value);
+                                      uomPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      setUnitMeasure(choice.value);
+                                    }}
+                                  />{" "}
+                                  {errors.unit_Measurement && (
+                                    <h5 className="error">
+                                      {errors.unit_Measurement}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Quantity<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className={
+                                      errors.quantity_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="quantity_Value"
+                                    // required
 
-            min="1"
-            placeholder="i,e,02"
-            onChange={(e) => {
-              setQuantityValue(e.target.value);
-              // quantityValue_handleInputChange(indexOfItem, e);
-              quantityPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-          {errors.quantity_Value && (
-            <h5 className="error">{errors.quantity_Value}</h5>
-          )}
-        </div>
+                                    min="1"
+                                    placeholder="i,e,02"
+                                    onChange={(e) => {
+                                      setQuantityValue(e.target.value);
+                                      // quantityValue_handleInputChange(indexOfItem, e);
+                                      quantityPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                  {errors.quantity_Value && (
+                                    <h5 className="error">
+                                      {errors.quantity_Value}
+                                    </h5>
+                                  )}
+                                </div>
                               </div>
                               {/* <Inputs
                                 handleOrder={handleOrder}
@@ -1882,7 +1981,11 @@ const Shipments = () => {
                             {/* <NavLink to="/allshipments"> */}
                             {console.log(counter, "counter inside JSX")}
                             {counter === numShipment - 1 ? (
-                              <button className="btn-save" type="submit">
+                              <button
+                                className="btn-save"
+                                type="submit"
+                                onClick={() => scrollToElement(targetElement)}
+                              >
                                 Save
                               </button>
                             ) : (
@@ -1985,7 +2088,11 @@ const Shipments = () => {
                           </div>
                         ) : (
                           <div className="right-btn">
-                            <button className="btn-save" type="submit">
+                            <button
+                              className="btn-save"
+                              type="submit"
+                              onClick={() => scrollToElement(targetElement)}
+                            >
                               Save
                             </button>
                           </div>
@@ -2133,10 +2240,16 @@ const Shipments = () => {
                         </div>
                         {/* time-from */}
                         <div className="input col-md-3">
-                          <label htmlFor="address">Pickup Time</label>
+                          <label htmlFor="address">
+                            Pickup Time <span>*</span>
+                          </label>
                           <span style={{ fontWeight: "bold" }}>From</span>
                           <input
                             type="time"
+                            className={
+                              errors.pickup_TimeFromValue ? "hasError" : ""
+                            }
+                            id="pickup_TimeFromValue"
                             // required
                             onChange={(v) => {
                               setPickup_TimeFromValue(v.target.value);
@@ -2146,6 +2259,11 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_TimeFromValue && (
+                            <h5 className="error">
+                              {errors.pickup_TimeFromValue}
+                            </h5>
+                          )}
                         </div>
                         {/* time-to */}
                         <div className="input col-md-3 mt-4">
@@ -2154,6 +2272,10 @@ const Shipments = () => {
                           <input
                             type="time"
                             // required
+                            className={
+                              errors.pickup_TimeToValue ? "hasError" : ""
+                            }
+                            id="pickup_TimeToValue"
                             onChange={(v) => {
                               setPickup_TimeToValue(v.target.value);
                               pickupTimeToPlanned_handleInputChange(
@@ -2162,6 +2284,11 @@ const Shipments = () => {
                               );
                             }}
                           />
+                          {errors.pickup_TimeToValue && (
+                            <h5 className="error">
+                              {errors.pickup_TimeToValue}
+                            </h5>
+                          )}
                         </div>
                         {shipperValue === "" ? (
                           <div className="add-btn">
@@ -2241,7 +2368,9 @@ const Shipments = () => {
                           )}
                         </div>
                         <div className="input mx-3">
-                          <label htmlFor="address">Drop off Time</label>
+                          <label htmlFor="address">
+                            Drop off Time<span>*</span>
+                          </label>
                           <div className="d-flex align-items-center">
                             <span
                               className="mx-1"
@@ -2252,6 +2381,10 @@ const Shipments = () => {
 
                             <input
                               type="time"
+                              className={
+                                errors.dropoff_TimeFromValue ? "hasError" : ""
+                              }
+                              id="dropoff_TimeFromValue"
                               // required
                               onChange={(v) => {
                                 setDrop_TimeFromValue(v.target.value);
@@ -2262,6 +2395,11 @@ const Shipments = () => {
                               }}
                             />
                           </div>
+                          {errors.dropoff_TimeFromValue && (
+                            <h5 className="error">
+                              {errors.dropoff_TimeFromValue}
+                            </h5>
+                          )}
                         </div>
                         <div className="input mx-3 mt-4 =">
                           <div className="d-flex align-items-center">
@@ -2275,6 +2413,10 @@ const Shipments = () => {
                             <input
                               type="time"
                               // required
+                              className={
+                                errors.dropoff_TimeToValue ? "hasError" : ""
+                              }
+                              id="dropoff_TimeToValue"
                               onChange={(v) => {
                                 setDrop_TimeToValue(v.target.value);
                                 dropTimeToPlanned_handleInputChange(
@@ -2284,6 +2426,11 @@ const Shipments = () => {
                               }}
                             />
                           </div>
+                          {errors.dropoff_TimeToValue && (
+                            <h5 className="error">
+                              {errors.dropoff_TimeToValue}
+                            </h5>
+                          )}
                         </div>
                         {shipperValue === "" ? (
                           <div className="add-btn">
@@ -2320,313 +2467,363 @@ const Shipments = () => {
                         (item, indexdetails) => {
                           return (
                             <>
-                            <div className="inputs row">
-        <div className="input col-2">
-          <label htmlFor="address">
-            Truck Type<span>*</span>
-          </label>
-          {/* trucktype */}
-          <Select
-            classNamePrefix="select"
-            // isMulti
-            className={
-              errors.trackUser_Choice
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="trackUser_Choice"
-            isDisabled={isDisabled}
-            // required
-            isLoading={isLoading}
-            isClearable={isClearable}
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            // value={setTruckTypeValue}
-            options={truckOptions}
-            onChange={(choice) => {
-              setTruckuserChoice(choice.value);
-              shipmentOptionList(choice.value);
-              // truckTypehandleInputChange(indexOfItem, choice.value);
-              TruckPlannedChange(indexshipment, indexdetails, choice.value);
-            }}
-          />
-          {errors.trackUser_Choice && (
-            <h5 className="error">{errors.trackUser_Choice}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Shipment type<span>*</span>
-          </label>
-          {/* shipment-type */}
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.shipment_type
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_type"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isClearable={isClearable}
-            // required
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            options={shipmentOptionListList}
-            onChange={(choice) => {
-              shipmenttypePlannedChange(
-                indexshipment,
-                indexdetails,
-                choice.value
-              );
-              // shipmentTypehandleInputChange(indexOfItem, choice.value);
-              // shipmenttypePlannedChange(
-              //   indexshipment,
-              //   indexdetails,
-              //   choice.value
-              // );
-              setShipmentType(choice.value);
-            }}
-          />
-          {errors.shipment_type && (
-            <h5 className="error">{errors.shipment_type}</h5>
-          )}
-          {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Shipment value<span>*</span>
-          </label>
-          <input
-            type="number"
-            // required
-            placeholder="i,e, 10"
-            className={
-              errors.shipment_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_Value"
-            // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
-            // totaldetails
-            onChange={(e) => {
-              // valueOfhandleInputChange(indexOfItem, e)
-              shipmentValuePlannedChange(indexshipment, indexdetails, e);
-              setShipmentValue(e.target.value);
-            }}
-          />
-          {errors.shipment_Value && (
-            <h5 className="error">{errors.shipment_Value}</h5>
-          )}
-          {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Weight<span>*</span>
-          </label>
-          <input
-            type="number"
-            placeholder="i,e,2000  Kgs"
-            min="1"
-            className={
-              errors.shipment_Weight
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="shipment_Weight"
-            // required
+                              <div className="inputs row">
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Truck Type<span>*</span>
+                                  </label>
+                                  {/* trucktype */}
+                                  <Select
+                                    classNamePrefix="select"
+                                    // isMulti
+                                    className={
+                                      errors.trackUser_Choice
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="trackUser_Choice"
+                                    isDisabled={isDisabled}
+                                    // required
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    // value={setTruckTypeValue}
+                                    options={truckOptions}
+                                    onChange={(choice) => {
+                                      setTruckuserChoice(choice.value);
+                                      shipmentOptionList(choice.value);
+                                      // truckTypehandleInputChange(indexOfItem, choice.value);
+                                      TruckPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                    }}
+                                  />
+                                  {errors.trackUser_Choice && (
+                                    <h5 className="error">
+                                      {errors.trackUser_Choice}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Shipment type<span>*</span>
+                                  </label>
+                                  {/* shipment-type */}
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.shipment_type
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_type"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    // required
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={shipmentOptionListList}
+                                    onChange={(choice) => {
+                                      shipmenttypePlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      // shipmentTypehandleInputChange(indexOfItem, choice.value);
+                                      // shipmenttypePlannedChange(
+                                      //   indexshipment,
+                                      //   indexdetails,
+                                      //   choice.value
+                                      // );
+                                      setShipmentType(choice.value);
+                                    }}
+                                  />
+                                  {errors.shipment_type && (
+                                    <h5 className="error">
+                                      {errors.shipment_type}
+                                    </h5>
+                                  )}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Shipment value<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    // required
+                                    placeholder="i,e, 10"
+                                    className={
+                                      errors.shipment_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_Value"
+                                    // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
+                                    // totaldetails
+                                    onChange={(e) => {
+                                      // valueOfhandleInputChange(indexOfItem, e)
+                                      shipmentValuePlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                      setShipmentValue(e.target.value);
+                                    }}
+                                  />
+                                  {errors.shipment_Value && (
+                                    <h5 className="error">
+                                      {errors.shipment_Value}
+                                    </h5>
+                                  )}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Weight<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    placeholder="i,e,2000  Kgs"
+                                    min="1"
+                                    className={
+                                      errors.shipment_Weight
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="shipment_Weight"
+                                    // required
 
-            onChange={(e) => {
-              // setWeightValue(e.target.value);
-              // weighthandleInputChange(indexOfItem, e);
-              shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
-              setWeight(e.target.value);
-            }}
-          />
-          {errors.shipment_Weight && (
-            <h5 className="error">{errors.shipment_Weight}</h5>
-          )}
-          {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
-          {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Number of trucks<span>*</span>
-          </label>
-          <input
-            type="number"
-            placeholder="i,e,2000"
-            value={1}
-            min={1}
-            disabled
-            // required
+                                    onChange={(e) => {
+                                      // setWeightValue(e.target.value);
+                                      // weighthandleInputChange(indexOfItem, e);
+                                      shipmentwieghtPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                      setWeight(e.target.value);
+                                    }}
+                                  />
+                                  {errors.shipment_Weight && (
+                                    <h5 className="error">
+                                      {errors.shipment_Weight}
+                                    </h5>
+                                  )}
+                                  {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
+                                  {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Number of trucks<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    placeholder="i,e,2000"
+                                    value={1}
+                                    min={1}
+                                    disabled
+                                    // required
 
-            onChange={(e) => {
-              // setNumber_TrucksValue(e.target.value);
-              // numberOfTruckshahndleInputChange(indexOfItem, e);
-              numTruckPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">Description</label>
-          <input
-            type="text"
-            placeholder="text here"
-            min="1"
-            onChange={(e) => {
-              // descriptionhahndleInputChange(indexOfItem,e);
-              descriptionPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-        </div>
-                            </div>
+                                    onChange={(e) => {
+                                      // setNumber_TrucksValue(e.target.value);
+                                      // numberOfTruckshahndleInputChange(indexOfItem, e);
+                                      numTruckPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">Description</label>
+                                  <input
+                                    type="text"
+                                    placeholder="text here"
+                                    min="1"
+                                    onChange={(e) => {
+                                      // descriptionhahndleInputChange(indexOfItem,e);
+                                      descriptionPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              </div>
 
-                            <div className="inputs row">
-        <div className="input col-3">
-          <label htmlFor="address">Packing List Attachments</label>
+                              <div className="inputs row">
+                                <div className="input col-3">
+                                  <label htmlFor="address">
+                                    Packing List Attachments
+                                  </label>
 
-          <div className="input-group ">
-            <input
-              type="file"
-              multiple="multiple"
-              accept="audio/*,video/*,image/*,.pdf,.doc"
-              className="input-file form-control"
-              id="inputGroupFile03"
-              aria-describedby="inputGroupFileAddon03"
-              aria-label="Upload"
-              onChange={(e) => {
-                // pickinghandleInputChange(indexOfItem, e.target.files);
-                pickingListPlannedChange(
-                  indexshipment,
-                  indexdetails,
-                  e.target.files
-                );
-                // console.log(picking_ListValue, "files");
-                // setPicking_ListValue(e.target.files[0]);
-              }}
-            />
-          </div>
-        </div>
-        <div className="input col-3">
-          <label htmlFor="address">Other Documentation</label>
-          <div className="input-group ">
-            <input
-              type="file"
-              multiple="multiple"
-              accept="audio/*,video/*,image/*,.pdf,.doc"
-              // required
-              className="input-file form-control"
-              id="inputGroupFile03"
-              aria-describedby="inputGroupFileAddon03"
-              aria-label="Upload"
-              onChange={(e) => {
-                // docListhahndleInputChange(indexOfItem, e.target.files);
-                docListPlannedChange(
-                  indexshipment,
-                  indexdetails,
-                  e.target.files
-                );
-              }}
-            />
-          </div>
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Commodity type<span>*</span>
-          </label>
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.commodity_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="commodity_Value"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            // required
-            isClearable={isClearable}
-            isRtl={isRtl}
-            isSearchable={isSearchable}
-            name="color"
-            options={commidtiesOptions}
-            // setCommodityTypeValue
-            onChange={(choice) => {
-              // setCommodityTypeValue(choice.value);
-              // commiditieshandleInputChange(indexOfItem, choice.value);
-              commidityPlannedChange(indexshipment, indexdetails, choice.value);
-              setCommodity(choice.value);
-            }}
-          />
-          {errors.commodity_Value && (
-            <h5 className="error">{errors.commodity_Value}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Unit of measurement<span>*</span>
-          </label>
-          <Select
-            classNamePrefix="select"
-            className={
-              errors.unit_Measurement
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="unit_Measurement"
-            // isMulti
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isClearable={isClearable}
-            isRtl={isRtl}
-            // required
-            isSearchable={isSearchable}
-            name="color"
-            options={UOMsOptions}
-            onChange={(choice) => {
-              // setUomValue(choice.value);
-              // uom_handleInputChange(indexOfItem, choice.value);
-              uomPlannedChange(indexshipment, indexdetails, choice.value);
-              setUnitMeasure(choice.value);
-            }}
-          />{" "}
-          {errors.unit_Measurement && (
-            <h5 className="error">{errors.unit_Measurement}</h5>
-          )}
-        </div>
-        <div className="input col-2">
-          <label htmlFor="address">
-            Quantity<span>*</span>
-          </label>
-          <input
-            type="number"
-            className={
-              errors.quantity_Value
-                ? "hasError basic-multi-select"
-                : "basic-multi-select"
-            }
-            id="quantity_Value"
-            // required
+                                  <div className="input-group ">
+                                    <input
+                                      type="file"
+                                      multiple="multiple"
+                                      accept="audio/*,video/*,image/*,.pdf,.doc"
+                                      className="input-file form-control"
+                                      id="inputGroupFile03"
+                                      aria-describedby="inputGroupFileAddon03"
+                                      aria-label="Upload"
+                                      onChange={(e) => {
+                                        // pickinghandleInputChange(indexOfItem, e.target.files);
+                                        pickingListPlannedChange(
+                                          indexshipment,
+                                          indexdetails,
+                                          e.target.files
+                                        );
+                                        // console.log(picking_ListValue, "files");
+                                        // setPicking_ListValue(e.target.files[0]);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="input col-3">
+                                  <label htmlFor="address">
+                                    Other Documentation
+                                  </label>
+                                  <div className="input-group ">
+                                    <input
+                                      type="file"
+                                      multiple="multiple"
+                                      accept="audio/*,video/*,image/*,.pdf,.doc"
+                                      // required
+                                      className="input-file form-control"
+                                      id="inputGroupFile03"
+                                      aria-describedby="inputGroupFileAddon03"
+                                      aria-label="Upload"
+                                      onChange={(e) => {
+                                        // docListhahndleInputChange(indexOfItem, e.target.files);
+                                        docListPlannedChange(
+                                          indexshipment,
+                                          indexdetails,
+                                          e.target.files
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Commodity type<span>*</span>
+                                  </label>
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.commodity_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="commodity_Value"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    // required
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={commidtiesOptions}
+                                    // setCommodityTypeValue
+                                    onChange={(choice) => {
+                                      // setCommodityTypeValue(choice.value);
+                                      // commiditieshandleInputChange(indexOfItem, choice.value);
+                                      commidityPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      setCommodity(choice.value);
+                                    }}
+                                  />
+                                  {errors.commodity_Value && (
+                                    <h5 className="error">
+                                      {errors.commodity_Value}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Unit of measurement<span>*</span>
+                                  </label>
+                                  <Select
+                                    classNamePrefix="select"
+                                    className={
+                                      errors.unit_Measurement
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="unit_Measurement"
+                                    // isMulti
+                                    isDisabled={isDisabled}
+                                    isLoading={isLoading}
+                                    isClearable={isClearable}
+                                    isRtl={isRtl}
+                                    // required
+                                    isSearchable={isSearchable}
+                                    name="color"
+                                    options={UOMsOptions}
+                                    onChange={(choice) => {
+                                      // setUomValue(choice.value);
+                                      // uom_handleInputChange(indexOfItem, choice.value);
+                                      uomPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        choice.value
+                                      );
+                                      setUnitMeasure(choice.value);
+                                    }}
+                                  />{" "}
+                                  {errors.unit_Measurement && (
+                                    <h5 className="error">
+                                      {errors.unit_Measurement}
+                                    </h5>
+                                  )}
+                                </div>
+                                <div className="input col-2">
+                                  <label htmlFor="address">
+                                    Quantity<span>*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className={
+                                      errors.quantity_Value
+                                        ? "hasError basic-multi-select"
+                                        : "basic-multi-select"
+                                    }
+                                    id="quantity_Value"
+                                    // required
 
-            min="1"
-            placeholder="i,e,02"
-            onChange={(e) => {
-              setQuantityValue(e.target.value);
-              // quantityValue_handleInputChange(indexOfItem, e);
-              quantityPlannedChange(indexshipment, indexdetails, e);
-            }}
-          />
-          {errors.quantity_Value && (
-            <h5 className="error">{errors.quantity_Value}</h5>
-          )}
-        </div>
-                            </div>
+                                    min="1"
+                                    placeholder="i,e,02"
+                                    onChange={(e) => {
+                                      setQuantityValue(e.target.value);
+                                      // quantityValue_handleInputChange(indexOfItem, e);
+                                      quantityPlannedChange(
+                                        indexshipment,
+                                        indexdetails,
+                                        e
+                                      );
+                                    }}
+                                  />
+                                  {errors.quantity_Value && (
+                                    <h5 className="error">
+                                      {errors.quantity_Value}
+                                    </h5>
+                                  )}
+                                </div>
+                              </div>
 
                               {/* <Inputs
                                 handleOrder={handleOrder}
@@ -2682,8 +2879,8 @@ const Shipments = () => {
                             className="btn-add "
                             id="add"
                             type="button"
-                            onClick={() => {                      
-                              addPlannedinerDetails(indexshipment);                          
+                            onClick={() => {
+                              addPlannedinerDetails(indexshipment);
                               handleIncreaseIndexPlanned();
                             }}
                           >
@@ -2692,9 +2889,12 @@ const Shipments = () => {
                         </div>
                         {ischeck ? (
                           <div className="right-btn">
-                          
                             {counter === numShipment - 1 ? (
-                              <button className="btn-save" type="submit">
+                              <button
+                                className="btn-save"
+                                type="submit"
+                                onClick={() => scrollToElement(targetElement)}
+                              >
                                 Save
                               </button>
                             ) : (
@@ -2762,7 +2962,11 @@ const Shipments = () => {
                           </div>
                         ) : (
                           <div className="right-btn">
-                            <button className="btn-save" type="submit">
+                            <button
+                              className="btn-save"
+                              type="submit"
+                              onClick={() => scrollToElement(targetElement)}
+                            >
                               Save
                             </button>
                           </div>
