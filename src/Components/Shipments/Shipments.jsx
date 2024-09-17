@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 import Inputs from "./inputs";
 import DatePicker from "react-datepicker";
@@ -31,29 +32,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// const Btnadd = () => {
-//   return (
-//     <NavLink to="/addshippers">
-//       <button
-//         className="p-2"
-//         style={{
-//           border: "0",
-//           borderRadius: "20px",
-//           backgroundColor: "#0B2339",
-//           color: "#fff",
-//           marginLeft: "35%",
-//         }}
-//       >
-//         Add New Shipper
-//       </button>
-//     </NavLink>
-//   );
-// };
-
-// const initialValues = {};
 
 const Shipments = () => {
   const navigate = useNavigate();
+
   const showNotification = () => {
     let Msg = ({ closeToast, toastProps }) => (
       <div>
@@ -115,11 +97,11 @@ const Shipments = () => {
   };
 
   // select-field
-  const [isClearable] = useState(true);
-  const [isSearchable] = useState(true);
-  const [isDisabled] = useState(false);
-  const [isLoading] = useState(false);
-  const [isRtl] = useState(false);
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
 
   // const date = new Date();
   const [startDate, setStartDate] = useState("");
@@ -130,6 +112,9 @@ const Shipments = () => {
   tomorrow.setDate(today.getDate() + 1);
 
   // ====================================shipments-states============================================
+
+
+
 
   const [shipperList, setShipperList] = useState([]);
   const [pickupList, setPickupList] = useState([]);
@@ -155,6 +140,18 @@ const Shipments = () => {
   const [dropoff_TimeFromValue, setDrop_TimeFromValue] = useState("");
   const [dropoff_TimeToValue, setDrop_TimeToValue] = useState("");
 
+  // ===============truck_input_details============
+  const [shipmentOptionListList, setShipmentOptionListList] = useState();
+  const [truckuserChoice, setTruckuserChoice] = useState();
+  const [shipmentType, setShipmentType] = useState();
+  const [shipmentValue, setShipmentValue] = useState();
+  const [weigth, setWeight] = useState();
+  const [commodity, setCommodity] = useState();
+  const [unitMeasure, setUnitMeasure] = useState();
+  const [quantityValue, setQuantityValue] = useState();
+
+  // ==================
+
   // details
   const intialState = {
     truckTypePlanned: "",
@@ -172,12 +169,12 @@ const Shipments = () => {
   const [totaldetails, setTotalDetails] = useState([intialState]);
   const [indexOfTotalDetails, setIndexOfTotalDetails] = useState(0);
 
-  const addNewTotalDetails = () => {
-    setTotalDetails([...totaldetails, intialState]);
-  };
-  const handleIncreaseIndex = () => {
-    setIndexOfTotalDetails((prev) => prev + 1);
-  };
+  // const addNewTotalDetails = () => {
+  //   setTotalDetails([...totaldetails, intialState]);
+  // };
+  // const handleIncreaseIndex = () => {
+  //   setIndexOfTotalDetails((prev) => prev + 1);
+  // };
   const handleDecreaseIndex = () => {
     if (indexOfTotalDetails === 0) {
       return;
@@ -261,9 +258,6 @@ const Shipments = () => {
 
   // details
   const detailsApi = async (shipper_id, id_pickup, id_dropoff) => {
-    // console.log(shipper_id, "shiperiddddddddddddddddddd");
-    // console.log(id_pickup, "pickupiddddddddddddddddddd");
-    // console.log(id_dropoff, "dropoffiddddddddddddddddddd");
 
     try {
       const response = await axios.get(
@@ -317,6 +311,130 @@ const Shipments = () => {
       label: sub_item.name,
     })),
   }));
+  // ================================
+    //====================details_options================
+      // commidities_options
+  const commidtiesOptions = detailsList.commodities?.map((item, index) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+  // uom_options
+  const UOMsOptions = detailsList.uom?.map((item, index) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+  // truck_types
+  const truckOptions = detailsList.truck_types?.map((item, index) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+  // truck
+  const TruckPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].truckTypePlanned =
+      event;
+  };
+
+  // shipmentType
+  const shipmenttypePlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].shipmentTypePlanned =
+      event;
+  };
+  // shipmentValue
+  const shipmentValuePlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].shipmentvaluePlanned =
+      event.target.value;
+  };
+  // weight
+  const shipmentwieghtPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].weightPlanned =
+      event.target.value;
+  };
+  // numtruck
+  const numTruckPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].numTrucksPlanned =
+      event.target.value;
+  };
+  // description
+  const descriptionPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].descriptionPlanned =
+      event.target.value;
+  };
+  // pickinglist PickingListPlanned
+  const pickingListPlannedChange = (indexshipment, indexdetails, event) => {
+    console.log(indexshipment, "indexshipment");
+    console.log(indexdetails, "indexdetails");
+    const newInputs = [...plannedList];
+    for (let k in event) {
+      if (event.hasOwnProperty(k)) {
+        // totaldetails.picking_ListValue[k] = event[k];
+        newInputs[indexshipment].detailsTruck[
+          indexdetails
+        ].PickingListPlanned.push(event[k]);
+      }
+    }
+  };
+  // docOther
+  const docListPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+
+    for (let ke in event) {
+      if (event.hasOwnProperty(ke)) {
+        // totaldetails.picking_ListValue[ke] = event[ke];
+        newInputs[indexshipment].detailsTruck[
+          indexdetails
+        ].documListPlanned.push(event[ke]);
+      }
+    }
+  };
+  // commidityPlanned
+  const commidityPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].commidityPlanned =
+      event;
+  };
+  // uomPlanned
+  const uomPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].uomPlanned = event;
+  };
+  // quantityPlanned
+  const quantityPlannedChange = (indexshipment, indexdetails, event) => {
+    const newInputs = [...plannedList];
+    newInputs[indexshipment].detailsTruck[indexdetails].quantityPlanned =
+      event.target.value;
+  };
+    // ===================================
+
+  const shipmentOptionList = (truckuserChoice) => {
+
+    detailsList.truck_types?.map((item, index) => {
+
+      console.log(item.shipment_types, " item.shipment_types");
+
+      if (item.id === truckuserChoice) {
+        // console.log("itemshipmmmment22");
+        const options = item.shipment_types?.map((itemship, index) => {
+          return {
+            value: itemship.id,
+            label: itemship.name,
+          };
+        });
+        setShipmentOptionListList(options);
+      }
+    });
+  };
 
   // select-pickup
   useEffect(() => {
@@ -423,13 +541,10 @@ const Shipments = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
   console.log(errors, " errorsssssssss");
-
-  // to ckeck if the inputs here are okay or not and pass it to inputs component
   const [okay, setOkay] = useState(true);
-  // console.log(errors.shipper_Value, " shipperValueError");
-  // Api-post==========================
   const Joi = require("joi");
   const [targetElement, setTargetElement] = useState(null);
+
 
   const scrollToElement = (targetElement) => {
     const element = document.getElementById(targetElement);
@@ -450,98 +565,7 @@ const Shipments = () => {
     }
   }, [targetElement, okay]);
 
-  console.log(
-    shipperValue,
-    pickupValue,
-    startDate,
-    dropoffValue,
-    "     values"
-  );
 
-  const handelSubmit = (e) => {
-    e.preventDefault();
-    const schema = Joi.object({
-      shipper_Value: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Shipper value is required",
-      }),
-      pickup_Value: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Shipper value is required",
-      }),
-      // ComeBAck
-      pickup_Date: Joi.date().required().messages({
-        "date.base": "Please Pickup a Valid Date",
-      }),
-      dropOf_Address: Joi.number().required().messages({
-        "number.base": "Please Pickup a Valid Address",
-        "any.required": "Address value is required",
-      }),
-    });
-    const formDataObject = {
-      shipper_Value: shipperValue,
-      pickup_Value: pickupValue,
-      pickup_Date: startDate,
-      dropOf_Address: dropoffValue,
-    };
-    const { error } = schema.validate(formDataObject, { abortEarly: false });
-    if (error) {
-      // console.log("errorrrr", error.details);
-      // console.log(
-      //   "errorrrrssss details ",
-      //   errors.pickup_Value,
-      //   " ",
-      //   targetElement
-      // );
-      const newErrors = error.details.reduce((acc, detail) => {
-        acc[detail.path[0]] = detail.message;
-        return acc;
-      }, {});
-      setErrors(newErrors);
-
-      setTargetElement(error.details[0].context.label);
-      // console.log(error.details, " allErrors");
-
-      setOkay(false);
-      //  to pass to input page to check its errors (but data wont send before all required inputs are Okay)
-      setList(true);
-      // if (!errors) setOkay(true);
-    } else {
-      console.log("Validation succeeded");
-      // setLoading(true);
-      setErrors([]);
-      setOkay(true);
-      try {
-        // Your existing submission logic here
-        // ...
-        setErrors([]);
-
-        // If submission is successful
-        // showNotification();
-        setList(true);
-        // navigate("/allshipments");
-      } catch (error) {
-        // Handle any errors
-        console.error("Submission error:", error);
-        // Optionally show an error toast
-        toast.error("An error occurred during submission");
-      }
-
-      // handleClick({
-      //   vertical: "bottom",
-      //   horizontal: "center",
-      //   Transition: "SlideTransition",
-      // });
-      // console.log("ddddddddddddddddddddddddone");
-    }
-
-    // handleClick({
-    //   vertical: "bottom",
-    //   horizontal: "center",
-    //   Transition: "SlideTransition",
-    // });
-    // console.log("ddddddddddddddddddddddddone");
-  };
   // ======================================================planned-shipment==================
   const [numShipment, setNumShipment] = useState(0);
   // const [arranumShipment, setArraNumShipment] = useState([]);
@@ -727,6 +751,312 @@ const Shipments = () => {
     }
   };
   // const [showtext, setshowtext] = useState(false);
+
+  // =====================================Apis_calls
+  const handelSubmit = async (e) => {
+    e.preventDefault();
+    const schema = Joi.object({
+      shipper_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
+      pickup_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipper value is required",
+      }),
+      // ComeBAck
+      pickup_Date: Joi.date().required().messages({
+        "date.base": "Please Pickup a Valid Date",
+      }),
+      dropOf_Address: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "Address value is required",
+      }),
+      trackUser_Choice: Joi.number().required().messages({
+        "number.base": "Please Select a Truck type",
+        "any.required": "Truck type is required",
+      }),
+      shipment_type: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment type is required",
+      }),
+      // // ComeBAck
+      shipment_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment Value is required",
+      }),
+      shipment_Weight: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Shipment Weight is required",
+      }),
+      commodity_Value: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "Commodity type is required",
+      }),
+      unit_Measurement: Joi.number().required().messages({
+        "number.base": "Please Pickup a Valid Address",
+        "any.required": "unit of measurement is required",
+      }),
+      quantity_Value: Joi.number().required().messages({
+        "number.base": "Please Select a Value",
+        "any.required": "Quantity is required",
+      }),
+    });
+    const formDataObject = {
+      shipper_Value: shipperValue,
+      pickup_Value: pickupValue,
+      pickup_Date: startDate,
+      dropOf_Address: dropoffValue,
+      trackUser_Choice: truckuserChoice,
+      shipment_type: shipmentType,
+      shipment_Value: shipmentValue,
+      shipment_Weight: weigth,
+      commodity_Value: commodity,
+      unit_Measurement: unitMeasure,
+      quantity_Value: quantityValue,
+    };
+    const { error } = schema.validate(formDataObject, { abortEarly: false });
+    if (error) {
+
+      const newErrors = error.details.reduce((acc, detail) => {
+        acc[detail.path[0]] = detail.message;
+        return acc;
+      }, {});
+      setErrors(newErrors);
+      setTargetElement(error.details[0].context.label);
+      setOkay(false);
+    } else {
+      console.log("Validation succeeded");
+      setErrors([]);
+      setOkay(true);
+      // =======Apis_de_planned_list============
+      if (plannedList.length === 1) {
+        const formdata = new FormData();
+        const item = plannedList[0];
+        console.log("Preparing formdata for item:", item);
+        setIsLoading(true);
+        setErrors([]);
+        
+        formdata.append(`shipper_id`, item.shipperPlanned);
+  
+        formdata.append("from_address_id", item.pickupAddressPlanned);
+        formdata.append("to_address_id", item.dropOffPlanned);
+        formdata.append(
+          "pickup_date",
+          moment(item.pickupDatePlanned).format("YYYY-MM-DD")
+        );
+       
+        formdata.append("pickup_from_time", item.pickupTimeFromPlanned);
+        formdata.append("pickup_to_time", item.pickupTimeToPlanned);
+        formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
+        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+        formdata.append("dropoff_to_time", item.dropTimeToPlanned);
+  
+        // Append all detailsTruck items
+        item.detailsTruck.forEach((itemdetails, indexdetails) => {
+          formdata.append(
+            `shipments[${indexdetails}][truck_type_id]`,
+            itemdetails.truckTypePlanned
+          );
+          formdata.append(
+            `shipments[${indexdetails}][shipment_type_id]`,
+            itemdetails.shipmentTypePlanned
+          );
+          formdata.append(
+            `shipments[${indexdetails}][value]`,
+            itemdetails.shipmentvaluePlanned
+          );
+          formdata.append(
+            `shipments[${indexdetails}][weight]`,
+            itemdetails.weightPlanned
+          );
+          formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
+          formdata.append(
+            `shipments[${indexdetails}][description]`,
+            itemdetails.descriptionPlanned
+          );
+  
+          itemdetails.PickingListPlanned.forEach((fileitem, fileindexpick) => {
+            formdata.append(
+              `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
+              fileitem
+            );
+          });
+  
+          itemdetails.documListPlanned.forEach((fileitemdoc, fileindexdoc) => {
+            formdata.append(
+              `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
+              fileitemdoc
+            );
+          });
+  
+          formdata.append(
+            `shipments[${indexdetails}][commodity_id]`,
+            itemdetails.commidityPlanned
+          );
+          formdata.append(
+            `shipments[${indexdetails}][uom_id]`,
+            itemdetails.uomPlanned
+          );
+          formdata.append(
+            `shipments[${indexdetails}][quantity]`,
+            itemdetails.quantityPlanned
+          );
+        });
+  
+        console.log("Formdata prepared:", Object.fromEntries(formdata));
+        // ===================test
+        console.log("Addone----------Done");
+  
+        try {
+          const reponse = await axios.post(
+            "https://dev.eload.smart.sa/api/v1/orders",
+  
+            formdata,
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${cookie.eload_token}`,
+                "api-key":
+                  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+              },
+            }
+          );
+  
+          // handleOrder(formdata);
+          showNotification();
+          navigate("/allshipments");
+        } catch (e) {
+          console.log(e);
+        }
+  
+        // Planned=============================
+      } else if (plannedList.length > 1) {
+        const formdata = new FormData();
+        plannedList.map((item, index) => {
+          formdata.append(`orders[${index}][shipper_id]`, item.shipperPlanned);
+          // formdata.append(`shipper_id`,item.shipperPlanned);
+  
+          formdata.append(
+            `orders[${index}][from_address_id]`,
+            item.pickupAddressPlanned
+          );
+          formdata.append(`orders[${index}][to_address_id]`, item.dropOffPlanned);
+  
+          formdata.append(
+            `orders[${index}][pickup_date]`,
+            moment(item.pickupDatePlanned).format("YYYY-MM-DD")
+          );
+          // pickup_DateValue
+          formdata.append(
+            `orders[${index}][pickup_from_time]`,
+            item.pickupTimeFromPlanned
+          );
+          formdata.append(
+            `orders[${index}][pickup_to_time]`,
+            item.pickupTimeToPlanned
+          );
+          formdata.append(
+            `orders[${index}][dropoff_from_time]`,
+            item.dropTimeFromPlanned
+          );
+          formdata.append(
+            `orders[${index}][dropoff_to_time]`,
+            item.dropTimeToPlanned
+          );
+  
+          item.detailsTruck.map((itemdetails, indexdetails) => {
+            // truck
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][truck_type_id]`,
+              // `shipments[${index}][truck_type_id]`,
+              itemdetails.truckTypePlanned
+            );
+            // shipment
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][shipment_type_id]`,
+              itemdetails.shipmentTypePlanned
+            );
+            // shipment_value
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][value]`,
+              itemdetails.shipmentvaluePlanned
+            );
+            // weightPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][weight]`,
+              itemdetails.weightPlanned
+            );
+            // numTrucksPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][truck_type_qty]`,
+              1
+            );
+            // descriptionPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][description]`,
+              itemdetails.descriptionPlanned
+            );
+            // PickingListPlanned
+            itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
+              formdata.append(
+                `orders[${index}][shipments][${indexdetails}][attachments][packing_list][${fileindexpick}]`,
+                fileitem
+              );
+            });
+            // documListPlanned
+            itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
+              formdata.append(
+                `orders[${index}][shipments][${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
+                fileitemdoc
+              );
+            });
+            // commidityPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][commodity_id]`,
+              itemdetails.commidityPlanned
+            );
+            // uomPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][uom_id]`,
+              itemdetails.uomPlanned
+            );
+            // quantityPlanned
+            formdata.append(
+              `orders[${index}][shipments][${indexdetails}][quantity]`,
+              itemdetails.quantityPlanned
+            );
+          });
+        });
+        console.log("Addplanned----------Done");
+  
+        handleOrder(formdata);
+  
+        try {
+          const reponse = await axios.post(
+            "https://dev.eload.smart.sa/api/v1/scheduled_orders",
+            // }
+  
+            formdata,
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${cookie.eload_token}`,
+                "api-key":
+                  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+              },
+            }
+          );
+  
+          // handleOrder(formdata);
+          showNotification();
+          navigate("/allshipments");
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  };
 
   return (
     <div className="container-fluid px-5 shipments">
@@ -1177,7 +1507,314 @@ const Shipments = () => {
                         (item, indexdetails) => {
                           return (
                             <>
-                              <Inputs
+                            <div className="inputs row">
+        <div className="input col-2">
+          <label htmlFor="address">
+            Truck Type<span>*</span>
+          </label>
+          {/* trucktype */}
+          <Select
+            classNamePrefix="select"
+            // isMulti
+            className={
+              errors.trackUser_Choice
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="trackUser_Choice"
+            isDisabled={isDisabled}
+            // required
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            // value={setTruckTypeValue}
+            options={truckOptions}
+            onChange={(choice) => {
+              setTruckuserChoice(choice.value);
+              shipmentOptionList(choice.value);
+              // truckTypehandleInputChange(indexOfItem, choice.value);
+              TruckPlannedChange(indexshipment, indexdetails, choice.value);
+            }}
+          />
+          {errors.trackUser_Choice && (
+            <h5 className="error">{errors.trackUser_Choice}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Shipment type<span>*</span>
+          </label>
+          {/* shipment-type */}
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.shipment_type
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_type"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            // required
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={shipmentOptionListList}
+            onChange={(choice) => {
+              shipmenttypePlannedChange(
+                indexshipment,
+                indexdetails,
+                choice.value
+              );
+              // shipmentTypehandleInputChange(indexOfItem, choice.value);
+              // shipmenttypePlannedChange(
+              //   indexshipment,
+              //   indexdetails,
+              //   choice.value
+              // );
+              setShipmentType(choice.value);
+            }}
+          />
+          {errors.shipment_type && (
+            <h5 className="error">{errors.shipment_type}</h5>
+          )}
+          {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Shipment value<span>*</span>
+          </label>
+          <input
+            type="number"
+            // required
+            placeholder="i,e, 10"
+            className={
+              errors.shipment_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Value"
+            // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
+            // totaldetails
+            onChange={(e) => {
+              // valueOfhandleInputChange(indexOfItem, e)
+              shipmentValuePlannedChange(indexshipment, indexdetails, e);
+              setShipmentValue(e.target.value);
+            }}
+          />
+          {errors.shipment_Value && (
+            <h5 className="error">{errors.shipment_Value}</h5>
+          )}
+          {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Weight<span>*</span>
+          </label>
+          <input
+            type="number"
+            placeholder="i,e,2000  Kgs"
+            min="1"
+            className={
+              errors.shipment_Weight
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Weight"
+            // required
+
+            onChange={(e) => {
+              // setWeightValue(e.target.value);
+              // weighthandleInputChange(indexOfItem, e);
+              shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
+              setWeight(e.target.value);
+            }}
+          />
+          {errors.shipment_Weight && (
+            <h5 className="error">{errors.shipment_Weight}</h5>
+          )}
+          {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
+          {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Number of trucks<span>*</span>
+          </label>
+          <input
+            type="number"
+            placeholder="i,e,2000"
+            value={1}
+            min={1}
+            disabled
+            // required
+
+            onChange={(e) => {
+              // setNumber_TrucksValue(e.target.value);
+              // numberOfTruckshahndleInputChange(indexOfItem, e);
+              numTruckPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">Description</label>
+          <input
+            type="text"
+            placeholder="text here"
+            min="1"
+            onChange={(e) => {
+              // descriptionhahndleInputChange(indexOfItem,e);
+              descriptionPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+        </div>
+                            </div>
+
+                            <div className="inputs row">
+        <div className="input col-3">
+          <label htmlFor="address">Packing List Attachments</label>
+
+          <div className="input-group ">
+            <input
+              type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
+              className="input-file form-control"
+              id="inputGroupFile03"
+              aria-describedby="inputGroupFileAddon03"
+              aria-label="Upload"
+              onChange={(e) => {
+                // pickinghandleInputChange(indexOfItem, e.target.files);
+                pickingListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
+                // console.log(picking_ListValue, "files");
+                // setPicking_ListValue(e.target.files[0]);
+              }}
+            />
+          </div>
+        </div>
+        <div className="input col-3">
+          <label htmlFor="address">Other Documentation</label>
+          <div className="input-group ">
+            <input
+              type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
+              // required
+              className="input-file form-control"
+              id="inputGroupFile03"
+              aria-describedby="inputGroupFileAddon03"
+              aria-label="Upload"
+              onChange={(e) => {
+                // docListhahndleInputChange(indexOfItem, e.target.files);
+                docListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
+              }}
+            />
+          </div>
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Commodity type<span>*</span>
+          </label>
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.commodity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="commodity_Value"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            // required
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={commidtiesOptions}
+            // setCommodityTypeValue
+            onChange={(choice) => {
+              // setCommodityTypeValue(choice.value);
+              // commiditieshandleInputChange(indexOfItem, choice.value);
+              commidityPlannedChange(indexshipment, indexdetails, choice.value);
+              setCommodity(choice.value);
+            }}
+          />
+          {errors.commodity_Value && (
+            <h5 className="error">{errors.commodity_Value}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Unit of measurement<span>*</span>
+          </label>
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.unit_Measurement
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="unit_Measurement"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            // required
+            isSearchable={isSearchable}
+            name="color"
+            options={UOMsOptions}
+            onChange={(choice) => {
+              // setUomValue(choice.value);
+              // uom_handleInputChange(indexOfItem, choice.value);
+              uomPlannedChange(indexshipment, indexdetails, choice.value);
+              setUnitMeasure(choice.value);
+            }}
+          />{" "}
+          {errors.unit_Measurement && (
+            <h5 className="error">{errors.unit_Measurement}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Quantity<span>*</span>
+          </label>
+          <input
+            type="number"
+            className={
+              errors.quantity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="quantity_Value"
+            // required
+
+            min="1"
+            placeholder="i,e,02"
+            onChange={(e) => {
+              setQuantityValue(e.target.value);
+              // quantityValue_handleInputChange(indexOfItem, e);
+              quantityPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+          {errors.quantity_Value && (
+            <h5 className="error">{errors.quantity_Value}</h5>
+          )}
+        </div>
+                              </div>
+                              {/* <Inputs
                                 handleOrder={handleOrder}
                                 indexOfItem={indexdetails}
                                 shipperuserChoice={shipperuserChoice}
@@ -1190,7 +1827,6 @@ const Shipments = () => {
                                 pickup_TimeToValue={pickup_TimeToValue}
                                 dropoff_TimeFromValue={dropoff_TimeFromValue}
                                 dropoff_TimeToValue={dropoff_TimeToValue}
-                                // input={input}
                                 setTotalDetails={setTotalDetails}
                                 totaldetails={totaldetails}
                                 indexOfTotalDetails={indexOfTotalDetails}
@@ -1198,13 +1834,11 @@ const Shipments = () => {
                                 setPlannedList={setPlannedList}
                                 PlannedInnerDetails={PlannedInnerDetails}
                                 arrListnumShipment={arrListnumShipment}
-                                // countIndexShipmentplann={countindexshipmentplann}
-                                // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
                                 okay={okay}
                                 showNotification={showNotification}
-                              />
+                              /> */}
                               {indexdetails > 0 && (
                                 <button
                                   className="btn-delete"
@@ -1313,7 +1947,7 @@ const Shipments = () => {
                                 ) : (
                                   <button
                                     className="btn-save"
-                                    type="btn"
+                                    type="button"
                                     onClick={() => {
                                       // addNewListOfShipment();
                                       // setStartDate(null);
@@ -1686,7 +2320,315 @@ const Shipments = () => {
                         (item, indexdetails) => {
                           return (
                             <>
-                              <Inputs
+                            <div className="inputs row">
+        <div className="input col-2">
+          <label htmlFor="address">
+            Truck Type<span>*</span>
+          </label>
+          {/* trucktype */}
+          <Select
+            classNamePrefix="select"
+            // isMulti
+            className={
+              errors.trackUser_Choice
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="trackUser_Choice"
+            isDisabled={isDisabled}
+            // required
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            // value={setTruckTypeValue}
+            options={truckOptions}
+            onChange={(choice) => {
+              setTruckuserChoice(choice.value);
+              shipmentOptionList(choice.value);
+              // truckTypehandleInputChange(indexOfItem, choice.value);
+              TruckPlannedChange(indexshipment, indexdetails, choice.value);
+            }}
+          />
+          {errors.trackUser_Choice && (
+            <h5 className="error">{errors.trackUser_Choice}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Shipment type<span>*</span>
+          </label>
+          {/* shipment-type */}
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.shipment_type
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_type"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            // required
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={shipmentOptionListList}
+            onChange={(choice) => {
+              shipmenttypePlannedChange(
+                indexshipment,
+                indexdetails,
+                choice.value
+              );
+              // shipmentTypehandleInputChange(indexOfItem, choice.value);
+              // shipmenttypePlannedChange(
+              //   indexshipment,
+              //   indexdetails,
+              //   choice.value
+              // );
+              setShipmentType(choice.value);
+            }}
+          />
+          {errors.shipment_type && (
+            <h5 className="error">{errors.shipment_type}</h5>
+          )}
+          {/* <p className="fs-6 text-danger mb-3">{getError("shipmentType")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Shipment value<span>*</span>
+          </label>
+          <input
+            type="number"
+            // required
+            placeholder="i,e, 10"
+            className={
+              errors.shipment_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Value"
+            // name={totaldetails[totaldetails.lenght-1].shipmentTypeValue}
+            // totaldetails
+            onChange={(e) => {
+              // valueOfhandleInputChange(indexOfItem, e)
+              shipmentValuePlannedChange(indexshipment, indexdetails, e);
+              setShipmentValue(e.target.value);
+            }}
+          />
+          {errors.shipment_Value && (
+            <h5 className="error">{errors.shipment_Value}</h5>
+          )}
+          {/* <p className="fs-6 text-danger mb-3">{getError("shipment value")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Weight<span>*</span>
+          </label>
+          <input
+            type="number"
+            placeholder="i,e,2000  Kgs"
+            min="1"
+            className={
+              errors.shipment_Weight
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="shipment_Weight"
+            // required
+
+            onChange={(e) => {
+              // setWeightValue(e.target.value);
+              // weighthandleInputChange(indexOfItem, e);
+              shipmentwieghtPlannedChange(indexshipment, indexdetails, e);
+              setWeight(e.target.value);
+            }}
+          />
+          {errors.shipment_Weight && (
+            <h5 className="error">{errors.shipment_Weight}</h5>
+          )}
+          {/* {errList ? <span className="err_message mx-3"> required</span> : ""} */}
+          {/* <p className="fs-6 text-danger mb-3">{getError("weight")}</p> */}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Number of trucks<span>*</span>
+          </label>
+          <input
+            type="number"
+            placeholder="i,e,2000"
+            value={1}
+            min={1}
+            disabled
+            // required
+
+            onChange={(e) => {
+              // setNumber_TrucksValue(e.target.value);
+              // numberOfTruckshahndleInputChange(indexOfItem, e);
+              numTruckPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">Description</label>
+          <input
+            type="text"
+            placeholder="text here"
+            min="1"
+            onChange={(e) => {
+              // descriptionhahndleInputChange(indexOfItem,e);
+              descriptionPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+        </div>
+                            </div>
+
+                            <div className="inputs row">
+        <div className="input col-3">
+          <label htmlFor="address">Packing List Attachments</label>
+
+          <div className="input-group ">
+            <input
+              type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
+              className="input-file form-control"
+              id="inputGroupFile03"
+              aria-describedby="inputGroupFileAddon03"
+              aria-label="Upload"
+              onChange={(e) => {
+                // pickinghandleInputChange(indexOfItem, e.target.files);
+                pickingListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
+                // console.log(picking_ListValue, "files");
+                // setPicking_ListValue(e.target.files[0]);
+              }}
+            />
+          </div>
+        </div>
+        <div className="input col-3">
+          <label htmlFor="address">Other Documentation</label>
+          <div className="input-group ">
+            <input
+              type="file"
+              multiple="multiple"
+              accept="audio/*,video/*,image/*,.pdf,.doc"
+              // required
+              className="input-file form-control"
+              id="inputGroupFile03"
+              aria-describedby="inputGroupFileAddon03"
+              aria-label="Upload"
+              onChange={(e) => {
+                // docListhahndleInputChange(indexOfItem, e.target.files);
+                docListPlannedChange(
+                  indexshipment,
+                  indexdetails,
+                  e.target.files
+                );
+              }}
+            />
+          </div>
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Commodity type<span>*</span>
+          </label>
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.commodity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="commodity_Value"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            // required
+            isClearable={isClearable}
+            isRtl={isRtl}
+            isSearchable={isSearchable}
+            name="color"
+            options={commidtiesOptions}
+            // setCommodityTypeValue
+            onChange={(choice) => {
+              // setCommodityTypeValue(choice.value);
+              // commiditieshandleInputChange(indexOfItem, choice.value);
+              commidityPlannedChange(indexshipment, indexdetails, choice.value);
+              setCommodity(choice.value);
+            }}
+          />
+          {errors.commodity_Value && (
+            <h5 className="error">{errors.commodity_Value}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Unit of measurement<span>*</span>
+          </label>
+          <Select
+            classNamePrefix="select"
+            className={
+              errors.unit_Measurement
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="unit_Measurement"
+            // isMulti
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            isClearable={isClearable}
+            isRtl={isRtl}
+            // required
+            isSearchable={isSearchable}
+            name="color"
+            options={UOMsOptions}
+            onChange={(choice) => {
+              // setUomValue(choice.value);
+              // uom_handleInputChange(indexOfItem, choice.value);
+              uomPlannedChange(indexshipment, indexdetails, choice.value);
+              setUnitMeasure(choice.value);
+            }}
+          />{" "}
+          {errors.unit_Measurement && (
+            <h5 className="error">{errors.unit_Measurement}</h5>
+          )}
+        </div>
+        <div className="input col-2">
+          <label htmlFor="address">
+            Quantity<span>*</span>
+          </label>
+          <input
+            type="number"
+            className={
+              errors.quantity_Value
+                ? "hasError basic-multi-select"
+                : "basic-multi-select"
+            }
+            id="quantity_Value"
+            // required
+
+            min="1"
+            placeholder="i,e,02"
+            onChange={(e) => {
+              setQuantityValue(e.target.value);
+              // quantityValue_handleInputChange(indexOfItem, e);
+              quantityPlannedChange(indexshipment, indexdetails, e);
+            }}
+          />
+          {errors.quantity_Value && (
+            <h5 className="error">{errors.quantity_Value}</h5>
+          )}
+        </div>
+                            </div>
+
+                              {/* <Inputs
                                 handleOrder={handleOrder}
                                 indexOfItem={indexdetails}
                                 shipperuserChoice={shipperuserChoice}
@@ -1699,7 +2641,6 @@ const Shipments = () => {
                                 pickup_TimeToValue={pickup_TimeToValue}
                                 dropoff_TimeFromValue={dropoff_TimeFromValue}
                                 dropoff_TimeToValue={dropoff_TimeToValue}
-                                // input={input}
                                 setTotalDetails={setTotalDetails}
                                 totaldetails={totaldetails}
                                 indexOfTotalDetails={indexOfTotalDetails}
@@ -1707,14 +2648,12 @@ const Shipments = () => {
                                 setPlannedList={setPlannedList}
                                 PlannedInnerDetails={PlannedInnerDetails}
                                 arrListnumShipment={arrListnumShipment}
-                                // countIndexShipmentplann={countindexshipmentplann}
-                                // countIndexdetailsplann={countindexdetailstplann}
                                 indexshipment={indexshipment}
                                 indexdetails={indexdetails}
                                 okay={okay}
                                 setLoading={setLoading}
                                 showNotification={showNotification}
-                              />
+                              /> */}
                               {indexdetails > 0 && (
                                 <button
                                   className="btn-delete"
@@ -1743,10 +2682,8 @@ const Shipments = () => {
                             className="btn-add "
                             id="add"
                             type="button"
-                            onClick={() => {
-                              // setInputs([...input, ""]);
-                              addPlannedinerDetails(indexshipment);
-                              // setIndexOfTotalDetails(indexOfTotalDetails + 1);
+                            onClick={() => {                      
+                              addPlannedinerDetails(indexshipment);                          
                               handleIncreaseIndexPlanned();
                             }}
                           >
@@ -1755,8 +2692,7 @@ const Shipments = () => {
                         </div>
                         {ischeck ? (
                           <div className="right-btn">
-                            {/* <NavLink to="/allshipments"> */}
-                            {/* {console.log(counter, "counter inside JSX")} */}
+                          
                             {counter === numShipment - 1 ? (
                               <button className="btn-save" type="submit">
                                 Save
@@ -1774,7 +2710,7 @@ const Shipments = () => {
 
                                     <button
                                       className="btn-save"
-                                      type="btn"
+                                      type="button"
                                       onClick={() => {
                                         if (
                                           plannedList[counter]
@@ -1808,9 +2744,8 @@ const Shipments = () => {
                                             counter ===
                                             plannedList.length - 1
                                           ) {
-                                            // Add a new shipment only if we're at the end of the current list
                                             addNewListOfShipment();
-                                            console.log("here");
+                                            // console.log("here");
                                           }
                                           setCounter(counter + 1);
                                           setStartDate(null);
@@ -1822,18 +2757,6 @@ const Shipments = () => {
                                     </button>
                                   </>
                                 )}
-
-                                {/* <button
-                                            className="btn-save"
-                                            type="submit"
-                                            onClick={() => {
-                                              addNewListOfShipment();
-                                              setStartDate(null);
-                                              counterchange(indexshipment);
-                                            }}
-                                          >
-                                            Next Shipment
-                                          </button> */}
                               </>
                             )}
                           </div>
@@ -1913,7 +2836,7 @@ const Shipments = () => {
                 />
               </div>
               <button
-                type="sumbit"
+                type="submit"
                 className="btnSave my-4 adwadawdasd"
                 data-bs-dismiss="modal"
                 aria-label="Close"

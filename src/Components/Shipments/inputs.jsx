@@ -66,8 +66,7 @@ const Inputs = ({
     toast(<Msg />, { autoClose: 3000 });
   };
 
-  // const {errorlist , setErrorList}= useContext(ContextStore)
-  // console.log(plannedList.length, "plannedList");
+
   useEffect(() => {
     if (list) {
       AddShipments_Api(plannedList);
@@ -75,8 +74,7 @@ const Inputs = ({
   }, [list]);
 
   const [cookie] = useCookies(["eload_token"]);
-  // const [errList, setErrList] = useState([]);
-  const [sendFlag, setsendFlag] = useState(false);
+  // const [sendFlag, setsendFlag] = useState(false);
 
   // select-options
   const [isClearable, setIsClearable] = useState(true);
@@ -95,96 +93,14 @@ const Inputs = ({
   const [unitMeasure, setUnitMeasure] = useState();
   const [quantityValue, setQuantityValue] = useState();
 
-  // truck-type
-  const truckTypehandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].truckTypeValue = event;
-    setTotalDetails(newInputs);
-  };
 
-  // shipment-type
-  const shipmentTypehandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].shipmentType = event;
-    setTotalDetails(newInputs);
-  };
-
-  // valueOfShipment-input
-  const valueOfhandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].shipmentTypeValue = event.target.value;
-    setTotalDetails(newInputs);
-  };
-  // weightOfShipment-input
-  const weighthandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].weightValue = event.target.value;
-    setTotalDetails(newInputs);
-  };
-  // weightOfShipment-input
-  const numberOfTruckshahndleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].number_TrucksValue = event.target.value;
-    setTotalDetails(newInputs);
-  };
-  // description
-  const descriptionhahndleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].description = event.target.value;
-    setTotalDetails(newInputs);
-  };
-  // pack-files
-  const pickinghandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    // console.log(event, "events");
-    // totaldetails.picking_ListValue==event;
-    // for(let i=0;i<)
-    for (let k in event) {
-      if (event.hasOwnProperty(k)) {
-        // totaldetails.picking_ListValue[k] = event[k];
-        totaldetails[index].picking_ListValue.push(event[k]);
-      }
-    }
-
-    setTotalDetails(newInputs);
-  };
-  // Doc_files
-  const docListhahndleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    console.log(event, "events");
-    for (let k in event) {
-      if (event.hasOwnProperty(k)) {
-        totaldetails[index].Documents_ListValue.push(event[k]);
-      }
-    }
-    setTotalDetails(newInputs);
-  };
-  // commidities
-  const commiditieshandleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].commodityTypeValue = event;
-    setTotalDetails(newInputs);
-  };
-  // UOM
-  const uom_handleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].uomValue = event;
-    setTotalDetails(newInputs);
-  };
-  // quantityValue
-  const quantityValue_handleInputChange = (index, event) => {
-    const newInputs = [...totaldetails];
-    newInputs[index].quantityValue = event.target.value;
-    setTotalDetails(newInputs);
-  };
 
   // shipment_type
   const shipmentOptionList = (truckuserChoice) => {
     // console.log(truckuserChoice, "testttttttttttttttt");
 
     detailsList.truck_types?.map((item, index) => {
-      // console.log(item,"itemtruck");
-      // console.log(item.id,"itemtruckiiiiiiiiiiidddd");
+
       console.log(item.shipment_types, " item.shipment_types");
 
       if (item.id === truckuserChoice) {
@@ -201,17 +117,17 @@ const Inputs = ({
   };
 
   // errors
-  const [openerror, setOpenerror] = React.useState(false);
-  const handleClickerror = () => {
-    setOpenerror(true);
-  };
-  const handleCloseerror = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  // const [openerror, setOpenerror] = React.useState(false);
+  // const handleClickerror = () => {
+  //   setOpenerror(true);
+  // };
+  // const handleCloseerror = (event, reason) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
 
-    setOpenerror(false);
-  };
+  //   setOpenerror(false);
+  // };
   // Error List
   const [errors, setErrors] = useState([]);
   console.log(errors, " errorsssssssss");
@@ -244,54 +160,14 @@ const Inputs = ({
     console.log(plannedList, "plannedList--------");
     // e.preventDefault();
     const schema = Joi.object({
-      trackUser_Choice: Joi.number().required().messages({
-        "number.base": "Please Select a Truck type",
-        "any.required": "Truck type is required",
-      }),
-      shipment_type: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Shipment type is required",
-      }),
-      // // ComeBAck
-      shipment_Value: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Shipment Value is required",
-      }),
-      shipment_Weight: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Shipment Weight is required",
-      }),
-      commodity_Value: Joi.number().required().messages({
-        "number.base": "Please Pickup a Valid Address",
-        "any.required": "Commodity type is required",
-      }),
-      unit_Measurement: Joi.number().required().messages({
-        "number.base": "Please Pickup a Valid Address",
-        "any.required": "unit of measurement is required",
-      }),
-      quantity_Value: Joi.number().required().messages({
-        "number.base": "Please Select a Value",
-        "any.required": "Quantity is required",
-      }),
+
     });
     const formDataObject = {
-      trackUser_Choice: truckuserChoice,
-      shipment_type: shipmentType,
-      shipment_Value: shipmentValue,
-      shipment_Weight: weigth,
-      commodity_Value: commodity,
-      unit_Measurement: unitMeasure,
-      quantity_Value: quantityValue,
+
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-      // console.log("errorrrr", error.details);
-      // console.log(
-      //   "errorrrrssss details ",
-      //   errors.pickup_Value,
-      //   " ",
-      //   targetElement
-      // );
+
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -325,67 +201,7 @@ const Inputs = ({
       formdata.append("dropoff_from_time", item.dropTimeFromPlanned);
       formdata.append("dropoff_to_time", item.dropTimeToPlanned);
       formdata.append("dropoff_to_time", item.dropTimeToPlanned);
-      // console.log(item, "item.detailsTruckkkkkkkk");
-      // item.detailsTruck.map((itemdetails, indexdetails) => {
-      //   // console.log(itemdetails, indexdetails, "map details");
-      //   // truck
-      //   formdata.append(
-      //     // `orders[${index}]shipments[${indexdetails}][truck_type_id]`,
-      //     `shipments[${indexdetails}][truck_type_id]`,
-      //     itemdetails.truckTypePlanned
-      //   );
-      //   // shipment
-      //   formdata.append(
-      //     `shipments[${indexdetails}][shipment_type_id]`,
-      //     itemdetails.shipmentTypePlanned
-      //   );
-      //   // shipment_value
-      //   formdata.append(
-      //     `shipments[${indexdetails}][value]`,
-      //     itemdetails.shipmentvaluePlanned
-      //   );
-      //   // weightPlanned
-      //   formdata.append(
-      //     `shipments[${indexdetails}][weight]`,
-      //     itemdetails.weightPlanned
-      //   );
-      //   // numTrucksPlanned
-      //   formdata.append(`shipments[${indexdetails}][truck_type_qty]`, 1);
-      //   // descriptionPlanned
-      //   formdata.append(
-      //     `shipments[${indexdetails}][description]`,
-      //     itemdetails.descriptionPlanned
-      //   );
-      //   // PickingListPlanned
-      //   itemdetails.PickingListPlanned.map((fileitem, fileindexpick) => {
-      //     formdata.append(
-      //       `shipments[${indexdetails}][attachments][packing_list][${fileindexpick}]`,
-      //       fileitem
-      //     );
-      //   });
-      //   // documListPlanned
-      //   itemdetails.documListPlanned.map((fileitemdoc, fileindexdoc) => {
-      //     formdata.append(
-      //       `shipments[${indexdetails}][attachments][other_documentations][${fileindexdoc}]`,
-      //       fileitemdoc
-      //     );
-      //   });
-      //   // commidityPlanned
-      //   formdata.append(
-      //     `shipments[${indexdetails}][commodity_id]`,
-      //     itemdetails.commidityPlanned
-      //   );
-      //   // uomPlanned
-      //   formdata.append(
-      //     `shipments[${indexdetails}][uom_id]`,
-      //     itemdetails.uomPlanned
-      //   );
-      //   // quantityPlanned
-      //   formdata.append(
-      //     `shipments[${indexdetails}][quantity]`,
-      //     itemdetails.quantityPlanned
-      //   );
-      // });
+
       // ==================================test=========
       // Append all detailsTruck items
       item.detailsTruck.forEach((itemdetails, indexdetails) => {
@@ -595,7 +411,7 @@ const Inputs = ({
       }
     }
 
-    setList(false); // to allow sending the request again when clicking on the send btn
+    setList(false); 
   };
 
   // commidities_options
@@ -619,25 +435,6 @@ const Inputs = ({
       label: item.name,
     };
   });
-
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleCloseerror}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleCloseerror}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-  // =================================planned-shipment
-
-  // Planned-shipment
   // truck
   const TruckPlannedChange = (indexshipment, indexdetails, event) => {
     const newInputs = [...plannedList];
@@ -721,13 +518,13 @@ const Inputs = ({
   };
   return (
     <>
-      <Snackbar
+      {/* <Snackbar
         open={openerror}
         autoHideDuration={6000}
         onClose={handleCloseerror}
         message="Note archived"
         action={action}
-      />
+      /> */}
       <div className="inputs row">
         <div className="input col-2">
           <label htmlFor="address">
