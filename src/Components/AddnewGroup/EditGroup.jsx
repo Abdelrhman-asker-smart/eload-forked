@@ -28,7 +28,7 @@ const EditGroup = () => {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    console.log(id, "id-----");
+    // // console.log(id, "id-----");
     const ItemsFetch = async (id) => {
       try {
         const response = await axios.get(
@@ -44,19 +44,19 @@ const EditGroup = () => {
         );
 
         const data = response.data.data;
-        console.log(data, "itemfromAPiiiiiiiiiiii");
+        // // console.log(data, "itemfromAPiiiiiiiiiiii");
         setName(data.name);
 
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
     ItemsFetch(id);
   }, []);
 
-  //   console.log(name,"name");
+  //   // console.log(name,"name");
 
   const edit = () => {
     const urlencoded = new URLSearchParams();
@@ -64,7 +64,7 @@ const EditGroup = () => {
     urlencoded.append("name", name);
     urlencoded.append("shipper_id", idshipper);
 
-    console.log("editDone");
+    // // console.log("editDone");
     dispatch(
       EditgroupFunction({
         token: cookie.eload_token,
@@ -73,11 +73,11 @@ const EditGroup = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        // // console.log(res);
         alert("Successfully Saved!");
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
   return (

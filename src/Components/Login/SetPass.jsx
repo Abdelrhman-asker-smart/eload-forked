@@ -33,7 +33,7 @@ export default function Login({ decodeData }) {
   }
   async function submitForm(e) {
     e.preventDefault();
-  
+
     const schema = Joi.object({
       password: Joi.string().required(),
       Confirm_password: Joi.string()
@@ -43,7 +43,7 @@ export default function Login({ decodeData }) {
           "any.only": "Confirm password must match the password",
         }),
     });
-  
+
     let joiResponse = schema.validate(user, { abortEarly: false });
     if (joiResponse.error || user.password !== user.Confirm_password) {
       setErrList(joiResponse.error.details);
@@ -55,11 +55,11 @@ export default function Login({ decodeData }) {
       formdata.append("password", user.password);
       formdata.append("password_confirmation", user.Confirm_password);
       formdata.append("email", localStorage.getItem("emailElood"));
-      formdata.append("token", "7bxkZj"); 
-      console.log(localStorage.getItem("emailElood"))
+      formdata.append("token", "7bxkZj");
+      // console.log(localStorage.getItem("emailElood"))
       try {
         const request = await axios.post(
-          `https://dev.eload.smart.sa/api/v1/password/reset`, 
+          `https://dev.eload.smart.sa/api/v1/password/reset`,
           formdata,
           {
             headers: {
@@ -67,7 +67,7 @@ export default function Login({ decodeData }) {
               "api-key": `b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9`,
             },
           }
-        );  
+        );
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -75,16 +75,20 @@ export default function Login({ decodeData }) {
           title: "Password has been reset successfully!",
           showConfirmButton: false,
           timer: 8000,
-        }).then(()=>{
-          window.location.replace("/login"); 
-        })
+        }).then(() => {
+          window.location.replace("/login");
+        });
         setLoginFlag(false);
       } catch (err) {
         Swal.fire({
           position: "top-end",
           icon: "error",
           color: "#0e4579",
-          title: `${err?.response?.data?.errors[0]?.message||err?.response?.data?.message||err?.message}`,
+          title: `${
+            err?.response?.data?.errors[0]?.message ||
+            err?.response?.data?.message ||
+            err?.message
+          }`,
           showConfirmButton: false,
           showCancelButton: true,
           cancelButtonText: "ok",
@@ -94,7 +98,7 @@ export default function Login({ decodeData }) {
       }
     }
   }
-  
+
   function getError(key) {
     for (const error of errList) {
       if (error.context.key === key) {

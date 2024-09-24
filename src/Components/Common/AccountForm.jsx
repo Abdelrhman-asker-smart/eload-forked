@@ -54,7 +54,7 @@ const AccountForm = ({ account, setAccount }) => {
         },
       ]);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 

@@ -19,8 +19,8 @@ const Wallet = () => {
 
   // endpoint is the API endpoint, url is the frontend page url
   const entity_mappings = {
-    invoice: { endpoint: 'invoices', url: 'invoices' }
-  }
+    invoice: { endpoint: "invoices", url: "invoices" },
+  };
 
   const getWalletDetails = async () => {
     try {
@@ -50,7 +50,7 @@ const Wallet = () => {
 
       setTransactions(transactions);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -69,17 +69,26 @@ const Wallet = () => {
             }}
           >
             {renderedCellValue}
-            {
-              entity_mappings.hasOwnProperty(row.original.transactionable_type) &&
-              <NavLink style={{ color: "#0085FF" }} to={`/${entity_mappings[row.original.transactionable_type].url}/${row.original.transactionable_id}`}>
+            {entity_mappings.hasOwnProperty(
+              row.original.transactionable_type
+            ) && (
+              <NavLink
+                style={{ color: "#0085FF" }}
+                to={`/${
+                  entity_mappings[row.original.transactionable_type].url
+                }/${row.original.transactionable_id}`}
+              >
                 <span>Details</span>
               </NavLink>
-            }
+            )}
 
-            {
-              !entity_mappings.hasOwnProperty(row.original.transactionable_type) &&
-              <span>{row.original.transactionable_type.replace(/-/g, ' ')}</span>
-            }
+            {!entity_mappings.hasOwnProperty(
+              row.original.transactionable_type
+            ) && (
+              <span>
+                {row.original.transactionable_type.replace(/-/g, " ")}
+              </span>
+            )}
           </Box>
         ),
       },
@@ -87,7 +96,7 @@ const Wallet = () => {
         accessorKey: "amount",
         header: "Amount",
         size: 30,
-      }
+      },
     ],
     []
   );
@@ -116,12 +125,31 @@ const Wallet = () => {
     getWalletDetails();
   }, []);
 
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div className="container wallet px-4">
       <div className="row p-4">
         <div className="col-md-4 offset-md-4 text-center top-section">
-            <h4>{wallet.balance} {wallet.currency}</h4>
-            <h6><i className="fa fa-wallet"></i> Wallet Amount</h6>
+          <h4>
+            {wallet.balance} {wallet.currency}
+          </h4>
+          <h6>
+            <i className="fa fa-wallet"></i> Wallet Amount
+          </h6>
         </div>
       </div>
 
@@ -131,7 +159,6 @@ const Wallet = () => {
         columns={columns}
         data={transactions}
         positionPagination="top"
-
         enableRowSelection
         positionToolbarAlertBanner="top"
         renderTopToolbarCustomActions={({ table }) => (
@@ -166,9 +193,7 @@ const Wallet = () => {
             <Button
               disabled={table.getRowModel().rows.length === 0}
               //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-              onClick={() =>
-                handleExportRowsready(table.getRowModel().rows)
-              }
+              onClick={() => handleExportRowsready(table.getRowModel().rows)}
               startIcon={<FileDownloadIcon />}
               variant="contained"
             >
@@ -176,8 +201,7 @@ const Wallet = () => {
             </Button>
             <Button
               disabled={
-                !table.getIsSomeRowsSelected() &&
-                !table.getIsAllRowsSelected()
+                !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
               }
               //only export selected rows
               onClick={() =>
@@ -185,6 +209,15 @@ const Wallet = () => {
               }
               startIcon={<FileDownloadIcon />}
               variant="contained"
+            >
+              Export Selected Rows
+            </Button>{" "}
+            */
+            <Button
+              style={{ marginBottom: "-50px" }}
+              startIcon={<FileDownloadIcon />}
+              variant="contained"
+              onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
             >
               Export Selected Rows
             </Button>

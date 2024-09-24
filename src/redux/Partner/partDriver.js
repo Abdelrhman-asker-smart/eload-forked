@@ -6,8 +6,8 @@ import axios from "axios";
 // api().fetchTeamData
 export const fetchPartDriverList = createAsyncThunk(
   "partnerdriver/fetchPartDriverList",
-  async (token ,id) => {
-    console.log(id, "from reducer");
+  async (token, id) => {
+    // console.log(id, "from reducer");
     try {
       const response = await axios.get(
         `https://dev.eload.smart.sa/api/v1/drivers/${id}`,
@@ -22,10 +22,10 @@ export const fetchPartDriverList = createAsyncThunk(
         }
       );
       const data = await response.data;
-      console.log(data, "data");
+      // console.log(data, "data");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );
@@ -55,7 +55,7 @@ export const partnerDriverGetReducer = createSlice({
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
-      // console.log(action, "action");
+      // // console.log(action, "action");
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },

@@ -10,8 +10,8 @@ import "./ShipmentOrder.css";
 import code from "../../icons/code.png";
 import { useParams } from "react-router-dom";
 import Driverimg from "../../icons/drivers-img.png";
-import FileIcon from "../../icons/fileIcon.png"
-import Truckred from '../../icons/truckred.png';
+import FileIcon from "../../icons/fileIcon.png";
+import Truckred from "../../icons/truckred.png";
 import { ToastContainer, toast } from "react-toastify";
 
 // tables
@@ -29,7 +29,14 @@ import {
   TextField,
 } from "@mui/material";
 
-import { GoogleMap, LoadScript, Marker, MarkerF , DirectionsService , DirectionsRenderer} from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  MarkerF,
+  DirectionsService,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -40,7 +47,7 @@ let Msg = ({ closeToast, toastProps }) => (
     <h5>Assigned successfully!</h5>
     {/* <p>{notification.body}</p> */}
   </div>
-)
+);
 
 const showNotification = (e) => {
   e.preventDefault();
@@ -52,13 +59,10 @@ const showNotification = (e) => {
   //   </div>
   // )
 
-  toast(<Msg />)
+  toast(<Msg />);
   window.location.reload();
   // readNotification(notification.id);
 };
-
-
-
 
 const icon = {
   url: Truckred,
@@ -70,15 +74,17 @@ const ShipmentOrder = () => {
   const [detailsList, setDetailsList] = useState([]);
   // const [fileboxes, setFileboxes] = useState([]);
   const [cookie] = useCookies(["eload_token"]);
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
   const sendInterest = async (e, shipment_id) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://dev.eload.smart.sa/api/v1/interests',
-        {shipment_id},
+        "https://dev.eload.smart.sa/api/v1/interests",
+        { shipment_id },
         {
           headers: {
             Accept: "application/json",
@@ -88,10 +94,10 @@ const ShipmentOrder = () => {
           },
         }
       );
-      console.log(response.data.data);
-      alert('Sent Successfully!');
+      // console.log(response.data.data);
+      alert("Sent Successfully!");
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -105,18 +111,18 @@ const ShipmentOrder = () => {
   const center = {
     lat: Number(detailsList.latitude),
     lng: Number(detailsList.longitude),
-  }
+  };
   // oragin
 
   const origin = {
     lat: Number(detailsList.order?.from_address?.latitude),
     lng: Number(detailsList.order?.from_address?.longitude),
-  }
+  };
   // // destnition
   const destination = {
     lat: Number(detailsList.order?.to_address?.latitude),
     lng: Number(detailsList.order?.to_address?.longitude),
-  }
+  };
 
   const MarkerTruck = () => (
     <img
@@ -126,33 +132,33 @@ const ShipmentOrder = () => {
     />
   );
   // alrt
-    // Alart-Snackbar
-    const [state, setState] = React.useState({
-      open: false,
-      vertical: "top",
-      horizontal: "center",
-    });
-    const { vertical, horizontal, open } = state;
-  
-    const handleClick = (newState, Transition) => {
-      setState({ open: true, ...newState, Transition });
-    };
-    const handleClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      // handleClick() {
-        // Reload the current page
-        window.location.reload();
-      // }
-      setState({ ...state, open: false });
-    };
+  // Alart-Snackbar
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, open } = state;
 
-    // const [count, setCount] = useState(0);
-
-    // const reRender = () => {
-    //   setCount(count + 1);
+  const handleClick = (newState, Transition) => {
+    setState({ open: true, ...newState, Transition });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    // handleClick() {
+    // Reload the current page
+    window.location.reload();
     // }
+    setState({ ...state, open: false });
+  };
+
+  // const [count, setCount] = useState(0);
+
+  // const reRender = () => {
+  //   setCount(count + 1);
+  // }
 
   // Api=====fetch__All-details
   useEffect(() => {
@@ -176,11 +182,11 @@ const ShipmentOrder = () => {
         );
 
         const data = response.data.data;
-        console.log(data);
+        // console.log(data);
         setDetailsList(data);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
@@ -191,7 +197,7 @@ const ShipmentOrder = () => {
 
   // Api-with no change in price
   const AssignApinochange = async (provider_id, shipmentId) => {
-    console.log(shipmentId, "shipmentid");
+    // console.log(shipmentId, "shipmentid");
     var urlencoded = new URLSearchParams();
     // urlencoded.append("price", price);
     urlencoded.append("provider_id", provider_id);
@@ -212,15 +218,15 @@ const ShipmentOrder = () => {
         }
       );
 
-      console.log(priceValue, "Assigne----done");
+      // console.log(priceValue, "Assigne----done");
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
   // Api with change in price
   const AssignApiPrice = async (price, interestId) => {
-    console.log(price, "pricechanges");
+    // console.log(price, "pricechanges");
     var urlencoded = new URLSearchParams();
     urlencoded.append("price", price);
     // urlencoded.append("provider_id", provider_id);
@@ -241,15 +247,15 @@ const ShipmentOrder = () => {
         }
       );
 
-      console.log(priceValue, "Assigne----done");
+      // console.log(priceValue, "Assigne----done");
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
   // table2 with one Api
   const AssignApiAction = async (provider_id, shipmentId, price) => {
-    console.log(shipmentId, "shipmentid");
+    // console.log(shipmentId, "shipmentid");
     var urlencoded = new URLSearchParams();
     urlencoded.append("provider_id", provider_id);
     urlencoded.append("price", price);
@@ -269,7 +275,7 @@ const ShipmentOrder = () => {
         }
       );
 
-      console.log(priceValue, "Assigne----doneAiiprice");
+      // console.log(priceValue, "Assigne----doneAiiprice");
       setPriceValue(0);
       setChangePrice(false);
       // alrt-done
@@ -278,11 +284,10 @@ const ShipmentOrder = () => {
       //   horizontal: "center",
       //   Transition: "SlideTransition",
       // });
-      toast(<Msg />)
+      toast(<Msg />);
       window.location.reload();
-      
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -304,11 +309,10 @@ const ShipmentOrder = () => {
         }
       );
 
-      toast(<Msg />)
+      toast(<Msg />);
       window.location.reload();
-      
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -316,7 +320,7 @@ const ShipmentOrder = () => {
   const [priceValue, setPriceValue] = useState(0);
 
   // ================tables================
-// table===========================1
+  // table===========================1
   const columnsServiceProvide = useMemo(
     () => [
       {
@@ -351,70 +355,65 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {
-              row.original.status==="READY" && row.original.type==="freelancer" ?
+            {row.original.status === "READY" &&
+            row.original.type === "freelancer" ? (
               <>
+                <span
+                  contentEditable={true}
+                  // onInput={handlePriceChange}
+                  onInput={(e) => {
+                    setChangePrice(true);
+                    // console.log("changeeeeeeeeeeeeeeeed");
+                    setPriceValue(Number(e.target.innerText));
+                  }}
+                  dangerouslySetInnerHTML={{ __html: renderedCellValue }}
+                ></span>
+
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 22H21"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </>
+            ) : (
               <span
-                contentEditable={true}
+                // contentEditable={true}
                 // onInput={handlePriceChange}
                 onInput={(e) => {
                   setChangePrice(true);
-                  console.log("changeeeeeeeeeeeeeeeed");
+                  // console.log("changeeeeeeeeeeeeeeeed");
                   setPriceValue(Number(e.target.innerText));
                 }}
                 dangerouslySetInnerHTML={{ __html: renderedCellValue }}
               ></span>
-
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 22H21"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </>
-
-              :
-              <span
-              // contentEditable={true}
-              // onInput={handlePriceChange}
-              onInput={(e) => {
-                setChangePrice(true);
-                console.log("changeeeeeeeeeeeeeeeed");
-                setPriceValue(Number(e.target.innerText));
-              }}
-              dangerouslySetInnerHTML={{ __html: renderedCellValue }}
-              ></span>
-
-
-            }
-
-
+            )}
           </Box>
         ),
       },
@@ -511,145 +510,142 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {
-              row.original.status==="READY" ? 
+            {row.original.status === "READY" ? (
               <>
-                  {
-                      changeprice ===true? 
-                        <button
-                        onClick={() => {
-                        AssignApiAction(row.original.id, shipmentId, priceValue);
+                {changeprice === true ? (
+                  <button
+                    onClick={() => {
+                      AssignApiAction(row.original.id, shipmentId, priceValue);
 
-                          // AssignApiPrice(priceValue, row.original.id);
-                          console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
+                      // AssignApiPrice(priceValue, row.original.id);
+                      // console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
 
-                          console.log(priceValue, "pricefuncttttttttttttttttttttt");
-                        }}
-                        style={{
-                          border: "0",
-                          borderRadius: "20px",
-                          padding: "3px 8px",
-                          background: "#0E324A",
-                          color: "#fff",
-                          fontSize: "16px",
-                          fontWeight: "400",
-                        }}
-                        >
-                          <svg
-                            width="25"
-                            height="25"
-                            viewBox="0 0 25 25"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                              fill="white"
-                            />
-                            <path
-                              opacity="0.4"
-                              d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                              fill="white"
-                            />
-                          </svg>
-                          {renderedCellValue}
-                        </button>
-
-                    :
-                        <button
-                        onClick={() => {
-                        AssignApiAction(row.original.id, shipmentId, row.original?.contractprice);
-                          console.log(row.original?.contractprice, "pricenoupdate");
-                        }}
-                        style={{
-                          border: "0",
-                          borderRadius: "20px",
-                          padding: "3px 8px",
-                          background: "#0E324A",
-                          color: "#fff",
-                          fontSize: "16px",
-                          fontWeight: "400",
-                        }}
-                        >
-                          <svg
-                            width="25"
-                            height="25"
-                            viewBox="0 0 25 25"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                              fill="white"
-                            />
-                            <path
-                              opacity="0.4"
-                              d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                              fill="white"
-                            />
-                          </svg>
-                          {renderedCellValue}
-                        </button>
-                }
-                  </>
-
-                  :
-                  <>
-                    <button
-                    disabled
+                      // console.log(priceValue, "pricefuncttttttttttttttttttttt");
+                    }}
                     style={{
                       border: "0",
                       borderRadius: "20px",
                       padding: "3px 8px",
-                      background: "#ccc",
+                      background: "#0E324A",
                       color: "#fff",
                       fontSize: "16px",
                       fontWeight: "400",
                     }}
+                  >
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        width="25"
-                        height="25"
-                        viewBox="0 0 25 25"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                          fill="white"
-                        />
-                        <path
-                          opacity="0.4"
-                          d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                          fill="white"
-                        />
-                        <path
-                          d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                          fill="white"
-                        />
-                      </svg>
-                      {renderedCellValue}
-                    </button>
-
-                  </>
-
-            }
-            
+                      <path
+                        d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                        fill="white"
+                      />
+                      <path
+                        opacity="0.4"
+                        d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                        fill="white"
+                      />
+                    </svg>
+                    {renderedCellValue}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      AssignApiAction(
+                        row.original.id,
+                        shipmentId,
+                        row.original?.contractprice
+                      );
+                      // console.log(row.original?.contractprice, "pricenoupdate");
+                    }}
+                    style={{
+                      border: "0",
+                      borderRadius: "20px",
+                      padding: "3px 8px",
+                      background: "#0E324A",
+                      color: "#fff",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                        fill="white"
+                      />
+                      <path
+                        opacity="0.4"
+                        d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                        fill="white"
+                      />
+                    </svg>
+                    {renderedCellValue}
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  disabled
+                  style={{
+                    border: "0",
+                    borderRadius: "20px",
+                    padding: "3px 8px",
+                    background: "#ccc",
+                    color: "#fff",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                  }}
+                >
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                      fill="white"
+                    />
+                    <path
+                      opacity="0.4"
+                      d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                      fill="white"
+                    />
+                  </svg>
+                  {renderedCellValue}
+                </button>
+              </>
+            )}
           </Box>
         ),
       },
     ],
     [priceValue, changeprice]
   );
-  
+
   const InterstedArray = Array.isArray(detailsList.eligible?.interested)
     ? [...detailsList.eligible?.interested]
     : [];
@@ -667,8 +663,7 @@ const ShipmentOrder = () => {
       email: item.user.email,
       type: item.type,
       options: "Assign",
-      status:detailsList.status,
-
+      status: detailsList.status,
     };
   });
 
@@ -707,68 +702,65 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-
-            {
-              row.original.status==="READY" && row.original.type==="freelancer" ?
+            {row.original.status === "READY" &&
+            row.original.type === "freelancer" ? (
               <>
+                <span
+                  contentEditable={true}
+                  // onInput={handlePriceChange}
+                  onInput={(e) => {
+                    setChangePrice(true);
+                    // console.log("changeeeeeeeeeeeeeeeed");
+                    setPriceValue(Number(e.target.innerText));
+                  }}
+                  dangerouslySetInnerHTML={{ __html: renderedCellValue }}
+                ></span>
+
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 22H21"
+                    stroke="#18AEC9"
+                    stroke-width="1.5"
+                    strokeMiterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </>
+            ) : (
               <span
-                contentEditable={true}
+                // contentEditable={true}
                 // onInput={handlePriceChange}
                 onInput={(e) => {
                   setChangePrice(true);
-                  console.log("changeeeeeeeeeeeeeeeed");
+                  // console.log("changeeeeeeeeeeeeeeeed");
                   setPriceValue(Number(e.target.innerText));
                 }}
                 dangerouslySetInnerHTML={{ __html: renderedCellValue }}
               ></span>
-
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.2599 3.59997L5.04985 12.29C4.73985 12.62 4.43985 13.27 4.37985 13.72L4.00985 16.96C3.87985 18.13 4.71985 18.93 5.87985 18.73L9.09985 18.18C9.54985 18.1 10.1799 17.77 10.4899 17.43L18.6999 8.73997C20.1199 7.23997 20.7599 5.52997 18.5499 3.43997C16.3499 1.36997 14.6799 2.09997 13.2599 3.59997Z"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M11.8901 5.05005C12.3201 7.81005 14.5601 9.92005 17.3401 10.2"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 22H21"
-                  stroke="#18AEC9"
-                  stroke-width="1.5"
-                  strokeMiterlimit="10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </>
-
-              :
-              <span
-              // contentEditable={true}
-              // onInput={handlePriceChange}
-              onInput={(e) => {
-                setChangePrice(true);
-                console.log("changeeeeeeeeeeeeeeeed");
-                setPriceValue(Number(e.target.innerText));
-              }}
-              dangerouslySetInnerHTML={{ __html: renderedCellValue }}
-              ></span>
-
-            }
+            )}
           </Box>
         ),
       },
@@ -865,145 +857,143 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {
-              row.original.status==="READY" ? 
+            {row.original.status === "READY" ? (
               <>
-                  {
-                      changeprice ===true? 
-                        <button
-                        onClick={() => {
-                        AssignApiAction(row.original.id, shipmentId, priceValue);
+                {changeprice === true ? (
+                  <button
+                    onClick={() => {
+                      AssignApiAction(row.original.id, shipmentId, priceValue);
 
-                          // AssignApiPrice(priceValue, row.original.id);
-                          console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
+                      // AssignApiPrice(priceValue, row.original.id);
+                      // console.log(row.original.id, "idinbuttonpriceeeeeeeeeeeee");
 
-                          console.log(priceValue, "pricefuncttttttttttttttttttttt");
-                        }}
-                        style={{
-                          border: "0",
-                          borderRadius: "20px",
-                          padding: "3px 8px",
-                          background: "#0E324A",
-                          color: "#fff",
-                          fontSize: "16px",
-                          fontWeight: "400",
-                        }}
-                        >
-                          <svg
-                            width="25"
-                            height="25"
-                            viewBox="0 0 25 25"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                              fill="white"
-                            />
-                            <path
-                              opacity="0.4"
-                              d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                              fill="white"
-                            />
-                          </svg>
-                          {renderedCellValue}
-                        </button>
-
-                    :
-                        <button
-                        onClick={() => {
-                        AssignApiAction(row.original.id, shipmentId, row.original?.contractprice);
-                          console.log(row.original?.contractprice, "pricenoupdate");
-                        }}
-                        style={{
-                          border: "0",
-                          borderRadius: "20px",
-                          padding: "3px 8px",
-                          background: "#0E324A",
-                          color: "#fff",
-                          fontSize: "16px",
-                          fontWeight: "400",
-                        }}
-                        >
-                          <svg
-                            width="25"
-                            height="25"
-                            viewBox="0 0 25 25"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                              fill="white"
-                            />
-                            <path
-                              opacity="0.4"
-                              d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                              fill="white"
-                            />
-                            <path
-                              d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                              fill="white"
-                            />
-                          </svg>
-                          {renderedCellValue}
-                        </button>
-                }
-                  </>
-
-                  :
-                  <>
-                    <button
-                    disabled
+                      // console.log(priceValue, "pricefuncttttttttttttttttttttt");
+                    }}
                     style={{
                       border: "0",
                       borderRadius: "20px",
                       padding: "3px 8px",
-                      background: "#ccc",
+                      background: "#0E324A",
                       color: "#fff",
                       fontSize: "16px",
                       fontWeight: "400",
                     }}
+                  >
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        width="25"
-                        height="25"
-                        viewBox="0 0 25 25"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
-                          fill="white"
-                        />
-                        <path
-                          opacity="0.4"
-                          d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
-                          fill="white"
-                        />
-                        <path
-                          d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
-                          fill="white"
-                        />
-                      </svg>
-                      {renderedCellValue}
-                    </button>
-
-                  </>
-
-            }
+                      <path
+                        d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                        fill="white"
+                      />
+                      <path
+                        opacity="0.4"
+                        d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                        fill="white"
+                      />
+                    </svg>
+                    {renderedCellValue}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      AssignApiAction(
+                        row.original.id,
+                        shipmentId,
+                        row.original?.contractprice
+                      );
+                      // console.log(row.original?.contractprice, "pricenoupdate");
+                    }}
+                    style={{
+                      border: "0",
+                      borderRadius: "20px",
+                      padding: "3px 8px",
+                      background: "#0E324A",
+                      color: "#fff",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                        fill="white"
+                      />
+                      <path
+                        opacity="0.4"
+                        d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                        fill="white"
+                      />
+                      <path
+                        d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                        fill="white"
+                      />
+                    </svg>
+                    {renderedCellValue}
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  disabled
+                  style={{
+                    border: "0",
+                    borderRadius: "20px",
+                    padding: "3px 8px",
+                    background: "#ccc",
+                    color: "#fff",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                  }}
+                >
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.5 13.5C17.56 13.5 16.69 13.83 16 14.38C15.08 15.11 14.5 16.24 14.5 17.5C14.5 18.25 14.71 18.96 15.08 19.56C15.77 20.72 17.04 21.5 18.5 21.5C19.51 21.5 20.43 21.13 21.13 20.5C21.44 20.24 21.71 19.92 21.92 19.56C22.29 18.96 22.5 18.25 22.5 17.5C22.5 15.29 20.71 13.5 18.5 13.5ZM20.57 17.07L18.44 19.04C18.3 19.17 18.11 19.24 17.93 19.24C17.74 19.24 17.55 19.17 17.4 19.02L16.41 18.03C16.12 17.74 16.12 17.26 16.41 16.97C16.7 16.68 17.18 16.68 17.47 16.97L17.95 17.45L19.55 15.97C19.85 15.69 20.33 15.71 20.61 16.01C20.89 16.31 20.87 16.78 20.57 17.07Z"
+                      fill="white"
+                    />
+                    <path
+                      opacity="0.4"
+                      d="M21.5901 22C21.5901 22.28 21.3701 22.5 21.0901 22.5H3.91016C3.63016 22.5 3.41016 22.28 3.41016 22C3.41016 17.86 7.49015 14.5 12.5002 14.5C13.5302 14.5 14.5302 14.64 15.4502 14.91C14.8602 15.61 14.5002 16.52 14.5002 17.5C14.5002 18.25 14.7101 18.96 15.0801 19.56C15.2801 19.9 15.5401 20.21 15.8401 20.47C16.5401 21.11 17.4702 21.5 18.5002 21.5C19.6202 21.5 20.6302 21.04 21.3502 20.3C21.5102 20.84 21.5901 21.41 21.5901 22Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M12.5 12.5C15.2614 12.5 17.5 10.2614 17.5 7.5C17.5 4.73858 15.2614 2.5 12.5 2.5C9.73858 2.5 7.5 4.73858 7.5 7.5C7.5 10.2614 9.73858 12.5 12.5 12.5Z"
+                      fill="white"
+                    />
+                  </svg>
+                  {renderedCellValue}
+                </button>
+              </>
+            )}
           </Box>
         ),
       },
     ],
-    
+
     [priceValue, changeprice]
   );
-  // console.log(priceValue,"price");
+  // // console.log(priceValue,"price");
 
   // data-no-actions
 
@@ -1023,7 +1013,7 @@ const ShipmentOrder = () => {
       email: item.user.email,
       type: item.type,
       options: "Assign",
-      status:detailsList.status,
+      status: detailsList.status,
     };
   });
   // ============table3-------------------------------------
@@ -1033,7 +1023,6 @@ const ShipmentOrder = () => {
         accessorKey: "id",
         header: "ID",
         size: 60,
-
       },
       {
         accessorKey: "Category",
@@ -1055,9 +1044,8 @@ const ShipmentOrder = () => {
               <span>{renderedCellValue}</span>
               <span className="mx-2">{row.original.currency}</span>
             </div>
-           </Box>
+          </Box>
         ),
-
       },
       {
         accessorKey: "Describtion",
@@ -1076,46 +1064,45 @@ const ShipmentOrder = () => {
               gap: "1rem",
             }}
           >
-            {
-              renderedCellValue =="PENDING" ?
+            {renderedCellValue == "PENDING" ? (
               <div
-              style={{
-                border: "0",
-                borderRadius: "20px",
-                padding: "3px 20px",
-                background: "#F80F10",
-                color: "#fff",
-                fontSize: "16px",
-                fontWeight: "400",
-              }}
-            >
-              {renderedCellValue}
-            </div>
-              
-              :
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 20px",
+                  background: "#F80F10",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                {renderedCellValue}
+              </div>
+            ) : (
               <div
-              style={{
-                border: "0",
-                borderRadius: "20px",
-                padding: "3px 20px",
-                background: "#31A02F",
-                color: "#fff",
-                fontSize: "16px",
-                fontWeight: "400",
-              }}
-            >
-              {renderedCellValue}
-            </div>
-            }
-           </Box>
+                style={{
+                  border: "0",
+                  borderRadius: "20px",
+                  padding: "3px 20px",
+                  background: "#31A02F",
+                  color: "#fff",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                }}
+              >
+                {renderedCellValue}
+              </div>
+            )}
+          </Box>
         ),
       },
-
     ],
     [priceValue, changeprice]
   );
-  const FinancialArray =Array.isArray(detailsList?.requests) ? [...detailsList?.requests]: [];
-//  dataFinancial
+  const FinancialArray = Array.isArray(detailsList?.requests)
+    ? [...detailsList?.requests]
+    : [];
+  //  dataFinancial
   const dataFinancial = FinancialArray.map((item, index) => {
     return {
       id: item.id,
@@ -1127,8 +1114,7 @@ const ShipmentOrder = () => {
     };
   });
 
-
-  // =============== eligible drivers =============== 
+  // =============== eligible drivers ===============
   const drivers_columns = useMemo(
     () => [
       {
@@ -1158,17 +1144,19 @@ const ShipmentOrder = () => {
             }}
           >
             <button
-            onClick={ () => assignDriver(row.original.id) }
-            style={{
-              border: "0",
-              borderRadius: "20px",
-              padding: "3px 8px",
-              background: "#0E324A",
-              color: "#fff",
-              fontSize: "16px",
-              fontWeight: "400",
-              display: `${detailsList.status === "PARTNER-ASSIGNED" ? 'initial' : 'none'}`
-            }}
+              onClick={() => assignDriver(row.original.id)}
+              style={{
+                border: "0",
+                borderRadius: "20px",
+                padding: "3px 8px",
+                background: "#0E324A",
+                color: "#fff",
+                fontSize: "16px",
+                fontWeight: "400",
+                display: `${
+                  detailsList.status === "PARTNER-ASSIGNED" ? "initial" : "none"
+                }`,
+              }}
             >
               <svg
                 width="25"
@@ -1200,44 +1188,43 @@ const ShipmentOrder = () => {
     [detailsList.status]
   );
 
-  const drivers_array = Array.isArray(detailsList?.drivers) ? [...detailsList?.drivers]: [];
+  const drivers_array = Array.isArray(detailsList?.drivers)
+    ? [...detailsList?.drivers]
+    : [];
   const drivers_data = drivers_array.map((item) => {
     return {
       id: item.id,
       name: item.user?.name,
       email: item.user?.email,
       phone: item.user?.phone,
-      options: "Assign"
+      options: "Assign",
     };
   });
 
-// files
+  // files
   const fileboxes = [];
 
   if (detailsList?.sorted_attachments) {
-
     Object.values(detailsList?.sorted_attachments).map((item, index) => {
-
       fileboxes.push(item);
     });
-
   }
-  // console.log(fileboxes, "from fileboxes");
+  // // console.log(fileboxes, "from fileboxes");
 
   const [directions, setDirections] = useState(null);
 
   return (
     <div className="container-fluid px-4 orderdetails">
-          <ToastContainer
-          position="top-right"
-          autoClose={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          theme="light"
-        />
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
       <div className="orderhead px-2">
         <div className="text-head">Shipment:{detailsList?.code}</div>
         <div className="img-head mb-3">
@@ -1261,12 +1248,16 @@ const ShipmentOrder = () => {
             <span className="info-text text-center">Status</span>
             <button className="btn-info">{detailsList?.status_i18n}</button>
           </div>
-          {
-            user_type == 'provider' && detailsList?.status === 'READY' &&
+          {user_type == "provider" && detailsList?.status === "READY" && (
             <div className="info-box col-12 text-center">
-              <button className="btn btn-success mt-5" onClick={(e) => sendInterest(e, detailsList?.id)}>I'm Interested!</button>
+              <button
+                className="btn btn-success mt-5"
+                onClick={(e) => sendInterest(e, detailsList?.id)}
+              >
+                I'm Interested!
+              </button>
             </div>
-          }
+          )}
         </div>
       </div>
       <hr />
@@ -1538,13 +1529,20 @@ const ShipmentOrder = () => {
               <div className="element-info">Pickup Time</div>
             </div>
             <div className="text-element  d-flex">
-
-              <h4 className="p-0">{moment(detailsList.order?.pickup_from_time, "HH:mm:ss").format("h:mm a")} - </h4> 
-              <h4 className="p-0 mx-2">{moment(detailsList.order?.pickup_to_time, "HH:mm:ss").format("h:mm a") }</h4> 
-
+              <h4 className="p-0">
+                {moment(detailsList.order?.pickup_from_time, "HH:mm:ss").format(
+                  "h:mm a"
+                )}{" "}
+                -{" "}
+              </h4>
+              <h4 className="p-0 mx-2">
+                {moment(detailsList.order?.pickup_to_time, "HH:mm:ss").format(
+                  "h:mm a"
+                )}
+              </h4>
             </div>
           </div>
-          
+
           <div className="element-box col-2 br-element">
             <div className="head-element">
               <svg
@@ -1679,11 +1677,16 @@ const ShipmentOrder = () => {
                 />
               </svg>
 
-              
-              <div className="element-info">{user_type == 'provider' ? 'Price' : 'Shipping cost'}</div>
+              <div className="element-info">
+                {user_type == "provider" ? "Price" : "Shipping cost"}
+              </div>
             </div>
             <div className="text-element text-center">
-              <h4>{user_type == 'provider' ? detailsList?.provider_price : detailsList?.cost}</h4>
+              <h4>
+                {user_type == "provider"
+                  ? detailsList?.provider_price
+                  : detailsList?.cost}
+              </h4>
             </div>
           </div>
           <div className="element-box col-2 br-element">
@@ -1938,149 +1941,159 @@ const ShipmentOrder = () => {
               <div className="element-info">Dropoff time:</div>
             </div>
             <div className="text-element d-flex">
-            <h4 className="p-0">{moment(detailsList.order?.dropoff_from_time, "HH:mm:ss").format("h:mm a")}  - </h4> 
-              <h4 className="p-0 mx-2">{moment(detailsList.order?.dropoff_to_time, "HH:mm:ss").format("h:mm a") }</h4> 
-
+              <h4 className="p-0">
+                {moment(
+                  detailsList.order?.dropoff_from_time,
+                  "HH:mm:ss"
+                ).format("h:mm a")}{" "}
+                -{" "}
+              </h4>
+              <h4 className="p-0 mx-2">
+                {moment(detailsList.order?.dropoff_to_time, "HH:mm:ss").format(
+                  "h:mm a"
+                )}
+              </h4>
             </div>
           </div>
         </div>
       </div>
       <hr />
       {/* maping-section */}
-      {detailsList.latitude && detailsList.longitude &&
-      <div className="row mapsection px-4 py-2">
-        <div className="col-md-6">
-          <div className="headingdetails">
-            <h2 className="my-2">Live Tracking</h2>
-            <p className="my-2">Shipment number</p>
-            <div className="info-box d-flex justify-content-between mt-3">
-              <div className="info">
-                <h5 className="my-3">{detailsList?.code}</h5>
-                <span className="mt-4">{detailsList.shipment_type?.name}</span>
+      {detailsList.latitude && detailsList.longitude && (
+        <div className="row mapsection px-4 py-2">
+          <div className="col-md-6">
+            <div className="headingdetails">
+              <h2 className="my-2">Live Tracking</h2>
+              <p className="my-2">Shipment number</p>
+              <div className="info-box d-flex justify-content-between mt-3">
+                <div className="info">
+                  <h5 className="my-3">{detailsList?.code}</h5>
+                  <span className="mt-4">
+                    {detailsList.shipment_type?.name}
+                  </span>
+                </div>
+                <div className="icon">
+                  <MarkerTruck />
+                </div>
               </div>
-              <div className="icon">
-                <MarkerTruck />
-              </div>
             </div>
-          </div>
-          <hr />
-          {/* details-more */}
-          <div className="locations py-3">
-            <div className="source d-flex my-2 align-items-center ">
-              <svg
-                width="69"
-                height="69"
-                viewBox="0 0 69 69"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="34.5" cy="34.5" r="34.5" fill="#E8F9EE" />
-                <circle cx="34.5" cy="34.5" r="12.5" fill="#0EBC93" />
-              </svg>
-              <p className="mx-4">{detailsList.from_city?.name} ,</p>
-              <p>{detailsList.order?.from_address?.address} </p>
-
-            </div>
-            <div className="source d-flex my-2 align-items-center">
-              <svg
-                width="70"
-                height="69"
-                viewBox="0 0 70 69"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="35.1234" cy="34.3422" r="34.139" fill="#E5E5FE" />
-                <path
-                  d="M50.6118 27.9638C48.7251 19.6626 41.4841 15.9253 35.1234 15.9253C35.1234 15.9253 35.1234 15.9253 35.1055 15.9253C28.7628 15.9253 21.5038 19.6447 19.6171 27.9458C17.5149 37.2173 23.1927 45.0692 28.3316 50.0104C30.2362 51.8432 32.6798 52.7595 35.1234 52.7595C37.5671 52.7595 40.0107 51.8432 41.8973 50.0104C47.0362 45.0692 52.714 37.2352 50.6118 27.9638ZM35.1234 36.9657C31.997 36.9657 29.4635 34.4322 29.4635 31.3058C29.4635 28.1794 31.997 25.6459 35.1234 25.6459C38.2499 25.6459 40.7833 28.1794 40.7833 31.3058C40.7833 34.4322 38.2499 36.9657 35.1234 36.9657Z"
-                  fill="#5251FA"
-                />
-              </svg>
-
-              <p className="mx-4">{detailsList.to_city?.name} ,</p>
-              <p>{detailsList.order?.to_address?.address}</p>
-
-            </div>
-          </div>
-          {/* drivers-name */}
-          {detailsList?.driver ===null? 
-            ""
-          :
-            <>
             <hr />
-              <div className="drivers py-3 d-flex align-items-center justify-content-between">
-                <div className="source d-flex my-2 align-items-center">
-                  <div className="img-driver">
-                    <img src={Driverimg} alt="img" />
-                  </div>
-                  <div>
-                    <p className="mx-4 my-2">Driver’s name</p>
-                    <span className="mx-4">{detailsList?.driver?.user}</span>
-                  </div>
-                </div>
-                <div className="icon-call mx-4">
-                  +2 011756376
-                  <svg
-                    width="34"
-                    height="34"
-                    viewBox="0 0 34 34"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z"
-                      fill="#244664"
-                    />
-                  </svg>
-                </div>
+            {/* details-more */}
+            <div className="locations py-3">
+              <div className="source d-flex my-2 align-items-center ">
+                <svg
+                  width="69"
+                  height="69"
+                  viewBox="0 0 69 69"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="34.5" cy="34.5" r="34.5" fill="#E8F9EE" />
+                  <circle cx="34.5" cy="34.5" r="12.5" fill="#0EBC93" />
+                </svg>
+                <p className="mx-4">{detailsList.from_city?.name} ,</p>
+                <p>{detailsList.order?.from_address?.address} </p>
               </div>
-            </>
-          }
+              <div className="source d-flex my-2 align-items-center">
+                <svg
+                  width="70"
+                  height="69"
+                  viewBox="0 0 70 69"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="35.1234" cy="34.3422" r="34.139" fill="#E5E5FE" />
+                  <path
+                    d="M50.6118 27.9638C48.7251 19.6626 41.4841 15.9253 35.1234 15.9253C35.1234 15.9253 35.1234 15.9253 35.1055 15.9253C28.7628 15.9253 21.5038 19.6447 19.6171 27.9458C17.5149 37.2173 23.1927 45.0692 28.3316 50.0104C30.2362 51.8432 32.6798 52.7595 35.1234 52.7595C37.5671 52.7595 40.0107 51.8432 41.8973 50.0104C47.0362 45.0692 52.714 37.2352 50.6118 27.9638ZM35.1234 36.9657C31.997 36.9657 29.4635 34.4322 29.4635 31.3058C29.4635 28.1794 31.997 25.6459 35.1234 25.6459C38.2499 25.6459 40.7833 28.1794 40.7833 31.3058C40.7833 34.4322 38.2499 36.9657 35.1234 36.9657Z"
+                    fill="#5251FA"
+                  />
+                </svg>
 
-        </div>
-        <div className="col-md-6 pt-3">
-          <div className="mapbox">
-            {/* =============================== */}
+                <p className="mx-4">{detailsList.to_city?.name} ,</p>
+                <p>{detailsList.order?.to_address?.address}</p>
+              </div>
+            </div>
+            {/* drivers-name */}
+            {detailsList?.driver === null ? (
+              ""
+            ) : (
+              <>
+                <hr />
+                <div className="drivers py-3 d-flex align-items-center justify-content-between">
+                  <div className="source d-flex my-2 align-items-center">
+                    <div className="img-driver">
+                      <img src={Driverimg} alt="img" />
+                    </div>
+                    <div>
+                      <p className="mx-4 my-2">Driver’s name</p>
+                      <span className="mx-4">{detailsList?.driver?.user}</span>
+                    </div>
+                  </div>
+                  <div className="icon-call mx-4">
+                    +2 011756376
+                    <svg
+                      width="34"
+                      height="34"
+                      viewBox="0 0 34 34"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.3999 5.0999C3.3999 4.16102 4.16102 3.3999 5.0999 3.3999H8.75979C9.59081 3.3999 10.3 4.0007 10.4367 4.82042L11.6935 12.3614C11.8162 13.0976 11.4444 13.8277 10.7769 14.1614L8.14504 15.4773C10.0428 20.193 13.8068 23.9571 18.5225 25.8548L19.8384 23.2229C20.1721 22.5554 20.9022 22.1836 21.6384 22.3063L29.1794 23.5631C29.9991 23.6998 30.5999 24.409 30.5999 25.24V28.8999C30.5999 29.8388 29.8388 30.5999 28.8999 30.5999H25.4999C13.2944 30.5999 3.3999 20.7054 3.3999 8.4999V5.0999Z"
+                        fill="#244664"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="col-md-6 pt-3">
+            <div className="mapbox">
+              {/* =============================== */}
 
-            <LoadScript googleMapsApiKey="AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ">
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
-              >
-                <MarkerF
-                  position={center}
-                  icon={icon}
-                  // options={{
-                  //   icon:<MarkerTruck/>
-                  // }}
-                />
-                   {directions && <DirectionsRenderer directions={directions} />}
-                    <DirectionsService
-                        options={{
-                          origin:{lat:origin.lat , lng:origin.lng},
-                          destination:{lat:destination.lat , lng:destination.lng},
-                          travelMode: "DRIVING",
-                        }}
-                        callback={(result) => {
-                          if (result !== null && !directions) {
-                              setDirections(result);
-                          }
-                        }}
-                    />
-
-              </GoogleMap>
-            </LoadScript>
+              <LoadScript googleMapsApiKey="AIzaSyAWSZTkq_zSRoeMhO-f54XgB2VMkKSlOrQ">
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={center}
+                  zoom={10}
+                >
+                  <MarkerF
+                    position={center}
+                    icon={icon}
+                    // options={{
+                    //   icon:<MarkerTruck/>
+                    // }}
+                  />
+                  {directions && <DirectionsRenderer directions={directions} />}
+                  <DirectionsService
+                    options={{
+                      origin: { lat: origin.lat, lng: origin.lng },
+                      destination: {
+                        lat: destination.lat,
+                        lng: destination.lng,
+                      },
+                      travelMode: "DRIVING",
+                    }}
+                    callback={(result) => {
+                      if (result !== null && !directions) {
+                        setDirections(result);
+                      }
+                    }}
+                  />
+                </GoogleMap>
+              </LoadScript>
+            </div>
           </div>
         </div>
-      </div>
-      }
+      )}
       {/* test */}
 
       <div className="p-2">
         {fileboxes.map((filetab, index) => {
-          // console.log(filetab,"here");
+          // // console.log(filetab,"here");
           return filetab.map((fileitem, indexitem) => {
-            // console.log(fileitem,"here");
+            // // console.log(fileitem,"here");
             return (
               // <div className="d-flex">
               <div className="filesbox">
@@ -2091,112 +2104,98 @@ const ShipmentOrder = () => {
                     :
                     <h5 className="head">Other Documntes</h5>
                   } */}
-                  {indexitem === 0 && fileitem.label.replace(/_/g,' ').toUpperCase()}
-                  </div>
-                {
-                  indexitem===filetab.lenght ? 
-                  <div className="row">
-                  <div className="card-order col-md-3 d-flex  align-items-center">
-                    <img src={FileIcon} alt="img" style={{width: "25px"}}/>
-                    <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
-                      file {indexitem+1}
-                    </a>
-                  </div>
+                  {indexitem === 0 &&
+                    fileitem.label.replace(/_/g, " ").toUpperCase()}
                 </div>
-                  
-                  :
+                {indexitem === filetab.lenght ? (
                   <div className="row">
-                  <div className="card-order col-md-2 d-flex align-items-center">
-                    <img src={FileIcon} alt="img" style={{width: "25px"}}/>
-                    <a href={fileitem.path} className="card-title text-center" target="_blank" style={{color:"#244664" ,fontSize: "20px",fontWeight: "500"}}>
-                      file {indexitem+1}
-                    </a>
+                    <div className="card-order col-md-3 d-flex  align-items-center">
+                      <img src={FileIcon} alt="img" style={{ width: "25px" }} />
+                      <a
+                        href={fileitem.path}
+                        className="card-title text-center"
+                        target="_blank"
+                        style={{
+                          color: "#244664",
+                          fontSize: "20px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        file {indexitem + 1}
+                      </a>
+                    </div>
                   </div>
-                </div>
-                }
-
-              </div> 
+                ) : (
+                  <div className="row">
+                    <div className="card-order col-md-2 d-flex align-items-center">
+                      <img src={FileIcon} alt="img" style={{ width: "25px" }} />
+                      <a
+                        href={fileitem.path}
+                        className="card-title text-center"
+                        target="_blank"
+                        style={{
+                          color: "#244664",
+                          fontSize: "20px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        file {indexitem + 1}
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           });
         })}
       </div>
 
       {/* tables============interested1===Service provide */}
-      { user_type == 'admin' &&
-      <>
-      <div className="orderhead px-2">
-        <div className="text-head">Interested Service providers</div>
-        <div
-          className="backhuling"
-          style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
-        >
-          <div className="orange me-3"></div>Backhuling
-        </div>
-      </div>
-      <MaterialReactTable
-        columns={columnsServiceProvide}
-        data={dataservices}
-        positionPagination="top"
-
-        enableRowSelection
-        positionToolbarAlertBanner="top"
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              p: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          ></Box>
-        )}
-      />
-      {/* interested2-no-actions */}
-      <div className="orderhead px-2">
-        <div className="text-head">Eligible Service providers</div>
-        <div
-          className="backhuling"
-          style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
-        >
-          <div className="orange me-3"></div>Backhuling
-        </div>
-      </div>
-      <MaterialReactTable
-        columns={columnsServiceProvide2}
-        // data={dataservices2}
-        data={dataservicesnoaction}
-        // dataservices2
-        positionPagination="top"
-
-        enableRowSelection
-        positionToolbarAlertBanner="top"
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              p: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          ></Box>
-        )}
-      />
-      </>
-      }
-
-      {/* Eligible Drivers */}
-      {
-        user_type === "provider" && detailsList.provider &&
+      {user_type == "admin" && (
         <>
           <div className="orderhead px-2">
-            <div className="text-head">Eligible Drivers</div>
+            <div className="text-head">Interested Service providers</div>
+            <div
+              className="backhuling"
+              style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
+            >
+              <div className="orange me-3"></div>Backhuling
+            </div>
           </div>
           <MaterialReactTable
-            columns={drivers_columns}
-            data={drivers_data}
-            enableRowSelection
+            columns={columnsServiceProvide}
+            data={dataservices}
             positionPagination="top"
-
+            enableRowSelection
+            positionToolbarAlertBanner="top"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              ></Box>
+            )}
+          />
+          {/* interested2-no-actions */}
+          <div className="orderhead px-2">
+            <div className="text-head">Eligible Service providers</div>
+            <div
+              className="backhuling"
+              style={{ fontSize: "18px", fontWeight: "700", color: "#0E324A" }}
+            >
+              <div className="orange me-3"></div>Backhuling
+            </div>
+          </div>
+          <MaterialReactTable
+            columns={columnsServiceProvide2}
+            // data={dataservices2}
+            data={dataservicesnoaction}
+            // dataservices2
+            positionPagination="top"
+            enableRowSelection
             positionToolbarAlertBanner="top"
             renderTopToolbarCustomActions={({ table }) => (
               <Box
@@ -2210,24 +2209,47 @@ const ShipmentOrder = () => {
             )}
           />
         </>
-      }
+      )}
+
+      {/* Eligible Drivers */}
+      {user_type === "provider" && detailsList.provider && (
+        <>
+          <div className="orderhead px-2">
+            <div className="text-head">Eligible Drivers</div>
+          </div>
+          <MaterialReactTable
+            columns={drivers_columns}
+            data={drivers_data}
+            enableRowSelection
+            positionPagination="top"
+            positionToolbarAlertBanner="top"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              ></Box>
+            )}
+          />
+        </>
+      )}
 
       {/* Financial Service provide=table-request */}
-      {
-        user_type==="shipper"? 
+      {user_type === "shipper" ? (
         ""
-        :
+      ) : (
         <>
-            <div className="orderhead px-2">
+          <div className="orderhead px-2">
             <div className="text-head">Financial requests</div>
-
           </div>
           <MaterialReactTable
             columns={columnsEligible}
             // data={dataEligible}
             positionPagination="top"
             data={dataFinancial}
-
             // dataFinancial
             enableRowSelection
             positionToolbarAlertBanner="top"
@@ -2243,25 +2265,19 @@ const ShipmentOrder = () => {
             )}
           />
         </>
-
-      }
+      )}
 
       {/* alrt */}
-                    <Snackbar
-                          open={open}
-                          autoHideDuration={5000}
-                          onClose={handleClose}
-                          anchorOrigin={{ vertical, horizontal }}
-                        >
-                          <Alert
-                            onClose={handleClose}
-                            severity="success"
-                            sx={{ width: "100%" }}
-                          >
-                            Assign successfully!
-                          </Alert>
-                      </Snackbar>
-
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical, horizontal }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Assign successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

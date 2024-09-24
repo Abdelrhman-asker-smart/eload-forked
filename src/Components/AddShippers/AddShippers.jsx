@@ -90,7 +90,7 @@ const AddShippers = () => {
     const { error } = schema.validate(formDataObject, { abortEarly: false });
 
     if (error) {
-      console.log("errorrrr", error.details);
+      // console.log("errorrrr", error.details);
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -98,9 +98,9 @@ const AddShippers = () => {
       setErrors(newErrors);
       setLoading(false);
       setTargetElement(error.details[0].context.label);
-      // console.log(error.details[0].context.label);
+      // // console.log(error.details[0].context.label);
     } else {
-      console.log("Validation succeeded");
+      // console.log("Validation succeeded");
       setLoading(true);
       setErrors({});
 
@@ -143,7 +143,7 @@ const AddShippers = () => {
         );
 
         // setName("");
-        console.log("DoneAdddddddddddd");
+        // console.log("DoneAdddddddddddd");
         showNotification();
         navigate(`/allshippers`);
       } catch (e) {
@@ -165,7 +165,7 @@ const AddShippers = () => {
           cancelButtonText: "ok",
           timer: 8000,
         });
-        console.log(e);
+        // console.log(e);
       }
     }
   };

@@ -17,7 +17,7 @@ const Addadmin = () => {
   const [password, setPass] = useState("");
 
   const [cookie] = useCookies(["eload_token"]);
-  // console.log(name, "name");
+  // // console.log(name, "name");
   // const urlencoded = new URLSearchParams();
   // urlencoded.append("name", name);
   // urlencoded.append("email", email);
@@ -41,7 +41,7 @@ const Addadmin = () => {
   const Joi = require("joi");
   const recordAdmins = async (e) => {
     e.preventDefault();
-    console.log("save triggered");
+    // console.log("save triggered");
 
     setLoading(true);
     const schema = Joi.object({
@@ -61,8 +61,8 @@ const Addadmin = () => {
 
     if (error) {
       setTargetElement(error.details[0].context.label);
-      console.log(error);
-      console.log("errorrrr", error.details);
+      // console.log(error);
+      // console.log("errorrrr", error.details);
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -70,7 +70,7 @@ const Addadmin = () => {
       setErrors(newErrors);
       setLoading(false);
     } else {
-      console.log("Validation succeeded");
+      // console.log("Validation succeeded");
       setLoading(true);
       setErrors({});
 
@@ -99,7 +99,7 @@ const Addadmin = () => {
         showNotification();
         navigate(`/all-admins`);
 
-        //   console.log(reponse);
+        //   // console.log(reponse);
       } catch (e) {
         setLoading(false);
 
@@ -113,7 +113,7 @@ const Addadmin = () => {
           cancelButtonText: "ok",
           timer: 8000,
         });
-        console.log(e);
+        // console.log(e);
       }
     }
   };

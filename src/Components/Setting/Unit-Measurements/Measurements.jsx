@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
@@ -13,7 +13,7 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUOMList } from "../../../redux/UOMlist";
 
-import "./Measurements.css"
+import "./Measurements.css";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
@@ -67,7 +67,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -80,7 +80,6 @@ const RemoveModal = ({ handelItemRemove, id }) => {
     </div>
   );
 };
-
 
 // btn
 const ButtonEdit = ({ id, setRemoveableId }) => (
@@ -143,7 +142,6 @@ const columns = [
   },
 ];
 
-
 const csvOptions = {
   fieldSeparator: ",",
   quoteStrings: '"',
@@ -172,17 +170,15 @@ const Measurements = () => {
   });
 
   useEffect(() => {
-
     dispatch(fetchUOMList({ token: cookie.eload_token }))
-    .then((res) => {
-      console.log(res, "response from api");
-      const data = res.payload.data;
-      setMeasurmentList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
+      .then((res) => {
+        // console.log(res, "response from api");
+        const data = res.payload.data;
+        setMeasurmentList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
 
     // const allMeasurment = async () => {
     //   try {
@@ -199,70 +195,84 @@ const Measurements = () => {
     //     );
 
     //     const data = response.data.data;
-    //     // console.log(data);
+    //     // // console.log(data);
     //     setMeasurmentList(data);
     //     return data;
     //   } catch (e) {
-    //     console.log(e);
+    //     // console.log(e);
     //   }
     // };
 
     // allMeasurment();
   }, [reload]);
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
 
-    // remove-item
-    const handelItemRemove = async (id) => {
-      try {
-        const response = await axios.delete(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          `https://dev.eload.smart.sa/api/v1/uom/${id}`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-  
-        const data = response.data;
-        console.log(response);
-        if (data.is_success && data.status_code === 200) {
-          setReload(!reload);
-        } else {
-          console.log("error");
+  // remove-item
+  const handelItemRemove = async (id) => {
+    try {
+      const response = await axios.delete(
+        // https://dev.eload.smart.sa/api/v1/categories
+        // `${process.env.REACT_BASE_URL}/categories`,
+        `https://dev.eload.smart.sa/api/v1/uom/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
         }
-        return data;
-      } catch (e) {
-        console.log(e);
+      );
+
+      const data = response.data;
+      // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // console.log("error");
       }
+      return data;
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
     };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
-    <div className='measurements'>
-        <div className="container-fluid px-5 py-5">
-          <div className="head-input container-fluid mb-4">
-              <div className="box-left">
-                  <div className="head-text">
-                      <h2>Unit Measurement List</h2>
-                  </div>
-              </div>
+    <div className="measurements">
+      <div className="container-fluid px-5 py-5">
+        <div className="head-input container-fluid mb-4">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>Unit Measurement List</h2>
+            </div>
           </div>
-          {/* table */}
+        </div>
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -274,7 +284,7 @@ const Measurements = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -316,6 +326,17 @@ const Measurements = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
@@ -323,9 +344,9 @@ const Measurements = () => {
 
         {/* modal */}
         <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Measurements
+export default Measurements;

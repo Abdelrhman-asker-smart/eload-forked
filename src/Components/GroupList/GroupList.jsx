@@ -17,7 +17,6 @@ import "../GroupList/GroupList.css";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
- 
   return (
     <div
       className="modal fade"
@@ -68,7 +67,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -82,12 +81,11 @@ const RemoveModal = ({ handelItemRemove, id }) => {
   );
 };
 // btns-action
-const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
+const ButtonEdit = ({ id, setRemoveableId, idshipper }) => (
   // const { idshipper } = useParams();
-    
 
   <div className="w-100">
-        <NavLink to={`/Shipments/addresslist/${id}/shipper/${idshipper}`}>
+    <NavLink to={`/Shipments/addresslist/${id}/shipper/${idshipper}`}>
       <button
         className="btn-table active"
         style={{
@@ -117,7 +115,6 @@ const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
           color: "#fff",
           backgroundColor: "#0b2339",
         }}
-
       >
         <EditIcon className="mx-1" />
         EDIT
@@ -182,16 +179,24 @@ const GroupList = () => {
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
   const { id } = useParams();
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
-  // console.log(idshipper,"shipperid");
+  // // console.log(idshipper,"shipperid");
 
   const data = groupList.map((item, index) => {
     return {
       id: item.id,
       name: item.name,
-      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={user_type == 'admin' ? id : user_type_data.id} />,
+      btns: (
+        <ButtonEdit
+          setRemoveableId={setRemoveableId}
+          id={item.id}
+          idshipper={user_type == "admin" ? id : user_type_data.id}
+        />
+      ),
     };
   });
   useEffect(() => {
@@ -202,7 +207,9 @@ const GroupList = () => {
           // https://dev.eload.smart.sa/api/v1/categories
           // `${process.env.REACT_BASE_URL}/categories`,
 
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? id : user_type_data.id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${
+            user_type == "admin" ? id : user_type_data.id
+          }`,
           {
             headers: {
               Accept: "application/json",
@@ -215,53 +222,68 @@ const GroupList = () => {
         );
 
         const data = response.data.data;
-        // console.log(data);
+        // // console.log(data);
         setGroupList(data);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
     allGroup();
   }, [reload]);
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
-    // remove-item
-    const handelItemRemove = async (id) => {
-      try {
-        const response = await axios.delete(
-          // https://dev.eload.smart.sa/api/v1/categories
-          // `${process.env.REACT_BASE_URL}/categories`,
-          `https://dev.eload.smart.sa/api/v1/groups/${id}`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${cookie.eload_token}`,
-              "api-key":
-                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-            },
-          }
-        );
-  
-        const data = response.data;
-        console.log(response);
-        if (data.is_success && data.status_code === 200) {
-          setReload(!reload);
-        } else {
-          console.log("error");
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  // remove-item
+  const handelItemRemove = async (id) => {
+    try {
+      const response = await axios.delete(
+        // https://dev.eload.smart.sa/api/v1/categories
+        // `${process.env.REACT_BASE_URL}/categories`,
+        `https://dev.eload.smart.sa/api/v1/groups/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
         }
-        return data;
-      } catch (e) {
-        console.log(e);
+      );
+
+      const data = response.data;
+      // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // console.log("error");
       }
-    };  
+      return data;
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div className="group-list">
       <header className="partner-head px-3">
@@ -272,22 +294,24 @@ const GroupList = () => {
             </div>
           </div>
           <div className="box-right">
-            <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? id : user_type_data.id}`}>
-            <button className="btn-partner">
-              <i className="fa-solid fa-plus me-3"></i>Add new group
-            </button>
+            <NavLink
+              to={`/Shipments/addnewgroup/${
+                user_type == "admin" ? id : user_type_data.id
+              }`}
+            >
+              <button className="btn-partner">
+                <i className="fa-solid fa-plus me-3"></i>Add new group
+              </button>
             </NavLink>
           </div>
         </div>
       </header>
-      <div  className="px-3">
-              {/* table */}
-              <MaterialReactTable
-             
+      <div className="px-3">
+        {/* table */}
+        <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -299,7 +323,7 @@ const GroupList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -341,14 +365,23 @@ const GroupList = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-        </div>
-        {/* modal */}
-        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
-
+      </div>
+      {/* modal */}
+      <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
     </div>
   );
 };

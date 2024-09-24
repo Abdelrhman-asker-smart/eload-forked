@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -18,232 +18,253 @@ import "./addressList.css";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
- 
-    return (
-      <div
-        className="modal fade"
-        id="exampleModalToggle"
-        aria-hidden="true"
-        aria-labelledby="exampleModalToggleLabel"
-        tabIndex="-1"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content" style={{ borderRadius: "25px" }}>
-            <div className="modal-body  text-center my-5 ">
-              <p
-                className="my-4 mx-4"
-                style={{ fontSize: "27px", fontWeight: "500" }}
+  return (
+    <div
+      className="modal fade"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabIndex="-1"
+    >
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content" style={{ borderRadius: "25px" }}>
+          <div className="modal-body  text-center my-5 ">
+            <p
+              className="my-4 mx-4"
+              style={{ fontSize: "27px", fontWeight: "500" }}
+            >
+              Are you sure to Remove this Item ?
+            </p>
+            <div className="btns-box d-flex justify-content-center">
+              <button
+                className="btn-table active"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                style={{
+                  textAlign: "center",
+                  padding: "1% 3%",
+                  border: "1px solid #0e324a",
+                  borderRadius: "20px",
+                  marginRight: "4%",
+                  color: "#fff",
+                  backgroundColor: "#0b2339",
+                }}
               >
-                Are you sure to Remove this Item ?
-              </p>
-              <div className="btns-box d-flex justify-content-center">
-                <button
-                  className="btn-table active"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  style={{
-                    textAlign: "center",
-                    padding: "1% 3%",
-                    border: "1px solid #0e324a",
-                    borderRadius: "20px",
-                    marginRight: "4%",
-                    color: "#fff",
-                    backgroundColor: "#0b2339",
-                  }}
-                >
-                  {" "}
-                  close{" "}
-                </button>
-                <button
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  className="btn-table active"
-                  style={{
-                    textAlign: "center",
-                    padding: "1% 3%",
-                    border: "1px solid #0e324a",
-                    borderRadius: "20px",
-                    marginRight: "4%",
-                    color: "#fff",
-                    backgroundColor: "#0b2339",
-                  }}
-                  onClick={() => {
-                    handelItemRemove(id);
-                    // console.log(id, "id");
-                  }}
-                >
-                  {" "}
-                  Remove{" "}
-                </button>
-              </div>
+                {" "}
+                close{" "}
+              </button>
+              <button
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                className="btn-table active"
+                style={{
+                  textAlign: "center",
+                  padding: "1% 3%",
+                  border: "1px solid #0e324a",
+                  borderRadius: "20px",
+                  marginRight: "4%",
+                  color: "#fff",
+                  backgroundColor: "#0b2339",
+                }}
+                onClick={() => {
+                  handelItemRemove(id);
+                  // // console.log(id, "id");
+                }}
+              >
+                {" "}
+                Remove{" "}
+              </button>
             </div>
           </div>
         </div>
       </div>
-    );
-  };
-  // btns-action
-  const ButtonEdit = ({ id, setRemoveableId ,idshipper }) => (
-    // const { idshipper } = useParams();
-    <div className="w-100">
-      <NavLink to={`/Shipments/editAddress/${id}/shipper/${idshipper}`}>
-        <button
-          className="btn-table active"
-          style={{
-            textAlign: "center",
-            padding: "1% 3%",
-            border: "1px solid #0e324a",
-            borderRadius: "20px",
-            marginRight: "4%",
-            color: "#fff",
-            backgroundColor: "#0b2339",
-          }}
-  
-        >
-          <EditIcon className="mx-1" />
-          EDIT
-        </button>
-      </NavLink>
-  
+    </div>
+  );
+};
+// btns-action
+const ButtonEdit = ({ id, setRemoveableId, idshipper }) => (
+  // const { idshipper } = useParams();
+  <div className="w-100">
+    <NavLink to={`/Shipments/editAddress/${id}/shipper/${idshipper}`}>
       <button
-        className="btn-table"
-        data-bs-toggle="modal"
-        href="#exampleModalToggle"
+        className="btn-table active"
         style={{
           textAlign: "center",
           padding: "1% 3%",
           border: "1px solid #0e324a",
           borderRadius: "20px",
           marginRight: "4%",
-          color: "#0b2339",
-          backgroundColor: "transparent",
+          color: "#fff",
+          backgroundColor: "#0b2339",
         }}
-        onClick={() => setRemoveableId(id)}
       >
-        <DeleteIcon className="mx-1" />
-        REMOVE
+        <EditIcon className="mx-1" />
+        EDIT
       </button>
-    </div>
-  );
-  
-  const columns = [
-    {
-      accessorKey: "id",
-      header: "ID",
-      size: 40,
-    },
-    {
-      accessorKey: "name",
-      header: "Name",
-      size: 300,
-    },
-  
-    {
-      accessorKey: "btns",
-      header: "Edit / Remove",
-      size: 220,
-    },
-  ];
-  
-  const csvOptions = {
-    fieldSeparator: ",",
-    quoteStrings: '"',
-    decimalSeparator: ".",
-    showLabels: true,
-    useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
-  };
-  
-  const csvExporter = new ExportToCsv(csvOptions);
+    </NavLink>
+
+    <button
+      className="btn-table"
+      data-bs-toggle="modal"
+      href="#exampleModalToggle"
+      style={{
+        textAlign: "center",
+        padding: "1% 3%",
+        border: "1px solid #0e324a",
+        borderRadius: "20px",
+        marginRight: "4%",
+        color: "#0b2339",
+        backgroundColor: "transparent",
+      }}
+      onClick={() => setRemoveableId(id)}
+    >
+      <DeleteIcon className="mx-1" />
+      REMOVE
+    </button>
+  </div>
+);
+
+const columns = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    size: 40,
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+    size: 300,
+  },
+
+  {
+    accessorKey: "btns",
+    header: "Edit / Remove",
+    size: 220,
+  },
+];
+
+const csvOptions = {
+  fieldSeparator: ",",
+  quoteStrings: '"',
+  decimalSeparator: ".",
+  showLabels: true,
+  useBom: true,
+  useKeysAsHeaders: false,
+  headers: columns.map((c) => c.header),
+};
+
+const csvExporter = new ExportToCsv(csvOptions);
 
 const AddressList = () => {
-    const [addressList, setAddressList] = useState([]);
-    const [removeableId, setRemoveableId] = useState(null);
-    const [reload, setReload] = useState(false);
-    const [cookie] = useCookies(["eload_token"]);
-    const { id , idshipper} = useParams();
-    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
-  
-    // console.log(idshipper,"shipperid");
-  
-    const data = addressList.map((item, index) => {
-      return {
-        id: item.id,
-        name: item.name,
-        btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idshipper={idshipper} />,
-      };
-    });
+  const [addressList, setAddressList] = useState([]);
+  const [removeableId, setRemoveableId] = useState(null);
+  const [reload, setReload] = useState(false);
+  const [cookie] = useCookies(["eload_token"]);
+  const { id, idshipper } = useParams();
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
-    useEffect(() => {
-        const allAddress = async () => {
-          // setCookie("eload_token", data.data.token.access);
-          try {
-            const response = await axios.get(
-              // https://dev.eload.smart.sa/api/v1/categories
-              // `${process.env.REACT_BASE_URL}/categories`,
-    
-              `https://dev.eload.smart.sa/api/v1/groups/${id}`,
-              {
-                headers: {
-                  Accept: "application/json",
-                  Authorization: `Bearer ${cookie.eload_token}`,
-    
-                  "api-key":
-                    "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                },
-              }
-            );
-    
-            const data = response.data.data;
-            console.log(data);
-            setAddressList(data.addresses);
-            return data;
-          } catch (e) {
-            console.log(e);
+  // // console.log(idshipper,"shipperid");
+
+  const data = addressList.map((item, index) => {
+    return {
+      id: item.id,
+      name: item.name,
+      btns: (
+        <ButtonEdit
+          setRemoveableId={setRemoveableId}
+          id={item.id}
+          idshipper={idshipper}
+        />
+      ),
+    };
+  });
+
+  useEffect(() => {
+    const allAddress = async () => {
+      // setCookie("eload_token", data.data.token.access);
+      try {
+        const response = await axios.get(
+          // https://dev.eload.smart.sa/api/v1/categories
+          // `${process.env.REACT_BASE_URL}/categories`,
+
+          `https://dev.eload.smart.sa/api/v1/groups/${id}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
           }
-        };
-    
-        allAddress();
-      }, [reload]);
-    
-      const handleExportRows = (rows) => {
-        csvExporter.generateCsv(rows.map((row) => row.original));
-      };
-    
-      const handleExportData = () => {
-        csvExporter.generateCsv(data);
-      };
-        // remove-item
-        const handelItemRemove = async (id) => {
-          try {
-            const response = await axios.delete(
-              // https://dev.eload.smart.sa/api/v1/categories
-              // `${process.env.REACT_BASE_URL}/categories`,
-              `https://dev.eload.smart.sa/api/v1/addresses/${id}`,
-              {
-                headers: {
-                  Accept: "application/json",
-                  Authorization: `Bearer ${cookie.eload_token}`,
-                  "api-key":
-                    "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                },
-              }
-            );
-      
-            const data = response.data;
-            console.log(response);
-            if (data.is_success && data.status_code === 200) {
-              setReload(!reload);
-            } else {
-              console.log("error");
-            }
-            return data;
-          } catch (e) {
-            console.log(e);
-          }
-        };  
+        );
+
+        const data = response.data.data;
+        // // console.log(data);
+        setAddressList(data.addresses);
+        return data;
+      } catch (e) {
+        // console.log(e);
+      }
+    };
+
+    allAddress();
+  }, [reload]);
+
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  // remove-item
+  const handelItemRemove = async (id) => {
+    try {
+      const response = await axios.delete(
+        // https://dev.eload.smart.sa/api/v1/categories
+        // `${process.env.REACT_BASE_URL}/categories`,
+        `https://dev.eload.smart.sa/api/v1/addresses/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data;
+      // // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // // console.log("error");
+      }
+      return data;
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div className="address-list">
       <header className="partner-head px-3">
@@ -255,18 +276,21 @@ const AddressList = () => {
           </div>
           <div className="box-right">
             {/* idshipper */}
-            <NavLink to={`/Shipments/addAddress/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
-            <button className="btn-partner">
-              <i className="fa-solid fa-plus me-3"></i>Add new Address
-            </button>
+            <NavLink
+              to={`/Shipments/addAddress/${
+                user_type == "admin" ? idshipper : user_type_data.id
+              }`}
+            >
+              <button className="btn-partner">
+                <i className="fa-solid fa-plus me-3"></i>Add new Address
+              </button>
             </NavLink>
           </div>
         </div>
       </header>
-      <div  className="px-3">
-              {/* table */}
-              <MaterialReactTable
-             
+      <div className="px-3">
+        {/* table */}
+        <MaterialReactTable
           columns={columns}
           data={data}
           enableRowSelection
@@ -281,7 +305,7 @@ const AddressList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -323,16 +347,25 @@ const AddressList = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-        </div>
-        {/* modal */}
-        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
-
+      </div>
+      {/* modal */}
+      <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
     </div>
-  )
-}
+  );
+};
 
-export default AddressList
+export default AddressList;

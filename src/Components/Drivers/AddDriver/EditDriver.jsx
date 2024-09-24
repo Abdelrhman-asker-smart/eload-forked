@@ -1,25 +1,22 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import Select from 'react-select';
+import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
-import  {ReactComponent as Dateicon} from '../../../icons/date-icon.svg';
-import  {ReactComponent as Vector} from '../../../icons/Vector.svg';
-import AccountForm from '../../Common/AccountForm';
+import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
+import { ReactComponent as Vector } from "../../../icons/Vector.svg";
+import AccountForm from "../../Common/AccountForm";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  EditDriverFunction,
-} from "../../../redux/Drivers/Editdriver";
+import { EditDriverFunction } from "../../../redux/Drivers/Editdriver";
 
-import './AddDriver.css';
-
+import "./AddDriver.css";
 
 const EditDriver = () => {
   // const { list, status } = useSelector((state) => state.DriverList);
@@ -28,7 +25,7 @@ const EditDriver = () => {
   const [startDate, setStartDate] = useState();
 
   const dispatch = useDispatch();
-  const [cities, setCities] = useState([]); 
+  const [cities, setCities] = useState([]);
   const [groupsTruckOptions, setGroupsTruckOptions] = useState([]);
   const [groupsShipmentOptions, setGroupsShipmentOptions] = useState([]);
 
@@ -40,7 +37,6 @@ const EditDriver = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
-
 
   // States================================
   const [name, setName] = useState("");
@@ -83,15 +79,14 @@ const EditDriver = () => {
       </div>
     );
 
-    toast(<Msg /> ,{autoClose: 3000});
+    toast(<Msg />, { autoClose: 3000 });
   };
 
   useEffect(() => {
-    console.log(id,"id-----");
+    // console.log(id,"id-----");
     const driverFetch = async (id) => {
       try {
         const response = await axios.get(
-  
           `https://dev.eload.smart.sa/api/v1/providers/${id}`,
           {
             headers: {
@@ -102,40 +97,40 @@ const EditDriver = () => {
             },
           }
         );
-  
-        const data = response.data.data;
-        console.log(data,"driverfromAPiiiiiiiiiiii");
 
-      setName(data.name);
-      setEmail(data.user.email);
-      setProfileimg(data.user.avatar);
-    //   {
-    //     password!="" &&(
-    //         formdata.append("password", password)
-    //     )
-    // }
-      // setPassword(item.password);
-      // setOwnerName(data.driver.ownerName);=======================
-      setOwnerPhone(data.user.phone);
-      setOwnerNID(data.user.national_id);
-      setIdCope(data.driver.id_copy);
-      setDrivingLincese(data.driver.driving_license_number);
-      setDrivingLincese_Cope(data.driver.driving_license_copy);
-      setLinceseId(data.driver.license_id);
-      setExpirydate(data.driver.expiry_date);
-      setNationality(data.driver.nationality_id);
-      setSponsorName(data.driver.sponsor_establishment_name);
-      setSponsorNumber(data.driver.sponsor_establishment_number );
-      setTruckModel(data.driver.truck.model);
-      settruckPlateNumber(data.driver.truck.plate_number );
-      setChassisNumber(data.driver.truck.chassis_number);
-      setTruckLinceseNumber(data.driver.truck.license_number);
-      setTruckLinceseCope(data.driver.truck.license_copy);
-      setTruckType(data.driver.truck.truck_type_id);
-      setAccount(data.user.account);
+        const data = response.data.data;
+        // console.log(data,"driverfromAPiiiiiiiiiiii");
+
+        setName(data.name);
+        setEmail(data.user.email);
+        setProfileimg(data.user.avatar);
+        //   {
+        //     password!="" &&(
+        //         formdata.append("password", password)
+        //     )
+        // }
+        // setPassword(item.password);
+        // setOwnerName(data.driver.ownerName);=======================
+        setOwnerPhone(data.user.phone);
+        setOwnerNID(data.user.national_id);
+        setIdCope(data.driver.id_copy);
+        setDrivingLincese(data.driver.driving_license_number);
+        setDrivingLincese_Cope(data.driver.driving_license_copy);
+        setLinceseId(data.driver.license_id);
+        setExpirydate(data.driver.expiry_date);
+        setNationality(data.driver.nationality_id);
+        setSponsorName(data.driver.sponsor_establishment_name);
+        setSponsorNumber(data.driver.sponsor_establishment_number);
+        setTruckModel(data.driver.truck.model);
+        settruckPlateNumber(data.driver.truck.plate_number);
+        setChassisNumber(data.driver.truck.chassis_number);
+        setTruckLinceseNumber(data.driver.truck.license_number);
+        setTruckLinceseCope(data.driver.truck.license_copy);
+        setTruckType(data.driver.truck.truck_type_id);
+        setAccount(data.user.account);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     // country
@@ -158,10 +153,10 @@ const EditDriver = () => {
         const data = response.data.data;
 
         setCountryList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     // truck
@@ -192,7 +187,7 @@ const EditDriver = () => {
 
         setGroupsTruckOptions(groupsTruckOptionsData);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     driverFetch(id);
@@ -203,7 +198,7 @@ const EditDriver = () => {
   // useEffect(() => {
   //   const finddriver = () => {
   //     let item = list.find((item, _) => item.id == id);
-  //     console.log(item);
+  //     // console.log(item);
 
   //     setName(item.name);
   //     setEmail(item.email);
@@ -230,20 +225,17 @@ const EditDriver = () => {
   //   };
   //   finddriver();
   // }, []);
-  
-  const edit = () => {
 
+  const edit = () => {
     const formdata = new FormData();
-    formdata.append("_method", 'put');
+    formdata.append("_method", "put");
 
     formdata.append("name", name);
     formdata.append("type", "freelancer");
     formdata.append("email", email);
     formdata.append("avatar", profileimg);
     {
-      password!="" &&(
-          formdata.append("password", password)
-      )
+      password != "" && formdata.append("password", password);
     }
     // formdata.append("password", password);
     // owner
@@ -282,19 +274,19 @@ const EditDriver = () => {
       })
     )
       .then((res) => {
-        // console.log(res);
+        // // console.log(res);
         showNotification();
-      navigate(`/driver`);
+        navigate(`/driver`);
 
         // alert('Successfully Saved!');
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
-    // select-fetch
-      // Api-fetch-Country================
+  // select-fetch
+  // Api-fetch-Country================
   // useEffect(() => {
   //   const Countrylist = async () => {
   //     try {
@@ -315,10 +307,10 @@ const EditDriver = () => {
   //       const data = response.data.data;
 
   //       setCountryList(data);
-  //       // console.log(data, "datacountry");
+  //       // // console.log(data, "datacountry");
   //       return data;
   //     } catch (e) {
-  //       console.log(e);
+  //       // console.log(e);
   //     }
   //   };
   //   Countrylist();
@@ -344,15 +336,15 @@ const EditDriver = () => {
   //       const data = response.data.data;
 
   //       setTruckList(data);
-  //       // console.log(data, "datacountry");
+  //       // // console.log(data, "datacountry");
   //       return data;
   //     } catch (e) {
-  //       console.log(e);
+  //       // console.log(e);
   //     }
   //   };
   //   Trucklist();
   // }, []);
-  
+
   // options_Country
   const GroupsCountryOptions = countryList.map((item, index) => ({
     label: item.name,
@@ -364,9 +356,9 @@ const EditDriver = () => {
     value: item.id,
   }));
   return (
-    <div className='container-fluid adddriver p-5'>
-     <h3>DRIVER INFORMATION</h3>
-     <form>
+    <div className="container-fluid adddriver p-5">
+      <h3>DRIVER INFORMATION</h3>
+      <form>
         {/* name+email */}
         <div className="row my-4">
           <div className="col-md-6">
@@ -583,29 +575,30 @@ const EditDriver = () => {
           <div className="col-md-4">
             <label className="my-2 d-block">Nationality</label>
             {/* Country-select */}
-            {
-            GroupsCountryOptions.length > 0 &&
-            // conver id "1" to 1 in the data
-            <Select
-              classNamePrefix="select"
-              className="basic-multi-select"
-              // isMulti
-              isDisabled={isDisabled}
-              // value={nationality}
-              required
-              isLoading={isLoading}
-              isClearable={isClearable}
-              options={GroupsCountryOptions}
-              isRtl={isRtl}
-              isSearchable={isSearchable}
-              defaultValue={GroupsCountryOptions.find(({ value }) => value == nationality)}
-              // onChange={(choice) => setTruckType(choice.value)}
-              name="color"
-              onChange={(choice) => {
-                setNationality(choice.value);
-              }}
-            />
-            }
+            {GroupsCountryOptions.length > 0 && (
+              // conver id "1" to 1 in the data
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select"
+                // isMulti
+                isDisabled={isDisabled}
+                // value={nationality}
+                required
+                isLoading={isLoading}
+                isClearable={isClearable}
+                options={GroupsCountryOptions}
+                isRtl={isRtl}
+                isSearchable={isSearchable}
+                defaultValue={GroupsCountryOptions.find(
+                  ({ value }) => value == nationality
+                )}
+                // onChange={(choice) => setTruckType(choice.value)}
+                name="color"
+                onChange={(choice) => {
+                  setNationality(choice.value);
+                }}
+              />
+            )}
           </div>
         </div>
         {/* line-3 */}
@@ -725,42 +718,39 @@ const EditDriver = () => {
           </div>
           <div className="col-md-4">
             <label className="my-2 d-block">Truck Type</label>
-            {
-            groupsTruckOptions.length > 0 && TruckType &&
-            <Select
-              classNamePrefix="select"
-              className="basic-multi-select"
-              // isMulti
-              isDisabled={isDisabled}
-              isLoading={isLoading}
-              required
-              isClearable={isClearable}
-              isRtl={isRtl}
-              isSearchable={isSearchable}
-              name="color"
-              options={GroupsTruckOptions}
-              defaultValue={GroupsTruckOptions.find(({ value }) => value === TruckType)}
-              onChange={(choice) => setTruckType(choice.value)}
-            />
-            }
+            {groupsTruckOptions.length > 0 && TruckType && (
+              <Select
+                classNamePrefix="select"
+                className="basic-multi-select"
+                // isMulti
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                required
+                isClearable={isClearable}
+                isRtl={isRtl}
+                isSearchable={isSearchable}
+                name="color"
+                options={GroupsTruckOptions}
+                defaultValue={GroupsTruckOptions.find(
+                  ({ value }) => value === TruckType
+                )}
+                onChange={(choice) => setTruckType(choice.value)}
+              />
+            )}
           </div>
         </div>
         <hr className="my-5" />
-        {
-          Object.keys(account).length > 0 &&
+        {Object.keys(account).length > 0 && (
           <AccountForm account={account} setAccount={setAccount} />
-        }
+        )}
         {/* <NavLink to="/driver"> */}
-        <button type="button" className="btn-save my-3"
-          onClick={edit}
-        >
+        <button type="button" className="btn-save my-3" onClick={edit}>
           SAVE
         </button>
         {/* </NavLink> */}
       </form>
     </div>
-    
-  )
-}
+  );
+};
 
-export default EditDriver
+export default EditDriver;

@@ -3,15 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import { useParams } from "react-router-dom";
 // import { Provider, useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  categoryEditReducer,
-  editUOM,
-} from "../../../redux//EditUOMslice";
+import { categoryEditReducer, editUOM } from "../../../redux//EditUOMslice";
 import "./EditMeasurement.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +21,7 @@ const EditMeasurements = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
-  // console.log(id, "id");
+  // // console.log(id, "id");
 
   const showNotification = () => {
     let Msg = ({ closeToast, toastProps }) => (
@@ -38,16 +35,16 @@ const EditMeasurements = () => {
   useEffect(() => {
     const findName = () => {
       let item = list.find((item, _) => item.id == id);
-      // console.log(item);
+      // // console.log(item);
       setName(item.name);
     };
     findName();
   }, []);
 
   const edit = () => {
-    // console.log(name, "name");
-    // console.log(cookie.eload_token, "token");
-    // console.log(id, "id");
+    // // console.log(name, "name");
+    // // console.log(cookie.eload_token, "token");
+    // // console.log(id, "id");
 
     var urlencoded = new URLSearchParams();
     urlencoded.append("name", name);
@@ -60,22 +57,22 @@ const EditMeasurements = () => {
       })
     )
       .then((res) => {
-        // console.log(res);
+        // // console.log(res);
         showNotification();
         navigate(`/measurements`);
       })
       .catch((e) => {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
-        console.log(e);
+        });
+        // console.log(e);
       });
   };
   return (
@@ -135,17 +132,17 @@ const EditMeasurements = () => {
             >
               <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/measurements">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

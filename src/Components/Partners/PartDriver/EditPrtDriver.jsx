@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 // import Select from "react-select";
 import { useParams } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
@@ -23,68 +23,63 @@ import "./PartDriverList";
 const EditPrtDriver = () => {
   const navigate = useNavigate();
 
-    const [startDate, setStartDate] = useState();
-    const { id } = useParams();
+  const [startDate, setStartDate] = useState();
+  const { id } = useParams();
   const dispatch = useDispatch();
 
-    const [cookie] = useCookies(["eload_token"]);
+  const [cookie] = useCookies(["eload_token"]);
 
-    const showNotificationUser = () => {
-      let Msg = ({ closeToast, toastProps }) => (
-        <div>
-          <h4>Success updating User Data</h4>
-        </div>
-      )
-      toast(<Msg /> ,{autoClose: 3000});
-    };
-    const showNotification = () => {
-      let Msg = ({ closeToast, toastProps }) => (
-        <div>
-          <h4>Success</h4>
-        </div>
-      )
-      toast(<Msg /> ,{autoClose: 3000});
-    };
-  
-    // select-options
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
-  
-  
-    // States================================
-    const [Provider_ID, setProvider_ID] = useState();
-    const [user_ID, setUser_ID] = useState();
+  const showNotificationUser = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success updating User Data</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
+  const showNotification = () => {
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+    toast(<Msg />, { autoClose: 3000 });
+  };
 
+  // select-options
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [profileimg, setProfileimg] = useState("");
-    const [password, setPassword] = useState("");
-    // ==============
-    // const [ownerName, setOwnerName] = useState("");
-    const [ownerPhone, setOwnerPhone] = useState("");
-    const [ownerNID, setOwnerNID] = useState("");
-    // =============
-    const [idCope, setIdCope] = useState("");
-    const [drivingLincese, setDrivingLincese] = useState("");
-    const [drivingLincese_Cope, setDrivingLincese_Cope] = useState();
-    const [LinceseId, setLinceseId] = useState("");
-    const [expirydate, setExpirydate] = useState("");
-      //===========
+  // States================================
+  const [Provider_ID, setProvider_ID] = useState();
+  const [user_ID, setUser_ID] = useState();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profileimg, setProfileimg] = useState("");
+  const [password, setPassword] = useState("");
+  // ==============
+  // const [ownerName, setOwnerName] = useState("");
+  const [ownerPhone, setOwnerPhone] = useState("");
+  const [ownerNID, setOwnerNID] = useState("");
+  // =============
+  const [idCope, setIdCope] = useState("");
+  const [drivingLincese, setDrivingLincese] = useState("");
+  const [drivingLincese_Cope, setDrivingLincese_Cope] = useState();
+  const [LinceseId, setLinceseId] = useState("");
+  const [expirydate, setExpirydate] = useState("");
+  //===========
   const [sponsorName, setSponsorName] = useState("");
   const [sponsorNumber, setSponsorNumber] = useState("");
 
-
-
   useEffect(() => {
-    console.log(id,"id-----");
+    // console.log(id,"id-----");
     const DriverFetch = async (id) => {
       try {
         const response = await axios.get(
-  
           `https://dev.eload.smart.sa/api/v1/drivers/${id}`,
           {
             headers: {
@@ -95,9 +90,9 @@ const EditPrtDriver = () => {
             },
           }
         );
-  
+
         const data = response.data.data;
-        console.log(data,"driverfromAPiiiiiiiiiiii");
+        // console.log(data,"driverfromAPiiiiiiiiiiii");
         // setItem(data);
         setProvider_ID(data.provider.id);
         setUser_ID(data.user.id);
@@ -115,24 +110,22 @@ const EditPrtDriver = () => {
         setSponsorName(data.sponsor_establishment_name);
         setSponsorNumber(data.sponsor_establishment_number);
 
-
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
     DriverFetch(id);
-
   }, []);
-  // console.log(name ,"nametst");
-  // console.log(user_ID,"user_ID");
+  // // console.log(name ,"nametst");
+  // // console.log(user_ID,"user_ID");
 
   // pass editing user data
-    
-  const edit = async() => {
+
+  const edit = async () => {
     const formdata = new FormData();
-  
+
     formdata.append("name", name);
     formdata.append("type", "partner");
     formdata.append("email", email);
@@ -163,59 +156,57 @@ const EditPrtDriver = () => {
         }
       );
       const data = await response.data;
-      console.log(response, "response");
+      // console.log(response, "response");
       showNotification();
       navigate(`/Partners`);
       return data;
     } catch (e) {
-      console.log("eee");
+      // console.log("eee");
       console.error("Full error object:", e);
       console.error("Error response:", e.response);
-  
+
       let errorMessage = "An error occurred";
-  
+
       if (e.response && e.response.data) {
-        console.log("Error data:", e.response.data);
-  
+        // console.log("Error data:", e.response.data);
+
         if (e.response.data.message) {
           errorMessage = e.response.data.message;
         }
-  
+
         if (e.response.data.errors && Array.isArray(e.response.data.errors)) {
           errorMessage += "<br><br>";
           errorMessage += "<ul>";
-          e.response.data.errors.forEach(error => {
+          e.response.data.errors.forEach((error) => {
             errorMessage += `<span>${error.field}: ${error.message}</span>`;
           });
           errorMessage += "</ul>";
         }
       }
-  
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        html: errorMessage,
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#0e4579',
-      });
-  
-      console.log(e, "e");
-    }
-  
 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        html: errorMessage,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#0e4579",
+      });
+
+      // console.log(e, "e");
+    }
   };
   return (
     <div className="container-fluid adddriver p-5">
-    <ToastContainer
-      position="top-right"
-      autoClose={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      theme="light"
-    />
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
       <h3>DRIVER INFORMATION</h3>
       <form>
         {/* name+email */}
@@ -314,14 +305,12 @@ const EditPrtDriver = () => {
                 setOwnerNID(e.target.value);
               }}
             />
-
           </div>
           {/* <button type="button" className="btn-save my-3"
           onClick={UserDtaedit}
         >
           SAVE User Data
         </button> */}
-
         </div>
         {/* line-1 */}
         {/* <hr className="my-5" /> */}
@@ -475,15 +464,13 @@ const EditPrtDriver = () => {
           </div>
         </div>
         {/* <NavLink to="/driver"> */}
-        <button type="button" className="btn-save my-3"
-          onClick={edit}
-        >
+        <button type="button" className="btn-save my-3" onClick={edit}>
           SAVE
         </button>
         {/* </NavLink> */}
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditPrtDriver
+export default EditPrtDriver;

@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -14,16 +14,16 @@ import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { EditpartnerFunction } from "../../redux/Partner/EditPartner";
-import CompanyForm from '../Common/CompanyForm';
-import AccountForm from '../Common/AccountForm';
+import CompanyForm from "../Common/CompanyForm";
+import AccountForm from "../Common/AccountForm";
 import "./Addpartners.css";
 
 const Editpartners = () => {
-    const navigate = useNavigate();
-    const { partner, setPartner } = useState({});
-    const dispatch = useDispatch();
-    const { id } = useParams();
-    const [cookie] = useCookies(["eload_token"]);
+  const navigate = useNavigate();
+  const { partner, setPartner } = useState({});
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [cookie] = useCookies(["eload_token"]);
   const showNotification = () => {
     // e.preventDefault();
 
@@ -33,10 +33,9 @@ const Editpartners = () => {
       </div>
     );
 
-    toast(<Msg /> ,{autoClose: 3000});
+    toast(<Msg />, { autoClose: 3000 });
     // readNotification(notification.id);
   };
-
 
   // States================================
   const [name, setName] = useState("");
@@ -51,11 +50,10 @@ const Editpartners = () => {
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    console.log(id,"id-----");
+    // // console.log(id,"id-----");
     const partnerFetch = async (id) => {
       try {
         const response = await axios.get(
-  
           `https://dev.eload.smart.sa/api/v1/providers/${id}`,
           {
             headers: {
@@ -66,9 +64,9 @@ const Editpartners = () => {
             },
           }
         );
-  
+
         const data = response.data.data;
-        console.log(data,"partnerfromAPiiiiiiiiiiii");
+        // // console.log(data,"partnerfromAPiiiiiiiiiiii");
 
         setName(data.name);
         setEmail(data.user.email);
@@ -81,25 +79,21 @@ const Editpartners = () => {
         setAccount(data.user.account);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     partnerFetch(id);
-
   }, []);
   const edit = () => {
-
     const formdata = new FormData();
 
-    formdata.append("_method", 'put');
+    formdata.append("_method", "put");
     formdata.append("name", name);
     formdata.append("type", "partner");
     formdata.append("email", email);
-        // check not string empty
+    // check not string empty
     {
-        password!="" &&(
-            formdata.append("password", password)
-        )
+      password != "" && formdata.append("password", password);
     }
     formdata.append("avatar", profileimg);
     // owner
@@ -115,9 +109,9 @@ const Editpartners = () => {
       formdata.append(`account[${key}]`, account[key]);
     }
 
-    // console.log("editDone");
+    // // console.log("editDone");
     dispatch(
-        EditpartnerFunction({
+      EditpartnerFunction({
         token: cookie.eload_token,
         id,
         formdata,
@@ -126,17 +120,15 @@ const Editpartners = () => {
       .then((res) => {
         showNotification();
         navigate(`/Partners`);
-        // console.log(res);
+        // // console.log(res);
         // alert('Successfully Saved!');
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
-
   // Api-post==========================
-
 
   return (
     <div className="container-fluid addpartners p-5">
@@ -149,10 +141,9 @@ const Editpartners = () => {
         pauseOnFocusLoss
         draggable
         theme="light"
-
       />
       <h3>PARTNER INFORMATION</h3>
-      <form >
+      <form>
         {/* name+email */}
         <div className="row my-4">
           <div className="col-md-6">
@@ -271,14 +262,11 @@ const Editpartners = () => {
         <hr className="my-5" />
         <CompanyForm company={company} setCompany={setCompany} />
         <hr className="my-5" />
-        {
-          Object.keys(account).length > 0 &&
+        {Object.keys(account).length > 0 && (
           <AccountForm account={account} setAccount={setAccount} />
-        }
+        )}
         {/* line-2 */}
-        <button type="button" className="btn-save my-3"
-           onClick={edit}
-        >
+        <button type="button" className="btn-save my-3" onClick={edit}>
           SAVE
         </button>
       </form>

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 export const checkTokenExpiryDate = ({ cookie }) => {
-  //   console.log(cookie);
+  //   // console.log(cookie);
   const newFunction = (token) => {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");

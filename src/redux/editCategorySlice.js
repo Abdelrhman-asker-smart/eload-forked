@@ -5,9 +5,9 @@ import axios from "axios";
 export const editCategory = createAsyncThunk(
   "category/editCategory",
   async ({ token, id, urlencoded }) => {
-    console.log(token, "from reducer");
-    console.log(id, "id from reducer");
-    console.log(urlencoded, "urlencoded from reducer");
+    // console.log(token, "from reducer");
+    // console.log(id, "id from reducer");
+    // console.log(urlencoded, "urlencoded from reducer");
     try {
       const response = await axios.put(
         `https://dev.eload.smart.sa/api/v1/categories/${id}`,
@@ -22,10 +22,10 @@ export const editCategory = createAsyncThunk(
         }
       );
       const data = await response.data;
-      console.log(response, "response");
+      // console.log(response, "response");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );
@@ -55,7 +55,7 @@ export const editCategory = createAsyncThunk(
 //       state.status = false;
 //       // state.table = action.payload.data.products;
 //       state.table = action.payload;
-//       console.log(action, "action");
+//       // console.log(action, "action");
 //       // state.tableContainer = action.payload.list;
 //       // state.table = action.data.list.length > 0 ? action.data.list : [];
 //     },

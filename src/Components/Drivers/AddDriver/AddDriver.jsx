@@ -81,14 +81,14 @@ const AddDriver = () => {
   // Error List
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
-  console.log(errors, " errors");
-  // console.log(TruckType);
+  // console.log(errors, " errors");
+  // // console.log(TruckType);
   // Api-post==========================
   const Joi = require("joi");
   const [targetElement, setTargetElement] = useState("");
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
-    console.log(element);
+    // console.log(element);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
       element.focus();
@@ -140,7 +140,7 @@ const AddDriver = () => {
     const { error } = schema.validate(formDataObject, { abortEarly: false });
 
     if (error) {
-      console.log("errorrrr", error.details);
+      // console.log("errorrrr", error.details);
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -148,7 +148,7 @@ const AddDriver = () => {
       setErrors(newErrors);
       setTargetElement(error.details[0].context.label);
     } else {
-      console.log("Validation succeeded");
+      // console.log("Validation succeeded");
       setLoading(true);
       setErrors({});
 
@@ -215,7 +215,7 @@ const AddDriver = () => {
           timer: 8000,
         });
         setLoading(false);
-        console.log(e.response.data.errors);
+        // console.log(e.response.data.errors);
       }
     }
   };
@@ -241,10 +241,10 @@ const AddDriver = () => {
         const data = response.data.data;
 
         setCountryList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     Countrylist();
@@ -270,10 +270,10 @@ const AddDriver = () => {
         const data = response.data.data;
 
         setTruckList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     Trucklist();

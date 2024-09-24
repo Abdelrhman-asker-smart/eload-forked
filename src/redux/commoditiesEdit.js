@@ -5,9 +5,9 @@ import axios from "axios";
 export const editcommodities = createAsyncThunk(
   "commodities/editcommodities",
   async ({ token, id, urlencoded }) => {
-    console.log(token, "from reducer");
-    console.log(id, "id from reducer");
-    console.log(urlencoded, "urlencoded from reducer");
+    // console.log(token, "from reducer");
+    // console.log(id, "id from reducer");
+    // console.log(urlencoded, "urlencoded from reducer");
     try {
       const response = await axios.put(
         `https://dev.eload.smart.sa/api/v1/commodities/${id}`,
@@ -22,10 +22,10 @@ export const editcommodities = createAsyncThunk(
         }
       );
       const data = await response.data;
-      console.log(response, "response");
+      // console.log(response, "response");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );

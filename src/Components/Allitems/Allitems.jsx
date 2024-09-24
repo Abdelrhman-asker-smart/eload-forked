@@ -9,7 +9,6 @@ import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
 import { ReactComponent as View } from "../../icons/eye.svg";
 import { useParams } from "react-router-dom";
 
-
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
 import { fetchitemsList } from "../../redux/Items/ItemsList";
@@ -28,8 +27,10 @@ import "./Allitems.css";
 
 const Allitems = () => {
   const dispatch = useDispatch();
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
   const { id } = useParams();
 
   const RemoveModal = ({ handelItemRemove, id }) => {
@@ -83,7 +84,7 @@ const Allitems = () => {
                   }}
                   onClick={() => {
                     handelItemRemove(id);
-                    console.log(id, "id");
+                    // console.log(id, "id");
                   }}
                 >
                   {" "}
@@ -96,11 +97,10 @@ const Allitems = () => {
       </div>
     );
   };
-  
+
   // btns-action
   const ButtonEdit = ({ id, setRemoveableId }) => (
     <div className="w-100">
-  
       <NavLink to={`/edititem/${id}`}>
         <button
           className="btn-table active"
@@ -117,8 +117,8 @@ const Allitems = () => {
           <EditIcon className="mx-1" />
           EDIT
         </button>
-        </NavLink>
-        <button
+      </NavLink>
+      <button
         className="btn-table"
         data-bs-toggle="modal"
         href="#exampleModalToggle"
@@ -150,7 +150,7 @@ const Allitems = () => {
       header: "Destination",
       size: 60,
     },
-  
+
     {
       accessorKey: "trucktype",
       header: "Truck type",
@@ -165,17 +165,17 @@ const Allitems = () => {
       accessorKey: "price",
       header: "Price",
       size: 60,
-    }
+    },
   ];
 
-  if (user_type == 'admin') {
+  if (user_type == "admin") {
     columns.push({
       accessorKey: "btns",
       header: "Edit / Remove",
       size: 120,
     });
   }
-  
+
   const csvOptions = {
     fieldSeparator: ",",
     quoteStrings: '"',
@@ -185,7 +185,7 @@ const Allitems = () => {
     useKeysAsHeaders: false,
     headers: columns.map((c) => c.header),
   };
-  
+
   const csvExporter = new ExportToCsv(csvOptions);
 
   const [itemsList, setItemsList] = useState([]);
@@ -203,11 +203,10 @@ const Allitems = () => {
     };
   });
   useEffect(() => {
-    console.log(id,"id-----");
+    // console.log(id, "id-----");
     const ItemsFetch = async (id) => {
       try {
         const response = await axios.get(
-  
           `https://dev.eload.smart.sa/api/v1/contracts/${id}`,
           {
             headers: {
@@ -218,32 +217,29 @@ const Allitems = () => {
             },
           }
         );
-  
+
         const data = response.data.data.items;
-        console.log(data);
+        // console.log(data);
         setItemsList(data);
         // if (data.is_success && data.status_code === 200) {
         //   setReload(!reload);
         // } else {
-        //   console.log("error");
+        //   // console.log("error");
         // }
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
-    ItemsFetch(user_type == 'admin' ? id : user_type_data.id);
-
+    ItemsFetch(user_type == "admin" ? id : user_type_data.id);
   }, [reload]);
 
-
   const handelItemRemove = async (id) => {
-    console.log(id,"re----------");
-    
+    // console.log(id, "re----------");
+
     try {
       const response = await axios.delete(
-
         `https://dev.eload.smart.sa/api/v1/contract_items/${id}`,
         {
           headers: {
@@ -256,26 +252,41 @@ const Allitems = () => {
       );
 
       const data = response.data;
-      console.log("remove");
+      // console.log("remove");
 
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // }
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
   return (
     <div>
@@ -285,10 +296,9 @@ const Allitems = () => {
             <div className="head-text">
               <h2>All Items</h2>
             </div>
-            <br/>
+            <br />
           </div>
-          {
-            user_type == 'admin' &&
+          {user_type == "admin" && (
             <div className="box-right">
               {/* item[0]contract_id */}
               <NavLink to={`/iteminfo/${id}`}>
@@ -297,30 +307,28 @@ const Allitems = () => {
                 </button>
               </NavLink>
             </div>
-          }
-
+          )}
         </div>
       </header>
       <div className="Items container-fluid px-4">
         <div className="Items-table">
           {/* table */}
           <MaterialReactTable
-          columns={columns}
-          data={data}
-          positionPagination="top"
-
-          enableRowSelection
-          positionToolbarAlertBanner="top"
-          renderTopToolbarCustomActions={({ table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                gap: "1rem",
-                p: "0.5rem",
-                flexWrap: "wrap",
-              }}
-            >
-              <Button
+            columns={columns}
+            data={data}
+            positionPagination="top"
+            enableRowSelection
+            positionToolbarAlertBanner="top"
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -362,13 +370,23 @@ const Allitems = () => {
                 variant="contained"
               >
                 Export Selected Rows
-              </Button>
-            </Box>
-          )}
-        />
+              </Button> */}
+                <Button
+                  style={{ marginBottom: "-50px" }}
+                  startIcon={<FileDownloadIcon />}
+                  variant="contained"
+                  onClick={() =>
+                    handleExportRows(table.getSelectedRowModel().rows)
+                  }
+                >
+                  Export Selected Rows
+                </Button>
+              </Box>
+            )}
+          />
 
-        {/* modal */}
-        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+          {/* modal */}
+          <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
         </div>
       </div>
     </div>

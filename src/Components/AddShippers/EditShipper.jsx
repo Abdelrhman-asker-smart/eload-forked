@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,8 +14,8 @@ import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { EditshipperFunction } from "../../redux/Shipper/EditShipper";
-import CompanyForm from '../Common/CompanyForm';
-import AccountForm from '../Common/AccountForm';
+import CompanyForm from "../Common/CompanyForm";
+import AccountForm from "../Common/AccountForm";
 import "./AddShippers.css";
 
 const EditShipper = () => {
@@ -33,7 +33,7 @@ const EditShipper = () => {
       </div>
     );
 
-    toast(<Msg /> ,{autoClose: 3000});
+    toast(<Msg />, { autoClose: 3000 });
 
     // readNotification(notification.id);
   };
@@ -50,12 +50,12 @@ const EditShipper = () => {
   // follow
   const [followupName, setFollowupName] = useState("");
   const [followupnumber, setFollowupNumber] = useState("");
-//   const [contacted, setContacted] = useState("");
+  //   const [contacted, setContacted] = useState("");
   const [company, setCompany] = useState({});
   const [account, setAccount] = useState({});
 
   useEffect(() => {
-    console.log(id, "id-----");
+    // console.log(id, "id-----");
     const shipperFetch = async (id) => {
       try {
         const response = await axios.get(
@@ -71,7 +71,7 @@ const EditShipper = () => {
         );
 
         const data = response.data.data;
-        console.log(data, "shipperfromAPiiiiiiiiiiii");
+        // console.log(data, "shipperfromAPiiiiiiiiiiii");
 
         setName(data.name);
         setEmail(data?.user?.email);
@@ -86,14 +86,14 @@ const EditShipper = () => {
 
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     shipperFetch(id);
   }, []);
   const edit = () => {
     const formdata = new FormData();
-    formdata.append("_method", 'put');
+    formdata.append("_method", "put");
     formdata.append("name", name);
     formdata.append("email", email);
     formdata.append("avatar", profileimg);
@@ -117,8 +117,8 @@ const EditShipper = () => {
     for (var key in account) {
       formdata.append(`account[${key}]`, account[key]);
     }
-    
-    console.log("editDone");
+
+    // console.log("editDone");
     dispatch(
       EditshipperFunction({
         token: cookie.eload_token,
@@ -129,11 +129,11 @@ const EditShipper = () => {
       .then((res) => {
         showNotification();
         navigate(`/Partners`);
-        // console.log(res);
+        // // console.log(res);
         // alert("Successfully Saved!");
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
   return (
@@ -346,10 +346,9 @@ const EditShipper = () => {
         <hr className="my-5" />
         <CompanyForm company={company} setCompany={setCompany} />
         <hr className="my-5" />
-        {
-          Object.keys(account).length > 0 &&
+        {Object.keys(account).length > 0 && (
           <AccountForm account={account} setAccount={setAccount} />
-        }
+        )}
         {/* line-2 */}
 
         <button type="button" className="btn-save my-3" onClick={edit}>

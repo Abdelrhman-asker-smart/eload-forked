@@ -1,42 +1,40 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import DatePicker from "react-datepicker";
-import Select from 'react-select';
+import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchCityListByCountry } from "../../redux/CityListSlice";
 
-import { GoogleMap, useJsApiLoader,  MarkerF } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    EditAddressFunction,
-} from "../../redux/EditAddress.js";
+import { EditAddressFunction } from "../../redux/EditAddress.js";
 
 import "./addAddress.css";
 
-
 const EditAddress = () => {
-    const dispatch = useDispatch();
-    
-  const [cities, setCities] = useState([]); 
+  const dispatch = useDispatch();
+
+  const [cities, setCities] = useState([]);
 
   const { id, idshipper } = useParams();
   const [cookie] = useCookies(["eload_token"]);
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
   // select-options
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
-
 
   // States================================
   const intialList = {
@@ -51,8 +49,7 @@ const EditAddress = () => {
 
   const [countryList, setCountryList] = useState([]);
 
-
-// phones
+  // phones
   const [optionList, setOptionList] = useState([intialList]);
   // const [listPhone,setListPhone] =useState([]);
 
@@ -60,72 +57,66 @@ const EditAddress = () => {
   const [addOptionList, setAddOptionList] = useState([]);
   const newElement = "newvalue";
   const newArray = [...addOptionList];
-  const boxarray=[]
-
-
-
- 
+  const boxarray = [];
 
   // ========map==============
 
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
-  
-    const { isLoaded } = useJsApiLoader({
-      id: "google-map-script",
-      googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
-    });
-  
-    const mapContainerStyle = {
-      height: "500px",
-      width: "100%",
-    };
-  
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
-    const handleClick=(event)=>{
-      setLatitude(event.latLng.lat()); // set the latitude state variable
-      setLongitude(event.latLng.lng()); // set the longitude state variable
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyC8EXmnX2KsWfgzftLwhx7jhDd0lfDloU4",
+  });
+
+  const mapContainerStyle = {
+    height: "500px",
+    width: "100%",
+  };
+
+  const handleClick = (event) => {
+    setLatitude(event.latLng.lat()); // set the latitude state variable
+    setLongitude(event.latLng.lng()); // set the longitude state variable
+  };
+
+  const handleSelectedOptionsTypes = () => {
+    let selected_options = [];
+
+    // // console.log('type', type);
+
+    for (let i = 0; i < typeOptions.length; i++) {
+      if (type.indexOf(typeOptions[i].value) > -1) {
+        selected_options.push(typeOptions[i]);
+      }
     }
 
-    const handleSelectedOptionsTypes = () => {
-      let selected_options = [];
+    // // console.log('selected_options', selected_options);
 
-      console.log('type', type);
+    return selected_options;
+  };
 
-      for (let i = 0; i < typeOptions.length; i++) {
-        if (type.indexOf(typeOptions[i].value) > -1) {
-          selected_options.push(typeOptions[i]);
+  const handleSelectedOptionsCities = () => {
+    for (let i = 0; i < cities.length; i++) {
+      for (let current_city of cities[i].options) {
+        if (city == current_city.value) {
+          return current_city;
         }
       }
+    }
 
-      console.log('selected_options', selected_options);
-
-      return selected_options;
-    };
-
-    const handleSelectedOptionsCities = () => {
-      for (let i = 0; i < cities.length; i++) {
-        for (let current_city of cities[i].options) {
-          if (city == current_city.value) {
-            return current_city;
-          }
-        }
-      }
-
-      return {};
-    };
+    return {};
+  };
 
   // selct_list
   const [groupList, setGrouopList] = useState([]);
 
-  console.log(addOptionList, "addOptionList");
-// ======================fetch-Address===================================
+  // // console.log(addOptionList, "addOptionList");
+  // ======================fetch-Address===================================
   useEffect(() => {
-    console.log(id,"id-----");
+    // // console.log(id,"id-----");
     const addressFetch = async (id) => {
       try {
         const response = await axios.get(
-  
           `https://dev.eload.smart.sa/api/v1/addresses/${id}`,
           {
             headers: {
@@ -136,50 +127,45 @@ const EditAddress = () => {
             },
           }
         );
-  
+
         const data = response.data.data;
-        console.log(data,"addressfromAPiiiiiiiiiiii");
+        // // console.log(data,"addressfromAPiiiiiiiiiiii");
 
-      setGroup(data.group.id);
-      setName(data.name);
-      setCities(data.city.id);
-      setCity(data.city.id);
-      setAddress(data.address);
-      setLatitude(data.latitude);
-      setLongitude(data.longitude);
-      setType(data.type);
-      // setListPhone(data.phones);
-      for(var i=0 ; i < data.phones.length-1 ; i++){
-        boxarray.push(data.phones[i]);
-      }
-      setAddOptionList(boxarray);
-      console.log(boxarray ,"arrray");
-      console.log(data.phones.length ,"data.phones.length");
-
-
-
+        setGroup(data.group.id);
+        setName(data.name);
+        setCities(data.city.id);
+        setCity(data.city.id);
+        setAddress(data.address);
+        setLatitude(data.latitude);
+        setLongitude(data.longitude);
+        setType(data.type);
+        // setListPhone(data.phones);
+        for (var i = 0; i < data.phones.length - 1; i++) {
+          boxarray.push(data.phones[i]);
+        }
+        setAddOptionList(boxarray);
+        // // console.log(boxarray ,"arrray");
+        // // console.log(data.phones.length ,"data.phones.length");
 
         return data;
       } catch (e) {
-        console.log(e);
+        // // console.log(e);
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
+        });
       }
     };
 
     addressFetch(id);
-
   }, []);
-  console.log(addOptionList ,"listttttttttttt");
-
+  // // console.log(addOptionList ,"listttttttttttt");
 
   // Api-fetch-Country================
   useEffect(() => {
@@ -202,20 +188,20 @@ const EditAddress = () => {
         const data = response.data.data.data.states;
 
         setCountryList(data);
-        console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
-        console.log(e);
+        });
+        // // console.log(e);
       }
     };
     Countrylist();
@@ -234,27 +220,27 @@ const EditAddress = () => {
         setCities(data);
       })
       .catch((e) => {
-        console.log(e);
+        // // console.log(e);
       });
   }, []);
-// -==========map-center
+  // -==========map-center
   const [selectLat, setSelectLat] = useState("");
   const [selectLong, setSelectLong] = useState("");
-  
+
   const center = {
-    lat: Number(selectLat) ,
-    lng: Number(selectLong) ,
+    lat: Number(selectLat),
+    lng: Number(selectLong),
   };
-  console.log(center,"center");
+  // // console.log(center,"center");
   /* ==============================type-select===================== */
   const typeOptions = [
     { value: "pickup", label: "Pick up" },
     { value: "dropoff", label: "Drop off" },
   ];
-// ============================================edit-Address============================
+  // ============================================edit-Address============================
   const edit = () => {
     const urlencoded = new URLSearchParams();
-    urlencoded.append("_method", 'put');
+    urlencoded.append("_method", "put");
     urlencoded.append("addressable_type", "group");
     urlencoded.append("addressable_id", group);
     urlencoded.append("city_id", city);
@@ -267,11 +253,17 @@ const EditAddress = () => {
     // urlencoded.append("phones[0][name]", nameoption);
 
     optionList.map((itemdetails, indexdetails) => {
-      urlencoded.append(`phones[${indexdetails}][phone]`, optionList[indexdetails].phoneNumber);
-      urlencoded.append(`phones[${indexdetails}][name]`, optionList[indexdetails].nameoption);
+      urlencoded.append(
+        `phones[${indexdetails}][phone]`,
+        optionList[indexdetails].phoneNumber
+      );
+      urlencoded.append(
+        `phones[${indexdetails}][name]`,
+        optionList[indexdetails].nameoption
+      );
     });
 
-    console.log('urlencoded =>', urlencoded);
+    // // console.log('urlencoded =>', urlencoded);
 
     dispatch(
       EditAddressFunction({
@@ -281,11 +273,11 @@ const EditAddress = () => {
       })
     )
       .then((res) => {
-        console.log(res);
-        alert('Successfully Saved!');
+        // // console.log(res);
+        alert("Successfully Saved!");
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
@@ -294,7 +286,9 @@ const EditAddress = () => {
     const Grouplist = async (id) => {
       try {
         const response = await axios.get(
-          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${user_type == 'admin' ? idshipper : user_type_data.id}`,
+          `https://dev.eload.smart.sa/api/v1/groups?shipper_id=${
+            user_type == "admin" ? idshipper : user_type_data.id
+          }`,
 
           {
             headers: {
@@ -310,10 +304,10 @@ const EditAddress = () => {
         const data = response.data.data;
 
         setGrouopList(data);
-        console.log(data, "datagroup");
+        // // console.log(data, "datagroup");
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     Grouplist(id);
@@ -326,7 +320,7 @@ const EditAddress = () => {
 
   return (
     <div>
-      <form >
+      <form>
         <div className="container-fluid p-5 addaddressstyel">
           <div className="head-address">
             <h2 className="text-head">Add new Address</h2>
@@ -336,36 +330,45 @@ const EditAddress = () => {
                   <div className="input-select col-6">
                     <div className="input-select-info">
                       <p className="head-text">Choose Group</p>
-                      <NavLink to={`/Shipments/grouplist/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
+                      <NavLink
+                        to={`/Shipments/grouplist/${
+                          user_type == "admin" ? idshipper : user_type_data.id
+                        }`}
+                      >
                         <button>
                           <a href="/#">View All</a>
                         </button>
                       </NavLink>
                     </div>
                     {/* choose-group */}
-                    {
-                     GroupsCountryOptions.length > 0 && group &&
-                    <Select
-                      classNamePrefix="select"
-                      className="basic-multi-select"
-                      // isMulti
-                      isDisabled={isDisabled}
-                      isLoading={isLoading}
-                      isClearable={isClearable}
-                      isRtl={isRtl}
-                      required
-                      defaultValue={GroupsCountryOptions.find(({ value }) => value == group)}
-                      isSearchable={isSearchable}
-                      name="color"
-                      options={GroupsCountryOptions}
-                      onChange={(choice) => {
-                        setGroup(choice.value);
-                      }}
-                    />
-                    }   
+                    {GroupsCountryOptions.length > 0 && group && (
+                      <Select
+                        classNamePrefix="select"
+                        className="basic-multi-select"
+                        // isMulti
+                        isDisabled={isDisabled}
+                        isLoading={isLoading}
+                        isClearable={isClearable}
+                        isRtl={isRtl}
+                        required
+                        defaultValue={GroupsCountryOptions.find(
+                          ({ value }) => value == group
+                        )}
+                        isSearchable={isSearchable}
+                        name="color"
+                        options={GroupsCountryOptions}
+                        onChange={(choice) => {
+                          setGroup(choice.value);
+                        }}
+                      />
+                    )}
                   </div>
                   <div className="col-6  mt-auto  mb-auto text-center btn-side">
-                    <NavLink to={`/Shipments/addnewgroup/${user_type == 'admin' ? idshipper : user_type_data.id}`}>
+                    <NavLink
+                      to={`/Shipments/addnewgroup/${
+                        user_type == "admin" ? idshipper : user_type_data.id
+                      }`}
+                    >
                       <button className="btn btn-adress">
                         + Add new group
                       </button>
@@ -393,85 +396,79 @@ const EditAddress = () => {
             </div>
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">Type</p>
-              {
-              typeOptions.length > 0 && type &&
-              <Select
-                classNamePrefix="select"
-                className="basic-multi-select"
-                isMulti
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                isClearable={isClearable}
-                defaultValue={handleSelectedOptionsTypes()}
-                isRtl={isRtl}
-                required
-                isSearchable={isSearchable}
-                name="color"
-                options={typeOptions}
-                onChange={(choice) => {
-                  const selectedValues = choice
-                    ? choice.map((option) => option.value)
-                    : [];
-                  setType(selectedValues);
-                }}
-              />
-              }
+              {typeOptions.length > 0 && type && (
+                <Select
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  isMulti
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  isClearable={isClearable}
+                  defaultValue={handleSelectedOptionsTypes()}
+                  isRtl={isRtl}
+                  required
+                  isSearchable={isSearchable}
+                  name="color"
+                  options={typeOptions}
+                  onChange={(choice) => {
+                    const selectedValues = choice
+                      ? choice.map((option) => option.value)
+                      : [];
+                    setType(selectedValues);
+                  }}
+                />
+              )}
             </div>
             <div className="address-input w-100 mb-5">
               <p className="head-text mb-2">City</p>
-              {
-                cities.length > 0 && city &&
-              <Select
-                classNamePrefix="select"
-                className="basic-multi-select"
-                // isMulti
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                isClearable={isClearable}
-                required
-                isRtl={isRtl}
-                defaultValue={handleSelectedOptionsCities()}
-                isSearchable={isSearchable}
-                name="color"
-                options={cities}
-                onChange={(choice) => {
-                  setCity(choice.value);
-                  console.log(choice.lat,"lat");
-                  setSelectLat(choice.lat);
-                  setSelectLong(choice.long);
-                }}
-              />
-            }
-
+              {cities.length > 0 && city && (
+                <Select
+                  classNamePrefix="select"
+                  className="basic-multi-select"
+                  // isMulti
+                  isDisabled={isDisabled}
+                  isLoading={isLoading}
+                  isClearable={isClearable}
+                  required
+                  isRtl={isRtl}
+                  defaultValue={handleSelectedOptionsCities()}
+                  isSearchable={isSearchable}
+                  name="color"
+                  options={cities}
+                  onChange={(choice) => {
+                    setCity(choice.value);
+                    // // console.log(choice.lat,"lat");
+                    setSelectLat(choice.lat);
+                    setSelectLong(choice.long);
+                  }}
+                />
+              )}
             </div>
-            {
-              center.lat && center.lng !=="" ?
+            {center.lat && center.lng !== "" ? (
               <div className="address-input w-100 mb-5">
-                  {
-                      isLoaded  ? 
-                        <div>
-                          <h2>Click on the map to add your address</h2>
-                          <GoogleMap
-                            mapContainerStyle={mapContainerStyle}
-                            center={center}
-                            zoom={10}
-                            onClick={handleClick}
-                          >
-                            {latitude && longitude && (
-                              <MarkerF position={{ lat: latitude, lng: longitude }} />
-                            )}
-                          </GoogleMap>
-                          {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
+                {isLoaded ? (
+                  <div>
+                    <h2>Click on the map to add your address</h2>
+                    <GoogleMap
+                      mapContainerStyle={mapContainerStyle}
+                      center={center}
+                      zoom={10}
+                      onClick={handleClick}
+                    >
+                      {latitude && longitude && (
+                        <MarkerF position={{ lat: latitude, lng: longitude }} />
+                      )}
+                    </GoogleMap>
+                    {/* {latitude && <p>Latitude: {latitude} center: {center.lat}</p>}
                           {longitude && <p>Longitude: {longitude} center: {center.lng}</p>} */}
-                        </div>
-                       : 
-                        <div>Loading...</div>
-                      
-                  }
+                  </div>
+                ) : (
+                  <div>Loading...</div>
+                )}
               </div>
-              :
+            ) : (
               <></>
-            }
+            )}
             <div className="address-input w-100 mb-5">
               {/*=========================== row addition =====================*/}
               <div className="row optionbox">
@@ -481,7 +478,7 @@ const EditAddress = () => {
                     type="tel"
                     className="input"
                     placeholder="Phone number"
-                    value={addOptionList[0]?.phone }
+                    value={addOptionList[0]?.phone}
                     required
                     onChange={(e) => {
                       // setPhoneNumber(e.target.value);
@@ -498,7 +495,7 @@ const EditAddress = () => {
                     type="text"
                     className="input"
                     placeholder="Name"
-                    value={addOptionList[0]?.name }
+                    value={addOptionList[0]?.name}
                     onChange={(e) => {
                       // setNameoption(e.target.value);
                       const newList = [...optionList]; // create a copy of the array
@@ -528,7 +525,7 @@ const EditAddress = () => {
                         <input
                           type="tel"
                           className="input"
-                          value={addOptionList[indexdetails+1]?.phone}
+                          value={addOptionList[indexdetails + 1]?.phone}
                           placeholder="Phone number"
                           required
                           onChange={(e) => {
@@ -539,14 +536,13 @@ const EditAddress = () => {
                             setOptionList(newList);
                           }}
                         />
-           
                       </div>
                       <div className="input-2 col-4 ms-5">
                         <p className="head-text mb-2">Name (Optional)</p>
                         <input
                           type="text"
                           className="input"
-                          value={addOptionList[indexdetails+1]?.name}
+                          value={addOptionList[indexdetails + 1]?.name}
                           placeholder="Name"
                           onChange={(e) => {
                             // setNameoption(e.target.value);
@@ -607,7 +603,7 @@ const EditAddress = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditAddress
+export default EditAddress;

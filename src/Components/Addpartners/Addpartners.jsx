@@ -62,7 +62,7 @@ const Addpartners = () => {
   // Error List
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
-  // console.log(errors);
+  // // console.log(errors);
   // Api-post==========================
   const Joi = require("joi");
 
@@ -93,7 +93,7 @@ const Addpartners = () => {
     const { error } = schema.validate(formDataObject, { abortEarly: false });
 
     if (error) {
-      // console.log("errorrrr", error.details);
+      // // console.log("errorrrr", error.details);
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -101,9 +101,9 @@ const Addpartners = () => {
       setErrors(newErrors);
       setLoading(false);
       setTargetElement(error.details[0].context.label);
-      // console.log(error.details[0].context.label);
+      // // console.log(error.details[0].context.label);
     } else {
-      console.log("Validation succeeded");
+      // // console.log("Validation succeeded");
       setLoading(true);
       setErrors({});
       const formdata = new FormData();
@@ -140,7 +140,7 @@ const Addpartners = () => {
         );
 
         // setName("");
-        console.log("DoneAdddddddddddd");
+        // // console.log("DoneAdddddddddddd");
         showNotification();
         setLoading(false);
         navigate(`/Partners`);
@@ -156,7 +156,7 @@ const Addpartners = () => {
           timer: 8000,
         });
         setLoading(false);
-        console.log(e.response.data.errors);
+        // // console.log(e.response.data.errors);
       }
     }
   };

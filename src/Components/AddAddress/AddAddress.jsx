@@ -72,7 +72,7 @@ const AddAddress = () => {
   const [Address, setAddress] = useState("");
   const [optionList, setOptionList] = useState([intialList]);
 
-  // console.log(optionList, "listobject");
+  // // console.log(optionList, "listobject");
   // ==================================map==========================
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -110,10 +110,10 @@ const AddAddress = () => {
   const newElement = "newvalue";
   const newArray = [...addOptionList];
 
-  // console.log(addOptionList, "addOptionList");
+  // // console.log(addOptionList, "addOptionList");
   // Error List
   const [errors, setErrors] = useState([]);
-  console.log(errors, " errorsssssssss");
+  // // console.log(errors, " errorsssssssss");
   const Joi = require("joi");
   const [targetElement, setTargetElement] = useState(null);
 
@@ -123,11 +123,11 @@ const AddAddress = () => {
     if (focusing) {
       focusing.scrollIntoView({ behavior: "smooth", block: "start" });
       focusing.focus();
-      console.log(focusing, "focusing id in function");
+      // // console.log(focusing, "focusing id in function");
     } else if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
       element.focus();
-      console.log(element, "element id in function");
+      // // console.log(element, "element id in function");
     }
   };
   useEffect(() => {
@@ -182,13 +182,13 @@ const AddAddress = () => {
     };
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-      console.log("errorrrr", error.details);
-      console.log(
-        "errorrrrssss details ",
-        errors.pickup_Value,
-        " ",
-        targetElement
-      );
+      // // console.log("errorrrr", error.details);
+      // // console.log(
+      //   "errorrrrssss details ",
+      //   errors.pickup_Value,
+      //   " ",
+      //   targetElement
+      // );
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -196,7 +196,7 @@ const AddAddress = () => {
       setErrors(newErrors);
 
       setTargetElement(error.details[0].context.label);
-      console.log(error.details, " allErrors");
+      // // console.log(error.details, " allErrors");
     }
     urlencoded.append("addressable_type", "group");
     urlencoded.append("addressable_id", group);
@@ -233,7 +233,7 @@ const AddAddress = () => {
           },
         }
       );
-      // console.log("DoneAdddddddddddd");
+      // // console.log("DoneAdddddddddddd");
       showNotification();
       navigate(`/Shipments/grouplist/${id}`);
     } catch (e) {
@@ -254,7 +254,7 @@ const AddAddress = () => {
         cancelButtonText: "ok",
         timer: 8000,
       });
-      console.log(e);
+      // // console.log(e);
     }
   };
   // Api-fetch-Groups================
@@ -280,7 +280,7 @@ const AddAddress = () => {
         const data = response.data.data;
 
         setGrouopList(data);
-        // console.log(data, "datagroup");
+        // // console.log(data, "datagroup");
         return data;
       } catch (e) {
         Swal.fire({
@@ -293,7 +293,7 @@ const AddAddress = () => {
           cancelButtonText: "ok",
           timer: 8000,
         });
-        console.log(e);
+        // // console.log(e);
       }
     };
     Grouplist(id);
@@ -324,10 +324,10 @@ const AddAddress = () => {
         const data = response.data.data.data.states;
 
         setCountryList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
-        console.log(e);
+        // // console.log(e);
       }
     };
     Countrylist();
@@ -346,11 +346,11 @@ const AddAddress = () => {
         setCities(data);
       })
       .catch((e) => {
-        console.log(e);
+        // // console.log(e);
       });
   }, []);
 
-  // console.log(center,"center");
+  // // console.log(center,"center");
   /* type-select */
   const typeOptions = [
     { value: "pickup", label: "Pick up" },
@@ -506,7 +506,7 @@ const AddAddress = () => {
                 options={cities}
                 onChange={(choice) => {
                   setCity(choice.value);
-                  // console.log(choice.lat,"lat");
+                  // // console.log(choice.lat,"lat");
                   setSelectLat(choice.lat);
                   setSelectLong(choice.long);
                 }}

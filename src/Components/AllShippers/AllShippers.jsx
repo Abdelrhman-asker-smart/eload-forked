@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -7,15 +7,13 @@ import { ReactComponent as EditIcon } from "../../icons/editicon.svg";
 import { ReactComponent as DeleteIcon } from "../../icons/deleteicon.svg";
 import { ReactComponent as View } from "../../icons/eye.svg";
 
-
-
 // import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-import './AllShippers.css';
+import "./AllShippers.css";
 
 const RemoveModal = ({ handelItemRemove, id }) => {
   return (
@@ -68,7 +66,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -85,23 +83,22 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-
     <NavLink to={`/allshippers/viewshipper/${id}`}>
       <button
-      className="btn-table"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-    >
-      <View className="mx-1" />
-      View 
-    </button>
+        className="btn-table"
+        style={{
+          textAlign: "center",
+          padding: "1% 3%",
+          border: "1px solid #0e324a",
+          borderRadius: "20px",
+          marginRight: "4%",
+          color: "#0b2339",
+          backgroundColor: "transparent",
+        }}
+      >
+        <View className="mx-1" />
+        View
+      </button>
     </NavLink>
     <NavLink to={`/allshippers/editshipper/${id}`}>
       <button
@@ -119,8 +116,8 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-      </NavLink>
-      <button
+    </NavLink>
+    <button
       className="btn-table"
       data-bs-toggle="modal"
       href="#exampleModalToggle"
@@ -142,7 +139,6 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 );
 
 const columns = [
-
   {
     accessorKey: "id",
     header: "Id",
@@ -179,7 +175,6 @@ const csvOptions = {
 const csvExporter = new ExportToCsv(csvOptions);
 
 const AllShippers = () => {
-
   const [shipperList, setShipperList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -188,7 +183,7 @@ const AllShippers = () => {
     return {
       id: item.id,
       name: item.name,
-      btns: <ButtonEdit  setRemoveableId={setRemoveableId} id={item.id} />,
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
 
@@ -213,11 +208,11 @@ const AllShippers = () => {
         );
 
         const data = response.data.data;
-        console.log(data);
+        // console.log(data);
         setShipperList(data);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
 
@@ -227,7 +222,6 @@ const AllShippers = () => {
   const handelItemRemove = async (id) => {
     try {
       const response = await axios.delete(
-
         `https://dev.eload.smart.sa/api/v1/shippers/${id}`,
         {
           headers: {
@@ -240,41 +234,56 @@ const AllShippers = () => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
   return (
-    <div className='shippers container-fluid p-5'>
-      <div className='row'>
-        <div className='col-md-12 d-flex justify-content-between'>
-          <div className='title-section'>
+    <div className="shippers container-fluid p-5">
+      <div className="row">
+        <div className="col-md-12 d-flex justify-content-between">
+          <div className="title-section">
             <h3>Shippers</h3>
           </div>
           <NavLink to="/addshippers">
-          <button className='btn-add'>Add new Shipper</button>
+            <button className="btn-add">Add new Shipper</button>
           </NavLink>
         </div>
       </div>
       {/* table-shipper */}
       <div>
-          {/* table */}
-          <MaterialReactTable
+        {/* table */}
+        <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
@@ -289,7 +298,7 @@ const AllShippers = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -331,16 +340,25 @@ const AllShippers = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-                {/* modal */}
-                <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default AllShippers
+export default AllShippers;

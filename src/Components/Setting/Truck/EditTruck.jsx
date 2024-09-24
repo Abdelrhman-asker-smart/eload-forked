@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const EditTruck = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [cookie] = useCookies(["eload_token"]);
-  console.log(image, "image");
+  // console.log(image, "image");
 
   const showNotification = () => {
     let Msg = ({ closeToast, toastProps }) => (
@@ -39,16 +39,16 @@ const EditTruck = () => {
   useEffect(() => {
     const findName = () => {
       let item = list.find((item, _) => item.id == id);
-      // console.log(item);
+      // // console.log(item);
       setImage(item.image);
       setName(item.name);
     };
     findName();
   }, []);
   const edit = () => {
-    // console.log(name, "name");
-    // console.log(cookie.eload_token, "token");
-    // console.log(id, "id");
+    // // console.log(name, "name");
+    // // console.log(cookie.eload_token, "token");
+    // // console.log(id, "id");
 
     var formdata = new FormData();
     formdata.append("_method", "put");
@@ -65,20 +65,20 @@ const EditTruck = () => {
       .then((res) => {
         showNotification();
         navigate(`/trucklist`);
-        // console.log(res);
+        // // console.log(res);
       })
       .catch((e) => {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
-        console.log(e);
+        });
+        // console.log(e);
       });
   };
   return (
@@ -137,7 +137,6 @@ const EditTruck = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-
           <button
             className="btn save-btn"
             // data-bs-toggle="modal"
@@ -163,17 +162,17 @@ const EditTruck = () => {
             >
               <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/trucklist">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

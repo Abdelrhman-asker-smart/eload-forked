@@ -8,7 +8,6 @@ import { ReactComponent as DeleteIcon } from "../../../icons/deleteicon.svg";
 // import { ReactComponent as View } from "../../icons/eye.svg";
 import { useParams } from "react-router-dom";
 
-
 import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
 import { Box, Button } from "@mui/material";
@@ -17,7 +16,7 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
 // import { fetchPartnerList } from "../../redux/Partner/partnerList";
-import './TruckList.css';
+import "./TruckList.css";
 
 const RemoveModal = ({ handelItemRemove, id }) => {
   return (
@@ -70,7 +69,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -84,10 +83,10 @@ const RemoveModal = ({ handelItemRemove, id }) => {
   );
 };
 
-const ButtonEdit = ({ id, setRemoveableId ,idprov }) => (
+const ButtonEdit = ({ id, setRemoveableId, idprov }) => (
   <div className="w-100">
     <NavLink to={`/Partners/part-EditTruck/${id}/provider/${idprov}`}>
-    <button
+      <button
         className="btn-table active mx-1"
         style={{
           textAlign: "center",
@@ -102,7 +101,6 @@ const ButtonEdit = ({ id, setRemoveableId ,idprov }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-
     </NavLink>
 
     <button
@@ -127,7 +125,6 @@ const ButtonEdit = ({ id, setRemoveableId ,idprov }) => (
 );
 
 const columns = [
-
   {
     accessorKey: "trucktype",
     header: "Truck type",
@@ -175,137 +172,157 @@ const csvExporter = new ExportToCsv(csvOptions);
 
 const PartTruclList = () => {
   const { id } = useParams();
-  const [prov_id,setprov_id]=useState("");
+  const [prov_id, setprov_id] = useState("");
 
   const [trucksList, setTrucksList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const [cookie] = useCookies(["eload_token"]);
-  const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-  const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
   const data = trucksList.map((item, index) => {
     return {
       id: item.id,
       trucktype: item.type.name,
-      trucknumber:item.plate_number,
+      trucknumber: item.plate_number,
       truckmodel: item.model,
       chissisnumber: item.chassis_number,
       driver: item.driver.user.name,
-      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} idprov={prov_id} />,
+      btns: (
+        <ButtonEdit
+          setRemoveableId={setRemoveableId}
+          id={item.id}
+          idprov={prov_id}
+        />
+      ),
     };
   });
 
   useEffect(() => {
     const allpartTruckss = async () => {
-        
-        try {
-      
-          const response = await axios.get(
-           
-            `https://dev.eload.smart.sa/api/v1/trucks?provider_id=${user_type == 'admin' ? id : user_type_data.id}`,
-            {
-              headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${cookie.eload_token}`,
-                "api-key":
-                  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-              },
-            }
-          );
-        
-          const data = response.data.data;
-          console.log(data);
-          console.log(data,"datas");
-          setTrucksList(data);
-          setprov_id(user_type == 'admin' ? id : user_type_data.id);
-            
-          return data;
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      allpartTruckss();
+      try {
+        const response = await axios.get(
+          `https://dev.eload.smart.sa/api/v1/trucks?provider_id=${
+            user_type == "admin" ? id : user_type_data.id
+          }`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${cookie.eload_token}`,
+              "api-key":
+                "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            },
+          }
+        );
 
-}, [reload]);
+        const data = response.data.data;
+        // console.log(data);
+        // console.log(data, "datas");
+        setTrucksList(data);
+        setprov_id(user_type == "admin" ? id : user_type_data.id);
 
-const handelItemRemove = async (idrow) => {
-    console.log(idrow);
-  try {
-    const response = await axios.delete(
-
-      `https://dev.eload.smart.sa/api/v1/trucks/${idrow}`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${cookie.eload_token}`,
-          "api-key":
-            "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-        },
+        return data;
+      } catch (e) {
+        // console.log(e);
       }
-    );
+    };
+    allpartTruckss();
+  }, [reload]);
 
-    const data = response.data;
-    console.log(response);
-    if (data.is_success && data.status_code === 200) {
-      setReload(!reload);
-    } else {
-      console.log("error");
+  const handelItemRemove = async (idrow) => {
+    // console.log(idrow);
+    try {
+      const response = await axios.delete(
+        `https://dev.eload.smart.sa/api/v1/trucks/${idrow}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data;
+      // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // console.log("error");
+      }
+      return data;
+    } catch (e) {
+      // console.log(e);
     }
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
+  };
 
-const handleExportRows = (rows) => {
-  csvExporter.generateCsv(rows.map((row) => row.original));
-};
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-const handleExportData = () => {
-  csvExporter.generateCsv(data);
-};
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div>
-    <header className="partner-head px-5">
-      <div className="container-fluid">
-        <div className="box-left">
-          <div className="head-text">
-            <h2>Trucks</h2>
-
+      <header className="partner-head px-5">
+        <div className="container-fluid">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>Trucks</h2>
+            </div>
           </div>
-
+          <div className="box-right">
+            <NavLink
+              to={`/Partners/part-AddTruck/${
+                user_type == "admin" ? id : user_type_data.id
+              }`}
+            >
+              <button className="btn-partner">
+                <i className="fa-solid fa-plus me-2"></i>Add Truck
+              </button>
+            </NavLink>
+          </div>
         </div>
-        <div className="box-right">
-          <NavLink to={`/Partners/part-AddTruck/${user_type == 'admin' ? id : user_type_data.id}`}>
-            <button className="btn-partner">
-              <i className="fa-solid fa-plus me-2"></i>Add Truck
-            </button>
-          </NavLink>
-        </div>
-      </div>
-    </header>
-    <div className="partner container-fluid px-5">
-      <div className="head-input container-fluid">
-      </div>
- 
-      <MaterialReactTable
-        columns={columns}
-        data={data}
-        positionPagination="top"
+      </header>
+      <div className="partner container-fluid px-5">
+        <div className="head-input container-fluid"></div>
 
-        enableRowSelection
-        positionToolbarAlertBanner="top"
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              p: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          positionPagination="top"
+          enableRowSelection
+          positionToolbarAlertBanner="top"
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box
+              sx={{
+                display: "flex",
+                gap: "1rem",
+                p: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* <Button
               color="primary"
               //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
               onClick={handleExportData}
@@ -347,16 +364,26 @@ const handleExportData = () => {
               variant="contained"
             >
               Export Selected Rows
-            </Button>
-          </Box>
-        )}
-      />
+            </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
+              </Button>
+            </Box>
+          )}
+        />
 
-      {/* modal */}
-      <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default PartTruclList
+export default PartTruclList;

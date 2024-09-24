@@ -52,7 +52,7 @@ function App() {
         return msg.getToken();
       })
       .then((data) => {
-        console.log("token", data);
+        // console.log("token", data);
       });
   }, []);
   // useEffect(() => {
@@ -77,7 +77,7 @@ function App() {
   //     .catch((error) => console.error("Error sending notification:", error));
   // }, []);
 
-  console.log(login, "login");
+  // console.log(login, "login");
   return (
     <>
       {login ? (

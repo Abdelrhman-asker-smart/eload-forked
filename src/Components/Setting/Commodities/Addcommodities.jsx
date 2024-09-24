@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import {  useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import axios from "axios";
 import "./Addcommodities.css";
@@ -24,12 +24,12 @@ const Addcommodities = () => {
   };
 
   const [cookie] = useCookies(["eload_token"]);
-  console.log(name, "name");
+  // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
 
   const recordCategory = async () => {
-    console.log("save triggered");
+    // console.log("save triggered");
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/commodities",
@@ -45,24 +45,24 @@ const Addcommodities = () => {
       );
       //   if(reponse.data.data.is_success){
       //     setName("")
-      //     console.log('logged in')
+      //     // console.log('logged in')
       //   }
       // setName("");
-        // console.log(reponse)
-        showNotification();
-        navigate(`/commodities`);
+      // // console.log(reponse)
+      showNotification();
+      navigate(`/commodities`);
     } catch (e) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
+        position: "top-end",
+        icon: "error",
+        color: "#0e4579",
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton:true,
+        showCancelButton: true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
-      console.log(e);
+      });
+      // console.log(e);
     }
   };
   // const emptyInputs =()=>{
@@ -101,40 +101,37 @@ const Addcommodities = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-          {
-            
-            name ==="" ? 
+          {name === "" ? (
             <>
-                <button
+              <button
                 type="button"
                 className="btn save-btn"
                 onClick={() => {
-                  setEmptyInput(true)
+                  setEmptyInput(true);
                 }}
-
               >
                 Save
               </button>
             </>
-            :
+          ) : (
             <button
-            type="submit"
-            className="btn save-btn"
-            // data-bs-toggle="modal"
-            // href="#exampleModalToggle"
-          >
-            Save
-          </button>
-          }
-          {
-              emptyInput === false ? 
-              <><lable style={{color:"red"}}></lable></>
-              :
-              <>
-              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
-              </>
-              
-            }
+              type="submit"
+              className="btn save-btn"
+              // data-bs-toggle="modal"
+              // href="#exampleModalToggle"
+            >
+              Save
+            </button>
+          )}
+          {emptyInput === false ? (
+            <>
+              <lable style={{ color: "red" }}></lable>
+            </>
+          ) : (
+            <>
+              <lable style={{ color: "red" }}> Please Enter All Inputs</lable>
+            </>
+          )}
           {/* <button
             type="submit"
             className="btn save-btn"
@@ -171,7 +168,7 @@ const Addcommodities = () => {
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

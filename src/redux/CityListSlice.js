@@ -7,7 +7,7 @@ import axios from "axios";
 export const fetchCityList = createAsyncThunk(
   "city/fetchCityList",
   async (token) => {
-    console.log(token, "from reducer");
+    // console.log(token, "from reducer");
     try {
       const response = await axios.get(
         "https://dev.eload.smart.sa/api/v1/cities",
@@ -22,10 +22,10 @@ export const fetchCityList = createAsyncThunk(
         }
       );
       const data = await response.data;
-      // console.log(data, "data");
+      // // console.log(data, "data");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );
@@ -34,7 +34,7 @@ export const fetchCityListByCountry = createAsyncThunk(
   "city/fetchCityListByCountry",
   async (token) => {
     let country_id = 194;
-    console.log(token, "from reducer");
+    // console.log(token, "from reducer");
     try {
       const response = await axios.get(
         `https://dev.eload.smart.sa/api/v1/countries/${country_id}?cities=1`,
@@ -49,10 +49,10 @@ export const fetchCityListByCountry = createAsyncThunk(
         }
       );
       const data = await response.data;
-      // console.log(data, "data");
+      // // console.log(data, "data");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );
@@ -82,7 +82,7 @@ export const cityGetReducer = createSlice({
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
-      // console.log(action, "action");
+      // // console.log(action, "action");
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },
@@ -97,7 +97,7 @@ export const cityGetReducer = createSlice({
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
-      // console.log(action, "action");
+      // // console.log(action, "action");
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },

@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-
 
 // import { useLocation } from "react-router-dom";
 import MaterialReactTable from "material-react-table";
@@ -11,12 +10,10 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStateList } from "../../../redux/StateListSlice";
 
-import "./StatesList.css"
-
+import "./StatesList.css";
 
 const columns = [
   {
@@ -29,9 +26,7 @@ const columns = [
     header: "Name",
     size: 100,
   },
-
 ];
-
 
 const csvOptions = {
   fieldSeparator: ",",
@@ -58,40 +53,54 @@ const StatesList = () => {
 
   useEffect(() => {
     dispatch(fetchStateList({ token: cookie.eload_token }))
-    .then((res) => {
-      // console.log(res, "response from api");
-      const data = res.payload.data;
-      setstateList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  },[]);
-  
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+      .then((res) => {
+        // // console.log(res, "response from api");
+        const data = res.payload.data;
+        setstateList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  }, []);
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
   return (
-    <div className='stateslist'>
-        <div className="container-fluid px-5 py-5">
-          <div className="head-input container-fluid mb-4">
-              <div className="box-left">
-                  <div className="head-text">
-                      <h2>State list</h2>
-                  </div>
-              </div>
+    <div className="stateslist">
+      <div className="container-fluid px-5 py-5">
+        <div className="head-input container-fluid mb-4">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>State list</h2>
+            </div>
           </div>
-           {/* table */}
+        </div>
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           enableRowSelection
           positionPagination="top"
-
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
@@ -102,7 +111,7 @@ const StatesList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -144,13 +153,23 @@ const StatesList = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default StatesList
+export default StatesList;

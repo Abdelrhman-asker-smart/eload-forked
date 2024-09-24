@@ -6,8 +6,8 @@ import axios from "axios";
 // api().fetchTeamData
 export const fetchitemsList = createAsyncThunk(
   "items/fetchitemsList",
-  async (token , id) => {
-    // console.log(token, "from reducer");
+  async (token, id) => {
+    // // console.log(token, "from reducer");
     try {
       const response = await axios.get(
         // "https://dev.eload.smart.sa/api/v1/contract_items",
@@ -23,10 +23,10 @@ export const fetchitemsList = createAsyncThunk(
         }
       );
       const data = await response.data.items;
-      console.log(data, "datafromreeeitemlist");
+      // console.log(data, "datafromreeeitemlist");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );
@@ -56,7 +56,7 @@ export const ItemsGetReducer = createSlice({
       state.status = false;
       // state.table = action.payload.data.products;
       state.list = action?.payload?.data;
-      // console.log(action, "action");
+      // // console.log(action, "action");
       // state.tableContainer = action.payload.list;
       // state.table = action.data.list.length > 0 ? action.data.list : [];
     },

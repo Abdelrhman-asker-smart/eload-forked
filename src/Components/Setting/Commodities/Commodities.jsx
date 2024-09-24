@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -14,7 +14,7 @@ import { ExportToCsv } from "export-to-csv"; //or use your library of choice her
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommoditList } from "../../../redux/listCommodities";
 
-import "./Commodities.css"
+import "./Commodities.css";
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
@@ -68,7 +68,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -143,7 +143,6 @@ const columns = [
   },
 ];
 
-
 const csvOptions = {
   fieldSeparator: ",",
   quoteStrings: '"',
@@ -156,7 +155,6 @@ const csvOptions = {
 
 const csvExporter = new ExportToCsv(csvOptions);
 const Commodities = () => {
-
   const [commoditiesList, setCommoditiesList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -171,17 +169,15 @@ const Commodities = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     dispatch(fetchCommoditList({ token: cookie.eload_token }))
-    .then((res) => {
-      console.log(res, "response from api");
-      const data = res.payload.data;
-      setCommoditiesList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
+      .then((res) => {
+        // console.log(res, "response from api");
+        const data = res.payload.data;
+        setCommoditiesList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
 
     // const allCommodities = async () => {
     //   try {
@@ -199,25 +195,25 @@ const Commodities = () => {
     //     );
 
     //     const data = response.data.data;
-       
+
     //     setCommoditiesList(data);
     //     return data;
     //   } catch (e) {
-    //     console.log(e);
+    //     // console.log(e);
     //   }
     // };
 
     // allCommodities();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
 
   // remove-item
   const handelItemRemove = async (id) => {
@@ -237,34 +233,47 @@ const Commodities = () => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
-  
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
-    <div className='commodities'>
-        <div className="container-fluid px-5 py-5">
-          <div className="head-input container-fluid mb-4">
-              <div className="box-left">
-                  <div className="head-text">
-                      <h2>Commodity list</h2>
-                  </div>
-              </div>
+    <div className="commodities">
+      <div className="container-fluid px-5 py-5">
+        <div className="head-input container-fluid mb-4">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>Commodity list</h2>
+            </div>
           </div>
-          {/* table */}
+        </div>
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -276,7 +285,7 @@ const Commodities = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -318,15 +327,25 @@ const Commodities = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-          {/* modal */}
-          <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
-        </div>
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Commodities
+export default Commodities;

@@ -12,7 +12,6 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import "./Allshipments.css";
 
 const AllShipments = () => {
@@ -43,7 +42,7 @@ const AllShipments = () => {
             >
               <span>{renderedCellValue}</span>
             </NavLink>
-            {/* <span>{console.log(row.original)}</span> */}
+            {/* <span>{// console.log(row.original)}</span> */}
           </Box>
         ),
       },
@@ -280,7 +279,7 @@ const AllShipments = () => {
             }}
           >
             <span style={{ color: "#31A02F" }}>{renderedCellValue}</span>
-            {/* <span>{console.log(row.original, "ready")}</span> */}
+            {/* <span>{// console.log(row.original, "ready")}</span> */}
           </Box>
         ),
       },
@@ -354,43 +353,40 @@ const AllShipments = () => {
   // checked
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = (event) => {
-    if(isChecked == false){
+    if (isChecked == false) {
       setIsChecked(true);
-
-    }else{
+    } else {
       setIsChecked(false);
-
     }
   };
   // sort
-  const [selectedOption, setSelectedOption] = useState('asc');
+  const [selectedOption, setSelectedOption] = useState("asc");
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-      // All
-      const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 5,
-      });
-      // readypagination
-      const [readyeee, setreadyeee] = useState({
-        pIndexrrrr: 0,
-        pSizerrrr: 5,
-      });
-
+  // All
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+  // readypagination
+  const [readyeee, setreadyeee] = useState({
+    pIndexrrrr: 0,
+    pSizerrrr: 5,
+  });
 
   // search All
-  const handleSearchInputChange = async(event) => {
+  const handleSearchInputChange = async (event) => {
     const query = event.target.value;
     setSearchQuery(query);
   };
   // search ready
-  const handleSearchInputreadyChange = async(event) => {
+  const handleSearchInputreadyChange = async (event) => {
     const query = event.target.value;
     setSearchreadyQuery(query);
   };
-  console.log(selectedOption ,"selectedOption");
+  // console.log(selectedOption ,"selectedOption");
   // All--ready
   useEffect(() => {
     const allShipment = async () => {
@@ -401,9 +397,15 @@ const AllShipments = () => {
           // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
 
           isChecked === false
-          ? `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=${selectedOption}`
-          : `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=${selectedOption}&status=READY`,
-          
+            ? `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${
+                pagination.pageSize
+              }&page=${pagination.pageIndex + 1}&sort=${selectedOption}`
+            : `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${
+                pagination.pageSize
+              }&page=${
+                pagination.pageIndex + 1
+              }&sort=${selectedOption}&status=READY`,
+
           {
             headers: {
               Accept: "application/json",
@@ -414,15 +416,14 @@ const AllShipments = () => {
           }
         );
         const data = response.data.data;
-        console.log(data, "data");
+        // console.log(data, "data");
         setshipmentList(data);
-        console.log(response?.data?.meta?.total, "total");
+        // console.log(response?.data?.meta?.total, "total");
         setRowCount(response?.data?.meta?.total);
-   
 
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     // ---------ready
@@ -431,7 +432,9 @@ const AllShipments = () => {
         const responseready = await axios.get(
           // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
           // `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${pagination.pageSize}&page=${pagination.pageIndex+1}&sort=asc`,
-          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${readyeee.pSizerrrr}&page=${readyeee.pIndexrrrr+1}&sort=asc?&status=?READY`,
+          `https://dev.eload.smart.sa/api/v1/shipmentsSearch?term=${searchreadyQuery}&per_page=${
+            readyeee.pSizerrrr
+          }&page=${readyeee.pIndexrrrr + 1}&sort=asc?&status=?READY`,
           // `https://dev.eload.smart.sa/api/v1/shipments?status=READY&paginate=${readyPagination.pageSizeReady}&page=${readyPagination.pageIndexReady+1}`,
           {
             headers: {
@@ -444,23 +447,31 @@ const AllShipments = () => {
         );
 
         const dataReady = responseready.data.data;
-        console.log(dataReady, "ready respons");
+        // console.log(dataReady, "ready respons");
         setshipmentListready(dataReady);
         setReadyRowCount(responseready?.data?.meta?.total);
 
         return dataReady;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     allShipment();
     // if (user_type != "shipper") {
     //   readyShipment();
     // }
-  }, [pagination.pageIndex, pagination.pageSize , searchQuery , isChecked , selectedOption , readyeee.pIndexrrrr , readyeee.pSizerrrr ,  searchreadyQuery]);
+  }, [
+    pagination.pageIndex,
+    pagination.pageSize,
+    searchQuery,
+    isChecked,
+    selectedOption,
+    readyeee.pIndexrrrr,
+    readyeee.pSizerrrr,
+    searchreadyQuery,
+  ]);
 
-
-  console.log(readyeee.pSizerrrr,"pSizerrrr");
+  // console.log(readyeee.pSizerrrr,"pSizerrrr");
   // const handleExportRows = (rows) => {
   //   csvExporter.generateCsv(rows.map((row) => row.original));
   // };
@@ -469,9 +480,9 @@ const AllShipments = () => {
   // };
   const handleExportRows = (rows) => {
     const csvOptions = {
-      fieldSeparator: ',',
+      fieldSeparator: ",",
       quoteStrings: '"',
-      decimalSeparator: '.',
+      decimalSeparator: ".",
       showLabels: true,
       useBom: true,
       useKeysAsHeaders: true,
@@ -494,10 +505,8 @@ const AllShipments = () => {
   return (
     <div>
       <div className="container-fluid Allshipment  py-3 px-0">
-
         {/* table-data ---All */}
         <div className=" p-3 tableshipment table-resbon">
-
           <div className="d-flex justify-content-start align-items-center">
             <h3
               style={{ fontWeight: "500", fontSize: "26px", color: "#244664" }}
@@ -505,33 +514,45 @@ const AllShipments = () => {
             >
               All Shipments
             </h3>
-          <div class="form-check d-flex justify-content-between align-items-center mx-3">
-              <input class="form-check-input mx-3" type="checkbox" value=""  checked={isChecked}
-                onChange={handleCheckboxChange} id="flexCheckChecked" />
-              <label class="form-check-label status_check" for="flexCheckChecked">
+            <div class="form-check d-flex justify-content-between align-items-center mx-3">
+              <input
+                class="form-check-input mx-3"
+                type="checkbox"
+                value=""
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                id="flexCheckChecked"
+              />
+              <label
+                class="form-check-label status_check"
+                for="flexCheckChecked"
+              >
                 Ready status
               </label>
-          </div>
-          <div className="d-flex justify-content-end align-items-center">
+            </div>
+            <div className="d-flex justify-content-end align-items-center">
               {/* ----sort--- */}
-              <select class="form-select sortinput mx-2" aria-label="Default select example" value={selectedOption}
-              onChange={handleSelectChange}>
+              <select
+                class="form-select sortinput mx-2"
+                aria-label="Default select example"
+                value={selectedOption}
+                onChange={handleSelectChange}
+              >
                 <option value="asc">asc</option>
                 <option value="desc">desc</option>
               </select>
               <input
-              className="searchtable py-2 px-4 w-100 "
+                className="searchtable py-2 px-4 w-100 "
                 type="text"
                 onChange={(e) => handleSearchInputChange(e)}
                 placeholder="Search..."
               />
-          </div>
-
+            </div>
           </div>
 
           <MaterialReactTable
             columns={columnsAll}
-            data={data} 
+            data={data}
             state={{ pagination }}
             onPaginationChange={setPagination}
             manualPagination
@@ -588,20 +609,21 @@ const AllShipments = () => {
                 >
                   Export Selected Rows
                 </Button> */}
-      {/* renderTopToolbarCustomActions={({ table }) => ( */}
-        <Button
-          style={{marginBottom:"-50px"}}
-            startIcon={<FileDownloadIcon />}
+                {/* renderTopToolbarCustomActions={({ table }) => ( */}
+                <Button
+                  style={{ marginBottom: "-50px" }}
+                  startIcon={<FileDownloadIcon />}
                   variant="contained"
-          onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-        >
-          Export Selected Rows
-        </Button>
-      {/* )} */}
+                  onClick={() =>
+                    handleExportRows(table.getSelectedRowModel().rows)
+                  }
+                >
+                  Export Selected Rows
+                </Button>
+                {/* )} */}
               </Box>
             )}
           />
-    
         </div>
 
         {/* ready-shipment */}
@@ -709,7 +731,6 @@ const AllShipments = () => {
           
           </div>
         )} */}
-
       </div>
     </div>
   );

@@ -5,9 +5,9 @@ import axios from "axios";
 export const EditDriverFunction = createAsyncThunk(
   "truck/editTruck",
   async ({ token, id, formdata }) => {
-    console.log(token, "from reducer");
-    console.log(id, "id from reducer");
-    console.log(formdata, "urlencoded from reducer");
+    // console.log(token, "from reducer");
+    // console.log(id, "id from reducer");
+    // console.log(formdata, "urlencoded from reducer");
     try {
       const response = await axios.post(
         `https://dev.eload.smart.sa/api/v1/providers/${id}`,
@@ -23,10 +23,10 @@ export const EditDriverFunction = createAsyncThunk(
         }
       );
       const data = await response.data;
-      console.log(response, "response");
+      // console.log(response, "response");
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 );

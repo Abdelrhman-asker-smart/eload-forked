@@ -11,12 +11,10 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryList } from "../../../redux/categoryListSlice";
 
 import "./Category-List.css";
-
 
 // model
 const RemoveModal = ({ handelItemRemove, id }) => {
@@ -70,7 +68,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -161,12 +159,11 @@ const csvOptions = {
 
 const csvExporter = new ExportToCsv(csvOptions);
 
-
 const CategoryList = () => {
   // const pathanme = useLocation();
   const dispatch = useDispatch();
 
-  // console.log(categories);
+  // // console.log(categories);
   const [categoryList, setCategoryList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -178,32 +175,30 @@ const CategoryList = () => {
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
-  // console.log(process.env.REACT_BASE_URL);
+  // // console.log(process.env.REACT_BASE_URL);
   useEffect(() => {
-
     dispatch(fetchCategoryList({ token: cookie.eload_token }))
       .then((res) => {
-        console.log(res, "response from api");
+        // console.log(res, "response from api");
         const data = res.payload.data;
         setCategoryList(data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
-
   }, [reload]);
   //
 
   const { list, status } = useSelector((state) => state.categoryList);
-  // console.log(list, "state from reducer with useSelector");
+  // // console.log(list, "state from reducer with useSelector");
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
 
   // remove-item
   const handelItemRemove = async (id) => {
@@ -223,16 +218,31 @@ const CategoryList = () => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
+  };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
 
   // const handelEditItem = (id) => {
@@ -254,7 +264,6 @@ const CategoryList = () => {
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -266,7 +275,7 @@ const CategoryList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -306,6 +315,16 @@ const CategoryList = () => {
                 }
                 startIcon={<FileDownloadIcon />}
                 variant="contained"
+              >
+                Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
               >
                 Export Selected Rows
               </Button>

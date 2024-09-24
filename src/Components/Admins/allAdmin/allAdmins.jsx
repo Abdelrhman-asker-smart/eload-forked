@@ -68,7 +68,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -146,7 +146,7 @@ const AllAdmins = () => {
   // const pathanme = useLocation();
   const dispatch = useDispatch();
 
-  // console.log(categories);
+  // // console.log(categories);
   const [adminList, setAdminList] = useState([]);
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
@@ -160,30 +160,30 @@ const AllAdmins = () => {
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
-  // console.log(process.env.REACT_BASE_URL);
+  // // console.log(process.env.REACT_BASE_URL);
   useEffect(() => {
     dispatch(fetchAdminList({ token: cookie.eload_token }))
       .then((res) => {
-        // console.log(res, "response from api");
+        // // console.log(res, "response from api");
         const data = res.payload.data;
         setAdminList(data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   }, [reload]);
   //
 
   //   const { list, status } = useSelector((state) => state.adminList);
-  // console.log(list, "state from reducer with useSelector");
+  // // console.log(list, "state from reducer with useSelector");
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
 
   // remove-item
   const handelItemRemove = async (id) => {
@@ -203,22 +203,36 @@ const AllAdmins = () => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
   // const handelEditItem = (id) => {
   //    navigate(`/catogry-edit/${id}`);
   // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
 
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div className="adminlist">
       <div className="container-fluid px-5 py-5">
@@ -235,7 +249,6 @@ const AllAdmins = () => {
           data={data}
           enableRowSelection
           positionPagination="top"
-
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
             <Box
@@ -246,7 +259,7 @@ const AllAdmins = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -286,6 +299,16 @@ const AllAdmins = () => {
                 }
                 startIcon={<FileDownloadIcon />}
                 variant="contained"
+              >
+                Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
               >
                 Export Selected Rows
               </Button>

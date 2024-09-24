@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useState } from "react";
 import axios from "axios";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ const AddMeasurements = () => {
   const [emptyInput, setEmptyInput] = useState(false);
 
   const [cookie] = useCookies(["eload_token"]);
-  console.log(name, "name");
+  // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
 
@@ -30,7 +30,7 @@ const AddMeasurements = () => {
   };
 
   const recordCategory = async () => {
-    console.log("save triggered");
+    // console.log("save triggered");
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/uom",
@@ -46,24 +46,24 @@ const AddMeasurements = () => {
       );
       //   if(reponse.data.data.is_success){
       //     setName("")
-      //     console.log('logged in')
+      //     // console.log('logged in')
       //   }
       // setName("");
       showNotification();
       navigate(`/measurements`);
-      //   console.log(reponse);
+      //   // console.log(reponse);
     } catch (e) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
+        position: "top-end",
+        icon: "error",
+        color: "#0e4579",
         title: `${e.response.data.message}`,
         showConfirmButton: false,
-        showCancelButton:true,
+        showCancelButton: true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
-      console.log(e);
+      });
+      // console.log(e);
     }
   };
   return (
@@ -98,42 +98,39 @@ const AddMeasurements = () => {
         </div>
 
         <div className="btn-side text-center my-5">
-        {
-            
-            name ==="" ? 
+          {name === "" ? (
             <>
-                <button
+              <button
                 type="button"
                 className="btn save-btn"
                 onClick={() => {
-                  setEmptyInput(true)
+                  setEmptyInput(true);
                 }}
-
               >
                 Save
               </button>
             </>
-            :
+          ) : (
             <button
-            type="submit"
-            className="btn save-btn"
-            onClick={recordCategory}
+              type="submit"
+              className="btn save-btn"
+              onClick={recordCategory}
 
-            // data-bs-toggle="modal"
-            // href="#exampleModalToggle"
-          >
-            Save
-          </button>
-          }
-          {
-              emptyInput === false ? 
-              <><lable style={{color:"red"}}></lable></>
-              :
-              <>
-              <lable style={{color:"red"}}> Please Enter All Inputs</lable>
-              </>
-              
-            }
+              // data-bs-toggle="modal"
+              // href="#exampleModalToggle"
+            >
+              Save
+            </button>
+          )}
+          {emptyInput === false ? (
+            <>
+              <lable style={{ color: "red" }}></lable>
+            </>
+          ) : (
+            <>
+              <lable style={{ color: "red" }}> Please Enter All Inputs</lable>
+            </>
+          )}
           {/* <button
             className="btn save-btn"
             data-bs-toggle="modal"
@@ -169,7 +166,7 @@ const AddMeasurements = () => {
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

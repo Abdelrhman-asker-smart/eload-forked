@@ -69,7 +69,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  console.log(id, "id");
+                  // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -85,27 +85,27 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-      <NavLink to={`/Partners/viewdriver-partner/${id}`}>
+    <NavLink to={`/Partners/viewdriver-partner/${id}`}>
       <button
-      className="btn-table"
-      // data-bs-toggle="modal"
-      // href="#exampleModalToggle"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        // marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-      onClick={() => setRemoveableId(id)}
-    >
-      <View className="mx-1" />
-      View
-    </button>
+        className="btn-table"
+        // data-bs-toggle="modal"
+        // href="#exampleModalToggle"
+        style={{
+          textAlign: "center",
+          padding: "1% 3%",
+          border: "1px solid #0e324a",
+          borderRadius: "20px",
+          // marginRight: "4%",
+          color: "#0b2339",
+          backgroundColor: "transparent",
+        }}
+        onClick={() => setRemoveableId(id)}
+      >
+        <View className="mx-1" />
+        View
+      </button>
     </NavLink>
-      <NavLink to={`/Partners/part-editdriver/${id}`}>
+    <NavLink to={`/Partners/part-editdriver/${id}`}>
       <button
         className="btn-table active mx-1"
         style={{
@@ -113,7 +113,7 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
           padding: "1% 3%",
           border: "1px solid #0e324a",
           borderRadius: "20px",
-        //   margin: "4%",
+          //   margin: "4%",
           color: "#fff",
           backgroundColor: "#0b2339",
         }}
@@ -121,9 +121,8 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-      </NavLink>
+    </NavLink>
 
-   
     <button
       className="btn-table"
       data-bs-toggle="modal"
@@ -146,7 +145,6 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 );
 
 const columns = [
-
   {
     accessorKey: "name",
     header: "Name",
@@ -183,72 +181,37 @@ const csvOptions = {
 const csvExporter = new ExportToCsv(csvOptions);
 
 const PartDriverList = () => {
-    const dispatch = useDispatch();
-    const { id } = useParams();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-    const [partnerList, setPartnerList] = useState([]);
-    const [removeableId, setRemoveableId] = useState(null);
-    const [reload, setReload] = useState(false);
-    const [cookie] = useCookies(["eload_token"]);
-    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const [partnerList, setPartnerList] = useState([]);
+  const [removeableId, setRemoveableId] = useState(null);
+  const [reload, setReload] = useState(false);
+  const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
-    const data = partnerList.map((item, index) => {
-      return {
-        id:item.id,
-        name: item.user?.name,
-        email: item.user?.email,
-        phone: item.user?.phone,
-        btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
-      };
-    });
-    useEffect(() => {
-        const allpartDrivers = async () => {
-            // console.log(id);
-            try {
-            // console.log(id);
-
-              const response = await axios.get(
-               
-                `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${user_type == 'admin' ? id : user_type_data.id}`,
-                {
-                  headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${cookie.eload_token}`,
-                    "api-key":
-                      "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-                  },
-                }
-              );
-            //   const data = response.data.data.shipments;
-              const data = response.data.data;
-              console.log(data);
-              console.log(data,"datas");
-              setPartnerList(data);
-            //   setAllprov(datas);
-              return data;
-            } catch (e) {
-              console.log(e);
-            }
-          };
-          allpartDrivers();
-    //   dispatch(fetchPartDriverList({ token: cookie.eload_token , id:id}))
-    //     .then((res) => {
-  
-    //       const data = res.payload.data;
-    //       setPartnerList(data);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    }, [reload]);
-  
-    const handelItemRemove = async (idrow) => {
-        console.log(idrow);
+  const data = partnerList.map((item, index) => {
+    return {
+      id: item.id,
+      name: item.user?.name,
+      email: item.user?.email,
+      phone: item.user?.phone,
+      btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
+    };
+  });
+  useEffect(() => {
+    const allpartDrivers = async () => {
+      // // console.log(id);
       try {
-        const response = await axios.delete(
-  
-          `https://dev.eload.smart.sa/api/v1/drivers/${idrow}`,
+        // // console.log(id);
+
+        const response = await axios.get(
+          `https://dev.eload.smart.sa/api/v1/drivers?provider_id=${
+            user_type == "admin" ? id : user_type_data.id
+          }`,
           {
             headers: {
               Accept: "application/json",
@@ -258,68 +221,120 @@ const PartDriverList = () => {
             },
           }
         );
-  
-        const data = response.data;
-        console.log(response);
-        if (data.is_success && data.status_code === 200) {
-          setReload(!reload);
-        } else {
-          console.log("error");
-        }
+        //   const data = response.data.data.shipments;
+        const data = response.data.data;
+        // console.log(data);
+        // console.log(data, "datas");
+        setPartnerList(data);
+        //   setAllprov(datas);
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
-  
-    const handleExportRows = (rows) => {
-      csvExporter.generateCsv(rows.map((row) => row.original));
+    allpartDrivers();
+    //   dispatch(fetchPartDriverList({ token: cookie.eload_token , id:id}))
+    //     .then((res) => {
+
+    //       const data = res.payload.data;
+    //       setPartnerList(data);
+    //     })
+    //     .catch((e) => {
+    //       // console.log(e);
+    //     });
+  }, [reload]);
+
+  const handelItemRemove = async (idrow) => {
+    // console.log(idrow);
+    try {
+      const response = await axios.delete(
+        `https://dev.eload.smart.sa/api/v1/drivers/${idrow}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data;
+      // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // console.log("error");
+      }
+      return data;
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
     };
-  
-    const handleExportData = () => {
-      csvExporter.generateCsv(data);
-    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div>
-    <header className="partner-head px-5">
-      <div className="container-fluid">
-        <div className="box-left">
-          <div className="head-text">
-            <h2>Drivers</h2>
-
+      <header className="partner-head px-5">
+        <div className="container-fluid">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>Drivers</h2>
+            </div>
           </div>
-
+          <div className="box-right">
+            <NavLink
+              to={`/Partners/part-adddriver/${
+                user_type == "admin" ? id : user_type_data.id
+              }`}
+            >
+              <button className="btn-partner">
+                <i className="fa-solid fa-plus me-2"></i>Add Driver
+              </button>
+            </NavLink>
+          </div>
         </div>
-        <div className="box-right">
-          <NavLink to={`/Partners/part-adddriver/${user_type == 'admin' ? id : user_type_data.id}`}>
-            <button className="btn-partner">
-              <i className="fa-solid fa-plus me-2"></i>Add Driver
-            </button>
-          </NavLink>
-        </div>
-      </div>
-    </header>
-    <div className="partner container-fluid px-5">
-      <div className="head-input container-fluid">
-      </div>
- 
-      <MaterialReactTable
-        columns={columns}
-        data={data}
-        enableRowSelection
-        positionPagination="top"
+      </header>
+      <div className="partner container-fluid px-5">
+        <div className="head-input container-fluid"></div>
 
-        positionToolbarAlertBanner="top"
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              p: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          positionPagination="top"
+          positionToolbarAlertBanner="top"
+          renderTopToolbarCustomActions={({ table }) => (
+            <Box
+              sx={{
+                display: "flex",
+                gap: "1rem",
+                p: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* <Button
               color="primary"
               //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
               onClick={handleExportData}
@@ -361,16 +376,26 @@ const PartDriverList = () => {
               variant="contained"
             >
               Export Selected Rows
-            </Button>
-          </Box>
-        )}
-      />
+            </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
+              </Button>
+            </Box>
+          )}
+        />
 
-      {/* modal */}
-      <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default PartDriverList
+export default PartDriverList;

@@ -40,7 +40,7 @@ export default function Login({ decodeData }) {
 
     // let joiResponse = schema.validate(user, { abortEarly: false });
     // if (joiResponse.error) {
-    //   console.log(joiResponse.error.details)
+    //   // console.log(joiResponse.error.details)
     //   setErrList(joiResponse.error.details);
     // } else {
     setErrList([]);
@@ -94,7 +94,7 @@ export default function Login({ decodeData }) {
     }
     return "";
   }
-  // console.log(user, "user");
+  // // console.log(user, "user");
   return (
     <>
       <div className="login">

@@ -9,12 +9,10 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCityList } from "../../../redux/CityListSlice";
 
 import "./CitiesList.css";
-
 
 const columns = [
   {
@@ -27,10 +25,7 @@ const columns = [
     header: "Name",
     size: 100,
   },
-
-
 ];
-
 
 const csvOptions = {
   fieldSeparator: ",",
@@ -57,24 +52,38 @@ const CitiesList = () => {
 
   useEffect(() => {
     dispatch(fetchCityList({ token: cookie.eload_token }))
-    .then((res) => {
-      // console.log(res, "response from api");
-      const data = res.payload.data;
-      setcityList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  },[]);
+      .then((res) => {
+        // // console.log(res, "response from api");
+        const data = res.payload.data;
+        setcityList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  }, []);
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+
   const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
-
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
-
-
   return (
     <div className="citieslist">
       <div className="container-fluid px-5 py-5">
@@ -85,13 +94,12 @@ const CitiesList = () => {
             </div>
           </div>
         </div>
-        
-            {/* table */}
+
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -103,7 +111,7 @@ const CitiesList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -145,11 +153,21 @@ const CitiesList = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-        
       </div>
     </div>
   );

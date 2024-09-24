@@ -66,7 +66,6 @@ const Inputs = ({
     toast(<Msg />, { autoClose: 3000 });
   };
 
-
   useEffect(() => {
     if (list) {
       AddShipments_Api(plannedList);
@@ -93,18 +92,15 @@ const Inputs = ({
   const [unitMeasure, setUnitMeasure] = useState();
   const [quantityValue, setQuantityValue] = useState();
 
-
-
   // shipment_type
   const shipmentOptionList = (truckuserChoice) => {
-    // console.log(truckuserChoice, "testttttttttttttttt");
+    // // console.log(truckuserChoice, "testttttttttttttttt");
 
     detailsList.truck_types?.map((item, index) => {
-
-      console.log(item.shipment_types, " item.shipment_types");
+      // console.log(item.shipment_types, " item.shipment_types");
 
       if (item.id === truckuserChoice) {
-        // console.log("itemshipmmmment22");
+        // // console.log("itemshipmmmment22");
         const options = item.shipment_types?.map((itemship, index) => {
           return {
             value: itemship.id,
@@ -130,7 +126,7 @@ const Inputs = ({
   // };
   // Error List
   const [errors, setErrors] = useState([]);
-  console.log(errors, " errorsssssssss");
+  // console.log(errors, " errorsssssssss");
   const Joi = require("joi");
   const [targetElement, setTargetElement] = useState(null);
 
@@ -140,11 +136,11 @@ const Inputs = ({
     if (focusing) {
       focusing.scrollIntoView({ behavior: "smooth", block: "start" });
       focusing.focus();
-      console.log(focusing, "focusing id in function");
+      // console.log(focusing, "focusing id in function");
     } else if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
       element.focus();
-      console.log(element, "element id in function");
+      // console.log(element, "element id in function");
     }
   };
   useEffect(() => {
@@ -153,21 +149,16 @@ const Inputs = ({
     }
   }, [targetElement, errors, okay]);
   // Api-shipment
-  console.log(plannedList.length, "checklenghttttt");
-  console.log(plannedList[0].detailsTruck?.length, "checklenghttttt");
+  // console.log(plannedList.length, "checklenghttttt");
+  // console.log(plannedList[0].detailsTruck?.length, "checklenghttttt");
 
   const AddShipments_Api = async (plannedList) => {
-    console.log(plannedList, "plannedList--------");
+    // console.log(plannedList, "plannedList--------");
     // e.preventDefault();
-    const schema = Joi.object({
-
-    });
-    const formDataObject = {
-
-    };
+    const schema = Joi.object({});
+    const formDataObject = {};
     const { error } = schema.validate(formDataObject, { abortEarly: false });
     if (error) {
-
       const newErrors = error.details.reduce((acc, detail) => {
         acc[detail.path[0]] = detail.message;
         return acc;
@@ -175,13 +166,13 @@ const Inputs = ({
       setErrors(newErrors);
 
       setTargetElement(error.details[0].context.label);
-      // console.log(error.details, " allErrors");
+      // // console.log(error.details, " allErrors");
     }
     // Without-Planned=============================
     else if (plannedList.length === 1) {
       const formdata = new FormData();
       const item = plannedList[0];
-      console.log("Preparing formdata for item:", item);
+      // console.log("Preparing formdata for item:", item);
 
       // plannedList.map((item, index) => {
       setIsLoading(true);
@@ -255,10 +246,10 @@ const Inputs = ({
         );
       });
 
-      console.log("Formdata prepared:", Object.fromEntries(formdata));
+      // console.log("Formdata prepared:", Object.fromEntries(formdata));
       // ===================test
       // });
-      console.log("Addone----------Done");
+      // console.log("Addone----------Done");
 
       // below is a temp fix to be able to send the order request only once
       // handleOrder(formdata);
@@ -282,7 +273,7 @@ const Inputs = ({
         showNotification();
         navigate("/allshipments");
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
 
       // Planned=============================
@@ -383,7 +374,7 @@ const Inputs = ({
           );
         });
       });
-      console.log("Addplanned----------Done");
+      // console.log("Addplanned----------Done");
 
       handleOrder(formdata);
 
@@ -407,11 +398,11 @@ const Inputs = ({
         showNotification();
         navigate("/allshipments");
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
 
-    setList(false); 
+    setList(false);
   };
 
   // commidities_options
@@ -474,8 +465,8 @@ const Inputs = ({
   };
   // pickinglist PickingListPlanned
   const pickingListPlannedChange = (indexshipment, indexdetails, event) => {
-    console.log(indexshipment, "indexshipment");
-    console.log(indexdetails, "indexdetails");
+    // console.log(indexshipment, "indexshipment");
+    // console.log(indexdetails, "indexdetails");
     const newInputs = [...plannedList];
     for (let k in event) {
       if (event.hasOwnProperty(k)) {
@@ -711,7 +702,7 @@ const Inputs = ({
                   indexdetails,
                   e.target.files
                 );
-                // console.log(picking_ListValue, "files");
+                // // console.log(picking_ListValue, "files");
                 // setPicking_ListValue(e.target.files[0]);
               }}
             />

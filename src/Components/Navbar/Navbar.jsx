@@ -33,7 +33,7 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
       </React.Fragment>
     );
   });
-  // console.log(pathanme);
+  // // console.log(pathanme);
   const [user, setUser] = useState({
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
@@ -63,12 +63,12 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      // console.log(response.data.data,"nottt");
+      // // console.log(response.data.data,"nottt");
       let data = response.data.data;
       setNotifications(data);
       setNotificationsCount(data.length);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -85,10 +85,10 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setNotificationsCount(notifications_count - 1);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -106,10 +106,10 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
           },
         }
       );
-      console.log(response.data.data);
+      // console.log(response.data.data);
       alert("Sent Successfully!");
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -664,12 +664,12 @@ export default function Navbar({ setLogin, clrUserData, searchMovie }) {
     toast(<Msg />);
     readNotification(notification.id);
   };
-  // console.log(notifications,"notification");
+  // // console.log(notifications,"notification");
 
   useEffect(() => {
     getNotifications();
   }, []);
-  // console.log(entity_mappings[notification.notificationable_type].url,"eeee");
+  // // console.log(entity_mappings[notification.notificationable_type].url,"eeee");
   return (
     <>
       <ToastContainer

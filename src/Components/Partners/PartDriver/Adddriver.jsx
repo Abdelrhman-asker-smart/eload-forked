@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 // import Select from "react-select";
 import { useParams } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactComponent as Dateicon } from "../../../icons/date-icon.svg";
@@ -17,55 +17,56 @@ import { ToastContainer, toast } from "react-toastify";
 import "./PartDriverList";
 
 const Adddriver = () => {
-    const navigate = useNavigate();
-    const [startDate, setStartDate] = useState();
-    const { id } = useParams();
-    const [cookie] = useCookies(["eload_token"]);
-    const [user_type, setUserType] = useState(localStorage.getItem('user_type'));
-    const [user_type_data, setUserTypeData] = useState(JSON.parse(localStorage.getItem('user_type_data')));
+  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState();
+  const { id } = useParams();
+  const [cookie] = useCookies(["eload_token"]);
+  const [user_type, setUserType] = useState(localStorage.getItem("user_type"));
+  const [user_type_data, setUserTypeData] = useState(
+    JSON.parse(localStorage.getItem("user_type_data"))
+  );
 
-    const showNotification = () => {
-      // e.preventDefault();
-  
-      let Msg = ({ closeToast, toastProps }) => (
-        <div>
-          <h4>Success</h4>
-        </div>
-      )
-  
-      toast(<Msg /> ,{autoClose: 3000});
+  const showNotification = () => {
+    // e.preventDefault();
 
-      // readNotification(notification.id);
-    };
-  
-    // select-options
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
-  
-  
-    // States================================
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [profileimg, setProfileimg] = useState("");
-    const [password, setPassword] = useState("");
-    // ==============
-    const [ownerName, setOwnerName] = useState("");
-    const [ownerPhone, setOwnerPhone] = useState("");
-    const [ownerNID, setOwnerNID] = useState("");
-    // =============
-    const [idCope, setIdCope] = useState("");
-    const [drivingLincese, setDrivingLincese] = useState("");
-    const [drivingLincese_Cope, setDrivingLincese_Cope] = useState();
-    const [LinceseId, setLinceseId] = useState("");
-    const [expirydate, setExpirydate] = useState("");
-      //===========
+    let Msg = ({ closeToast, toastProps }) => (
+      <div>
+        <h4>Success</h4>
+      </div>
+    );
+
+    toast(<Msg />, { autoClose: 3000 });
+
+    // readNotification(notification.id);
+  };
+
+  // select-options
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
+
+  // States================================
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profileimg, setProfileimg] = useState("");
+  const [password, setPassword] = useState("");
+  // ==============
+  const [ownerName, setOwnerName] = useState("");
+  const [ownerPhone, setOwnerPhone] = useState("");
+  const [ownerNID, setOwnerNID] = useState("");
+  // =============
+  const [idCope, setIdCope] = useState("");
+  const [drivingLincese, setDrivingLincese] = useState("");
+  const [drivingLincese_Cope, setDrivingLincese_Cope] = useState();
+  const [LinceseId, setLinceseId] = useState("");
+  const [expirydate, setExpirydate] = useState("");
+  //===========
   const [sponsorName, setSponsorName] = useState("");
   const [sponsorNumber, setSponsorNumber] = useState("");
 
-      // country_list
+  // country_list
   const [countryList, setCountryList] = useState([]);
   const [truckList, setTruckList] = useState([]);
 
@@ -73,7 +74,7 @@ const Adddriver = () => {
   const apiAddDriverpartners = async (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("provider_id",id)
+    formdata.append("provider_id", id);
     formdata.append("name", name);
     formdata.append("type", "freelancer");
     formdata.append("email", email);
@@ -93,7 +94,6 @@ const Adddriver = () => {
     formdata.append("driver[sponsor_establishment_name]", sponsorName);
     formdata.append("driver[sponsor_establishment_number]", sponsorNumber);
 
-
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/drivers",
@@ -109,26 +109,32 @@ const Adddriver = () => {
       );
 
       // setName("");
-      // console.log("DoneAdddddddddddd");
+      // // console.log("DoneAdddddddddddd");
       showNotification();
-      navigate(`/Partners/part-driverlist/${user_type == 'admin' ? id : user_type_data.id}`);
+      navigate(
+        `/Partners/part-driverlist/${
+          user_type == "admin" ? id : user_type_data.id
+        }`
+      );
     } catch (e) {
       let errorMessages = "An error occurred";
 
       if (e.response && e.response.data && e.response.data.errors) {
-        errorMessages = e.response.data.errors.map(error => error.message).join(", ");
+        errorMessages = e.response.data.errors
+          .map((error) => error.message)
+          .join(", ");
       }
       Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        color: '#0e4579',
+        position: "top-end",
+        icon: "error",
+        color: "#0e4579",
         title: errorMessages,
         showConfirmButton: false,
-        showCancelButton:true,
+        showCancelButton: true,
         cancelButtonText: "ok",
         timer: 8000,
-      })
-      console.log(e);
+      });
+      // console.log(e);
     }
   };
 
@@ -153,20 +159,20 @@ const Adddriver = () => {
         const data = response.data.data;
 
         setCountryList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
-        console.log(e);
+        });
+        // console.log(e);
       }
     };
     Countrylist();
@@ -192,10 +198,10 @@ const Adddriver = () => {
         const data = response.data.data;
 
         setTruckList(data);
-        // console.log(data, "datacountry");
+        // // console.log(data, "datacountry");
         return data;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     Trucklist();
@@ -213,16 +219,16 @@ const Adddriver = () => {
   }));
   return (
     <div className="container-fluid adddriver p-5">
-    <ToastContainer
-      position="top-right"
-      autoClose={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      theme="light"
-    />
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
       <h3>DRIVER INFORMATION</h3>
       <form onSubmit={apiAddDriverpartners}>
         {/* name+email */}
@@ -488,7 +494,9 @@ const Adddriver = () => {
           </div>
         </div>
         {/* <NavLink to="/driver"> */}
-        <button type="submit" className="btn-save my-3"
+        <button
+          type="submit"
+          className="btn-save my-3"
           // onClick={showNotification}
         >
           SAVE
@@ -496,7 +504,7 @@ const Adddriver = () => {
         {/* </NavLink> */}
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Adddriver
+export default Adddriver;

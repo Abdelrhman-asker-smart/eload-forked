@@ -13,14 +13,11 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCategoryList } from "../../../redux/Drivers/driverList.js";
 import { fetchdriverList } from "../../redux/Drivers/driverList";
 
-
 import "../Drivers/Drivers.css";
-
 
 const RemoveModal = ({ handelItemRemove, id }) => {
   return (
@@ -73,7 +70,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -87,27 +84,25 @@ const RemoveModal = ({ handelItemRemove, id }) => {
   );
 };
 
-
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-
     <NavLink to={`/driver/viewdriver/${id}`}>
       <button
-      className="btn-table"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-    >
-      <View className="mx-1" />
-      View
-    </button>
+        className="btn-table"
+        style={{
+          textAlign: "center",
+          padding: "1% 3%",
+          border: "1px solid #0e324a",
+          borderRadius: "20px",
+          marginRight: "4%",
+          color: "#0b2339",
+          backgroundColor: "transparent",
+        }}
+      >
+        <View className="mx-1" />
+        View
+      </button>
     </NavLink>
     <NavLink to={`/driver/editdriver/${id}`}>
       <button
@@ -125,8 +120,8 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-      </NavLink>
-      <button
+    </NavLink>
+    <button
       className="btn-table"
       data-bs-toggle="modal"
       href="#exampleModalToggle"
@@ -148,7 +143,6 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 );
 
 const columns = [
-
   {
     accessorKey: "id",
     header: "Id",
@@ -196,25 +190,22 @@ const Drivers = () => {
   useEffect(() => {
     dispatch(fetchdriverList({ token: cookie.eload_token }))
       .then((res) => {
-        // console.log(res, "response from api");
+        // // console.log(res, "response from api");
         const data = res.payload.data;
         setDriverList(data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   }, [reload]);
 
-
   // const { list, status } = useSelector((state) => state.categoryList);
 
-  // console.log(list,"all");
+  // // console.log(list,"all");
 
-
-const handelItemRemove = async (id) => {
+  const handelItemRemove = async (id) => {
     try {
       const response = await axios.delete(
-
         `https://dev.eload.smart.sa/api/v1/providers/${id}`,
         {
           headers: {
@@ -227,33 +218,47 @@ const handelItemRemove = async (id) => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
   return (
     <div>
       <header className="driver-head px-5">
         <div className="container-fluid">
-        <div className="head-text">
-              <h2>Drivers</h2>
-
-            </div>
+          <div className="head-text">
+            <h2>Drivers</h2>
+          </div>
           <div className="box-right">
             <NavLink to="/driver/adddriver">
               <button className="btn-driver">
@@ -265,16 +270,13 @@ const handelItemRemove = async (id) => {
       </header>
       <div className="driver container-fluid px-5">
         <div className="head-input container-fluid">
-          <div className="box-left">
-          </div>
-
+          <div className="box-left"></div>
         </div>
-          {/* table */}
-          <MaterialReactTable
+        {/* table */}
+        <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -286,7 +288,7 @@ const handelItemRemove = async (id) => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -326,6 +328,16 @@ const handelItemRemove = async (id) => {
                 }
                 startIcon={<FileDownloadIcon />}
                 variant="contained"
+              >
+                Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
               >
                 Export Selected Rows
               </Button>

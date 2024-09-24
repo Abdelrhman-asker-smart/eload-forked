@@ -68,7 +68,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -81,8 +81,6 @@ const RemoveModal = ({ handelItemRemove, id }) => {
     </div>
   );
 };
-
-
 
 // btns-action
 const ButtonEdit = ({ id, setRemoveableId }) => (
@@ -167,65 +165,77 @@ const Truck = () => {
   const [removeableId, setRemoveableId] = useState(null);
   const [reload, setReload] = useState(false);
   const dispatch = useDispatch();
- 
-  const data = TruckList.map((item, index) => {
 
+  const data = TruckList.map((item, index) => {
     return {
       id: item.id,
       name: item.name,
-      image: <img src={item.image} alt="truck"/>,
+      image: <img src={item.image} alt="truck" />,
       btns: <ButtonEdit setRemoveableId={setRemoveableId} id={item.id} />,
     };
   });
   useEffect(() => {
     dispatch(fetchTruckList({ token: cookie.eload_token }))
-    .then((res) => {
-      console.log(res, "response from api");
-      const data = res.payload.data;
-      setTruckList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-
+      .then((res) => {
+        // console.log(res, "response from api");
+        const data = res.payload.data;
+        setTruckList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
   }, [reload]);
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
-// remove-item
-const handelItemRemove = async (id) => {
-  try {
-    const response = await axios.delete(
-      // https://dev.eload.smart.sa/api/v1/categories
-      // `${process.env.REACT_BASE_URL}/categories`,
-      `https://dev.eload.smart.sa/api/v1/truck_types/${id}`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${cookie.eload_token}`,
-          "api-key":
-            "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
-        },
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  // remove-item
+  const handelItemRemove = async (id) => {
+    try {
+      const response = await axios.delete(
+        // https://dev.eload.smart.sa/api/v1/categories
+        // `${process.env.REACT_BASE_URL}/categories`,
+        `https://dev.eload.smart.sa/api/v1/truck_types/${id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${cookie.eload_token}`,
+            "api-key":
+              "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+          },
+        }
+      );
+
+      const data = response.data;
+      // console.log(response);
+      if (data.is_success && data.status_code === 200) {
+        setReload(!reload);
+      } else {
+        // console.log("error");
       }
-    );
-
-    const data = response.data;
-    console.log(response);
-    if (data.is_success && data.status_code === 200) {
-      setReload(!reload);
-    } else {
-      console.log("error");
+      return data;
+    } catch (e) {
+      // console.log(e);
     }
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
+  };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
 
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
 
   return (
     <div className="Trucklist">
@@ -237,12 +247,11 @@ const handelItemRemove = async (id) => {
             </div>
           </div>
         </div>
-            {/* table */}
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -254,7 +263,7 @@ const handelItemRemove = async (id) => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -296,12 +305,22 @@ const handelItemRemove = async (id) => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-          {/* modal */}
-          <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
+        {/* modal */}
+        <RemoveModal id={removeableId} handelItemRemove={handelItemRemove} />
       </div>
     </div>
   );

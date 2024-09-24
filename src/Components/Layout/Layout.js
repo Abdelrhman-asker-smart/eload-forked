@@ -102,9 +102,9 @@ const Layout = ({ setLogin, login }) => {
   //   messaging.requestPermission().then(()=>{
   //     return messaging.getToken()
   //   }).then(token=>{
-  //     console.log('Token :' , token)
+  //     // console.log('Token :' , token)
   //   }).catch(()=>{
-  //     console.log('error');
+  //     // console.log('error');
   //   })
 
   // }, []);

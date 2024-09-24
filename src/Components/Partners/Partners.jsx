@@ -69,7 +69,7 @@ const RemoveModal = ({ handelItemRemove, id }) => {
                 }}
                 onClick={() => {
                   handelItemRemove(id);
-                  // console.log(id, "id");
+                  // // console.log(id, "id");
                 }}
               >
                 {" "}
@@ -85,28 +85,28 @@ const RemoveModal = ({ handelItemRemove, id }) => {
 
 const ButtonEdit = ({ id, setRemoveableId }) => (
   <div className="w-100">
-      <NavLink to={`/Partners/viewpartner/${id}`}>
+    <NavLink to={`/Partners/viewpartner/${id}`}>
       <button
-      className="btn-table"
-      // data-bs-toggle="modal"
-      // href="#exampleModalToggle"
-      style={{
-        textAlign: "center",
-        padding: "1% 3%",
-        border: "1px solid #0e324a",
-        borderRadius: "20px",
-        // marginRight: "4%",
-        color: "#0b2339",
-        backgroundColor: "transparent",
-      }}
-      onClick={() => setRemoveableId(id)}
-    >
-      <View className="mx-1" />
-      View
-    </button>
+        className="btn-table"
+        // data-bs-toggle="modal"
+        // href="#exampleModalToggle"
+        style={{
+          textAlign: "center",
+          padding: "1% 3%",
+          border: "1px solid #0e324a",
+          borderRadius: "20px",
+          // marginRight: "4%",
+          color: "#0b2339",
+          backgroundColor: "transparent",
+        }}
+        onClick={() => setRemoveableId(id)}
+      >
+        <View className="mx-1" />
+        View
+      </button>
     </NavLink>
     <NavLink to={`/Partners/editpartner/${id}`}>
-    <button
+      <button
         className="btn-table active"
         style={{
           textAlign: "center",
@@ -121,10 +121,8 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
         <EditIcon className="mx-1" />
         EDIT
       </button>
-
     </NavLink>
 
-   
     <button
       className="btn-table"
       data-bs-toggle="modal"
@@ -147,7 +145,6 @@ const ButtonEdit = ({ id, setRemoveableId }) => (
 );
 
 const columns = [
-
   {
     accessorKey: "name",
     header: "Name",
@@ -192,7 +189,6 @@ const Partners = () => {
   const [cookie] = useCookies(["eload_token"]);
   const data = partnerList.map((item, index) => {
     return {
-
       name: item.name,
       email: " ",
       phone: " ",
@@ -202,19 +198,17 @@ const Partners = () => {
   useEffect(() => {
     dispatch(fetchPartnerList({ token: cookie.eload_token }))
       .then((res) => {
-
         const data = res.payload.data;
         setPartnerList(data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   }, [reload]);
 
   const handelItemRemove = async (id) => {
     try {
       const response = await axios.delete(
-
         `https://dev.eload.smart.sa/api/v1/providers/${id}`,
         {
           headers: {
@@ -227,24 +221,39 @@ const Partners = () => {
       );
 
       const data = response.data;
-      console.log(response);
+      // console.log(response);
       if (data.is_success && data.status_code === 200) {
         setReload(!reload);
       } else {
-        console.log("error");
+        // console.log("error");
       }
       return data;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
-  const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
   };
 
   return (
@@ -254,9 +263,7 @@ const Partners = () => {
           <div className="box-left">
             <div className="head-text">
               <h2>Partners</h2>
-
             </div>
-
           </div>
           <div className="box-right">
             <NavLink to="/Partners/addpartners">
@@ -268,13 +275,11 @@ const Partners = () => {
         </div>
       </header>
       <div className="partner container-fluid px-5">
-        <div className="head-input container-fluid">
-        </div>
-   
+        <div className="head-input container-fluid"></div>
+
         <MaterialReactTable
           columns={columns}
           positionPagination="top"
-
           data={data}
           enableRowSelection
           positionToolbarAlertBanner="top"
@@ -287,7 +292,7 @@ const Partners = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -327,6 +332,16 @@ const Partners = () => {
                 }
                 startIcon={<FileDownloadIcon />}
                 variant="contained"
+              >
+                Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
               >
                 Export Selected Rows
               </Button>

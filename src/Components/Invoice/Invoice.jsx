@@ -23,22 +23,22 @@ const Invoice = () => {
 
   // endpoint is the API endpoint, url is the frontend page url
   const entity_mappings = {
-    invoice: { endpoint: 'invoices', url: 'invoices' },
-    request: { endpoint: 'requests', url: 'requests' },
-    shipment: { endpoint: 'shipments', url: 'allshipments/shipmentorder' },
-    order: { endpoint: 'orders', url: 'orders' },
-  }
+    invoice: { endpoint: "invoices", url: "invoices" },
+    request: { endpoint: "requests", url: "requests" },
+    shipment: { endpoint: "shipments", url: "allshipments/shipmentorder" },
+    order: { endpoint: "orders", url: "orders" },
+  };
 
   let Msg = ({ closeToast, toastProps }) => (
     <div>
       <h5>updated successfully!</h5>
       <p>the page will be refreshed in a moment...</p>
     </div>
-  )
+  );
 
-  const changeStatus = async(status = 'PAID') => {
+  const changeStatus = async (status = "PAID") => {
     var urlencoded = new URLSearchParams();
-    urlencoded.append('status', status);
+    urlencoded.append("status", status);
 
     try {
       const response = await axios.put(
@@ -54,12 +54,12 @@ const Invoice = () => {
         }
       );
 
-      toast(<Msg />)
+      toast(<Msg />);
       setTimeout(() => window.location.reload(), 5000);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
-  }
+  };
 
   const getInvoiceDetails = async () => {
     try {
@@ -92,7 +92,7 @@ const Invoice = () => {
 
       setItems(items);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -110,7 +110,12 @@ const Invoice = () => {
               gap: "1rem",
             }}
           >
-            <NavLink style={{ color: "#0085FF" }} to={`/${entity_mappings[row.original.itemable_type].url}/${row.original.itemable_id}`}>
+            <NavLink
+              style={{ color: "#0085FF" }}
+              to={`/${entity_mappings[row.original.itemable_type].url}/${
+                row.original.itemable_id
+              }`}
+            >
               <span>{renderedCellValue}</span>
             </NavLink>
           </Box>
@@ -130,7 +135,7 @@ const Invoice = () => {
         accessorKey: "amount",
         header: "Amount",
         size: 30,
-      }
+      },
     ],
     []
   );
@@ -158,56 +163,103 @@ const Invoice = () => {
   useEffect(() => {
     getInvoiceDetails();
   }, []);
+  const handleExportRows = (rows) => {
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
 
+    const csvExporter = new ExportToCsv(csvOptions);
+
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
     <div className="container invoice px-4">
-        <ToastContainer
-          position="top-right"
-          autoClose={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          theme="light"
-        />
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
       <div className="row p-4">
         <h2 className="mb-20">
           <strong>
             Invoice
-            { invoice.invoiceable_id &&
+            {invoice.invoiceable_id && (
               <>
-              <span> for</span>
-              <NavLink style={{ color: "#0085FF" }} to={`/${entity_mappings[invoice?.invoiceable_type].url}/${invoice?.invoiceable_id}`}>
-                <span> {invoice?.invoiceable_type} #{invoice?.invoiceable_id}</span>
-              </NavLink>
+                <span> for</span>
+                <NavLink
+                  style={{ color: "#0085FF" }}
+                  to={`/${entity_mappings[invoice?.invoiceable_type].url}/${
+                    invoice?.invoiceable_id
+                  }`}
+                >
+                  <span>
+                    {" "}
+                    {invoice?.invoiceable_type} #{invoice?.invoiceable_id}
+                  </span>
+                </NavLink>
               </>
-            }
+            )}
           </strong>
         </h2>
-        
+
         <div className="col-md-4">
-            <h5>Number: <strong>{invoice.code}</strong></h5>
+          <h5>
+            Number: <strong>{invoice.code}</strong>
+          </h5>
         </div>
         <div className="col-md-4">
-            <h5>Due Date: <strong>{invoice.due_date}</strong></h5>
+          <h5>
+            Due Date: <strong>{invoice.due_date}</strong>
+          </h5>
         </div>
         <div className="col-md-4">
-            <h5>Status: 
-              <span class={`badge badge-${invoice.status == 'PAID' ? 'success' : 'danger'}`}>{invoice.status}</span>
-            </h5>
-            {
-              invoice.status == 'PENDING' && attachments.length > 0 && 
-              <button className="btn btn-success btn-sm" onClick={() => changeStatus()}>Mark As Paid</button>
-            }
+          <h5>
+            Status:
+            <span
+              class={`badge badge-${
+                invoice.status == "PAID" ? "success" : "danger"
+              }`}
+            >
+              {invoice.status}
+            </span>
+          </h5>
+          {invoice.status == "PENDING" && attachments.length > 0 && (
+            <button
+              className="btn btn-success btn-sm"
+              onClick={() => changeStatus()}
+            >
+              Mark As Paid
+            </button>
+          )}
         </div>
-        {
-          attachments.length > 0 &&
+        {attachments.length > 0 && (
           <div className="col-md-4">
             <h5>Attachments:</h5>
-            {attachments.map((attachment, index) => <><a href={attachment.path} target="_blank" className="text-primary">File {index + 1}</a><br /> </>)} 
+            {attachments.map((attachment, index) => (
+              <>
+                <a
+                  href={attachment.path}
+                  target="_blank"
+                  className="text-primary"
+                >
+                  File {index + 1}
+                </a>
+                <br />{" "}
+              </>
+            ))}
           </div>
-        }
+        )}
       </div>
 
       <h6 className="mt-10">All Items</h6>
@@ -216,7 +268,6 @@ const Invoice = () => {
         columns={columns}
         data={items}
         positionPagination="top"
-
         enableRowSelection
         enableBottomToolbar={false}
         positionToolbarAlertBanner="top"
@@ -229,7 +280,7 @@ const Invoice = () => {
               flexWrap: "wrap",
             }}
           >
-            <Button
+            {/* <Button
               color="primary"
               //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
               onClick={handleExportDataready}
@@ -273,6 +324,14 @@ const Invoice = () => {
               variant="contained"
             >
               Export Selected Rows
+            </Button> */}
+            <Button
+              style={{ marginBottom: "-50px" }}
+              startIcon={<FileDownloadIcon />}
+              variant="contained"
+              onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+            >
+              Export Selected Rows
             </Button>
           </Box>
         )}
@@ -283,7 +342,9 @@ const Invoice = () => {
           <table className="table table-striped">
             <tr>
               <td>Subtotal</td>
-              <td>{invoice?.total} {invoice?.currency}</td>
+              <td>
+                {invoice?.total} {invoice?.currency}
+              </td>
             </tr>
             <tr>
               <td>Tax</td>
@@ -291,7 +352,9 @@ const Invoice = () => {
             </tr>
             <tr>
               <td>Total</td>
-              <td>{invoice?.total} {invoice?.currency}</td>
+              <td>
+                {invoice?.total} {invoice?.currency}
+              </td>
             </tr>
           </table>
         </div>

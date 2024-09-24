@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { NavLink } from "react-router-dom";
 import "./EditCategory.css";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const EditCategory = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
-  // console.log(id, "id");
+  // // console.log(id, "id");
 
   const showNotification = () => {
     let Msg = ({ closeToast, toastProps }) => (
@@ -37,16 +37,16 @@ const EditCategory = () => {
   useEffect(() => {
     const findName = () => {
       let item = list.find((item, _) => item.id == id);
-      // console.log(item);
+      // // console.log(item);
       setName(item.name);
     };
     findName();
   }, []);
 
   const edit = () => {
-    // console.log(name, "name");
-    // console.log(cookie.eload_token, "token");
-    // console.log(id, "id");
+    // // console.log(name, "name");
+    // // console.log(cookie.eload_token, "token");
+    // // console.log(id, "id");
 
     var urlencoded = new URLSearchParams();
     urlencoded.append("name", name);
@@ -59,27 +59,27 @@ const EditCategory = () => {
       })
     )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         showNotification();
         navigate(`/categorylist`);
       })
       .catch((e) => {
         Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          color: '#0e4579',
+          position: "top-end",
+          icon: "error",
+          color: "#0e4579",
           title: `${e.response.data.message}`,
           showConfirmButton: false,
-          showCancelButton:true,
+          showCancelButton: true,
           cancelButtonText: "ok",
           timer: 8000,
-        })
-        console.log(e);
+        });
+        // console.log(e);
       });
   };
 
   const EditCategoryUpdate = async (id) => {
-    console.log(id, "save triggered");
+    // console.log(id, "save triggered");
 
     try {
       const reponse = await axios.put(
@@ -95,9 +95,9 @@ const EditCategory = () => {
         }
       );
 
-      console.log(reponse);
+      // console.log(reponse);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
   return (
@@ -167,7 +167,7 @@ const EditCategory = () => {
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

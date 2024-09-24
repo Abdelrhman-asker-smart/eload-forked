@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,13 +12,10 @@ import { Box, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ExportToCsv } from "export-to-csv"; //or use your library of choice here
 
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCountryList } from "../../../redux/CountryList";
 
 import "./CountriesList.css";
-
-
 
 const columns = [
   {
@@ -31,10 +28,7 @@ const columns = [
     header: "Name",
     size: 100,
   },
-
-
 ];
-
 
 const csvOptions = {
   fieldSeparator: ",",
@@ -56,46 +50,58 @@ const CountriesList = () => {
     return {
       id: item.id,
       name: item.name,
-
     };
   });
 
   useEffect(() => {
     dispatch(fetchCountryList({ token: cookie.eload_token }))
-    .then((res) => {
-      console.log(res, "response from api");
-      const data = res.payload.data;
-      setcountryList(data);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .then((res) => {
+        // console.log(res, "response from api");
+        const data = res.payload.data;
+        setcountryList(data);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
   }, []);
 
+  // const handleExportRows = (rows) => {
+  //   csvExporter.generateCsv(rows.map((row) => row.original));
+  // };
+
+  // const handleExportData = () => {
+  //   csvExporter.generateCsv(data);
+  // };
   const handleExportRows = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row.original));
-  };
+    const csvOptions = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalSeparator: ".",
+      showLabels: true,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data);
-  };
+    const csvExporter = new ExportToCsv(csvOptions);
 
+    const exportData = rows.map((row) => row.original);
+    csvExporter.generateCsv(exportData);
+  };
   return (
-    <div className='countrylist'>
-        <div className="container-fluid px-5 py-5">
-          <div className="head-input container-fluid mb-4">
-              <div className="box-left">
-                  <div className="head-text">
-                      <h2>Country list</h2>
-                  </div>
-              </div>
+    <div className="countrylist">
+      <div className="container-fluid px-5 py-5">
+        <div className="head-input container-fluid mb-4">
+          <div className="box-left">
+            <div className="head-text">
+              <h2>Country list</h2>
+            </div>
           </div>
-           {/* table */}
+        </div>
+        {/* table */}
         <MaterialReactTable
           columns={columns}
           data={data}
           positionPagination="top"
-
           enableRowSelection
           positionToolbarAlertBanner="top"
           renderTopToolbarCustomActions={({ table }) => (
@@ -107,7 +113,7 @@ const CountriesList = () => {
                 flexWrap: "wrap",
               }}
             >
-              <Button
+              {/* <Button
                 color="primary"
                 //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                 onClick={handleExportData}
@@ -149,14 +155,23 @@ const CountriesList = () => {
                 variant="contained"
               >
                 Export Selected Rows
+              </Button> */}
+              <Button
+                style={{ marginBottom: "-50px" }}
+                startIcon={<FileDownloadIcon />}
+                variant="contained"
+                onClick={() =>
+                  handleExportRows(table.getSelectedRowModel().rows)
+                }
+              >
+                Export Selected Rows
               </Button>
             </Box>
           )}
         />
-         
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CountriesList
+export default CountriesList;

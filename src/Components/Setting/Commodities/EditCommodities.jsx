@@ -21,7 +21,7 @@ const Editcommodities = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [cookie] = useCookies(["eload_token"]);
-  // console.log(id, "id");
+  // // console.log(id, "id");
   const showNotification = () => {
     let Msg = ({ closeToast, toastProps }) => (
       <div>
@@ -34,15 +34,15 @@ const Editcommodities = () => {
   useEffect(() => {
     const findName = () => {
       let item = list.find((item, _) => item.id == id);
-      // console.log(item);
+      // // console.log(item);
       setName(item.name);
     };
     findName();
   }, []);
   const edit = () => {
-    // console.log(name, "name");
-    // console.log(cookie.eload_token, "token");
-    // console.log(id, "id");
+    // // console.log(name, "name");
+    // // console.log(cookie.eload_token, "token");
+    // // console.log(id, "id");
 
     var urlencoded = new URLSearchParams();
     urlencoded.append("name", name);
@@ -58,10 +58,10 @@ const Editcommodities = () => {
         showNotification();
         navigate(`/commodities`);
 
-        // console.log(res);
+        // // console.log(res);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
   return (
@@ -84,10 +84,12 @@ const Editcommodities = () => {
         <div className="row">
           <div className="col-md-12">
             <label className="mx-3 my-3">Name</label>
-            <input type="text" placeholder="name"
+            <input
+              type="text"
+              placeholder="name"
               value={name}
               onChange={(e) => {
-              setName(e.target.value);
+                setName(e.target.value);
               }}
             />
           </div>
@@ -119,17 +121,17 @@ const Editcommodities = () => {
             >
               <div className="modal-header border-0 justify-content-end">
                 <NavLink to="/commodities">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </NavLink>
               </div>
               <div
                 className="modal-body d-flex text-center "
-                style={{ marginLeft: "15%" , marginTop: "-25px"}}
+                style={{ marginLeft: "15%", marginTop: "-25px" }}
               >
                 <h3
                   className="my-4 mx-4"

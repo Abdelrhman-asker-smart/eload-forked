@@ -39,7 +39,7 @@ const AddnewGroup = () => {
     // readNotification(notification.id);
   };
 
-  // console.log(name, "name");
+  // // console.log(name, "name");
   const urlencoded = new URLSearchParams();
   urlencoded.append("name", name);
   urlencoded.append(
@@ -49,7 +49,7 @@ const AddnewGroup = () => {
 
   const recordgroup = async (e) => {
     e.preventDefault();
-    console.log("save triggered");
+    // // console.log("save triggered");
     try {
       const reponse = await axios.post(
         "https://dev.eload.smart.sa/api/v1/groups",
@@ -65,7 +65,7 @@ const AddnewGroup = () => {
       );
 
       // setName("");
-      console.log(reponse);
+      // // console.log(reponse);
       showNotification();
       navigate(
         `/Shipments/grouplist/${user_type == "admin" ? id : user_type_data.id}`
@@ -81,7 +81,7 @@ const AddnewGroup = () => {
         cancelButtonText: "ok",
         timer: 8000,
       });
-      console.log(e);
+      // // console.log(e);
     }
   };
 
